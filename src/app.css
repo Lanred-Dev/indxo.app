@@ -1,3 +1,184 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@font-face {
+    font-family: "Baloo Bhaijaan 2";
+    src:
+        local("Baloo Bhaijaan 2 ExtraBold"),
+        local("BalooBhaijaan2-ExtraBold"),
+        url("fonts/BalooBhaijaan2/BalooBhaijaan2-ExtraBold.ttf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Baloo Bhaijaan 2";
+    src:
+        local("Baloo Bhaijaan 2 Bold"),
+        local("BalooBhaijaan2-Bold"),
+        url("fonts/BalooBhaijaan2/BalooBhaijaan2-Bold.ttf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Baloo Bhaijaan 2";
+    src:
+        local("Baloo Bhaijaan 2 Medium"),
+        local("BalooBhaijaan2-Medium"),
+        url("fonts/BalooBhaijaan2/BalooBhaijaan2-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Baloo Bhaijaan 2";
+    src:
+        local("Baloo Bhaijaan 2 SemiBold"),
+        local("BalooBhaijaan2-SemiBold"),
+        url("fonts/BalooBhaijaan2/BalooBhaijaan2-SemiBold.ttf") format("truetype");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Baloo Bhaijaan 2";
+    src:
+        local("Baloo Bhaijaan 2 Regular"),
+        local("BalooBhaijaan2-Regular"),
+        url("fonts/BalooBhaijaan2/BalooBhaijaan2-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@layer base {
+    /* The background image is repeating polka dots. */
+
+    body {
+        background-image: radial-gradient(#dfdfdf 11%, transparent 11%),
+            radial-gradient(#dfdfdf 11%, transparent 11%);
+        background-position:
+            0px 0px,
+            8px 8px;
+        background-size: 16px 16px;
+
+        @apply bg-primary-light font-BalooBhaijaan2 text-primary-light dark:bg-primary-dark dark:text-primary-dark;
+    }
+
+    html.dark body {
+        background-image: radial-gradient(#0a0a0a 11%, transparent 11%),
+            radial-gradient(#0a0a0a 11%, transparent 11%);
+    }
+}
+
+@layer utilities {
+    .border-light {
+        @apply border border-primary-light-500 dark:border-primary-dark-400;
+    }
+
+    .cover-screen {
+        @apply h-screen w-full;
+    }
+
+    .x-center,
+    .y-center {
+        @apply absolute;
+    }
+
+    .x-center {
+        @apply left-1/2 -translate-x-1/2;
+    }
+
+    .y-center {
+        @apply top-1/2 -translate-y-1/2;
+    }
+
+    .flex-center {
+        @apply flex items-center justify-center;
+    }
+
+    .text-light {
+        @apply text-primary-light-400 dark:text-primary-dark-300;
+    }
+
+    .text-dark {
+        @apply text-primary-light-800 dark:text-primary-dark-700;
+    }
+}
+
+@layer components {
+    button.primary,
+    a.primary,
+    button.secondary,
+    a.secondary,
+    button.primary-dark,
+    a.primary-dark {
+        @apply px-6 py-3 font-semibold;
+    }
+
+    button.primary:has(> img),
+    a.primary:has(> img),
+    button.secondary:has(> img),
+    a.secondary:has(> img),
+    button.primary-dark:has(> img),
+    a.primary-dark:has(> img) {
+        @apply flex-center gap-1.5;
+    }
+
+    button.primary img,
+    a.primary img,
+    button.secondary img,
+    a.secondary img,
+    button.primary-dark img,
+    a.primary-dark img {
+        @apply aspect-1 h-7 select-none;
+    }
+
+    button.primary,
+    a.primary {
+        @apply border-light rounded-button bg-button-primary text-primary-light;
+    }
+
+    button.primary-dark,
+    a.primary-dark {
+        @apply border-light rounded-button bg-primary-light-800 text-primary-light dark:bg-primary-dark-700 dark:text-primary-dark;
+    }
+
+    input.primary,
+    textarea.primary,
+    select.primary {
+        @apply border-light rounded-button bg-primary-light-800 text-primary-light placeholder:text-primary-light-800 focus:border-transparent focus:outline-none focus:ring-1 focus:ring-primary dark:bg-primary-dark-700 dark:text-primary-dark-300 dark:placeholder:text-primary-dark-700;
+    }
+
+    div.primary {
+        @apply border-light overflow-hidden rounded-primary bg-primary-light-700 dark:bg-primary-dark-700;
+    }
+
+    .divider-x,
+    .divider-y {
+        @apply bg-divider-light dark:bg-divider-dark;
+    }
+
+    .divider-x {
+        height: 2px;
+    }
+
+    .divider-y {
+        width: 2px;
+    }
+
+    .bt-cover {
+        -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: 0% 15%;
+        mask-position: 0% 15%;
+    }
+}
