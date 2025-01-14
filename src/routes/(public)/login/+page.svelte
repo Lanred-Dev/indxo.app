@@ -13,7 +13,7 @@
 {/snippet}
 
 <SimplePage
-    title="Create your portfolio today."
+    title="Study at your full potential."
     text="Sign in with your preferred provider and get started."
 >
     <ul class="space-y-3">
