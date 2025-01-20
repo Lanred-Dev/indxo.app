@@ -58,28 +58,14 @@
 }
 
 @layer base {
-    /* The background image is repeating polka dots. */
-
     body {
-        background-image: radial-gradient(#dfdfdf 11%, transparent 11%),
-            radial-gradient(#dfdfdf 11%, transparent 11%);
-        background-position:
-            0px 0px,
-            8px 8px;
-        background-size: 16px 16px;
-
-        @apply bg-primary-light font-BalooBhaijaan2 text-primary-light dark:bg-primary-dark dark:text-primary-dark;
-    }
-
-    html.dark body {
-        background-image: radial-gradient(#0a0a0a 11%, transparent 11%),
-            radial-gradient(#0a0a0a 11%, transparent 11%);
+        @apply bg-primary text-primary font-BalooBhaijaan2;
     }
 }
 
 @layer utilities {
     .border-light {
-        @apply border border-primary-light-500 dark:border-primary-dark-400;
+        @apply border-primary-500 border;
     }
 
     .cover-screen {
@@ -104,11 +90,11 @@
     }
 
     .text-light {
-        @apply text-primary-light-400 dark:text-primary-dark-300;
+        @apply text-primary-400;
     }
 
     .text-dark {
-        @apply text-primary-light-800 dark:text-primary-dark-700;
+        @apply text-primary-800;
     }
 }
 
@@ -142,27 +128,27 @@
 
     button.primary,
     a.primary {
-        @apply border-light rounded-button bg-button-primary text-primary-light;
+        @apply border-light text-primary rounded-button bg-button-primary;
     }
 
     button.primary-dark,
     a.primary-dark {
-        @apply border-light rounded-button bg-primary-light-800 text-primary-light dark:bg-primary-dark-700 dark:text-primary-dark;
+        @apply border-light bg-primary-800 text-primary rounded-button;
     }
 
     input.primary,
     textarea.primary,
     select.primary {
-        @apply border-light rounded-button bg-primary-light-800 text-primary-light placeholder:text-primary-light-800 focus:border-transparent focus:outline-none focus:ring-1 focus:ring-primary dark:bg-primary-dark-700 dark:text-primary-dark-300 dark:placeholder:text-primary-dark-700;
+        @apply border-light bg-primary-800 text-primary placeholder:text-primary-800 rounded-button focus:border-transparent focus:outline-none focus:ring-1 focus:ring-primary;
     }
 
     div.primary {
-        @apply border-light overflow-hidden rounded-primary bg-primary-light-700 dark:bg-primary-dark-700;
+        @apply border-light bg-primary-700 overflow-hidden rounded-primary;
     }
 
     .divider-x,
     .divider-y {
-        @apply bg-divider-light dark:bg-divider-dark;
+        @apply bg-divider;
     }
 
     .divider-x {
