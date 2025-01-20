@@ -8,6 +8,13 @@ if (!MONGO_URI) {
 let client = new MongoClient(MONGO_URI);
 const databases: { [key: string]: Db } = {};
 
+/**
+ * Load a collection from the database.
+ *
+ * @param database The name of the database to load the collection from.
+ * @param collection The name of the collection to load.
+ * @returns The collection.
+ */
 export function loadCollection<T extends Document>(
     database: string,
     collection: string

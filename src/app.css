@@ -59,13 +59,13 @@
 
 @layer base {
     body {
-        @apply bg-primary text-primary font-BalooBhaijaan2;
+        @apply bg-primary font-BalooBhaijaan2 text-primary;
     }
 }
 
 @layer utilities {
     .border-light {
-        @apply border-primary-500 border;
+        @apply border border-primary-900;
     }
 
     .cover-screen {
@@ -90,7 +90,7 @@
     }
 
     .text-light {
-        @apply text-primary-400;
+        @apply text-primary-600;
     }
 
     .text-dark {
@@ -128,22 +128,22 @@
 
     button.primary,
     a.primary {
-        @apply border-light text-primary rounded-button bg-button-primary;
+        @apply border-light rounded-button bg-button-primary text-primary;
     }
 
     button.primary-dark,
     a.primary-dark {
-        @apply border-light bg-primary-800 text-primary rounded-button;
+        @apply border-light rounded-button bg-primary-500 text-primary;
     }
 
     input.primary,
     textarea.primary,
     select.primary {
-        @apply border-light bg-primary-800 text-primary placeholder:text-primary-800 rounded-button focus:border-transparent focus:outline-none focus:ring-1 focus:ring-primary;
+        @apply border-light rounded-button bg-primary-800 text-primary placeholder:text-primary-800 focus:border-transparent focus:outline-none focus:ring-1 focus:ring-primary;
     }
 
     div.primary {
-        @apply border-light bg-primary-700 overflow-hidden rounded-primary;
+        @apply border-light overflow-hidden rounded-primary bg-primary-700;
     }
 
     .divider-x,
