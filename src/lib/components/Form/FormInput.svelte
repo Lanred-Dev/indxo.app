@@ -26,7 +26,7 @@
         placeholder?: string;
         value?: string | number;
         classes?: string;
-        options?: string[];
+        options?: Array<string>;
     } = $props();
 
     const inputClasses: string = twMerge("primary peer w-full text-lg", classes);

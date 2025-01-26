@@ -16,18 +16,22 @@ export default {
         extend: {
             backgroundColor: {
                 primary: {
-                    DEFAULT: "#F9F9F9",
-                    50: "#F9F9F9",
-                    100: "#F6F6F6",
-                    200: "#F1F1F1",
-                    300: "#ECECEC",
-                    400: "#E7E7E7",
-                    500: "#E2E2E2",
-                    600: "#DDDDDD",
-                    700: "#D8D8D8",
-                    800: "#D3D3D3",
-                    900: "#CECECE",
-                    950: "#CBCBCB",
+                    DEFAULT: "#E5E8EB",
+                    50: "#E6E9EC",
+                    100: "#E5E8EB",
+                    200: "#DFE3E7",
+                    300: "#D9DEE2",
+                    400: "#D4D9DE",
+                    500: "#CED4D9",
+                    600: "#C8CFD5",
+                    700: "#C2C9D0",
+                    800: "#BDC4CC",
+                    900: "#B7BFC8",
+                    950: "#B4BDC5",
+                },
+
+                accent: {
+                    primary: "#A4C8E1",
                 },
 
                 button: {
