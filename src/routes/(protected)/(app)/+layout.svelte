@@ -3,10 +3,17 @@
     import Sidebar from "./Sidebar.svelte";
     import type { Snippet } from "svelte";
 
-    let { children }: { children: Snippet<[]> } = $props();
+    let { data, children }: { data: any; children: Snippet<[]> } = $props();
 </script>
 
-<Header />
-<Sidebar />
+<div class="flex h-screen w-full flex-col">
+    <Header user={data.session.user} />
 
-{@render children?.()}
+    <div class="flex h-full w-full flex-grow">
+        <Sidebar />
+
+        <main class="relative h-full w-full">
+            {@render children?.()}
+        </main>
+    </div>
+</div>

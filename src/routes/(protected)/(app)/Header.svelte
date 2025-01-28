@@ -1,13 +1,29 @@
 <script lang="ts">
     import Hamburger from "$lib/icons/Hamburger.svelte";
+    import { onMount } from "svelte";
 
-    let showSidebar = false;
+    let { user } = $props();
+
+    let showSidebar: boolean = false;
+    let windowTitle: string = $state("");
+
+    onMount(() => {
+        windowTitle = document.title;
+    });
 </script>
 
 <header
-    class="x-center bg-accent-primary top-0 flex w-full items-center justify-between border-b shadow-sm"
+    class="flex-center top-0 w-full !justify-between border-b bg-accent-primary p-4 px-10 shadow-sm"
 >
-    <button onclick={() => (showSidebar = !showSidebar)} class="p-2 lg:hidden">
-        <Hamburger classes="aspect-1 h-6" />
-    </button>
+    <div class="flex-center gap-2">
+        <button onclick={() => (showSidebar = !showSidebar)}>
+            <Hamburger strokeWidth={1} classes="aspect-1 h-9" />
+        </button>
+
+        <p>{windowTitle}</p>
+    </div>
+
+    <div>
+        <img class="border-light aspect-1 h-9 rounded-full" src={user.image} alt={user.name} />
+    </div>
 </header>

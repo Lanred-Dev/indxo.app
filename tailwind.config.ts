@@ -31,7 +31,8 @@ export default {
                 },
 
                 accent: {
-                    primary: "#A4C8E1",
+                    primary: "#5E8AB4",
+                    light: "#A4C8E1",
                 },
 
                 button: {
