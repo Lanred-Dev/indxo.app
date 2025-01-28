@@ -1,10 +1,11 @@
 <script lang="ts">
     import Hamburger from "$lib/icons/Hamburger.svelte";
     import { onMount } from "svelte";
+    import { get } from "svelte/store";
+    import { showSidebar } from "./state";
 
-    let { user } = $props();
+    let { user }: { user: any } = $props();
 
-    let showSidebar: boolean = false;
     let windowTitle: string = $state("");
 
     onMount(() => {
@@ -13,10 +14,10 @@
 </script>
 
 <header
-    class="flex-center top-0 w-full !justify-between border-b bg-accent-primary p-4 px-10 shadow-sm"
+    class="flex-center top-0 w-full !justify-between border-b border-primary-900 bg-accent-primary px-10 py-4"
 >
-    <div class="flex-center gap-2">
-        <button onclick={() => (showSidebar = !showSidebar)}>
+    <div>
+        <button onclick={() => showSidebar.set(!get(showSidebar))}>
             <Hamburger strokeWidth={1} classes="aspect-1 h-9" />
         </button>
 
