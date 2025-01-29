@@ -9,7 +9,7 @@
         children?: Snippet<[]>;
     };
 
-    let { action, method = "GET", classes, children }: props = $props();
+    let { action, method = "POST", classes, children }: props = $props();
 </script>
 
 <form class={twMerge("space-y-5", classes)} {method} {action}>
