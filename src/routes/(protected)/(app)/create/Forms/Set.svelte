@@ -8,18 +8,18 @@
         label="Icon"
         type="dropdown"
         options={[
-            { value: "Folder", image: "/icons/folder/Folder.svg" },
-            { value: "Camera", image: "/icons/folder/Camera.svg" },
-            { value: "Briefcase", image: "/icons/folder/Briefcase.svg" },
+            { value: "folder", image: "/icons/folder/Folder.svg" },
+            { value: "camera", image: "/icons/folder/Camera.svg" },
+            { value: "briefcase", image: "/icons/folder/Briefcase.svg" },
         ]}
-        placeholder="John Doe"
+        placeholder={{ value: "folder", image: "/icons/folder/Folder.svg" }}
     />
     <FormInput id="name" label="Name" type="text" placeholder="Most awesome name" />
 </FormRow>
 
 <FormInput
     id="about"
-    label="What is this folder for?"
+    label="What is this set for?"
     type="textarea"
     placeholder="Something important..."
     classes="h-40"
