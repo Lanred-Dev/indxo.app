@@ -138,8 +138,9 @@
 
     input.primary,
     textarea.primary,
-    select.primary {
-        @apply border-light rounded-button bg-primary-800 text-primary placeholder:text-primary-800 focus:border-transparent focus:outline-none focus:ring-1 focus:ring-primary;
+    select.primary,
+    button[data-input] {
+        @apply border-light rounded-button bg-primary-800 px-3 py-2 text-primary placeholder:text-primary-800 focus:border-transparent focus:outline-none focus:ring-1 focus:ring-primary;
     }
 
     div.primary {
