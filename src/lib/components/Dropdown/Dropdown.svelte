@@ -4,14 +4,14 @@
     import { twMerge } from "tailwind-merge";
     import type { props as DropdownItemProps } from "./DropdownItem.svelte";
 
+    export const visible: Writable<boolean> = writable(false);
+
     let {
-        visible = writable(false),
         placeholder,
         classes,
         id,
         children,
     }: {
-        visible?: Writable<boolean>;
         placeholder?: DropdownItemProps | string;
         classes?: string;
         id?: string;
