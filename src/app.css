@@ -65,7 +65,7 @@
 
 @layer utilities {
     .border-light {
-        @apply border border-primary-900;
+        @apply border-primary border-primary-900;
     }
 
     .cover-screen {
