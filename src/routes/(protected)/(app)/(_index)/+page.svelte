@@ -7,8 +7,10 @@
 
 {#if data.sections.length === 0}
     <div class="x-center y-center">
-        <p class="text-2xl">Make this your home!</p>
-        <p class="text-light">You currently dont have any sections visible on your home page.</p>
+        <p class="text-3xl">Make this your home!</p>
+        <p class="text-light text-lg">
+            You currently dont have any sections visible on your home page.
+        </p>
     </div>
 {:else}
     {#each data.sections as section}

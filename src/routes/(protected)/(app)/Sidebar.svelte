@@ -4,9 +4,11 @@
     let { visible }: { visible: Writable<boolean> } = $props();
 </script>
 
-{#snippet group(name: string, links: Array<{ url: string; text: string; icon: string }>)}
+{#snippet group(name: string | null, links: Array<{ url: string; text: string; icon: string }>)}
     <div>
-        <p class="text-light mb-2">{name}...</p>
+        {#if name}
+            <p class="text-light mb-2">{name}...</p>
+        {/if}
 
         <ul class="space-y-1">
             {#each links as { url, text, icon }}
@@ -25,6 +27,8 @@
     class="w-1/5 min-w-fit space-y-10 border-r border-primary-900 bg-primary-300 p-10"
     style="display: {$visible ? 'block' : 'none'};"
 >
+    {@render group(null, [{ icon: "/icons/sidebar/Home.svg", text: "Home", url: "/" }])}
+
     {@render group("My library", [
         { icon: "/icons/sidebar/Folder.svg", text: "Favorites", url: "/my/favorites" },
         { icon: "/icons/sidebar/Folder.svg", text: "Folders", url: "/my/folders" },

@@ -1,32 +1,26 @@
 <script lang="ts">
-    import { Form, FormRow, FormInput, FormSubmit, type props } from "$lib/components/Form";
-
-    let formProps: props = $props();
+    import { FormRow, FormInput } from "$lib/components/Form";
 </script>
 
-<Form {...formProps}>
-    <FormRow>
-        <FormInput
-            id="icon"
-            label="Icon"
-            type="dropdown"
-            options={[
-                { value: "Folder", image: "/icons/folder/Folder.svg" },
-                { value: "Camera", image: "/icons/folder/Camera.svg" },
-                { value: "Briefcase", image: "/icons/folder/Briefcase.svg" },
-            ]}
-            placeholder="John Doe"
-        />
-        <FormInput id="name" label="Name" type="text" placeholder="Most awesome name" />
-    </FormRow>
-
+<FormRow>
     <FormInput
-        id="about"
-        label="What is this folder for?"
-        type="textarea"
-        placeholder="Something important..."
-        classes="h-40"
+        id="icon"
+        label="Icon"
+        type="dropdown"
+        options={[
+            { value: "folder", image: "/icons/folder/Folder.svg" },
+            { value: "camera", image: "/icons/folder/Camera.svg" },
+            { value: "briefcase", image: "/icons/folder/Briefcase.svg" },
+        ]}
+        placeholder={{ value: "folder", image: "/icons/folder/Folder.svg" }}
     />
+    <FormInput id="name" label="Name" type="text" placeholder="Most awesome name" />
+</FormRow>
 
-    <FormSubmit text="Send" />
-</Form>
+<FormInput
+    id="about"
+    label="What is this folder for?"
+    type="textarea"
+    placeholder="Something important..."
+    classes="h-40"
+/>
