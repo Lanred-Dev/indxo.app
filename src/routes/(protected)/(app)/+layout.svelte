@@ -15,7 +15,7 @@
     <div class="flex h-full w-full flex-grow">
         <Sidebar visible={sidebarVisible} />
 
-        <main class="relative h-full w-full">
+        <main class="relative h-full w-full px-10">
             {@render children?.()}
         </main>
     </div>
