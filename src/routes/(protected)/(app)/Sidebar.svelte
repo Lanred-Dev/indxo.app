@@ -1,5 +1,7 @@
 <script lang="ts">
-    import { showSidebar } from "./state";
+    import { type Writable } from "svelte/store";
+
+    let { visible }: { visible: Writable<boolean> } = $props();
 </script>
 
 {#snippet group(name: string, links: Array<{ url: string; text: string; icon: string }>)}
@@ -21,7 +23,7 @@
 
 <div
     class="w-1/5 min-w-fit space-y-10 border-r border-primary-900 bg-primary-300 p-10"
-    style="display: {$showSidebar ? 'block' : 'hidden'};"
+    style="display: {$visible ? 'block' : 'none'};"
 >
     {@render group("My library", [
         { icon: "/icons/sidebar/Folder.svg", text: "Favorites", url: "/my/favorites" },
