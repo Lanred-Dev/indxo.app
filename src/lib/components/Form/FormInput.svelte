@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { Dropdown, DropdownItem } from "$lib/components/Dropdown";
     import { twMerge } from "tailwind-merge";
 
     let {
@@ -18,7 +19,7 @@
             | "email"
             | "radio"
             | "checkbox"
-            | "select"
+            | "dropdown"
             | "number"
             | "checkbox"
             | "textarea"
@@ -26,23 +27,30 @@
         placeholder?: string;
         value?: string | number;
         classes?: string;
-        options?: Array<string>;
+        options?: Array<string> | Array<{ value: string; text?: string; image?: string }>;
     } = $props();
 
-    const inputClasses: string = twMerge("primary peer w-full text-lg", classes);
+    const inputClasses: string = twMerge(
+        `${type !== "dropdown" ? "primary" : ""} w-full text-lg`,
+        classes
+    );
 </script>
 
-<div class="w-full space-y-1">
+<div class="{type === 'dropdown' ? 'w-fit' : 'w-full'} space-y-1">
     {#if label}
         <label class="text-light cursor-text select-none pl-3" for={id}>{label}</label>
     {/if}
 
-    {#if type === "select"}
-        <select class={inputClasses} name={id} {id}>
+    {#if type === "dropdown"}
+        <Dropdown placeholder={options[0]} classes={inputClasses} {id}>
             {#each options as option}
-                <option value={option}>{option}</option>
+                {#if typeof option === "string"}
+                    <DropdownItem value={option} text={option} />
+                {:else}
+                    <DropdownItem value={option.value} text={option.text} image={option.image} />
+                {/if}
             {/each}
-        </select>
+        </Dropdown>
     {:else if type === "textarea"}
         <textarea class="resize-none {inputClasses}" name={id} {id} {placeholder} {value}
         ></textarea>
