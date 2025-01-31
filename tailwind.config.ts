@@ -36,8 +36,8 @@ export default {
                 },
 
                 button: {
-                    primary: "#F5DEB3",
-                    secondary: "#fff837",
+                    primary: "#5E8AB4",
+                    secondary: "#A4C8E1",
                 },
 
                 divider: "#E7E7E7",
