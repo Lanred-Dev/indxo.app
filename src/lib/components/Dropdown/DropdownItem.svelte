@@ -8,7 +8,7 @@
     let { value, text, image }: props = $props();
 </script>
 
-<li class="dropdown-item w-full" data-value={value} data-text={text} data-image={image}>
+<li class="dropdownItem w-full" data-value={value} data-text={text} data-image={image}>
     <button class="flex items-center justify-start gap-0.5" type="button">
         {#if image}
             <img class="aspect-1 h-7" src={image} alt={text} />

@@ -12,7 +12,7 @@
         id,
         children,
     }: {
-        placeholder?: DropdownItemProps | string;
+        placeholder?: string | DropdownItemProps;
         classes?: string;
         id?: string;
         children?: Snippet<[]>;
@@ -26,8 +26,9 @@
     });
 
     function dropdownItemClicked(event: MouseEvent) {
+        // Honestly I dont know why target.closest is needed here but it works
         const target = event.target as HTMLElement;
-        const dropdownItem = target.closest(".dropdown-item");
+        const dropdownItem = target.closest(".dropdownItem");
 
         if (dropdownItem) {
             const value: string = dropdownItem.getAttribute("data-value")!;
@@ -43,7 +44,7 @@
         removeEventListeners();
 
         const dropdownItems: NodeListOf<HTMLElement> =
-            listContainer.querySelectorAll(".dropdown-item")!;
+            listContainer.querySelectorAll(".dropdownItem")!;
 
         dropdownItems.forEach((dropdownItem: HTMLElement) => {
             dropdownItem.addEventListener("click", dropdownItemClicked);
@@ -52,7 +53,7 @@
 
     function removeEventListeners() {
         const dropdownItems: NodeListOf<HTMLElement> =
-            listContainer.querySelectorAll(".dropdown-item")!;
+            listContainer.querySelectorAll(".dropdownItem")!;
 
         dropdownItems.forEach((dropdownItem: HTMLElement) => {
             dropdownItem.removeEventListener("click", dropdownItemClicked);
@@ -79,7 +80,7 @@
     });
 </script>
 
-<div class={twMerge("relative", classes)} {id}>
+<div class={twMerge("dropdown relative", classes)} {id} data-value={currentValue.value}>
     <button
         class="flex w-full items-center justify-start gap-0.5"
         data-input
