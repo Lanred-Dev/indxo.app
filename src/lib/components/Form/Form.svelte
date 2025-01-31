@@ -12,6 +12,12 @@
 
     let { action, method = "POST", classes, children }: props = $props();
 
+    /**
+     * Handles the form submission. Gathers the data from all the form components. Prevents the default form submission and sends a fetch request to the action URL.
+     *
+     * @param event
+     * @returns never
+     */
     function onSubmit(event: Event) {
         event.preventDefault();
 

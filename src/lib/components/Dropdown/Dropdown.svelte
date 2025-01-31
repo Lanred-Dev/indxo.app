@@ -25,6 +25,12 @@
         image: typeof placeholder === "string" ? "" : placeholder?.image,
     });
 
+    /**
+     * Handles when a dropdown item is clicked and updates the current value.
+     *
+     * @param event
+     * @returns never
+     */
     function dropdownItemClicked(event: MouseEvent) {
         // Honestly I dont know why target.closest is needed here but it works
         const target = event.target as HTMLElement;
@@ -40,6 +46,11 @@
         }
     }
 
+    /**
+     * Sets up event listeners for the dropdown items. Also removes any existing event listeners.
+     *
+     * @returns never
+     */
     function setupEventListeners() {
         removeEventListeners();
 
@@ -51,6 +62,11 @@
         });
     }
 
+    /**
+     * Removes event listeners from the dropdown items.
+     *
+     * @returns never
+     */
     function removeEventListeners() {
         const dropdownItems: NodeListOf<HTMLElement> =
             listContainer.querySelectorAll(".dropdownItem")!;
