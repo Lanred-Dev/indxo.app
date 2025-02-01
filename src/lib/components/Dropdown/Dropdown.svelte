@@ -98,7 +98,7 @@
 
 <div class={twMerge("dropdown relative", classes)} {id} data-value={currentValue.value}>
     <button
-        class="flex w-full items-center justify-start gap-0.5"
+        class="flex items-center justify-start gap-0.5"
         data-input
         onclick={() => visible.update((visible: boolean) => !visible)}
         type="button"
