@@ -32,6 +32,7 @@ export async function POST({ request, locals }) {
     await users.updateOne(
         { email: locals.session.user.email },
         {
+            // For some reason a type error is thrown here, but it works fine
             // @ts-ignore
             $push: {
                 sets: { _id: setID },
