@@ -3,55 +3,48 @@
 @import "tailwindcss/utilities";
 
 @font-face {
-    font-family: "Baloo Bhaijaan 2";
+    font-family: "EireneSans";
     src:
-        local("Baloo Bhaijaan 2 ExtraBold"),
-        local("BalooBhaijaan2-ExtraBold"),
-        url("fonts/BalooBhaijaan2/BalooBhaijaan2-ExtraBold.ttf") format("truetype");
+        local("Eirene Sans Bold"),
+        local("EireneSans-Bold"),
+        url("fonts/EireneSans/EireneSans-Bold.woff2") format("woff2"),
+        url("fonts/EireneSans/EireneSans-Bold.woff") format("woff");
     font-weight: bold;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: "Baloo Bhaijaan 2";
+    font-family: "EireneSans";
     src:
-        local("Baloo Bhaijaan 2 Bold"),
-        local("BalooBhaijaan2-Bold"),
-        url("fonts/BalooBhaijaan2/BalooBhaijaan2-Bold.ttf") format("truetype");
+        local("Eirene Sans Italic"),
+        local("EireneSans-Italic"),
+        url("fonts/EireneSans/EireneSans-Italic.woff2") format("woff2"),
+        url("fonts/EireneSans/EireneSans-Italic.woff") format("woff");
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "EireneSans";
+    src:
+        local("Eirene Sans Bold Italic"),
+        local("EireneSans-BoldItalic"),
+        url("fonts/EireneSans/EireneSans-BoldItalic.woff2") format("woff2"),
+        url("fonts/EireneSans/EireneSans-BoldItalic.woff") format("woff");
     font-weight: bold;
-    font-style: normal;
+    font-style: italic;
     font-display: swap;
 }
 
 @font-face {
-    font-family: "Baloo Bhaijaan 2";
+    font-family: "EireneSans";
     src:
-        local("Baloo Bhaijaan 2 Medium"),
-        local("BalooBhaijaan2-Medium"),
-        url("fonts/BalooBhaijaan2/BalooBhaijaan2-Medium.ttf") format("truetype");
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: "Baloo Bhaijaan 2";
-    src:
-        local("Baloo Bhaijaan 2 SemiBold"),
-        local("BalooBhaijaan2-SemiBold"),
-        url("fonts/BalooBhaijaan2/BalooBhaijaan2-SemiBold.ttf") format("truetype");
-    font-weight: 600;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: "Baloo Bhaijaan 2";
-    src:
-        local("Baloo Bhaijaan 2 Regular"),
-        local("BalooBhaijaan2-Regular"),
-        url("fonts/BalooBhaijaan2/BalooBhaijaan2-Regular.ttf") format("truetype");
+        local("Eirene Sans Regular"),
+        local("EireneSans-Regular"),
+        url("fonts/EireneSans/EireneSans-Regular.woff2") format("woff2"),
+        url("fonts/EireneSans/EireneSans-Regular.woff") format("woff");
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -59,7 +52,7 @@
 
 @layer base {
     body {
-        @apply bg-primary font-BalooBhaijaan2 text-primary;
+        @apply bg-primary font-EireneSans text-primary;
     }
 }
 
