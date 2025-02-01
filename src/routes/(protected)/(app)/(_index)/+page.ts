@@ -1,11 +1,10 @@
 import type { card } from "./Section.svelte";
 
 export async function load({ fetch }) {
-    const homeSectionPreferences = await (await fetch("/api/home/section-preferences")).json();
+    const preferences = await (await fetch("/api/home/preferences")).json();
     const sections: [string, card[]][] = [];
 
-    for (let index = 0; index < sections.length; index++) {
-        const section: string = homeSectionPreferences.preferences[index];
+    for (const section of preferences) {
         const api: string = `/api/home/feed/${section.toLowerCase().replaceAll(" ", "-")}`;
         const cards = await (await fetch(api)).json();
 

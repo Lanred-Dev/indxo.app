@@ -10,7 +10,7 @@
 </script>
 
 <div class="space-y-2">
-    <p class="text-xl">{title}</p>
+    <p class="text-3xl font-bold">{title}</p>
 
     <ul class="flex gap-2">
         {#each cards as { title, description, image, link }}
