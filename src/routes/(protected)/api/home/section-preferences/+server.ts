@@ -1,7 +1,7 @@
 import { json } from "@sveltejs/kit";
-import getUser from "../../getUser";
+import getUser from "$lib/database/utils/getUser";
 
-const DEFAULT_SECTION_PREFERENCES: Array<string> = [
+const DEFAULT_SECTION_PREFERENCES: string[] = [
     "Your recents",
     "Practice again",
     "What your struggling with",
