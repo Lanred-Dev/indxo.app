@@ -10,7 +10,7 @@ export default {
 
     theme: {
         fontFamily: {
-            BalooBhaijaan2: ["Baloo Bhaijaan 2", "sans-serif"],
+            EireneSans: ["EireneSans", "sans-serif"],
         },
 
         extend: {
