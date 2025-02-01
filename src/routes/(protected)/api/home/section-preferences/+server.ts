@@ -9,7 +9,7 @@ const DEFAULT_SECTION_PREFERENCES: string[] = [
 ];
 
 export async function GET({ locals }) {
-    const user = await getUser(locals.session.email);
+    const user = await getUser(locals.session.user.email);
     const sectionPreferences = user?.homeSectionPreferences ?? DEFAULT_SECTION_PREFERENCES;
 
     return json({
