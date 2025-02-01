@@ -1,8 +1,8 @@
 import { json } from "@sveltejs/kit";
-import getUser from "$lib/database/utils/getUser";
+import idToDocument from "$lib/database/utils/idToDocument";
 
 export async function GET({ params }) {
-    const user = await getUser(params.id);
+    const user = await idToDocument("users", params.id);
 
     return json({
         name: user?.name,
