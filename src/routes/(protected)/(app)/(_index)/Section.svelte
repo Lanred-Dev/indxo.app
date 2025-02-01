@@ -6,7 +6,7 @@
         link: string;
     };
 
-    let { title, cards }: { title: string; cards: Array<card> } = $props();
+    let { title, cards }: { title: string; cards: card[] } = $props();
 </script>
 
 <div class="space-y-2">

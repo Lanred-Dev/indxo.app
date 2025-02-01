@@ -2,7 +2,7 @@ import type { card } from "./Section.svelte";
 
 export async function load({ fetch }) {
     const homeSectionPreferences = await (await fetch("/api/home/section-preferences")).json();
-    const sections: Array<[string, Array<card>]> = [];
+    const sections: [string, card[]][] = [];
 
     for (let index = 0; index < sections.length; index++) {
         const section: string = homeSectionPreferences.preferences[index];
