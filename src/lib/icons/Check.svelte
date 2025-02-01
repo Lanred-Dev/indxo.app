@@ -1,7 +1,7 @@
 <script lang="ts">
     let {
         fill = "#ffffff",
-        strokeWidth = 1,
+        strokeWidth = 1.5,
         classes,
     }: { fill?: string; strokeWidth?: number; classes?: string } = $props();
 </script>
@@ -15,7 +15,7 @@
 >
     <path
         fill-rule="evenodd"
-        d="M3 6.75A.75.75 0 0 1 3.75 6h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 6.75ZM3 12a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm0 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z"
+        d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l5.353 5.353 8.493-12.74a.75.75 0 0 1 1.04-.207Z"
         clip-rule="evenodd"
     />
 </svg>

@@ -3,7 +3,7 @@
         fill = "#ffffff",
         strokeWidth = 1.5,
         classes,
-    }: { fill?: string; strokeWidth: number; classes?: string } = $props();
+    }: { fill?: string; strokeWidth?: number; classes?: string } = $props();
 </script>
 
 <svg
