@@ -37,6 +37,7 @@
             Nows its time to create some terms.
         {/if}
     </p>
+
     <p class="text-light text-lg">
         {#if stage === "creation"}
             Get started by entering the basics below.
