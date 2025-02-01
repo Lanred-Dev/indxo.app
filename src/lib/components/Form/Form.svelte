@@ -6,11 +6,12 @@
     export type props = {
         action: string;
         method?: "POST" | "GET";
+        afterSubmit?: (success: boolean, meta?: any) => void;
         classes?: string;
         children?: Snippet<[]>;
     };
 
-    let { action, method = "POST", classes, children }: props = $props();
+    let { action, method = "POST", afterSubmit, classes, children }: props = $props();
 
     /**
      * Handles the form submission. Gathers the data from all the form components. Prevents the default form submission and sends a fetch request to the action URL.
@@ -18,7 +19,7 @@
      * @param event
      * @returns never
      */
-    function onSubmit(event: Event) {
+    async function onSubmit(event: Event) {
         event.preventDefault();
 
         const form: HTMLFormElement = event.target as HTMLFormElement;
@@ -28,11 +29,14 @@
         formInputs.forEach((input: HTMLElement) => {
             const inputType: inputType = input.getAttribute("data-type") as inputType;
             let id: string = input.getAttribute("data-id")!;
-            let value: string | number = "";
+            let value: string | number | boolean = "";
 
             if (inputType === "dropdown") {
                 const dropdown: HTMLElement = input.querySelector(".dropdown")!;
                 value = dropdown.getAttribute("data-value")!;
+            } else if (inputType === "checkbox") {
+                const checkbox: HTMLElement = input.querySelector(".checkbox")!;
+                value = checkbox.getAttribute("data-value") === "true";
             } else if (inputType === "textarea") {
                 const textarea: HTMLTextAreaElement = input.querySelector("textarea")!;
                 value = textarea.value;
@@ -44,10 +48,16 @@
             data[id] = value;
         });
 
-        fetch(action, {
-            method,
-            body: JSON.stringify(data),
-        });
+        const response = await (
+            await fetch(action, {
+                method,
+                body: JSON.stringify(data),
+            })
+        ).json();
+
+        if (typeof afterSubmit === "function") {
+            afterSubmit(response.success, response);
+        }
     }
 </script>
 

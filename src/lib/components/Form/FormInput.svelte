@@ -1,7 +1,8 @@
 <script lang="ts">
     import { Dropdown, DropdownItem } from "$lib/components/Dropdown";
+    import Checkbox from "$lib/components/Checkbox.svelte";
     import { twMerge } from "tailwind-merge";
-    import type { props as DropdownItemProps } from "../Dropdown/DropdownItem.svelte";
+    import type { props as DropdownItemProps } from "$lib/components/Dropdown/DropdownItem.svelte";
 
     export type inputType =
         | "text"
@@ -20,38 +21,38 @@
         label,
         type,
         placeholder,
-        value,
         classes,
         options = [],
     }: {
         id: string;
         label?: string;
         type: inputType;
-        placeholder?: string | DropdownItemProps;
-        value?: string | number;
+        placeholder?: string | boolean | DropdownItemProps;
         classes?: string;
-        options?: Array<string> | Array<{ value: string; text?: string; image?: string }>;
+        options?: string[] | { value: string; text?: string; image?: string }[];
     } = $props();
 
     const stringPlaceholder: string | undefined =
         typeof placeholder === "string" ? placeholder : undefined;
     const inputClasses: string = twMerge(
-        `${type !== "dropdown" ? "primary" : ""} w-full text-lg`,
+        `${type === "dropdown" || type === "checkbox" ? "" : "primary"} w-full text-lg`,
         classes
     );
 </script>
 
 <div
-    class="formInput space-y-1 {type === 'dropdown' ? 'w-fit' : 'w-full'}"
+    class="formInput space-y-1 {type === 'dropdown' || type === 'checkbox'
+        ? 'min-w-fit'
+        : 'w-full flex-grow'}"
     data-type={type}
     data-id={id}
 >
     {#if label}
-        <label class="text-light cursor-text select-none pl-3" for={id}>{label}</label>
+        <label class="text-light cursor-text select-none text-nowrap pl-3" for={id}>{label}</label>
     {/if}
 
     {#if type === "dropdown"}
-        <Dropdown placeholder={options[0]} classes={inputClasses} {id}>
+        <Dropdown placeholder={placeholder as DropdownItemProps} classes={inputClasses} {id}>
             {#each options as option}
                 {#if typeof option === "string"}
                     <DropdownItem value={option} text={option} />
@@ -60,15 +61,16 @@
                 {/if}
             {/each}
         </Dropdown>
-    {:else if type === "textarea"}
-        <textarea
-            class="resize-none {inputClasses}"
-            name={id}
+    {:else if type === "checkbox"}
+        <Checkbox
+            placeholder={typeof placeholder === "boolean" ? placeholder : false}
+            classes={inputClasses}
             {id}
-            placeholder={stringPlaceholder}
-            {value}
+        />
+    {:else if type === "textarea"}
+        <textarea class="resize-none {inputClasses}" name={id} {id} placeholder={stringPlaceholder}
         ></textarea>
     {:else}
-        <input class={inputClasses} name={id} {id} {type} placeholder={stringPlaceholder} {value} />
+        <input class={inputClasses} name={id} {id} {type} placeholder={stringPlaceholder} />
     {/if}
 </div>
