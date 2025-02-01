@@ -4,7 +4,7 @@
     let { visible }: { visible: Writable<boolean> } = $props();
 </script>
 
-{#snippet group(name: string | null, links: Array<{ url: string; text: string; icon: string }>)}
+{#snippet group(name: string | null, links: { url: string; text: string; icon: string }[])}
     <div>
         {#if name}
             <p class="text-light mb-2">{name}...</p>
@@ -24,13 +24,13 @@
 {/snippet}
 
 <div
-    class="w-1/5 min-w-fit space-y-10 border-r border-primary-900 bg-primary-300 p-10"
+    class="relative w-1/5 min-w-fit space-y-10 border-r border-primary-900 bg-primary-400 p-10"
     style="display: {$visible ? 'block' : 'none'};"
 >
     {@render group(null, [{ icon: "/icons/sidebar/Home.svg", text: "Home", url: "/" }])}
 
     {@render group("My library", [
-        { icon: "/icons/sidebar/Folder.svg", text: "Favorites", url: "/my/favorites" },
+        { icon: "/icons/sidebar/Stars.svg", text: "Favorites", url: "/my/favorites" },
         { icon: "/icons/sidebar/Folder.svg", text: "Folders", url: "/my/folders" },
         { icon: "/icons/sidebar/Document.svg", text: "Study Sets", url: "/my/sets" },
     ])}
@@ -39,4 +39,6 @@
         { icon: "/icons/sidebar/FolderPlus.svg", text: "Folder", url: "/create?type=folder" },
         { icon: "/icons/sidebar/DocumentPlus.svg", text: "Study Set", url: "/create?type=set" },
     ])}
+
+    <p class="text-dark absolute bottom-10 text-sm">Made for Savannah ❤️</p>
 </div>

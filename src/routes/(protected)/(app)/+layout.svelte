@@ -15,7 +15,9 @@
     <div class="flex h-full w-full flex-grow">
         <Sidebar visible={sidebarVisible} />
 
-        <main class="relative h-full w-full px-10">
+        <main
+            class="relative flex h-full w-full flex-col items-start justify-center overflow-hidden px-[15%]"
+        >
             {@render children?.()}
         </main>
     </div>
