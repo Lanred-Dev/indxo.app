@@ -16,7 +16,7 @@ const folders: Collection<Folder> = loadCollection("documents", "folders");
  * @returns The document if found, otherwise null.
  */
 export default async function idToDocument(
-    collectionName: string,
+    collectionName: "users" | "sets" | "folders",
     id: ObjectId | string
 ): Promise<any> {
     const collection: Collection<any> =
