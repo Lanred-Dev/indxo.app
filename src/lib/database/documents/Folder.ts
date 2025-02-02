@@ -8,6 +8,7 @@ export interface Folder extends Document {
     name: string;
     description: string;
     public: boolean;
-    set: ObjectId[];
+    sets: ObjectId[];
     owner: { name: string; email: string };
+    created: number;
 }
