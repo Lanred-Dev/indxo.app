@@ -17,6 +17,12 @@ const addSessionToLocals: Handle = async ({ event, resolve }) => {
     const session: Session | null = await event.locals.auth();
     event.locals.session = session;
 
+    // Add the user id to the locals if the user is signed in.
+    if (session?.user?.email) {
+        const user: User | null = await users.findOne({ email: session.user?.email });
+        event.locals.userID = user?._id;
+    }
+
     return await resolve(event);
 };
 
