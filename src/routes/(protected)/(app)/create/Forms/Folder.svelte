@@ -6,18 +6,19 @@
 
 {#if stage === "creation"}
     <FormRow>
+        <FormInput id="isPublic" label="Public" type="checkbox" placeholder={true} />
         <FormInput
             id="icon"
             label="Icon"
             type="dropdown"
             options={[
-                { value: "folder", image: "/icons/folder/Folder.svg" },
-                { value: "camera", image: "/icons/folder/Camera.svg" },
-                { value: "briefcase", image: "/icons/folder/Briefcase.svg" },
+                { value: "/icons/folder/Folder.svg", image: "/icons/folder/Folder.svg" },
+                { value: "/icons/folder/Camera.svg", image: "/icons/folder/Camera.svg" },
+                { value: "/icons/folder/Briefcase.svg", image: "/icons/folder/Briefcase.svg" },
             ]}
-            placeholder={{ value: "folder", image: "/icons/folder/Folder.svg" }}
+            placeholder={{ value: "/icons/folder/Folder.svg", image: "/icons/folder/Folder.svg" }}
         />
-        <FormInput id="name" label="Name" type="text" placeholder="Most awesome name" />
+        <FormInput id="name" label="Name" type="text" placeholder="AP Lit Exam" />
     </FormRow>
 
     <FormInput
