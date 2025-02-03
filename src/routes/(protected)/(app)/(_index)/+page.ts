@@ -13,6 +13,11 @@ export async function load({ fetch }) {
             await fetch(`/api/home/feed/${section.toLowerCase().replaceAll(" ", "-")}`)
         ).json();
 
+        // Add the `linkTo` property to each card
+        for (const card of cards) {
+            card.linkTo = `/${type}/${card._id.toString()}`;
+        }
+
         sections.push({
             title: section,
             type,
