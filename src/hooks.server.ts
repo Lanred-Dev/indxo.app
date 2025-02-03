@@ -12,7 +12,12 @@ import { loadCollection } from "$lib/database/mongo";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 
-// This hook adds the session to the locals so that it is available in the load functions.
+/**
+ * This hook adds the session to the locals so that it is available in the load functions.
+ *
+ * @param event The event object.
+ * @returns The result of the resolve function.
+ */
 const addSessionToLocals: Handle = async ({ event, resolve }) => {
     const session: Session | null = await event.locals.auth();
     event.locals.session = session;
@@ -26,6 +31,12 @@ const addSessionToLocals: Handle = async ({ event, resolve }) => {
     return await resolve(event);
 };
 
+/**
+ * Compares the current user's fields to the fields array and updates the user with any missing fields.
+ *
+ * @param email The email of the user to update.
+ * @returns
+ */
 async function updateUserWithFields(email: string) {
     const user = await users.findOne({ email: email });
 
