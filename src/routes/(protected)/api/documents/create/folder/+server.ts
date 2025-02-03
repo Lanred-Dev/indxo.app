@@ -34,7 +34,7 @@ export async function POST({ request, locals }) {
         {
             // @ts-ignore
             $push: {
-                folders: { _id: folderID },
+                folders: folderID,
             },
         }
     );
