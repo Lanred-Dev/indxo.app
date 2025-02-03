@@ -1,29 +1,42 @@
 <script lang="ts">
+    import Folder from "./Folder.svelte";
+    import Set from "./Set.svelte";
+
     export type card = {
-        title: string;
+        name: string;
         description: string;
-        image: string;
-        link: string;
+        isPublic: boolean;
+        linkTo: string;
+        [key: string]: any;
     };
 
     export type sectionType = "set" | "folder";
 
-    let { title, cards }: { title: string; type: sectionType; cards: card[] } = $props();
+    let {
+        title,
+        type,
+        cards,
+        linkTo,
+    }: { title: string; type: sectionType; cards: card[]; linkTo?: string } = $props();
 </script>
 
-<div class="space-y-2">
-    <p class="text-3xl font-bold">{title}</p>
+<div class="w-full space-y-2">
+    <div class="{linkTo ? 'flex-center' : ''} w-full justify-between px-3">
+        <p class="text-3xl font-bold">{title}</p>
+
+        {#if linkTo}
+            <a class="text-light text-lg" href={linkTo}>View all</a>
+        {/if}
+    </div>
 
     <ul class="flex gap-2">
-        {#each cards as { title, description, link }}
-            <li class="inline-block w-full text-left text-sm">
-                <a
-                    class="primary relative inline-block w-full overflow-hidden text-left"
-                    href={link}
-                >
-                    <p class="text-base font-semibold leading-tight">{title}</p>
-                    <p class="text-sm">{description}</p>
-                </a>
+        {#each cards as card}
+            <li>
+                {#if type === "set"}
+                    <Set {...card} />
+                {:else if type === "folder"}
+                    <Folder {...card} />
+                {/if}
             </li>
         {/each}
     </ul>
