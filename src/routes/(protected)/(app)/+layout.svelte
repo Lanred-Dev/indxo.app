@@ -16,7 +16,7 @@
         <Sidebar visible={sidebarVisible} />
 
         <main
-            class="relative flex h-full w-full flex-col items-start justify-start overflow-hidden px-36 pt-24 lg:px-56"
+            class="relative flex h-full w-full flex-col items-start justify-start overflow-hidden px-36 pt-24 lg:px-52"
         >
             {@render children?.()}
         </main>
