@@ -6,7 +6,7 @@ import type { User } from "$lib/database/documents/User";
 import type { Set } from "$lib/database/documents/Set";
 
 type FolderWithSetData = Folder & {
-    sets: Set[];
+    setsWithData: Set[];
 };
 
 export async function GET({ params }) {
@@ -15,13 +15,15 @@ export async function GET({ params }) {
 
     for (const id of user.folders) {
         const folder: Folder = await idToDocument("folders", id);
+        const sets: Set[] = [];
 
-        folder.set.forEach(async (id: ObjectId, index: number) => {
+        for (const id of folder.sets) {
             const set: Set = await idToDocument("sets", id);
-            (folder as FolderWithSetData).sets[index] = set;
-        });
+            sets.push(set);
+        }
 
-        folder.push(folder as FolderWithSetData);
+        (folder as FolderWithSetData).setsWithData = sets;
+        folders.push(folder as FolderWithSetData);
     }
 
     return json(folders);
