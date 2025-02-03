@@ -5,8 +5,9 @@ export async function load({ fetch }) {
     const sections: [string, card[]][] = [];
 
     for (const section of preferences) {
-        const api: string = `/api/home/feed/${section.toLowerCase().replaceAll(" ", "-")}`;
-        const cards = await (await fetch(api)).json();
+        const cards = await (
+            await fetch(`/api/home/feed/${section.toLowerCase().replaceAll(" ", "-")}`)
+        ).json();
 
         sections.push([section, cards]);
     }
