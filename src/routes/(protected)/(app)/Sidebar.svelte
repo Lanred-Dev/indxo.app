@@ -24,7 +24,7 @@
 {/snippet}
 
 <div
-    class="relative w-1/5 min-w-fit space-y-10 border-r border-primary-900 bg-primary-400 p-10"
+    class="relative w-[17.5%] min-w-fit space-y-10 border-r border-primary-900 bg-primary-400 p-10"
     style="display: {$visible ? 'block' : 'none'};"
 >
     {@render group(null, [{ icon: "/icons/sidebar/Home.svg", text: "Home", url: "/" }])}
