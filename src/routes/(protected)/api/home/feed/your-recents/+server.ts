@@ -11,5 +11,8 @@ export async function GET({ locals }) {
     openedSets.reverse();
     openedSets.splice(10);
 
-    return json(openedSets);
+    return json({
+        type: "set",
+        cards: openedSets,
+    });
 }
