@@ -86,7 +86,7 @@
         @apply text-primary-600;
     }
 
-    .text-dark {
+    .text-bright {
         @apply text-primary-800;
     }
 }
