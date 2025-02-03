@@ -25,7 +25,7 @@ export async function POST({ request, locals }) {
         icon,
         isPublic,
         sets: [],
-        owner: { name: locals.session.user.name, email: locals.session.user.email },
+        owner: locals.userID,
         created: new Date().getTime(),
     });
 

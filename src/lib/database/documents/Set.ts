@@ -15,6 +15,6 @@ export interface Set extends Document {
     subject: string;
     isPublic: boolean;
     terms: Term[];
-    owner: { name: string; email: string };
+    owner: ObjectId;
     created: number;
 }

@@ -9,6 +9,6 @@ export interface Folder extends Document {
     description: string;
     isPublic: boolean;
     sets: ObjectId[];
-    owner: { name: string; email: string };
+    owner: ObjectId;
     created: number;
 }
