@@ -8,10 +8,10 @@ export async function GET({ params }) {
     const user: User = await idToDocument("users", params.id);
     const sets: Set[] = [];
 
-    user.sets.forEach(async (id: ObjectId) => {
-        const set: Set = await idToDocument("sets", id);
+    for (const id of user.sets) {
+        const set: Set = await idToDocument("folders", id);
         sets.push(set);
-    });
+    }
 
     return json(sets);
 }
