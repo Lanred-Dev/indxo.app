@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Section from "./Section.svelte";
+    import Section from "./Section";
     import type { PageData } from "./$types";
 
     let { data }: { data: PageData } = $props();
@@ -19,10 +19,7 @@
 
     <a class="primary block w-fit" href="/settings?edit=homeSectionPreferences">Edit preferences</a>
 {:else}
-    {#each data.sections as section}
-        <Section
-            title={typeof section[0] === "string" ? section[0] : ""}
-            cards={Array.isArray(section[1]) ? section[1] : []}
-        />
+    {#each data.sections as { title, type, cards }}
+        <Section {title} {type} {cards} />
     {/each}
 {/if}
