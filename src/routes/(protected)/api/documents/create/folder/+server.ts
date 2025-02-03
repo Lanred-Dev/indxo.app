@@ -16,14 +16,14 @@ export async function POST({ request, locals }) {
     }: { name: string; icon: string; description: string; isPublic: boolean } =
         await request.json();
 
-    const folderID: ObjectId = new ObjectId();
+    const id: ObjectId = new ObjectId();
 
     await folders.insertOne({
-        _id: folderID,
+        _id: id,
         name,
         description,
         icon,
-        public: isPublic,
+        isPublic,
         sets: [],
         owner: { name: locals.session.user.name, email: locals.session.user.email },
         created: new Date().getTime(),
@@ -32,15 +32,16 @@ export async function POST({ request, locals }) {
     await users.updateOne(
         { email: locals.session.user.email },
         {
+            // For some reason a type error is thrown here, but it works fine
             // @ts-ignore
             $push: {
-                folders: folderID,
+                folders: id,
             },
         }
     );
 
     return json({
         success: true,
-        linkTo: `/folders/${folderID}`,
+        linkTo: `/folders/${id}`,
     });
 }

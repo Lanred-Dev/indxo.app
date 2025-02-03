@@ -16,14 +16,14 @@ export async function POST({ request, locals }) {
     }: { name: string; subject: string; description: string; isPublic: boolean } =
         await request.json();
 
-    const setID: ObjectId = new ObjectId();
+    const id: ObjectId = new ObjectId();
 
     await sets.insertOne({
-        _id: setID,
+        _id: id,
         name,
         description,
         subject,
-        public: isPublic,
+        isPublic,
         terms: [],
         owner: { name: locals.session.user.name, email: locals.session.user.email },
         created: new Date().getTime(),
@@ -35,13 +35,13 @@ export async function POST({ request, locals }) {
             // For some reason a type error is thrown here, but it works fine
             // @ts-ignore
             $push: {
-                sets: setID,
+                sets: id,
             },
         }
     );
 
     return json({
         success: true,
-        linkTo: `/sets/${setID}`,
+        linkTo: `/sets/${id}`,
     });
 }
