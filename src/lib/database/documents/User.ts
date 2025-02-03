@@ -18,6 +18,18 @@ export interface User extends Document {
     openedSets: [ObjectId, number][];
 }
 
+export interface PublicUser {
+    _id: ObjectId;
+
+    // auth.js fields
+    name: string;
+    image: string;
+
+    // App specific fields
+    sets: ObjectId[];
+    folders: ObjectId[];
+}
+
 export const fields: [string, "string" | "boolean" | "array"][] = [
     ["banned", "boolean"],
     ["sets", "array"],
