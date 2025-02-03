@@ -35,7 +35,7 @@ export async function POST({ request, locals }) {
             // For some reason a type error is thrown here, but it works fine
             // @ts-ignore
             $push: {
-                sets: { _id: setID },
+                sets: setID,
             },
         }
     );
