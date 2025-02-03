@@ -6,6 +6,7 @@ export async function GET({ fetch, locals }) {
 
     return json({
         type: "set",
+        linkTo: "/my/sets/",
         cards: sets,
     });
 }

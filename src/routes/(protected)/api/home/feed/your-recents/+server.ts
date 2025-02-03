@@ -13,6 +13,7 @@ export async function GET({ locals }) {
 
     return json({
         type: "set",
+        linkTo: "/my/recents/",
         cards: openedSets,
     });
 }
