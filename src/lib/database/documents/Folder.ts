@@ -7,7 +7,7 @@ export interface Folder extends Document {
     icon: string;
     name: string;
     description: string;
-    public: boolean;
+    isPublic: boolean;
     sets: ObjectId[];
     owner: { name: string; email: string };
     created: number;

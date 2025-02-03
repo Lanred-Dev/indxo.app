@@ -13,7 +13,7 @@ export interface Set extends Document {
     name: string;
     description: string;
     subject: string;
-    public: boolean;
+    isPublic: boolean;
     terms: Term[];
     owner: { name: string; email: string };
     created: number;
