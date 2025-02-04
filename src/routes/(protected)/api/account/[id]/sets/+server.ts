@@ -9,6 +9,11 @@ export async function GET({ params }) {
 
     for (const id of user.sets) {
         const set: Set = await idToDocument("sets", id);
+
+        if (!set) {
+            continue;
+        }
+
         sets.push(set);
     }
 

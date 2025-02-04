@@ -14,6 +14,11 @@ export async function GET({ params }) {
 
     for (const id of user.folders) {
         const folder: Folder = await idToDocument("folders", id);
+
+        if (!folder) {
+            continue;
+        }
+
         const sets: Set[] = [];
 
         for (const id of folder.sets) {
