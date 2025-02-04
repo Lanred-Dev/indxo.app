@@ -2,6 +2,13 @@
     import Folder from "./Folder.svelte";
     import Set from "./Set.svelte";
 
+    export type section = {
+        title: string;
+        type: sectionType;
+        cards: card[];
+        linkTo?: string;
+    };
+
     export type card = {
         name: string;
         description: string;
@@ -12,16 +19,11 @@
 
     export type sectionType = "set" | "folder";
 
-    let {
-        title,
-        type,
-        cards,
-        linkTo,
-    }: { title: string; type: sectionType; cards: card[]; linkTo?: string } = $props();
+    let { title, type, cards, linkTo }: section = $props();
 </script>
 
 <div class="w-full space-y-2">
-    <div class="{linkTo ? 'flex-center' : ''} w-full justify-between px-3">
+    <div class="{linkTo ? 'flex items-center justify-between' : ''} w-full px-3">
         <p class="text-3xl font-bold">{title}</p>
 
         {#if linkTo}
