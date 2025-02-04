@@ -60,5 +60,5 @@
         <SetForm {stage} />
     {/if}
 
-    <FormSubmit text={stage === "creation" ? "Create" : "Finalize"} />
+    <FormSubmit text="Create" />
 </Form>
