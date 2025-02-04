@@ -42,6 +42,6 @@ export async function POST({ request, locals }) {
 
     return json({
         success: true,
-        linkTo: `/sets/${id}`,
+        linkTo: `/set/${id}`,
     });
 }
