@@ -19,7 +19,7 @@
 
     <a class="primary block w-fit" href="/settings?edit=homeSectionPreferences">Edit preferences</a>
 {:else}
-    {#each data.sections as { title, type, cards }}
-        <Section {title} {type} {cards} />
+    {#each data.sections as section}
+        <Section {...section} />
     {/each}
 {/if}
