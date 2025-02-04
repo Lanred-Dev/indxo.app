@@ -1,5 +1,8 @@
+<!--NOTE: This component combines a lot of individual components into one.-->
+
 <script lang="ts">
     import { Dropdown, DropdownItem } from "$lib/components/Dropdown";
+    import EditableList from "$lib/components/EditableList";
     import Checkbox from "$lib/components/Checkbox.svelte";
     import { twMerge } from "tailwind-merge";
     import type { props as DropdownItemProps } from "$lib/components/Dropdown/DropdownItem.svelte";
@@ -14,7 +17,8 @@
         | "number"
         | "checkbox"
         | "textarea"
-        | "password";
+        | "password"
+        | "editableList";
 
     let {
         id,
@@ -52,7 +56,7 @@
     {/if}
 
     {#if type === "dropdown"}
-        <Dropdown placeholder={placeholder as DropdownItemProps} classes={inputClasses} {id}>
+        <Dropdown placeholder={placeholder as DropdownItemProps} classes={inputClasses}>
             {#each options as option}
                 {#if typeof option === "string"}
                     <DropdownItem value={option} text={option} />
@@ -61,11 +65,12 @@
                 {/if}
             {/each}
         </Dropdown>
+    {:else if type === "editableList"}
+        <EditableList classes={inputClasses} />
     {:else if type === "checkbox"}
         <Checkbox
             placeholder={typeof placeholder === "boolean" ? placeholder : false}
             classes={inputClasses}
-            {id}
         />
     {:else if type === "textarea"}
         <textarea class="resize-none {inputClasses}" name={id} {id} placeholder={stringPlaceholder}

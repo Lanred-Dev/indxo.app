@@ -7,21 +7,19 @@
     export const visible: Writable<boolean> = writable(false);
 
     let {
-        placeholder,
+        placeholder = "",
         classes,
-        id,
         children,
     }: {
         placeholder?: string | DropdownItemProps;
         classes?: string;
-        id?: string;
         children?: Snippet<[]>;
     } = $props();
 
     let listContainer: HTMLElement;
     let currentValue: DropdownItemProps = $state({
-        value: typeof placeholder === "string" ? placeholder : placeholder?.value || "",
-        text: typeof placeholder === "string" ? placeholder : placeholder?.text || "",
+        value: typeof placeholder === "string" ? placeholder : placeholder?.value,
+        text: typeof placeholder === "string" ? placeholder : placeholder?.text,
         image: typeof placeholder === "string" ? "" : placeholder?.image,
     });
 
@@ -96,7 +94,7 @@
     });
 </script>
 
-<div class={twMerge("dropdown relative", classes)} {id} data-value={currentValue.value}>
+<div class={twMerge("dropdown relative", classes)} data-value={currentValue.value}>
     <button
         class="flex items-center justify-start gap-0.5"
         data-input

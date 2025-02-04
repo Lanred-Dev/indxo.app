@@ -6,17 +6,15 @@
     let {
         placeholder,
         classes,
-        id,
     }: {
         placeholder?: boolean;
         classes?: string;
-        id?: string;
     } = $props();
 
     let currentValue: boolean = $state(placeholder || false);
 </script>
 
-<div class={twMerge("checkbox relative", classes)} {id} data-value={currentValue}>
+<div class={twMerge("checkbox relative", classes)} data-value={currentValue}>
     <button onclick={() => (currentValue = !currentValue)} data-input type="button">
         {#if currentValue}
             <CheckIcon classes="aspect-1 h-7" />
