@@ -19,7 +19,11 @@
 
     <a class="primary block w-fit" href="/settings?edit=homeSectionPreferences">Edit preferences</a>
 {:else}
-    {#each data.sections as section}
-        <Section {...section} />
-    {/each}
+    <div class="w-full space-y-20">
+        {#each data.sections as section}
+            <Section {...section} />
+        {/each}
+
+        <p class="text-center">You've reached the end of your feed!</p>
+    </div>
 {/if}
