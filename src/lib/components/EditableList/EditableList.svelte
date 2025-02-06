@@ -17,6 +17,7 @@
         addText?: string;
     } = $props();
 
+    let listContainer: HTMLElement;
     let items: { id: number; [key: string]: any }[] = $state([]);
 
     /**
@@ -31,19 +32,92 @@
         });
     }
 
+    /**
+     * Removes an item from the list.
+     *
+     * @param id The id of the item to remove.
+     * @returns never
+     */
+    function removeItem(id: number) {
+        items = items.filter((item) => item.id !== id);
+    }
+
+    /**
+     * Handles when a dropdown item is clicked and updates the current value.
+     *
+     * @param event
+     * @returns never
+     */
+    function itemDeleteClicked(event: MouseEvent) {
+        const target = event.target as HTMLElement;
+        const editableListItem = target.closest(".editableListItem");
+
+        if (editableListItem) {
+            const id: string = editableListItem.getAttribute("data-id")!;
+            removeItem(parseInt(id));
+        }
+    }
+
+    /**
+     * Sets up event listeners for the items. Also removes any existing event listeners.
+     *
+     * @returns never
+     */
+    function setupEventListeners() {
+        removeEventListeners();
+
+        const listItems: NodeListOf<HTMLElement> =
+            listContainer.querySelectorAll(".editableListItem")!;
+
+        listItems.forEach((item: HTMLElement) => {
+            const deleteButton: HTMLButtonElement = item.querySelector(".deleteButton")!;
+            deleteButton.addEventListener("click", itemDeleteClicked);
+        });
+    }
+
+    /**
+     * Removes event listeners from the items.
+     *
+     * @returns never
+     */
+    function removeEventListeners() {
+        const listItems: NodeListOf<HTMLElement> =
+            listContainer.querySelectorAll(".editableListItem")!;
+
+        listItems.forEach((item: HTMLElement) => {
+            const deleteButton: HTMLButtonElement = item.querySelector(".deleteButton")!;
+            deleteButton.removeEventListener("click", itemDeleteClicked);
+        });
+    }
+
     onMount(() => {
         for (let index: number = 0; index < startingItems; index++) {
             addItem();
         }
+
+        setupEventListeners();
+
+        const observer: MutationObserver = new MutationObserver((mutationList) => {
+            mutationList.forEach((mutation) => {
+                if (mutation.type === "childList") {
+                    setupEventListeners();
+                }
+            });
+        });
+
+        observer.observe(listContainer, { childList: true });
+
+        return () => {
+            observer.disconnect();
+            removeEventListeners();
+        };
     });
 </script>
 
-<div class={twMerge("editableList space-y-10", classes)}>
+<div class={twMerge("editableList space-y-5", classes)} bind:this={listContainer}>
     {#each items as item, index (item.id)}
-        <div class="editableListItem">
-            <ListComponent {index} {...properties} />
-        </div>
+        <ListComponent {index} {...properties} />
     {/each}
 
-    <button onclick={addItem} type="button">{addText}</button>
+    <button class="primary" onclick={addItem} type="button">{addText}</button>
 </div>

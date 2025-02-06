@@ -1,22 +1,74 @@
 <script lang="ts">
+    import TrashIcon from "$lib/icons/Trash.svelte";
+
     export type item = {
         index: number;
         name: string;
         description: string;
+        namePlaceholder?: string;
+        descriptionPlaceholder?: string;
+        actionButtons?: { text: string; onClick: (event: MouseEvent) => void }[];
+        data?: string[];
     };
 
-    let { index, name, description }: item = $props();
+    let {
+        index,
+        name,
+        description,
+        namePlaceholder = "Cool name",
+        descriptionPlaceholder = "A very cool description...",
+        actionButtons = [],
+        data = [],
+    }: item = $props();
 
     let currentNameValue: string = $state(name);
     let currentDescriptionValue: string = $state(description);
-    let currentValue: { [key: string]: any } = $derived({ name, description });
+    let currentValue: string = $derived.by(() => {
+        const name: string = currentNameValue.trim();
+        const description: string = currentDescriptionValue.trim();
+
+        return JSON.stringify({ name, description });
+    });
 </script>
 
-<div class="editableListItem primary space-x-5 px-8 py-6" data-id={index} data-value={currentValue}>
-    <div class="flex items-center gap-1">
-        <p>#{index + 1}</p>
-        <input bind:value={currentNameValue} />
+<div
+    class="editableListItem primary flex h-44 flex-col gap-3 px-8 py-6"
+    data-id={index}
+    data-value={currentValue}
+>
+    <div class="flex items-center justify-between">
+        <div class="flex-center gap-2">
+            <p class="text-lg font-bold">#{index + 1}</p>
+
+            <input
+                class="primary w-fit !bg-primary-300"
+                placeholder={namePlaceholder}
+                bind:value={currentNameValue}
+            />
+        </div>
+
+        <div class="flex-center gap-6">
+            {#each actionButtons as { text, onClick }}
+                <button type="button" onclick={onClick}>
+                    {text}
+                </button>
+            {/each}
+
+            <button class="deleteButton" type="button">
+                <TrashIcon classes="aspect-1 h-6" fill="#000000" />
+            </button>
+        </div>
     </div>
 
-    <input bind:value={currentDescriptionValue} />
+    <div class="flex-center w-full flex-grow gap-6">
+        {#each data as item}
+            {@html item}
+        {/each}
+
+        <textarea
+            class="primary h-full w-full resize-none !bg-primary-300"
+            placeholder={descriptionPlaceholder}
+            bind:value={currentDescriptionValue}
+        ></textarea>
+    </div>
 </div>
