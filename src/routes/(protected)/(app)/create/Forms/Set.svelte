@@ -19,5 +19,5 @@
         classes="h-40"
     />
 {:else}
-    aa
+    <FormInput id="terms" type="editableList" />
 {/if}

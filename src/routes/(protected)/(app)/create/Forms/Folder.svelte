@@ -28,6 +28,4 @@
         placeholder="This folder contains all my study sets for..."
         classes="h-40"
     />
-{:else}
-    aa
-{/if}
+{:else}{/if}
