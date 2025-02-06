@@ -39,7 +39,7 @@
     const stringPlaceholder: string | undefined =
         typeof placeholder === "string" ? placeholder : undefined;
     const inputClasses: string = twMerge(
-        `${type === "dropdown" || type === "checkbox" ? "" : "primary"} w-full text-lg`,
+        `${type === "dropdown" || type === "checkbox" || type === "editableList" ? "" : "primary"} w-full text-lg`,
         classes
     );
 </script>

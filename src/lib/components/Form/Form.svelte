@@ -28,21 +28,43 @@
 
         formInputs.forEach((input: HTMLElement) => {
             const inputType: inputType = input.getAttribute("data-type") as inputType;
-            let id: string = input.getAttribute("data-id")!;
-            let value: string | number | boolean = "";
+            const id: string = input.getAttribute("data-id")!;
+            let value: any;
 
-            if (inputType === "dropdown") {
-                const dropdown: HTMLElement = input.querySelector(".dropdown")!;
-                value = dropdown.getAttribute("data-value")!;
-            } else if (inputType === "checkbox") {
-                const checkbox: HTMLElement = input.querySelector(".checkbox")!;
-                value = checkbox.getAttribute("data-value") === "true";
-            } else if (inputType === "textarea") {
-                const textarea: HTMLTextAreaElement = input.querySelector("textarea")!;
-                value = textarea.value;
-            } else {
-                const inputElement: HTMLInputElement = input.querySelector("input")!;
-                value = inputElement.value;
+            switch (inputType) {
+                case "editableList":
+                    const editableList: HTMLElement = input.querySelector(".editableList")!;
+                    const listItems: NodeListOf<HTMLElement> =
+                        editableList.querySelectorAll(".editableListItem")!;
+                    const listData: { [key: number]: any }[] = [];
+
+                    for (const item of listItems) {
+                        const id: number = parseInt(item.getAttribute("data-id")!);
+                        listData[id] = item.getAttribute("data-value")!;
+                    }
+
+                    value = listData;
+                    break;
+                case "dropdown": {
+                    const dropdown: HTMLElement = input.querySelector(".dropdown")!;
+                    value = dropdown.getAttribute("data-value")!;
+                    break;
+                }
+                case "checkbox": {
+                    const checkbox: HTMLElement = input.querySelector(".checkbox")!;
+                    value = checkbox.getAttribute("data-value") === "true";
+                    break;
+                }
+                case "textarea": {
+                    const textarea: HTMLTextAreaElement = input.querySelector("textarea")!;
+                    value = textarea.value;
+                    break;
+                }
+                default: {
+                    const inputElement: HTMLInputElement = input.querySelector("input")!;
+                    value = inputElement.value;
+                    break;
+                }
             }
 
             data[id] = value;
