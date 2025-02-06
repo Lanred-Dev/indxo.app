@@ -12,11 +12,11 @@
 <div class="flex h-screen w-full flex-col">
     <Header user={data.session.user} {sidebarVisible} />
 
-    <div class="flex h-full w-full flex-grow">
+    <div class="flex w-full flex-grow overflow-hidden">
         <Sidebar visible={sidebarVisible} />
 
         <main
-            class="relative flex h-full w-full flex-col items-start justify-start overflow-hidden px-36 pt-24 lg:px-52"
+            class="relative flex h-full w-full flex-col items-start justify-start overflow-y-auto overflow-x-hidden px-36 pb-6 pt-24 lg:px-52"
         >
             {@render children?.()}
         </main>
