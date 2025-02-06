@@ -9,16 +9,12 @@
 
     let currentNameValue: string = $state(name);
     let currentDescriptionValue: string = $state(description);
+    let currentValue: { [key: string]: any } = $derived({ name, description });
 </script>
 
-<div
-    class="editableListItem space-x-5"
-    data-name={name}
-    data-description={description}
-    data-id={index}
->
-    <div class="flex-center gap-1">
-        <p>#{index}</p>
+<div class="editableListItem primary space-x-5 px-8 py-6" data-id={index} data-value={currentValue}>
+    <div class="flex items-center gap-1">
+        <p>#{index + 1}</p>
         <input bind:value={currentNameValue} />
     </div>
 
