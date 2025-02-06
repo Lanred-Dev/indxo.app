@@ -51,7 +51,7 @@
 
 <Form
     classes="w-full"
-    action={type === "folder" ? "/api/documents/create/folder" : "/api/documents/create/set"}
+    action={type === "folder" ? "/api/documents/folder/create" : "/api/documents/set/create"}
     {afterSubmit}
 >
     {#if type === "folder"}
