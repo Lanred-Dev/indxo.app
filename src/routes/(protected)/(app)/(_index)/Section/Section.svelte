@@ -31,7 +31,7 @@
         {/if}
     </div>
 
-    <ul class="flex gap-2">
+    <ul class="list flex w-full gap-2 overflow-hidden">
         {#each cards as card}
             <li>
                 {#if type === "set"}
@@ -43,3 +43,14 @@
         {/each}
     </ul>
 </div>
+
+<style lang="postcss">
+    .list {
+        -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 75%, rgba(0, 0, 0, 0));
+        mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 75%, rgba(0, 0, 0, 0));
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: 0% 15%;
+        mask-position: 0% 15%;
+    }
+</style>

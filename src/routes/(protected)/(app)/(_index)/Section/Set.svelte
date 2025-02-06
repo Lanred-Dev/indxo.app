@@ -4,20 +4,18 @@
     let { linkTo, name, subject, description, isPublic }: card = $props();
 </script>
 
-<a
-    class="border-light inline-block h-36 w-96 space-y-3 overflow-hidden rounded-button bg-primary-800 px-8 py-6 text-primary [&>p]:leading-tight"
-    href={linkTo}
->
-    <div>
-        <p class="text-lg">{name}</p>
-        <p class="text-bright text-sm">{subject}</p>
-    </div>
+<div class="primary inline-block h-32 w-80">
+    <a
+        class="flex h-full w-full flex-col justify-between overflow-hidden px-8 py-6 [&>p]:leading-tight"
+        href={linkTo}
+    >
+        <div class="w-full">
+            <p class="w-full overflow-hidden overflow-ellipsis text-xl font-bold">{name}</p>
+            <p class="text-bright text-sm">{subject}</p>
+        </div>
 
-    <p class="text-light w-full overflow-hidden text-ellipsis">
-        {#if description.length > 0}
+        <p class="text-light line-clamp-1 overflow-hidden overflow-ellipsis">
             {description}
-        {:else}
-            No description
-        {/if}
-    </p>
-</a>
+        </p>
+    </a>
+</div>
