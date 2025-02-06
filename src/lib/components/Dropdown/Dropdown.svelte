@@ -30,7 +30,6 @@
      * @returns never
      */
     function dropdownItemClicked(event: MouseEvent) {
-        // Honestly I dont know why target.closest is needed here but it works
         const target = event.target as HTMLElement;
         const dropdownItem = target.closest(".dropdownItem");
 
