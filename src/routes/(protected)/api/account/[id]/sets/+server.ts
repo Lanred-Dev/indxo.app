@@ -1,5 +1,5 @@
 import { json } from "@sveltejs/kit";
-import idToDocument from "$lib/database/utils/idToDocument";
+import idToDocument from "$lib/utils/idToDocument";
 import type { Set } from "$lib/database/documents/Set";
 import type { User } from "$lib/database/documents/User";
 
