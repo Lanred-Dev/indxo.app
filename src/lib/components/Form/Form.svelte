@@ -38,12 +38,17 @@
                         editableList.querySelectorAll(".editableListItem")!;
                     const listData: { [key: number]: any }[] = [];
 
+                    // Note: `1` is a placeholder value for items that don't have data.
                     for (const item of listItems) {
                         const id: number = parseInt(item.getAttribute("data-id")!);
-                        listData[id] = item.getAttribute("data-value")!;
+                        const hasData: boolean = item.getAttribute("data-hasValue") === "true";
+
+                        listData[id] = !hasData
+                            ? "1"
+                            : JSON.parse(item.getAttribute("data-value")!);
                     }
 
-                    value = listData;
+                    value = listData.filter((item) => item !== "1");
                     break;
                 case "dropdown": {
                     const dropdown: HTMLElement = input.querySelector(".dropdown")!;
@@ -67,6 +72,8 @@
                 }
             }
 
+            if (typeof value === "string") value = value.trim();
+
             data[id] = value;
         });
 
@@ -83,6 +90,12 @@
     }
 </script>
 
-<form class={twMerge("space-y-5", classes)} {method} {action} onsubmit={onSubmit}>
+<form
+    class={twMerge("space-y-5", classes)}
+    {method}
+    {action}
+    onsubmit={onSubmit}
+    autocomplete="off"
+>
     {@render children?.()}
 </form>
