@@ -7,7 +7,12 @@
 
     let type: string = $derived(page.url.searchParams.get("type") || "set");
     let stage: "creation" | "setup" = $state("creation");
-    let linkTo: string;
+    let documentID: string = $state("");
+    let endpoint: string = $derived(
+        stage === "creation"
+            ? `/api/documents/${type}/create`
+            : `/api/documents/${type}/${documentID}/update`
+    );
 
     function afterSubmit(success: boolean, meta: any) {
         if (!success) {
@@ -15,10 +20,10 @@
         }
 
         if (stage === "setup") {
-            goto(linkTo);
+            goto(`/${type}/${documentID}`);
         } else {
             stage = "setup";
-            linkTo = meta.linkTo;
+            documentID = meta.id;
         }
     }
 </script>
@@ -49,11 +54,7 @@
     </p>
 </div>
 
-<Form
-    classes="w-full"
-    action={type === "folder" ? "/api/documents/folder/create" : "/api/documents/set/create"}
-    {afterSubmit}
->
+<Form classes="w-full" action={endpoint} {afterSubmit}>
     {#if type === "folder"}
         <FolderForm {stage} />
     {:else}
