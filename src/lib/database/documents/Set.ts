@@ -18,3 +18,11 @@ export interface Set extends Document {
     owner: ObjectId;
     created: number;
 }
+
+export const updatableFields: { [key: string]: "string" | "boolean" | "array" } = {
+    name: "string",
+    description: "string",
+    subject: "string",
+    isPublic: "boolean",
+    terms: "array",
+};
