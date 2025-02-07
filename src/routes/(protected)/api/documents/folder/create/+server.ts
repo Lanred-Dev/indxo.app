@@ -15,7 +15,6 @@ export async function POST({ request, locals }) {
         isPublic,
     }: { name: string; icon: string; description: string; isPublic: boolean } =
         await request.json();
-
     const id: ObjectId = new ObjectId();
 
     await folders.insertOne({
@@ -42,6 +41,6 @@ export async function POST({ request, locals }) {
 
     return json({
         success: true,
-        linkTo: `/folders/${id}`,
+        id,
     });
 }
