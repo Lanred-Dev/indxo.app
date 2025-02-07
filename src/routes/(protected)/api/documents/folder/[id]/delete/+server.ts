@@ -7,7 +7,7 @@ import type { User } from "$lib/database/documents/User";
 const users: Collection<User> = loadCollection("accounts", "users");
 const folders: Collection<Folder> = loadCollection("documents", "folders");
 
-export async function POST({ params, locals }) {
+export async function GET({ params, locals }) {
     const id: ObjectId = new ObjectId(params.id);
 
     await folders.deleteOne({
