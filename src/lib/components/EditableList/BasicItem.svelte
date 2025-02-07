@@ -29,12 +29,19 @@
 
         return JSON.stringify({ name, description });
     });
+    let hasValue: boolean = $derived.by(() => {
+        const name: string = currentNameValue.trim();
+        const description: string = currentDescriptionValue.trim();
+
+        return name.length > 0 || description.length > 0;
+    });
 </script>
 
 <div
     class="editableListItem primary flex h-44 flex-col gap-3 px-8 py-6"
     data-id={index}
     data-value={currentValue}
+    data-hasValue={hasValue}
 >
     <div class="flex items-center justify-between">
         <div class="flex-center gap-2">
