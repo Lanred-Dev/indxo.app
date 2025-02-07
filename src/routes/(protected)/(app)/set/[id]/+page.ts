@@ -6,9 +6,15 @@ type SetWithOwnerData = Set & {
 };
 
 export async function load({ fetch, params }) {
-    const set: Set = await (await fetch(`/api/documents/set/${params.id}`)).json();
+    const response = await fetch(`/api/documents/set/${params.id}`);
 
-    // Add owner data
+    if (response.status === 404) {
+        return {
+            found: false,
+        };
+    }
+
+    const set: Set = await response.json();
     const owner: PublicUser = await (await fetch(`/api/account/${set.owner}`)).json();
     (set as SetWithOwnerData).ownerWithData = owner;
 
