@@ -8,9 +8,9 @@ type SetWithOwnerData = Set & {
 export async function load({ fetch, params }) {
     const response = await fetch(`/api/documents/set/${params.id}`);
 
-    if (response.status === 404) {
+    if (response.status === 403) {
         return {
-            found: false,
+            permission: false,
         };
     }
 
