@@ -33,7 +33,8 @@ export default async function permissionCheck(
 
     const document: Set | Folder = await response.json();
 
-    if (document.owner !== userID) {
+    // Since the request is coming over the web the owner is a string.
+    if ((document.owner as unknown as string) !== userID.toString()) {
         return json(
             {
                 error: "You do not have permission to update this document.",
