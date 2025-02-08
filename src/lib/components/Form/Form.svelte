@@ -11,7 +11,7 @@
         children?: Snippet<[]>;
     };
 
-    let { action, method = "POST", afterSubmit, classes, children }: props = $props();
+    let { action, method = "POST", afterSubmit = () => {}, classes, children }: props = $props();
 
     /**
      * Handles the form submission. Gathers the data from all the form components. Prevents the default form submission and sends a fetch request to the action URL.
@@ -84,9 +84,7 @@
             })
         ).json();
 
-        if (typeof afterSubmit === "function") {
-            afterSubmit(response.success, response);
-        }
+        afterSubmit(response.success, response);
     }
 </script>
 
