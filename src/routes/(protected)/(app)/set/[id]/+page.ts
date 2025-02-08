@@ -14,6 +14,8 @@ export async function load({ fetch, params }) {
         };
     }
 
+    await fetch(`/api/documents/set/${params.id}/open`);
+
     const set: Set = await response.json();
     const owner: PublicUser = await (await fetch(`/api/account/${set.owner}`)).json();
     (set as SetWithOwnerData).ownerWithData = owner;
