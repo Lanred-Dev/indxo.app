@@ -1,5 +1,5 @@
 import { json } from "@sveltejs/kit";
-import idToDocument from "$lib/database/utils/idToDocument.js";
+import idToDocument from "$lib/utils/idToDocument.js";
 import type { User } from "$lib/database/documents/User";
 
 export async function GET({ locals }) {

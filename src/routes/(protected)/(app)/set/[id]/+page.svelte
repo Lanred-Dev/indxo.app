@@ -14,7 +14,7 @@
     {/if}
 </svelte:head>
 
-{#if data.found !== false}
+{#if data.permission !== false}
     <div class="flex gap-0.5">
         <img
             src={data.ownerWithData?.image}
