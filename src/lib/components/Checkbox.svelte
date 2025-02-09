@@ -15,11 +15,11 @@
 </script>
 
 <div class={twMerge("checkbox relative", classes)} data-value={currentValue}>
-    <button onclick={() => (currentValue = !currentValue)} data-input type="button">
+    <button onclick={() => (currentValue = !currentValue)} data-input type="button" class="!p-2">
         {#if currentValue}
-            <CheckIcon classes="aspect-1 h-7" />
+            <CheckIcon fill="#000000" classes="aspect-1 h-7" />
         {:else}
-            <XIcon classes="aspect-1 h-7" />
+            <XIcon fill="#000000" classes="aspect-1 h-7" />
         {/if}
     </button>
 </div>
