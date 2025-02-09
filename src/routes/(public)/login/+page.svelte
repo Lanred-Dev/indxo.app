@@ -5,7 +5,7 @@
 
 {#snippet provider(text: string, icon: string, providerID: string)}
     <li>
-        <button class="primary-dark w-full" onclick={() => signIn(providerID)}>
+        <button class="w-full" onclick={() => signIn(providerID)}>
             <img class={providerID === "github" ? "dark:invert" : ""} src={icon} alt={text} />
             {text}
         </button>
