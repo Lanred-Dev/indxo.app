@@ -11,7 +11,7 @@
     >
         <div class="w-full">
             <p class="w-full overflow-hidden overflow-ellipsis text-xl font-bold">{name}</p>
-            <p class="text-bright text-sm">{subject}</p>
+            <p class="text-dark text-sm">{subject}</p>
         </div>
 
         <p class="text-light line-clamp-1 overflow-hidden overflow-ellipsis">
