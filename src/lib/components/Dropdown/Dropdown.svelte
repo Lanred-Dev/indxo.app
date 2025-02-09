@@ -95,7 +95,9 @@
 
 <div class={twMerge("dropdown relative", classes)} data-value={currentValue.value}>
     <button
-        class="flex items-center justify-start gap-0.5"
+        class="flex items-center justify-start gap-0.5 {!currentValue.text && currentValue.image
+            ? '!p-2'
+            : ''}"
         data-input
         onclick={() => visible.update((visible: boolean) => !visible)}
         type="button"
@@ -110,10 +112,12 @@
     </button>
 
     <div
-        class="primary absolute top-full z-20 mt-1 px-3 py-2"
+        class="primary absolute top-full z-20 mt-1 {!currentValue.text && currentValue.image
+            ? 'p-2'
+            : 'px-3 py-2'}"
         style="display: {$visible ? 'block' : 'none'};"
     >
-        <ul class="space-y-1" bind:this={listContainer}>
+        <ul class="space-y-2" bind:this={listContainer}>
             {@render children?.()}
         </ul>
     </div>
