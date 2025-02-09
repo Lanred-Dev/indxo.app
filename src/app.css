@@ -57,10 +57,6 @@
 }
 
 @layer utilities {
-    .border-light {
-        @apply border-primary border-primary-900;
-    }
-
     .cover-screen {
         @apply h-screen w-full;
     }
@@ -86,7 +82,7 @@
         @apply text-primary-600;
     }
 
-    .text-bright {
+    .text-dark {
         @apply text-primary-800;
     }
 }
@@ -95,49 +91,47 @@
     button.primary,
     a.primary,
     button.secondary,
-    a.secondary,
-    button.primary-dark,
-    a.primary-dark {
+    a.secondary {
         @apply px-6 py-3 font-semibold;
     }
 
     button.primary:has(> img),
     a.primary:has(> img),
     button.secondary:has(> img),
-    a.secondary:has(> img),
-    button.primary-dark:has(> img),
-    a.primary-dark:has(> img) {
+    a.secondary:has(> img) {
         @apply flex-center gap-1.5;
     }
 
     button.primary img,
     a.primary img,
     button.secondary img,
-    a.secondary img,
-    button.primary-dark img,
-    a.primary-dark img {
+    a.secondary img {
         @apply aspect-1 h-7 select-none;
     }
 
     button.primary,
-    a.primary {
-        @apply border-light rounded-button bg-button-primary text-primary;
+    a.primary,
+    input.primary,
+    textarea.primary,
+    select.primary,
+    button[data-input] {
+        @apply border border-primary;
     }
 
-    button.primary-dark,
-    a.primary-dark {
-        @apply border-light rounded-button bg-primary-500 text-primary;
+    button.primary,
+    a.primary {
+        @apply rounded-button bg-button-primary text-primary;
     }
 
     input.primary,
     textarea.primary,
     select.primary,
     button[data-input] {
-        @apply border-light rounded-button bg-primary-800 px-3 py-2 text-primary placeholder:text-primary-800 focus:border-transparent focus:outline-none focus:ring-1 focus:ring-primary;
+        @apply rounded-button bg-primary-500 px-3 py-2 text-primary placeholder:text-primary-200 focus:border-transparent focus:outline-none focus:ring-1 focus:ring-primary;
     }
 
     div.primary {
-        @apply border-light overflow-hidden rounded-primary bg-primary-700;
+        @apply overflow-hidden rounded-primary bg-primary-700;
     }
 
     .divider-x,
