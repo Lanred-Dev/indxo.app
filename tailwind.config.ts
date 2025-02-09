@@ -62,27 +62,23 @@ export default {
 
             borderColor: {
                 primary: {
-                    DEFAULT: "#F9F9F9",
-                    50: "#F9F9F9",
-                    100: "#F6F6F6",
-                    200: "#F1F1F1",
-                    300: "#ECECEC",
-                    400: "#E7E7E7",
-                    500: "#E2E2E2",
-                    600: "#DDDDDD",
-                    700: "#D8D8D8",
-                    800: "#D3D3D3",
-                    900: "#CECECE",
-                    950: "#CBCBCB",
+                    DEFAULT: "#B4B4B4",
+                    50: "#CFCFCF",
+                    100: "#CBCBCB",
+                    200: "#C3C3C3",
+                    300: "#BCBCBC",
+                    400: "#B4B4B4",
+                    500: "#AFAFAF",
+                    600: "#AAAAAA",
+                    700: "#A5A5A5",
+                    800: "#A0A0A0",
+                    900: "#9B9B9B",
+                    950: "#989898",
                 },
             },
 
             ringColor: {
-                primary: "#F5DEB3",
-            },
-
-            borderWidth: {
-                primary: "2px",
+                primary: "#5E8AB4",
             },
 
             borderRadius: {
