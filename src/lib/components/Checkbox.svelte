@@ -1,6 +1,4 @@
 <script lang="ts">
-    import CheckIcon from "$lib/icons/Check.svelte";
-    import XIcon from "$lib/icons/X.svelte";
     import { twMerge } from "tailwind-merge";
 
     let {
@@ -16,10 +14,10 @@
 
 <div class={twMerge("checkbox relative", classes)} data-value={currentValue}>
     <button onclick={() => (currentValue = !currentValue)} data-input type="button" class="!p-2">
-        {#if currentValue}
-            <CheckIcon fill="#000000" classes="aspect-1 h-7" />
-        {:else}
-            <XIcon fill="#000000" classes="aspect-1 h-7" />
-        {/if}
+        <img
+            class="aspect-1 h-7"
+            src={currentValue ? "/icons/general/Check.svg" : "/icons/general/X.svg"}
+            alt={currentValue ? "True" : "False"}
+        />
     </button>
 </div>

@@ -1,5 +1,4 @@
 <script lang="ts">
-    import HamburgerIcon from "$lib/icons/Hamburger.svelte";
     import { type Writable } from "svelte/store";
 
     let { user, sidebarVisible }: { user: any; sidebarVisible: Writable<boolean> } = $props();
@@ -8,11 +7,11 @@
 </script>
 
 <header
-    class="relative top-0 flex w-full items-center justify-between border-primary border-b bg-accent-primary px-10 py-4"
+    class="relative top-0 flex w-full items-center justify-between border-b border-primary bg-accent-primary px-10 py-4"
 >
     <div class="flex-center gap-1">
         <button onclick={() => sidebarVisible.update((visible: boolean) => !visible)}>
-            <HamburgerIcon classes="aspect-1 h-10" />
+            <img class="aspect-1 h-10" src="/icons/navigation/Hamburger.svg" alt="Sidebar toggle" />
         </button>
     </div>
 

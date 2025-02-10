@@ -24,20 +24,23 @@
 {/snippet}
 
 <div
-    class="relative w-[18%] min-w-fit space-y-10 border-primary border-r bg-primary-400 p-10"
+    class="relative w-[18%] min-w-fit space-y-10 border-r border-primary bg-primary-400 p-10"
     style="display: {$visible ? 'block' : 'none'};"
 >
-    {@render group(null, [{ icon: "/icons/sidebar/Home.svg", text: "Home", url: "/" }])}
+    {@render group(null, [
+        { icon: "/icons/navigation/Home.svg", text: "Home", url: "/" },
+        { icon: "/icons/navigation/Account.svg", text: "Account", url: "/account" },
+    ])}
 
     {@render group("My library", [
-        { icon: "/icons/sidebar/Stars.svg", text: "Favorites", url: "/my/favorites" },
-        { icon: "/icons/sidebar/Folder.svg", text: "Folders", url: "/my/folders" },
-        { icon: "/icons/sidebar/Document.svg", text: "Study Sets", url: "/my/sets" },
+        { icon: "/icons/navigation/Stars.svg", text: "Favorites", url: "/my/favorites" },
+        { icon: "/icons/navigation/Folder.svg", text: "Folders", url: "/my/folders" },
+        { icon: "/icons/navigation/Document.svg", text: "Study Sets", url: "/my/sets" },
     ])}
 
     {@render group("Create new", [
-        { icon: "/icons/sidebar/FolderPlus.svg", text: "Folder", url: "/create?type=folder" },
-        { icon: "/icons/sidebar/DocumentPlus.svg", text: "Study Set", url: "/create?type=set" },
+        { icon: "/icons/navigation/FolderPlus.svg", text: "Folder", url: "/create?type=folder" },
+        { icon: "/icons/navigation/DocumentPlus.svg", text: "Study Set", url: "/create?type=set" },
     ])}
 
     <p class="text-dark absolute bottom-10 text-sm">Made for Savannah ❤️</p>

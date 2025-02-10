@@ -1,17 +1,6 @@
-<script lang="ts">
-    let {
-        fill = "#ffffff",
-        strokeWidth = 1.5,
-        classes,
-    }: { fill?: string; strokeWidth?: number; classes?: string } = $props();
-</script>
-
 <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
-    stroke-width={strokeWidth}
-    class={classes}
-    {fill}
 >
     <path
         fill-rule="evenodd"

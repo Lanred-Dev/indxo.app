@@ -1,6 +1,4 @@
 <script lang="ts">
-    import TrashIcon from "$lib/icons/Trash.svelte";
-
     export type item = {
         index: number;
         name: string;
@@ -62,7 +60,7 @@
             {/each}
 
             <button class="deleteButton" type="button">
-                <TrashIcon classes="aspect-1 h-6" fill="#000000" />
+                <img class="aspect-1 h-7" src="/icons/general/Trash.svg" alt="Trash" />
             </button>
         </div>
     </div>
