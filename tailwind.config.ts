@@ -83,7 +83,7 @@ export default {
 
             borderRadius: {
                 primary: "15px",
-                button: "10px",
+                button: "12.5px",
             },
         },
     },
