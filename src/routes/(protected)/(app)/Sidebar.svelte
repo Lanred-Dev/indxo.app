@@ -29,7 +29,7 @@
 >
     {@render group(null, [
         { icon: "/icons/navigation/Home.svg", text: "Home", url: "/" },
-        { icon: "/icons/navigation/Account.svg", text: "Account", url: "/account" },
+        { icon: "/icons/navigation/Account.svg", text: "Account", url: "/my" },
     ])}
 
     {@render group("My library", [
