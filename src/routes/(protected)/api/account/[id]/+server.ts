@@ -17,6 +17,7 @@ export async function GET({ params, fetch }) {
     const folders: Folder[] = await (await fetch(`/api/account/${params.id}/folders`)).json();
 
     return json({
+        _id: user._id,
         name: user.name,
         image: user.image,
         sets: sets,
