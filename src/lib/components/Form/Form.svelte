@@ -12,6 +12,7 @@
     };
 
     let { action, method = "POST", afterSubmit = () => {}, classes, children }: props = $props();
+    let submitting: boolean = $state(false);
 
     /**
      * Handles the form submission. Gathers the data from all the form components. Prevents the default form submission and sends a fetch request to the action URL.
@@ -21,6 +22,10 @@
      */
     async function onSubmit(event: Event) {
         event.preventDefault();
+
+        if (submitting) return;
+
+        submitting = true;
 
         const form: HTMLFormElement = event.target as HTMLFormElement;
         const formInputs: NodeListOf<HTMLElement> = form.querySelectorAll(".formInput")!;
@@ -85,6 +90,7 @@
         ).json();
 
         afterSubmit(response.success, response);
+        submitting = false;
     }
 </script>
 
@@ -94,6 +100,7 @@
     {action}
     onsubmit={onSubmit}
     autocomplete="off"
+    data-submitting={submitting}
 >
     {@render children?.()}
 </form>
