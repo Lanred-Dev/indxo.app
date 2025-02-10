@@ -27,6 +27,8 @@
         placeholder,
         classes,
         options = [],
+        checkboxIcons,
+        checkboxText,
     }: {
         id: string;
         label?: string;
@@ -34,6 +36,10 @@
         placeholder?: string | boolean | DropdownItemProps;
         classes?: string;
         options?: string[] | { value: string; text?: string; image?: string }[];
+
+        // These is only used for the checkbox component
+        checkboxIcons?: [string, string];
+        checkboxText?: [string, string];
     } = $props();
 
     const stringPlaceholder: string | undefined =
@@ -71,6 +77,8 @@
         <Checkbox
             placeholder={typeof placeholder === "boolean" ? placeholder : false}
             classes={inputClasses}
+            text={checkboxText}
+            icons={checkboxIcons}
         />
     {:else if type === "textarea"}
         <textarea class="resize-none {inputClasses}" name={id} {id} placeholder={stringPlaceholder}
