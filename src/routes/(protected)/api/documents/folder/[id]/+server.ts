@@ -9,7 +9,7 @@ export async function GET({ params, fetch, locals }) {
     const folder: Folder = await idToDocument("folders", params.id);
 
     if (!permissionCheck(folder, locals.userID)) {
-        return json({ success: false });
+        return json({ success: false }, { status: 403 });
     }
 
     const sets: Set[] = [];

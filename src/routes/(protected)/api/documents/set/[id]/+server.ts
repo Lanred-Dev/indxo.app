@@ -8,7 +8,7 @@ export async function GET({ params, locals, fetch }) {
     const set: Set = await idToDocument("sets", params.id);
 
     if (!permissionCheck(set, locals.userID)) {
-        return json({ success: false });
+        return json({ success: false }, { status: 403 });
     }
 
     const owner: PublicUser = await (await fetch(`/api/account/${set.owner}`)).json();
