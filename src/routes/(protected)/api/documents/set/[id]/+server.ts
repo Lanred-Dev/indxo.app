@@ -1,29 +1,18 @@
 import { json } from "@sveltejs/kit";
 import idToDocument from "$lib/utils/idToDocument";
-import type { Set } from "$lib/database/documents/Set";
+import type { PublicSet, Set } from "$lib/database/documents/Set";
+import type { PublicUser } from "$lib/database/documents/User";
+import permissionCheck from "$lib/utils/permissionCheck";
 
-export async function GET({ params, locals }) {
-    const set: Set | null = await idToDocument("sets", params.id);
+export async function GET({ params, locals, fetch }) {
+    const set: Set = await idToDocument("sets", params.id);
 
-    if (!set) {
-        return json(
-            {
-                error: "Could not find set.",
-            },
-            { status: 404 }
-        );
+    if (!permissionCheck(set, locals.userID)) {
+        return json({ success: false });
     }
 
-    if (!set.isPublic && set.owner !== locals.userID) {
-        return json(
-            {
-                error: "You do not have permission to view this set.",
-            },
-            { status: 403 }
-        );
-    }
+    const owner: PublicUser = await (await fetch(`/api/account/${set.owner}`)).json();
+    (set as unknown as PublicSet).owner = owner;
 
-    return json({
-        ...set,
-    });
+    return json(set);
 }
