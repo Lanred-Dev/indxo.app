@@ -112,7 +112,8 @@
     </button>
 
     <div
-        class="primary absolute top-full z-20 mt-1 {!currentValue.text && currentValue.image
+        class="primary absolute top-full z-20 mt-1 border border-primary {!currentValue.text &&
+        currentValue.image
             ? 'p-2'
             : 'px-3 py-2'}"
         style="display: {$visible ? 'block' : 'none'};"
