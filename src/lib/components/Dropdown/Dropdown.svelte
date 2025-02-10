@@ -112,7 +112,7 @@
     </button>
 
     <div
-        class="primary absolute top-full z-20 mt-1 border border-primary {!currentValue.text &&
+        class="primary absolute top-full z-20 mt-1 border border-primary shadow-md {!currentValue.text &&
         currentValue.image
             ? 'p-2'
             : 'px-3 py-2'}"
