@@ -1,47 +1,31 @@
-import { ObjectId, type Collection } from "mongodb";
-import { loadCollection } from "$lib/database/mongo";
-import type { User } from "$lib/database/documents/User.ts";
+import { ObjectId } from "mongodb";
 import type { Set } from "$lib/database/documents/Set.ts";
 import type { Folder } from "$lib/database/documents/Folder.ts";
-import { json } from "@sveltejs/kit";
-
-const users: Collection<User> = loadCollection("accounts", "users");
-const sets: Collection<Set> = loadCollection("documents", "sets");
-const folders: Collection<Folder> = loadCollection("documents", "folders");
 
 /**
- * Checks if the user has permission to update the document.
+ * Checks if the user has permission to view/update the document.
  *
- * NOTE: This is used for things such as updating and deleting documents.
- *
- * @param userID The ID of the user.
- * @param response The response from the server.
- * @returns The response if the user does not have permission, otherwise null.
+ * @param document The document to check.
+ * @param userID The ID of the user to check.
+ * @param mustHaveUpdatePermission Also check if the user has permission to update the document.
+ * @returns If the user has permission to view the document.
  */
-export default async function permissionCheck(
+export default function permissionCheck(
+    document: Set | Folder | null,
     userID: ObjectId,
-    response: Response
-): Promise<Response | null> {
-    if (response.status !== 200) {
-        return json(
-            {
-                error: "Could not find document.",
-            },
-            { status: 404 }
-        );
+    mustHaveUpdatePermission?: boolean
+): boolean {
+    if (!document) {
+        return false;
     }
 
-    const document: Set | Folder = await response.json();
-
-    // Since the request is coming over the web the owner is a string.
-    if ((document.owner as unknown as string) !== userID.toString()) {
-        return json(
-            {
-                error: "You do not have permission to update this document.",
-            },
-            { status: 403 }
-        );
+    if (!document.isPublic && document.owner !== userID) {
+        return false;
     }
 
-    return null;
+    if (mustHaveUpdatePermission && document.owner !== userID) {
+        return false;
+    }
+
+    return true;
 }
