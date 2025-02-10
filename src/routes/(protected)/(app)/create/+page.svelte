@@ -29,7 +29,7 @@
 </script>
 
 <svelte:head>
-    <title>Create</title>
+    <title>Create a {type === "folder" ? "folder" : "study set"}</title>
 </svelte:head>
 
 <div class="mb-7">
