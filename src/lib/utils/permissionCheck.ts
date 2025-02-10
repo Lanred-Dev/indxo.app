@@ -19,12 +19,22 @@ export default function permissionCheck(
         return false;
     }
 
-    if (!document.isPublic && document.owner !== userID) {
+    const ownerID: string =
+        typeof document.owner === "string"
+            ? document.owner
+            : "_id" in document.owner
+              ? (document.owner._id as string)
+              : document.owner.toString();
+    const isOwner: boolean = ownerID === userID.toString();
+
+    if (!document.isPublic && !isOwner) {
         return false;
     }
 
-    if (mustHaveUpdatePermission && document.owner !== userID) {
-        return false;
+    if (mustHaveUpdatePermission) {
+        if (!isOwner) {
+            return false;
+        }
     }
 
     return true;
