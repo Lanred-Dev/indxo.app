@@ -36,7 +36,7 @@
 </script>
 
 <div
-    class="editableListItem primary flex h-44 flex-col gap-3 px-8 py-6"
+    class="editableListItem primary flex h-44 flex-col gap-3 border border-primary px-8 py-6"
     data-id={index}
     data-value={currentValue}
     data-hasValue={hasValue}
