@@ -9,11 +9,10 @@ const users: Collection<User> = loadCollection("accounts", "users");
 const folders: Collection<Folder> = loadCollection("documents", "folders");
 
 export async function GET({ params, locals }) {
-    const response = await fetch(`/api/documents/set/${params.id}`);
-    const hasPermission = await permissionCheck(locals.userID, response);
+    const folder: Folder = await (await fetch(`/api/documents/folder/${params.id}`)).json();
 
-    if (hasPermission) {
-        return hasPermission;
+    if (!permissionCheck(folder, locals.userID, true)) {
+        return json({ success: false }, { status: 403 });
     }
 
     const id: ObjectId = new ObjectId(params.id);

@@ -9,11 +9,10 @@ const users: Collection<User> = loadCollection("accounts", "users");
 const sets: Collection<Set> = loadCollection("documents", "sets");
 
 export async function GET({ params, locals }) {
-    const response = await fetch(`/api/documents/set/${params.id}`);
-    const hasPermission = await permissionCheck(locals.userID, response);
+    const set: Set = await (await fetch(`/api/documents/set/${params.id}`)).json();
 
-    if (hasPermission) {
-        return hasPermission;
+    if (!permissionCheck(set, locals.userID, true)) {
+        return json({ success: false }, { status: 403 });
     }
 
     const id: ObjectId = new ObjectId(params.id);

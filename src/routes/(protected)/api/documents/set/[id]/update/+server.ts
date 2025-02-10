@@ -2,16 +2,15 @@ import { json } from "@sveltejs/kit";
 import { loadCollection } from "$lib/database/mongo";
 import { ObjectId, type Collection } from "mongodb";
 import { updatableFields, type Set } from "$lib/database/documents/Set";
-import permissionCheck from "$lib/utils/permissionCheck.js";
+import permissionCheck from "$lib/utils/permissionCheck";
 
 const sets: Collection<Set> = loadCollection("documents", "sets");
 
 export async function POST({ params, request, fetch, locals }) {
-    const response = await fetch(`/api/documents/set/${params.id}`);
-    const hasPermission = await permissionCheck(locals.userID, response);
+    const set: Set = await (await fetch(`/api/documents/set/${params.id}`)).json();
 
-    if (hasPermission) {
-        return hasPermission;
+    if (!permissionCheck(set, locals.userID, true)) {
+        return json({ success: false }, { status: 403 });
     }
 
     const newFields: { [key: string]: any } = await request.json();
