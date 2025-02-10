@@ -1,9 +1,24 @@
 <script lang="ts">
     import { type Writable } from "svelte/store";
+    import type { PublicFolder } from "$lib/database/documents/Folder";
+    import type { PublicSet } from "$lib/database/documents/Set";
+    import type { PublicUser } from "$lib/database/documents/User";
 
     let { user, sidebarVisible }: { user: any; sidebarVisible: Writable<boolean> } = $props();
 
     let searching: boolean = $state(false);
+    let searchResults: (PublicUser | PublicSet | PublicFolder)[] = $state([]);
+
+    async function search(event: Event) {
+        searchResults = await (
+            await fetch("/api/search", {
+                method: "POST",
+                body: JSON.stringify({
+                    query: (event.target as HTMLInputElement)?.value,
+                }),
+            })
+        ).json();
+    }
 </script>
 
 <header
@@ -20,6 +35,7 @@
             class="primary w-full"
             type="text"
             placeholder="Search"
+            oninput={search}
             onfocus={() => {
                 searching = true;
             }}
@@ -40,7 +56,11 @@
     {#if searching}
         <div class="x-center primary top-full w-96 rounded-lg border border-primary">
             <div class="p-4">
-                <p class="text-primary-900">Search results</p>
+                {#each searchResults as result}
+                    <div>
+                        <p>{result.name}</p>
+                    </div>
+                {/each}
             </div>
         </div>
     {/if}
