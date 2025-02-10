@@ -1,9 +1,4 @@
-import type { Set } from "$lib/database/documents/Set";
-import type { PublicUser } from "$lib/database/documents/User";
-
-type SetWithOwnerData = Set & {
-    ownerWithData: PublicUser;
-};
+import type { PublicSet } from "$lib/database/documents/Set";
 
 export async function load({ fetch, params }) {
     const response = await fetch(`/api/documents/set/${params.id}`);
@@ -16,11 +11,6 @@ export async function load({ fetch, params }) {
 
     await fetch(`/api/documents/set/${params.id}/open`);
 
-    const set: Set = await response.json();
-    const owner: PublicUser = await (await fetch(`/api/account/${set.owner}`)).json();
-    (set as SetWithOwnerData).ownerWithData = owner;
-
-    return {
-        ...(set as SetWithOwnerData),
-    };
+    const set: PublicSet = await response.json();
+    return set;
 }
