@@ -17,6 +17,7 @@ export async function POST({ params, request, fetch, locals }) {
     const validFields: { [key: string]: any } = {};
     const id: ObjectId = new ObjectId(params.id);
 
+    // Check if the new fields are valid
     for (const key in newFields) {
         if (
             !(key in updatableFields) || Array.isArray(newFields[key])
