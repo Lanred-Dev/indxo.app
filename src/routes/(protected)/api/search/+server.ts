@@ -59,36 +59,37 @@ export async function POST({ request, locals }) {
 
     let results = [];
 
-    if (typeof returnOnly === "string") {
-        switch (returnOnly) {
-            case "user":
-                results = usersResults;
-                break;
-            case "set":
-                results = setsResults;
-                break;
-            case "folder":
-                results = foldersResults;
-                break;
-        }
-    } else {
-        results = [...usersResults, ...setsResults, ...foldersResults];
+    switch (returnOnly) {
+        case "user":
+            results = usersResults;
+            break;
+        case "set":
+            results = setsResults;
+            break;
+        case "folder":
+            results = foldersResults;
+            break;
+        default:
+            results = [...usersResults, ...setsResults, ...foldersResults];
     }
 
-    const bestResults = results
-        .sort((result1, result2) => {
-            const result1Score: number =
-                result1.name.match(query)?.length +
-                result1.description?.match(query)?.length +
-                result1.subject?.match(query)?.length;
-            const result2Score: number =
-                result2.name.match(query)?.length +
-                result2.description?.match(query)?.length +
-                result2.subject?.match(query)?.length;
+    const bestResults =
+        results.length > 1
+            ? results
+                  .sort((result1, result2) => {
+                      const result1Score: number =
+                          result1.name.match(query)?.length +
+                          result1.description?.match(query)?.length +
+                          result1.subject?.match(query)?.length;
+                      const result2Score: number =
+                          result2.name.match(query)?.length +
+                          result2.description?.match(query)?.length +
+                          result2.subject?.match(query)?.length;
 
-            return result2Score - result1Score;
-        })
-        .splice(maxResults);
+                      return result2Score - result1Score;
+                  })
+                  .splice(maxResults)
+            : results;
 
     return json(bestResults);
 }
