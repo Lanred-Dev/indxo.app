@@ -1,6 +1,8 @@
 // This document is used to represent a user in the database.
 
 import type { Document, ObjectId } from "mongodb";
+import type { Set } from "./Set";
+import type { Folder } from "./Folder";
 
 export interface User extends Document {
     _id: ObjectId;
@@ -26,8 +28,8 @@ export interface PublicUser {
     image: string;
 
     // App specific fields
-    sets: ObjectId[];
-    folders: ObjectId[];
+    sets: Set[];
+    folders: Folder[];
 }
 
 export const fields: [string, "string" | "boolean" | "array"][] = [

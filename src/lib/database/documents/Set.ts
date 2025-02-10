@@ -1,6 +1,7 @@
 // This document is used to represent a set in the database.
 
 import type { Document, ObjectId } from "mongodb";
+import type { PublicUser } from "./User";
 
 export type Term = {
     term: string;
@@ -16,6 +17,17 @@ export interface Set extends Document {
     isPublic: boolean;
     terms: Term[];
     owner: ObjectId;
+    created: number;
+}
+
+export interface PublicSet {
+    _id: ObjectId;
+    name: string;
+    description: string;
+    subject: string;
+    isPublic: boolean;
+    terms: Term[];
+    owner: PublicUser;
     created: number;
 }
 
