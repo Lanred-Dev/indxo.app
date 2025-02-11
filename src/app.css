@@ -106,7 +106,7 @@
     a.primary img,
     button.secondary img,
     a.secondary img {
-        @apply aspect-1 h-7 select-none;
+        @apply size-7 select-none;
     }
 
     button.primary,

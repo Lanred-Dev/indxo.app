@@ -14,7 +14,7 @@
             {#each links as { url, text, icon }}
                 <li>
                     <a class="flex items-center gap-2" href={url}>
-                        <img class="aspect-1 h-6" src={icon} alt={text} />
+                        <img class="size-6" src={icon} alt={text} />
                         <p class="text-lg">{text}</p>
                     </a>
                 </li>

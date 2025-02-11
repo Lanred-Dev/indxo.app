@@ -65,7 +65,7 @@
 >
     <div class="flex-center gap-1">
         <button onclick={() => sidebarVisible.update((visible: boolean) => !visible)}>
-            <img class="aspect-1 h-10" src="/icons/navigation/Hamburger.svg" alt="Sidebar toggle" />
+            <img class="size-10" src="/icons/navigation/Hamburger.svg" alt="Sidebar toggle" />
         </button>
     </div>
 
@@ -85,11 +85,7 @@
     </div>
 
     <div>
-        <img
-            class="aspect-1 h-10 rounded-full border border-primary"
-            src={user.image}
-            alt={user.name}
-        />
+        <img class="size-10 rounded-full border border-primary" src={user.image} alt={user.name} />
     </div>
 
     <div

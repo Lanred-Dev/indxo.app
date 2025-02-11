@@ -103,7 +103,7 @@
         type="button"
     >
         {#if currentValue.image}
-            <img class="aspect-1 h-7" src={currentValue.image} alt={currentValue.text} />
+            <img class="size-7 h-7" src={currentValue.image} alt={currentValue.text} />
         {/if}
 
         {#if currentValue.text}

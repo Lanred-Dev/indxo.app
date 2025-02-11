@@ -60,7 +60,7 @@
             {/each}
 
             <button class="deleteButton" type="button">
-                <img class="aspect-1 h-7" src="/icons/general/Trash.svg" alt="Trash" />
+                <img class="size-7" src="/icons/general/Trash.svg" alt="Trash" />
             </button>
         </div>
     </div>

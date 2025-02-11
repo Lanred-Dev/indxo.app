@@ -24,7 +24,7 @@
         type="button"
     >
         <img
-            class="aspect-1 h-7"
+            class="size-7"
             src={currentValue ? icons[0] : icons[1]}
             alt={currentValue ? "True" : "False"}
         />
