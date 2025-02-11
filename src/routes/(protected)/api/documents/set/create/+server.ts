@@ -29,7 +29,7 @@ export async function POST({ request, locals }) {
     });
 
     await users.updateOne(
-        { id: locals.userID },
+        { _id: locals.userID },
         {
             // For some reason a type error is thrown here, but it works fine
             // @ts-ignore
