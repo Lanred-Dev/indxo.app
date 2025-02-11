@@ -4,7 +4,7 @@
     let { linkTo, name, subject, description, isPublic }: card = $props();
 </script>
 
-<div class="primary inline-block h-32 w-80">
+<div class="primary inline-block h-32 w-80 border border-primary">
     <a
         class="flex h-full w-full flex-col justify-between overflow-hidden px-8 py-6 [&>p]:leading-tight"
         href={linkTo}
