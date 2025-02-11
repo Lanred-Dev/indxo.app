@@ -9,8 +9,6 @@ export async function load({ fetch, params }) {
         };
     }
 
-    await fetch(`/api/documents/set/${params.id}/open`);
-
     const set: PublicSet = await response.json();
     return set;
 }
