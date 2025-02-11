@@ -22,7 +22,7 @@ export async function GET({ params, locals }) {
     });
 
     await users.updateOne(
-        { email: locals.session.user.email },
+        { _id: locals.userID },
         {
             // For some reason a type error is thrown here, but it works fine
             // @ts-ignore
