@@ -34,6 +34,7 @@ export async function POST({ request, locals }) {
 
     const setsResults: Set[] = await sets
         .find({
+            isPublic: true,
             $or: [
                 {
                     name: searchQuery,
@@ -51,6 +52,7 @@ export async function POST({ request, locals }) {
 
     const foldersResults: Folder[] = await folders
         .find({
+            isPublic: true,
             name: searchQuery,
             description: searchQuery,
         })
