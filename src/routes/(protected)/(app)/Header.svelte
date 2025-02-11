@@ -53,15 +53,16 @@
         />
     </div>
 
-    {#if searching}
-        <div class="x-center primary top-full w-96 rounded-lg border border-primary">
-            <div class="p-4">
-                {#each searchResults as result}
-                    <div>
-                        <p>{result.name}</p>
-                    </div>
-                {/each}
-            </div>
+    <div
+        class="x-center primary top-full w-96 rounded-lg border border-primary"
+        style:display={searching ? "block" : "none"}
+    >
+        <div class="p-4">
+            {#each searchResults as result}
+                <div>
+                    <p>{result.name}</p>
+                </div>
+            {/each}
         </div>
-    {/if}
+    </div>
 </header>
