@@ -116,7 +116,7 @@
         currentValue.image
             ? 'p-2'
             : 'px-3 py-2'}"
-        style="display: {$visible ? 'block' : 'none'};"
+        style:display={$visible ? "block" : "none"}
     >
         <ul class="space-y-2" bind:this={listContainer}>
             {@render children?.()}
