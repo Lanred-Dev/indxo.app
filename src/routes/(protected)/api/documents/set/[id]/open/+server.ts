@@ -24,7 +24,7 @@ export async function GET({ params, fetch, locals }) {
     openedSets.push([setID, new Date().getTime()]);
 
     await users.updateOne(
-        { id: locals.userID },
+        { _id: locals.userID },
         {
             $set: {
                 openedSets,
