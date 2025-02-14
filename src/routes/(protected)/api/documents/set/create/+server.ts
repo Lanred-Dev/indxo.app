@@ -26,6 +26,7 @@ export async function POST({ request, locals }) {
         terms: [],
         owner: locals.userID,
         created: new Date().getTime(),
+        folder: [],
     });
 
     await users.updateOne(
