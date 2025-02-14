@@ -18,6 +18,7 @@ export interface Set extends Document {
     terms: Term[];
     owner: ObjectId;
     created: number;
+    folder: ObjectId[];
 }
 
 export interface PublicSet {
@@ -29,6 +30,7 @@ export interface PublicSet {
     terms: Term[];
     owner: PublicUser;
     created: number;
+    folder: ObjectId[];
 }
 
 export const updatableFields: { [key: string]: "string" | "boolean" | "array" } = {
@@ -37,4 +39,5 @@ export const updatableFields: { [key: string]: "string" | "boolean" | "array" } 
     subject: "string",
     isPublic: "boolean",
     terms: "array",
+    folder: "array",
 };
