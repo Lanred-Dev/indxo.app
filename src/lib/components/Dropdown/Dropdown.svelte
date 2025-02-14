@@ -117,7 +117,7 @@
         onclick={() => visible.update((visible: boolean) => !visible)}
         type="button"
     >
-        <div class="y-center left-2 flex items-center justify-start gap-1">
+        <div class="y-center flex items-center justify-start gap-1">
             {#if currentValue.image}
                 <img class="size-7" src={currentValue.image} alt={currentValue.text} />
             {/if}
