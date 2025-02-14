@@ -19,11 +19,27 @@
             label="Icon"
             type="dropdown"
             options={[
-                { value: "/icons/folder/Folder.svg", image: "/icons/folder/Folder.svg" },
-                { value: "/icons/folder/Camera.svg", image: "/icons/folder/Camera.svg" },
-                { value: "/icons/folder/Briefcase.svg", image: "/icons/folder/Briefcase.svg" },
+                {
+                    value: "/icons/folder/Folder.svg",
+                    image: "/icons/folder/Folder.svg",
+                    text: "Folder",
+                },
+                {
+                    value: "/icons/folder/Camera.svg",
+                    image: "/icons/folder/Camera.svg",
+                    text: "Camera",
+                },
+                {
+                    value: "/icons/folder/Briefcase.svg",
+                    image: "/icons/folder/Briefcase.svg",
+                    text: "Briefcase",
+                },
             ]}
-            placeholder={{ value: "/icons/folder/Folder.svg", image: "/icons/folder/Folder.svg" }}
+            placeholder={{
+                value: "/icons/folder/Folder.svg",
+                image: "/icons/folder/Folder.svg",
+                text: "Folder",
+            }}
         />
         <FormInput id="name" label="Name" type="text" placeholder="AP Lit Exam" />
     </FormRow>
