@@ -19,8 +19,12 @@ export default async function idToDocument(
     collectionName: "users" | "sets" | "folders",
     id: ObjectId | string
 ): Promise<any> {
-    const collection: Collection<any> =
-        collectionName === "users" ? users : collectionName === "sets" ? sets : folders;
+    try {
+        const collection: Collection<any> =
+            collectionName === "users" ? users : collectionName === "sets" ? sets : folders;
 
-    return await collection.findOne({ _id: typeof id === "string" ? new ObjectId(id) : id });
+        return await collection.findOne({ _id: typeof id === "string" ? new ObjectId(id) : id });
+    } catch (_error) {
+        return null;
+    }
 }
