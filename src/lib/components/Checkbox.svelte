@@ -18,7 +18,7 @@
 
 <div class={twMerge("checkbox relative", classes)} data-value={currentValue}>
     <button
-        class="flex-center gap-1 !p-2"
+        class="flex-center gap-1 {!text ? '!p-2' : ''}"
         onclick={() => (currentValue = !currentValue)}
         data-input
         type="button"
