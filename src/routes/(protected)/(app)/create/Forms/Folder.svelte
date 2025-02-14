@@ -1,7 +1,17 @@
 <script lang="ts">
     import { FormRow, FormInput } from "$lib/components/Form";
+    import type { PublicSet } from "$lib/database/documents/Set";
+    import { onMount } from "svelte";
 
     let { stage }: { stage: "creation" | "setup" } = $props();
+
+    let sets: PublicSet[] = $state([]);
+
+    onMount(async () => {
+        const userID: string = await (await fetch("/api/account")).json();
+        sets = await (await fetch(`/api/account/${userID}/sets`)).json();
+        console.log(sets);
+    });
 </script>
 
 {#if stage === "creation"}
