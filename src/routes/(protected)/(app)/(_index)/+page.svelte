@@ -1,4 +1,5 @@
 <script lang="ts">
+    import PageMessage from "$lib/components/PageMessage.svelte";
     import Section from "./Section";
     import type { PageData } from "./$types";
 
@@ -10,14 +11,11 @@
 </svelte:head>
 
 {#if data.sections.length === 0}
-    <div class="mb-7 block">
-        <p class="text-3xl font-bold">Make this your home!</p>
-        <p class="text-light text-lg">
-            You currently dont have any sections visible on your home page.
-        </p>
-    </div>
-
-    <a class="primary block w-fit" href="/settings?edit=homeSectionPreferences">Edit preferences</a>
+    <PageMessage
+        title="Make this your home!"
+        text="You currently dont have any sections visible on your home page."
+        button={["Edit preferences", "/settings?edit=homeSectionPreferences"]}
+    />
 {:else}
     <div class="w-full space-y-20">
         {#each data.sections as section}
