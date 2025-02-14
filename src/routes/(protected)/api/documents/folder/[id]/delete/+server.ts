@@ -3,10 +3,12 @@ import { loadCollection } from "$lib/database/mongo";
 import { ObjectId, type Collection } from "mongodb";
 import type { Folder } from "$lib/database/documents/Folder";
 import type { User } from "$lib/database/documents/User";
+import type { Set } from "$lib/database/documents/Set";
 import permissionCheck from "$lib/utils/permissionCheck";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 const folders: Collection<Folder> = loadCollection("documents", "folders");
+const sets: Collection<Set> = loadCollection("documents", "sets");
 
 export async function GET({ params, locals }) {
     const folder: Folder = await (await fetch(`/api/documents/folder/${params.id}`)).json();
@@ -28,6 +30,18 @@ export async function GET({ params, locals }) {
             // @ts-ignore
             $pull: {
                 folders: id,
+            },
+        }
+    );
+
+    // Also update all sets that are linked to the folder
+    await sets.updateMany(
+        { folder: id },
+        {
+            // For some reason a type error is thrown here, but it works fine
+            // @ts-ignore
+            $pull: {
+                folder: id,
             },
         }
     );
