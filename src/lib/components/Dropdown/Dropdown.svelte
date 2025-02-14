@@ -22,6 +22,11 @@
         text: typeof placeholder === "string" ? placeholder : placeholder?.text,
         image: typeof placeholder === "string" ? "" : placeholder?.image,
     });
+    let largestValue: DropdownItemProps = $state({
+        value: typeof placeholder === "string" ? placeholder : placeholder?.value,
+        text: typeof placeholder === "string" ? placeholder : placeholder?.text,
+        image: typeof placeholder === "string" ? "" : placeholder?.image,
+    });
 
     /**
      * Handles when a dropdown item is clicked and updates the current value.
@@ -44,18 +49,30 @@
     }
 
     /**
-     * Sets up event listeners for the dropdown items. Also removes any existing event listeners.
+     * Sets up event listeners for the dropdown items, removes any existing event listeners, and finds the largest text value (used for correct sizing).
      *
      * @returns never
      */
-    function setupEventListeners() {
+    function setup() {
         removeEventListeners();
 
         const dropdownItems: NodeListOf<HTMLElement> =
             listContainer.querySelectorAll(".dropdownItem")!;
+        let largestTextValue: string = "";
 
         dropdownItems.forEach((dropdownItem: HTMLElement) => {
             dropdownItem.addEventListener("click", dropdownItemClicked);
+
+            const text: string = dropdownItem.getAttribute("data-text")!;
+
+            if (text.length > largestTextValue.length) {
+                largestTextValue = text;
+                largestValue = {
+                    value: dropdownItem.getAttribute("data-value")!,
+                    text,
+                    image: dropdownItem.getAttribute("data-image")!,
+                };
+            }
         });
     }
 
@@ -74,12 +91,12 @@
     }
 
     onMount(() => {
-        setupEventListeners();
+        setup();
 
         const observer: MutationObserver = new MutationObserver((mutationList) => {
             mutationList.forEach((mutation) => {
                 if (mutation.type === "childList") {
-                    setupEventListeners();
+                    setup();
                 }
             });
         });
@@ -95,20 +112,31 @@
 
 <div class={twMerge("dropdown relative", classes)} data-value={currentValue.value}>
     <button
-        class="flex items-center justify-start gap-0.5 {!currentValue.text && currentValue.image
-            ? '!p-2'
-            : ''}"
+        class="relative {!currentValue.text && currentValue.image ? '!p-2' : ''}"
         data-input
         onclick={() => visible.update((visible: boolean) => !visible)}
         type="button"
     >
-        {#if currentValue.image}
-            <img class="size-7 h-7" src={currentValue.image} alt={currentValue.text} />
-        {/if}
+        <div class="y-center left-2 flex items-center justify-start gap-1">
+            {#if currentValue.image}
+                <img class="size-7" src={currentValue.image} alt={currentValue.text} />
+            {/if}
 
-        {#if currentValue.text}
-            <span class="text-nowrap">{currentValue.text}</span>
-        {/if}
+            {#if currentValue.text}
+                <span class="text-nowrap">{currentValue.text}</span>
+            {/if}
+        </div>
+
+        <!--Render a hidden non-interable item that is used for setting the size-->
+        <div class="invisible flex items-center justify-start gap-1">
+            {#if largestValue.image}
+                <img class="size-7" src={largestValue.image} alt={largestValue.text} />
+            {/if}
+
+            {#if largestValue.text}
+                <span class="text-nowrap">{largestValue.text}</span>
+            {/if}
+        </div>
     </button>
 
     <div
