@@ -27,10 +27,17 @@
         button={["Go back", "/"]}
     />
 {:else}
-    <div class="flex gap-0.5">
-        <img src={data.owner?.image} alt={data.owner?.name} class="size-7 flex-shrink-0" />
-        <p>{data.owner?.name}</p>
-    </div>
+    <a class="flex-center gap-2" href="/account/{data.owner?._id}">
+        <img
+            src={data.owner?.image}
+            alt={data.owner?.name}
+            class="size-9 rounded-full border border-primary"
+        />
+        <p class="text-lg">{data.owner?.name}</p>
+    </a>
 
-    <h1>{data.name}</h1>
+    <div class="mt-8 space-y-1">
+        <h1 class="text-5xl font-bold">{data.name}</h1>
+        <p class="text-light text-xl">{data.subject}</p>
+    </div>
 {/if}
