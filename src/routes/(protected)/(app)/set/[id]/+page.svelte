@@ -1,6 +1,7 @@
 <script lang="ts">
     import PageMessage from "$lib/components/PageMessage.svelte";
     import { onMount } from "svelte";
+    import Term from "./Term.svelte";
 
     let { data } = $props();
 
@@ -36,8 +37,18 @@
         <p class="text-lg">{data.owner?.name}</p>
     </a>
 
-    <div class="mt-8 space-y-1">
-        <h1 class="text-5xl font-bold">{data.name}</h1>
-        <p class="text-light text-xl">{data.subject}</p>
+    <div class="mt-8 space-y-4">
+        <div class="space-y-1">
+            <h1 class="text-5xl font-bold">{data.name}</h1>
+            <p class="text-light text-xl">{data.subject}</p>
+        </div>
+
+        <p class="text-lg">{data.description}</p>
+    </div>
+
+    <div class="mt-8">
+        {#each data.terms || [] as term}
+            <Term {...term} />
+        {/each}
     </div>
 {/if}
