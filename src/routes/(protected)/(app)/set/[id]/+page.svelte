@@ -60,7 +60,7 @@
         <img
             src={data.owner?.image}
             alt={data.owner?.name}
-            class="size-12 rounded-full border border-primary"
+            class="size-11 rounded-full border border-primary"
         />
 
         <div class="leading-tight">
@@ -86,33 +86,63 @@
     <div class="mt-16 w-3/5 space-y-4">
         <div class="w-full">
             <button
-                class="aspect-[1.9] w-full rounded-primary border border-primary bg-primary-200 shadow-2xl"
+                class="relative aspect-[1.9] w-full rounded-primary border border-primary bg-primary-200 p-6 shadow-2xl"
                 onclick={() => (showDescription = !showDescription)}
             >
                 {#if showDescription}
-                    <p>{currentTerm.description}</p>
-                {:else}
-                    <p>{currentTerm.name}</p>
+                    <p class="text-light x-center top-6">{currentTerm.name}</p>
                 {/if}
+
+                <p class="text-2xl">
+                    {#if showDescription}
+                        {currentTerm.description}
+                    {:else}
+                        {currentTerm.name}
+                    {/if}
+                </p>
             </button>
         </div>
 
-        <div class="flex-center relative w-full gap-4">
-            <button class="primary" disabled={currentTermIndex === 0} onclick={() => cycle(-1)}>
-                Previous
-            </button>
+        <div class="relative w-full">
+            <div class="flex-center gap-1">
+                <button
+                    class="primary group transition-opacity disabled:pointer-events-none disabled:opacity-50"
+                    disabled={currentTermIndex === 0}
+                    onclick={() => cycle(-1)}
+                >
+                    <img
+                        class="relative size-6 transition-transform group-hover:-translate-x-0.5 group-hover:scale-105"
+                        src="/icons/general/LeftArrow.svg"
+                        alt="Previous"
+                    />
+                </button>
 
-            <p>{currentTermIndex + 1} / {terms.length}</p>
+                <p class="w-20 text-center text-lg font-bold">
+                    {currentTermIndex + 1}<span class="font-normal">/</span>{terms.length}
+                </p>
 
-            <button
-                class="primary"
-                disabled={currentTermIndex === terms.length - 1}
-                onclick={() => cycle(1)}
-            >
-                Next
-            </button>
+                <button
+                    class="primary group transition-opacity disabled:pointer-events-none disabled:opacity-50"
+                    disabled={currentTermIndex === terms.length - 1}
+                    onclick={() => cycle(1)}
+                >
+                    <img
+                        class="relative size-6 transition-transform group-hover:translate-x-0.5 group-hover:scale-105"
+                        src="/icons/general/RightArrow.svg"
+                        alt="Next"
+                    />
+                </button>
+            </div>
 
-            <button class="y-center absolute right-0" onclick={() => shuffle()}> Shuffle </button>
+            <div class="flex-center y-center absolute right-8 gap-2">
+                <button
+                    class="transition-transform hover:rotate-[28deg] hover:scale-110 active:rotate-[180deg]"
+                    style="-webkit-animation-fill-mode: forwards; animation-fill-mode: forwards;"
+                    onclick={() => shuffle()}
+                >
+                    <img class="size-6" src="/icons/general/Shuffle.svg" alt="Shuffle" />
+                </button>
+            </div>
         </div>
     </div>
 {/if}
