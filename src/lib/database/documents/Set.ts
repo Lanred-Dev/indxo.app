@@ -5,7 +5,7 @@ import type { PublicUser } from "./User";
 
 export type Term = {
     name: string;
-    definition: string;
+    description: string;
     image?: string;
 };
 
