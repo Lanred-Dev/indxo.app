@@ -35,6 +35,22 @@
 
     onMount(async () => {
         await fetch(`/api/documents/set/${data._id}/open`);
+
+        window.addEventListener("keypress", (event: KeyboardEvent) => {
+            switch (event.key) {
+                case " ":
+                    showDescription = !showDescription;
+                    break;
+                case "ArrowLeft":
+                    cycle(-1);
+                    break;
+                case "ArrowRight":
+                    cycle(1);
+                    break;
+                default:
+                    break;
+            }
+        });
     });
 </script>
 
