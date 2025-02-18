@@ -1,8 +1,8 @@
 import { json } from "@sveltejs/kit";
-import type { Set } from "$lib/database/documents/Set";
+import type { PublicSet } from "$lib/database/documents/Set";
 
 export async function GET({ fetch, locals }) {
-    const sets: Set[] = await (await fetch(`/api/account/${locals.userID}/sets`)).json();
+    const sets: PublicSet[] = await (await fetch(`/api/account/${locals.userID}/sets`)).json();
 
     return json({
         type: "set",
