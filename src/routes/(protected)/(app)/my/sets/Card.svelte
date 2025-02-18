@@ -10,11 +10,11 @@
         href="/set/{_id}"
     >
         <div class="w-full">
-            <p class="w-full overflow-hidden overflow-ellipsis text-2xl font-bold">{name}</p>
-            <p class="text-dark">{subject}</p>
+            <p class="w-full overflow-hidden overflow-ellipsis text-xl font-bold">{name}</p>
+            <p class="text-dark text-sm">{subject}</p>
         </div>
 
-        <p class="text-light line-clamp-3 overflow-hidden overflow-ellipsis text-lg">
+        <p class="text-light line-clamp-1 overflow-hidden overflow-ellipsis">
             {description}
         </p>
     </a>
