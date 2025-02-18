@@ -99,7 +99,7 @@
         <p class="text-lg">{data.description}</p>
     </div>
 
-    <div class="mt-16 w-3/5 space-y-4">
+    <div class="mt-16 w-4/5 space-y-4">
         <div class="w-full">
             <button
                 class="relative aspect-[1.9] w-full rounded-primary border border-primary bg-primary-200 p-6 shadow-2xl"
