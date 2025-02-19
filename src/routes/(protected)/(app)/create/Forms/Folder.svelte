@@ -10,7 +10,6 @@
     onMount(async () => {
         const userID: string = await (await fetch("/api/account")).json();
         sets = await (await fetch(`/api/account/${userID}/sets`)).json();
-        console.log(sets);
     });
 </script>
 
