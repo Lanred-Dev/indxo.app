@@ -70,9 +70,7 @@ export const handle = sequence(
             Google({
                 clientId: GOOGLE_CLIENT_ID,
                 clientSecret: GOOGLE_CLIENT_SECRET,
-                redirectProxyUrl: dev
-                    ? "http://localhost:3000/auth"
-                    : "https://cards.indxo.app/auth",
+                redirectProxyUrl: dev ? "http://localhost:3000/auth" : "https://indxo.app/auth",
             }),
         ],
         adapter: MongoDBAdapter(mongo, { databaseName: "accounts" }),
