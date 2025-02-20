@@ -5,6 +5,7 @@
     import EditableList from "$lib/components/EditableList";
     import Checkbox from "$lib/components/Checkbox.svelte";
     import { twMerge } from "tailwind-merge";
+    import { type Snippet } from "svelte";
     import type { props as DropdownItemProps } from "$lib/components/Dropdown/DropdownItem.svelte";
 
     export type inputType =
@@ -18,7 +19,8 @@
         | "checkbox"
         | "textarea"
         | "password"
-        | "editableList";
+        | "editableList"
+        | "custom";
 
     let {
         id,
@@ -29,6 +31,7 @@
         options = [],
         checkboxIcons,
         checkboxText,
+        children,
     }: {
         id: string;
         label?: string;
@@ -40,6 +43,9 @@
         // These is only used for the checkbox component
         checkboxIcons?: [string, string];
         checkboxText?: [string, string];
+
+        // This is used for custom inputs
+        children?: Snippet<[]>;
     } = $props();
 
     const stringPlaceholder: string | undefined =
@@ -83,6 +89,8 @@
     {:else if type === "textarea"}
         <textarea class="resize-none {inputClasses}" name={id} {id} placeholder={stringPlaceholder}
         ></textarea>
+    {:else if type === "custom"}
+        {@render children?.()}
     {:else}
         <input class={inputClasses} name={id} {id} {type} placeholder={stringPlaceholder} />
     {/if}
