@@ -1,11 +1,12 @@
 <script lang="ts">
     import { Form, FormSubmit } from "$lib/components/Form";
-    import FolderForm from "./Forms/Folder.svelte";
-    import SetForm from "./Forms/Set.svelte";
+    import FolderForm from "./Folder.svelte";
+    import SetForm from "./Set.svelte";
+    import { onMount } from "svelte";
     import { page } from "$app/state";
-    import { goto } from "$app/navigation";
+    import { goto, afterNavigate } from "$app/navigation";
 
-    let type: string = $derived(page.url.searchParams.get("type") || "set");
+    let type: string = $derived(page.params.slug);
     let stage: "creation" | "setup" = $state("creation");
     let documentID: string = $state("");
     let endpoint: string = $derived(
@@ -57,7 +58,7 @@
 <Form classes="w-full" action={endpoint} {afterSubmit}>
     {#if type === "folder"}
         <FolderForm {stage} />
-    {:else}
+    {:else if type === "set"}
         <SetForm {stage} />
     {/if}
 

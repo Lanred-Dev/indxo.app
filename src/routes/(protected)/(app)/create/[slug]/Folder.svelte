@@ -6,14 +6,11 @@
     let { stage }: { stage: "creation" | "setup" } = $props();
 
     let sets: PublicSet[] = $state([]);
-    let setsToAdd: PublicSet[] = $state([]);
+    let setsToAdd: string[] = $state([]);
     let setsToAddValue: string = $derived.by(() => {
-        return json.stringify(setsToAdd);
+        const sets = setsToAdd;
+        return JSON.stringify(sets);
     });
-
-    function addSet() {
-        sets.push(setsToAdd);
-    }
 
     onMount(async () => {
         const userID: string = await (await fetch("/api/account")).json();
@@ -72,11 +69,34 @@
     <FormInput id="folders" type="custom">
         <div class="data" data-value={setsToAddValue}></div>
 
-        <div class="grid grid-cols-3 gap-4">
+        <div class="grid grid-cols-2 gap-4">
             {#each sets as set}
-                <div class="w-full">
-                    <p>{set.name}</p>
-                    <button onclick={addSet(set._id)}>add</button>
+                <div
+                    class="primary flex w-full justify-between gap-6 border border-primary px-8 py-6 [&>p]:leading-tight"
+                >
+                    <div>
+                        <p class="text-lg font-bold">{set.name}</p>
+                        <p class="line-clamp-1 overflow-ellipsis">{set.description}</p>
+                    </div>
+
+                    <div class="flex-shrink-0">
+                        <button
+                            onclick={() => {
+                                if (setsToAdd.includes(set._id)) {
+                                    setsToAdd.splice(setsToAdd.indexOf(set._id), 1);
+                                } else {
+                                    setsToAdd.push(set._id);
+                                }
+                            }}
+                            type="button"
+                        >
+                            {#if setsToAdd.includes(set._id)}
+                                <img class="size-6" src="/icons/general/X.svg" alt="Remove" />
+                            {:else}
+                                <img class="size-6" src="/icons/general/Plus.svg" alt="Add" />
+                            {/if}
+                        </button>
+                    </div>
                 </div>
             {/each}
         </div>
