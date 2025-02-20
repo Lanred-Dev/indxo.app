@@ -31,6 +31,7 @@
         options = [],
         checkboxIcons,
         checkboxText,
+        editableListAddText,
         children,
     }: {
         id: string;
@@ -43,6 +44,9 @@
         // These is only used for the checkbox component
         checkboxIcons?: [string, string];
         checkboxText?: [string, string];
+
+        // These are only used for the editableList component
+        editableListAddText?: string;
 
         // This is used for custom inputs
         children?: Snippet<[]>;
@@ -78,7 +82,7 @@
             {/each}
         </Dropdown>
     {:else if type === "editableList"}
-        <EditableList classes={inputClasses} />
+        <EditableList classes={inputClasses} addText={editableListAddText} />
     {:else if type === "checkbox"}
         <Checkbox
             placeholder={typeof placeholder === "boolean" ? placeholder : false}
