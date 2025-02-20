@@ -70,6 +70,11 @@
                     value = textarea.value;
                     break;
                 }
+                case "custom": {
+                    const dataElement: HTMLElement = input.querySelector("data")!;
+                    value = dataElement.getAttribute("data-value");
+                    break;
+                }
                 default: {
                     const inputElement: HTMLInputElement = input.querySelector("input")!;
                     value = inputElement.value;
