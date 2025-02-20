@@ -13,7 +13,7 @@
         <ul class="space-y-1">
             {#each links as { url, text, icon }}
                 <li>
-                    <a class="flex items-center gap-2" href={url}>
+                    <a class="flex items-center gap-2" href={url} data-sveltekit-reload>
                         <img class="size-6" src={icon} alt={text} />
                         <p class="text-lg">{text}</p>
                     </a>
@@ -39,8 +39,8 @@
     ])}
 
     {@render group("Create new", [
-        { icon: "/icons/navigation/FolderPlus.svg", text: "Folder", url: "/create?type=folder" },
-        { icon: "/icons/navigation/DocumentPlus.svg", text: "Study Set", url: "/create?type=set" },
+        { icon: "/icons/navigation/FolderPlus.svg", text: "Folder", url: "/create/folder" },
+        { icon: "/icons/navigation/DocumentPlus.svg", text: "Study Set", url: "/create/set" },
     ])}
 
     <p class="text-dark absolute bottom-10 text-sm">Made for Savannah ❤️</p>
