@@ -19,8 +19,8 @@ export async function POST({ request, locals }) {
 
     await folders.insertOne({
         _id: id,
-        name,
-        description,
+        name: name.length > 0 ? name : "Untitled",
+        description: description.length > 0 ? description : "No description",
         icon,
         isPublic,
         sets: [],
