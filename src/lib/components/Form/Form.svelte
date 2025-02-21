@@ -71,8 +71,16 @@
                     break;
                 }
                 case "custom": {
-                    const dataElement: HTMLElement = input.querySelector("data")!;
-                    value = dataElement.getAttribute("data-value");
+                    const dataElement: HTMLElement = input.querySelector(".data")!;
+                    const dataType: "json" | "string" | "number" =
+                        dataElement.getAttribute("data-type");
+                    const dataValue: string = dataElement.getAttribute("data-value");
+                    value =
+                        dataType === "json"
+                            ? JSON.parse(dataValue)
+                            : dataType === "number"
+                              ? parseInt(dataValue)
+                              : dataValue;
                     break;
                 }
                 default: {
