@@ -25,3 +25,11 @@ export interface PublicFolder {
     owner: PublicUser;
     created: number;
 }
+
+export const updatableFields: { [key: string]: "string" | "boolean" | "array" } = {
+    icon: "string",
+    name: "string",
+    description: "string",
+    isPublic: "boolean",
+    sets: "array",
+};
