@@ -14,8 +14,6 @@
             <p class="text-dark text-sm">{subject}</p>
         </div>
 
-        <p class="text-light line-clamp-1 overflow-hidden overflow-ellipsis">
-            {description}
-        </p>
+        <p class="text-light line-clamp-1 overflow-hidden overflow-ellipsis">{description}</p>
     </a>
 </div>
