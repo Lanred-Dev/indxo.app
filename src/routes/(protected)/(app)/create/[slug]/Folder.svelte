@@ -66,8 +66,8 @@
         classes="h-40"
     />
 {:else}
-    <FormInput id="folders" type="custom">
-        <div class="data" data-value={setsToAddValue}></div>
+    <FormInput id="sets" type="custom">
+        <div class="data" data-type="json" data-value={setsToAddValue}></div>
 
         <div class="grid grid-cols-2 gap-4">
             {#each sets as set}
