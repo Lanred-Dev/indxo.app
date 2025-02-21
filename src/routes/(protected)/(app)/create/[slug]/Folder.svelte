@@ -74,8 +74,14 @@
                 <div
                     class="primary flex w-full justify-between gap-6 border border-primary px-8 py-6 [&>p]:leading-tight"
                 >
-                    <div>
-                        <p class="text-lg font-bold">{set.name}</p>
+                    <div class="space-y-2">
+                        <div>
+                            <p class="w-full overflow-hidden overflow-ellipsis text-xl font-bold">
+                                {set.name}
+                            </p>
+                            <p class="text-dark text-sm">{set.subject}</p>
+                        </div>
+
                         <p class="line-clamp-1 overflow-ellipsis">{set.description}</p>
                     </div>
 
