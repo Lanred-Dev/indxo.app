@@ -3,10 +3,13 @@
     import type { PublicFolder } from "$lib/database/documents/Folder";
     import type { PublicSet } from "$lib/database/documents/Set";
     import type { PublicUser } from "$lib/database/documents/User";
+    import { onMount } from "svelte";
 
     let { user, sidebarVisible }: { user: any; sidebarVisible: Writable<boolean> } = $props();
 
     let searching: boolean = $state(false);
+    let focused: boolean = $state(false);
+    let focusedOnResults: boolean = $state(false);
     let searchQuery: string = $state("");
     let searchResults: (PublicUser | PublicSet | PublicFolder)[] = $state([]);
 
@@ -26,6 +29,12 @@
         ).json();
     }
 
+    /**
+     * Determines the type of result based on the parameters provided.
+     *
+     * @param result The result to determine the type of.
+     * @returns The type of result.
+     */
     function determineResultType({
         icon,
         image,
@@ -40,6 +49,19 @@
         if (image) return "account";
 
         return "account";
+    }
+
+    /**
+     * Removes focus from the search bar.
+     *
+     * NOTE: This is mainly used after a user clicks on a search result.
+     *
+     * @returns never
+     */
+    function removeFocusFromSearch() {
+        focused = false;
+        focusedOnResults = false;
+        searching = false;
     }
 </script>
 
@@ -61,9 +83,10 @@
     <a
         class="flex items-center gap-1"
         href="/{determineResultType({ icon, image, subject })}/{_id}"
+        onclick={removeFocusFromSearch}
     >
-        {#if icon}
-            <img class="size-6" src={icon} alt={name} />
+        {#if icon || image}
+            <img class="size-6 {image ? 'rounded-full' : ''}" src={icon || image} alt={name} />
         {/if}
 
         <div class="[&>p]:leading-tight">
@@ -77,7 +100,11 @@
 {/snippet}
 
 {#snippet searchCategory(id: string, name: string, icon: string)}
-    <a class="flex items-center gap-1" href="/search?query={searchQuery}&category={id}">
+    <a
+        class="flex items-center gap-1"
+        href="/search?query={searchQuery}&category={id}"
+        onclick={removeFocusFromSearch}
+    >
         <img class="size-5" src={icon} alt={name} />
         <p>Search "<span class="max-w-12 text-ellipsis">{searchQuery}</span>" in {name}</p>
     </a>
@@ -99,9 +126,14 @@
             placeholder="Search"
             oninput={search}
             onfocus={() => {
+                focused = true;
                 searching = true;
             }}
             onblur={() => {
+                focused = false;
+
+                if (focusedOnResults) return;
+
                 searching = false;
             }}
         />
@@ -114,6 +146,17 @@
     <div
         class="x-center primary top-full z-50 w-96 rounded-lg border border-primary"
         style:display={searching && searchQuery.length > 0 ? "block" : "none"}
+        onmouseenter={() => {
+            focusedOnResults = true;
+            searching = true;
+        }}
+        onmouseleave={() => {
+            focusedOnResults = false;
+            if (focused) return;
+
+            searching = false;
+        }}
+        role="region"
     >
         <div class="space-y-2 p-4">
             {#each searchResults as result}
