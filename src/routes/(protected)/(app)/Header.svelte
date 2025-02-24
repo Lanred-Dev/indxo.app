@@ -84,6 +84,7 @@
         class="flex items-center gap-1"
         href="/{determineResultType({ icon, image, subject })}/{_id}"
         onclick={removeFocusFromSearch}
+        data-sveltekit-reload
     >
         {#if icon || image}
             <img class="size-6 {image ? 'rounded-full' : ''}" src={icon || image} alt={name} />
@@ -104,6 +105,7 @@
         class="flex items-center gap-1"
         href="/search?query={searchQuery}&category={id}"
         onclick={removeFocusFromSearch}
+        data-sveltekit-reload
     >
         <img class="size-5" src={icon} alt={name} />
         <p>Search "<span class="max-w-12 text-ellipsis">{searchQuery}</span>" in {name}</p>
