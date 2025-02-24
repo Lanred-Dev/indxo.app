@@ -25,39 +25,62 @@
             })
         ).json();
     }
+
+    function determineResultType({
+        icon,
+        image,
+        subject,
+    }: {
+        icon?: string;
+        image?: string;
+        subject?: string;
+    }): "account" | "folder" | "set" {
+        if (icon) return "folder";
+        if (subject) return "set";
+        if (image) return "account";
+
+        return "account";
+    }
 </script>
 
 {#snippet searchResult({
+    _id,
     name,
     icon,
+    image,
     description,
     subject,
 }: {
+    _id: string;
     name: string;
     icon?: string;
+    image?: string;
     description?: string;
     subject?: string;
 })}
-    <div class="flex items-center gap-1">
+    <a
+        class="flex items-center gap-1"
+        href="/{determineResultType({ icon, image, subject })}/{_id}"
+    >
         {#if icon}
             <img class="size-6" src={icon} alt={name} />
         {/if}
 
-        <div class="space-y-0.5">
+        <div class="[&>p]:leading-tight">
             <p>{name}</p>
 
             {#if description || subject}
                 <p class="text-light text-sm">{description || subject}</p>
             {/if}
         </div>
-    </div>
+    </a>
 {/snippet}
 
-{#snippet searchCategory(name: string, icon: string)}
-    <div class="flex items-center gap-1">
-        <img class="size-6" src={icon} alt={name} />
+{#snippet searchCategory(id: string, name: string, icon: string)}
+    <a class="flex items-center gap-1" href="/search?query={searchQuery}&category={id}">
+        <img class="size-5" src={icon} alt={name} />
         <p>Search "<span class="max-w-12 text-ellipsis">{searchQuery}</span>" in {name}</p>
-    </div>
+    </a>
 {/snippet}
 
 <header
@@ -94,12 +117,12 @@
     >
         <div class="space-y-2 p-4">
             {#each searchResults as result}
-                {@render searchResult(result)}
+                {@render searchResult(result as any)}
             {/each}
 
-            {@render searchCategory("Users", "/icons/navigation/Account.svg")}
-            {@render searchCategory("Sets", "/icons/navigation/Document.svg")}
-            {@render searchCategory("Folders", "/icons/navigation/Folder.svg")}
+            {@render searchCategory("user", "Users", "/icons/navigation/Account.svg")}
+            {@render searchCategory("set", "Sets", "/icons/navigation/Document.svg")}
+            {@render searchCategory("folder", "Folders", "/icons/navigation/Folder.svg")}
         </div>
     </div>
 </header>
