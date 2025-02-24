@@ -9,7 +9,7 @@ const users: Collection<User> = loadCollection("accounts", "users");
 const sets: Collection<Set> = loadCollection("documents", "sets");
 const folders: Collection<Folder> = loadCollection("documents", "folders");
 
-export async function POST({ request, locals }) {
+export async function POST({ request }) {
     const {
         query,
         returnOnly,
