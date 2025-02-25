@@ -146,7 +146,7 @@
     </div>
 
     <div
-        class="x-center primary top-full z-50 w-96 rounded-lg border border-primary"
+        class="x-center primary top-[90%] z-50 w-96 rounded-lg border border-primary"
         style:display={searching && searchQuery.length > 0 ? "block" : "none"}
         onmouseenter={() => {
             focusedOnResults = true;
