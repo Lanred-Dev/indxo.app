@@ -107,7 +107,7 @@
         onclick={removeFocusFromSearch}
         data-sveltekit-reload
     >
-        <img class="size-5" src={icon} alt={name} />
+        <img class="size-6" src={icon} alt={name} />
         <p>Search "<span class="max-w-12 text-ellipsis">{searchQuery}</span>" in {name}</p>
     </a>
 {/snippet}
