@@ -1,12 +1,12 @@
 <script lang="ts">
     import PageMessage from "$lib/components/PageMessage.svelte";
-    import type { Term } from "$lib/database/documents/Set";
+    import Info from "./Info.svelte";
+    import type { PublicSet, Term } from "$lib/database/documents/Set";
     import { onMount } from "svelte";
-    import { formatDistanceToNow } from "date-fns";
 
     let { data } = $props();
 
-    let terms: Term[] = $state(data.terms || []);
+    let terms: Term[] = $state(data.set?.terms || []);
     let showDescription: boolean = $state(false);
     let currentTermIndex: number = $state(0);
     let currentTerm: Term = $derived(terms[currentTermIndex]);
@@ -34,9 +34,9 @@
     }
 
     onMount(async () => {
-        await fetch(`/api/documents/set/${data._id}/open`);
+        await fetch(`/api/documents/set/${data.set?._id}/open`);
 
-        window.addEventListener("keypress", (event: KeyboardEvent) => {
+        window.addEventListener("keydown", (event: KeyboardEvent) => {
             switch (event.key) {
                 case " ":
                     showDescription = !showDescription;
@@ -56,10 +56,10 @@
 
 <svelte:head>
     {#if data.permission !== false}
-        <title>{data.name} by {data.owner?.name}</title>
-        <meta name="description" content={data.description} />
-        <meta property="og:title" content={data.name} />
-        <meta property="og:description" content={data.description} />
+        <title>{data.set?.name} by {data.set?.owner?.name}</title>
+        <meta name="description" content={data.set?.description} />
+        <meta property="og:title" content={data.set?.name} />
+        <meta property="og:description" content={data.set?.description} />
     {:else}
         <title>Not Found</title>
     {/if}
@@ -72,34 +72,23 @@
         button={["Go back", "/"]}
     />
 {:else}
-    <a class="flex-center gap-2" href="/account/{data.owner?._id}">
-        <img
-            src={data.owner?.image}
-            alt={data.owner?.name}
-            class="size-11 rounded-full border border-primary"
-        />
-
-        <div class="leading-tight">
-            <p class="text-lg font-bold">{data.owner?.name}</p>
-            <p class="text-light">
-                Created {formatDistanceToNow(data.created || new Date(), {
-                    includeSeconds: true,
-                    addSuffix: true,
-                })}
-            </p>
-        </div>
-    </a>
-
-    <div class="mt-6 space-y-4">
-        <div class="leading-tight">
-            <p class="text-light text-xl">{data.subject}</p>
-            <h1 class="text-5xl font-bold">{data.name}</h1>
+    <div class="flex w-4/5 items-center justify-between gap-2">
+        <div>
+            <a
+                class="text-light text-xl leading-tight"
+                href="/search?query={data.set?.subject}&returnOnly=set">{data.set?.subject}</a
+            >
+            <h1 class="text-5xl font-bold leading-none">{data.set?.name}</h1>
         </div>
 
-        <p class="text-lg">{data.description}</p>
+        {#if data.hasEditPermission === true}
+            <a href="/set/{data.set?._id}/edit">
+                <img class="size-6" src="/icons/general/Pencil.svg" alt="Edit" />
+            </a>
+        {/if}
     </div>
 
-    <div class="mt-16 w-4/5 space-y-4">
+    <div class="my-24 w-4/5 space-y-4">
         <div class="w-full">
             <button
                 class="relative aspect-[1.9] w-full rounded-primary border border-primary bg-primary-200 p-6 shadow-2xl"
@@ -161,4 +150,6 @@
             </div>
         </div>
     </div>
+
+    <Info {...data.set as PublicSet} />
 {/if}
