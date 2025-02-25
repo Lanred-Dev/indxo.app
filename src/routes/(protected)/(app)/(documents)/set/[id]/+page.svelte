@@ -92,8 +92,8 @@
 
     <div class="mt-6 space-y-4">
         <div class="leading-tight">
+            <p class="text-light text-xl">{data.subject}</p>
             <h1 class="text-5xl font-bold">{data.name}</h1>
-            <p class="text-light text-2xl">{data.subject}</p>
         </div>
 
         <p class="text-lg">{data.description}</p>
