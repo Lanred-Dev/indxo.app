@@ -103,7 +103,7 @@
 {#snippet searchCategory(id: string, name: string, icon: string)}
     <a
         class="flex items-center gap-1"
-        href="/search?query={searchQuery}&category={id}"
+        href="/search?query={searchQuery}&returnOnly={id}"
         onclick={removeFocusFromSearch}
         data-sveltekit-reload
     >
