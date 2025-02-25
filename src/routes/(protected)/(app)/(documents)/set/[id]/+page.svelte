@@ -91,7 +91,7 @@
     <div class="my-24 w-4/5 space-y-4">
         <div class="w-full">
             <button
-                class="relative aspect-[1.9] w-full rounded-primary border border-primary bg-primary-200 p-6 shadow-2xl"
+                class="relative aspect-[1.9] max-h-96 w-full rounded-primary border border-primary bg-primary-200 p-6 shadow-2xl"
                 onclick={() => (showDescription = !showDescription)}
             >
                 {#if showDescription}
