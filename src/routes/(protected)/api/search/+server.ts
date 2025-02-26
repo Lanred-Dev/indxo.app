@@ -1,6 +1,6 @@
 import { json } from "@sveltejs/kit";
 import { loadCollection } from "$lib/database/mongo";
-import { ObjectId, type Collection } from "mongodb";
+import { type Collection } from "mongodb";
 import type { Set } from "$lib/database/documents/Set";
 import type { User } from "$lib/database/documents/User";
 import type { Folder } from "$lib/database/documents/Folder";
