@@ -4,6 +4,7 @@
 
     let { terms }: PublicSet = $props();
 
+    let actualTerms: Term[] = $state(terms);
     let showDescription: boolean = $state(false);
     let currentTermIndex: number = $state(0);
     let currentTerm: Term = $derived(terms[currentTermIndex]);
@@ -16,7 +17,7 @@
     function shuffle() {
         currentTermIndex = 0;
         showDescription = false;
-        terms = terms.sort(() => Math.random() - 0.5);
+        actualTerms = actualTerms.sort(() => Math.random() - 0.5);
     }
 
     /**
@@ -84,12 +85,12 @@
             </button>
 
             <p class="w-20 text-center text-lg font-bold">
-                {currentTermIndex + 1}<span class="font-normal">/</span>{terms.length}
+                {currentTermIndex + 1}<span class="font-normal">/</span>{actualTerms.length}
             </p>
 
             <button
                 class="primary group transition-opacity disabled:pointer-events-none disabled:opacity-50"
-                disabled={currentTermIndex === terms.length - 1}
+                disabled={currentTermIndex === actualTerms.length - 1}
                 onclick={() => cycle(1)}
             >
                 <img

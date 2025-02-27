@@ -1,7 +1,7 @@
 <script lang="ts">
     import PageMessage from "$lib/components/PageMessage.svelte";
     import Info from "./Info.svelte";
-    import StudyCard from "./StudyCard.svelte";
+    import Study from "./Study.svelte";
     import type { PublicSet } from "$lib/database/documents/Set";
     import { onMount } from "svelte";
 
@@ -46,7 +46,7 @@
         {/if}
     </div>
 
-    <StudyCard {...data.set as PublicSet} />
+    <Study {...data.set as PublicSet} />
 
     <Info {...data.set as PublicSet} />
 {/if}
