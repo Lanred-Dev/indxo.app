@@ -3,7 +3,7 @@
     import type { PublicFolder } from "$lib/database/documents/Folder";
     import type { PublicSet } from "$lib/database/documents/Set";
     import type { PublicUser } from "$lib/database/documents/User";
-    import { onMount } from "svelte";
+    import determineSearchResultType from "$lib/utils/determineSearchResultType";
 
     let { user, sidebarVisible }: { user: any; sidebarVisible: Writable<boolean> } = $props();
 
@@ -27,28 +27,6 @@
                 }),
             })
         ).json();
-    }
-
-    /**
-     * Determines the type of result based on the parameters provided.
-     *
-     * @param result The result to determine the type of.
-     * @returns The type of result.
-     */
-    function determineResultType({
-        icon,
-        image,
-        subject,
-    }: {
-        icon?: string;
-        image?: string;
-        subject?: string;
-    }): "account" | "folder" | "set" {
-        if (icon) return "folder";
-        if (subject) return "set";
-        if (image) return "account";
-
-        return "account";
     }
 
     /**
@@ -82,7 +60,7 @@
 })}
     <a
         class="flex items-center gap-1"
-        href="/{determineResultType({ icon, image, subject })}/{_id}"
+        href="/{determineSearchResultType({ icon, image, subject })}/{_id}"
         onclick={removeFocusFromSearch}
         data-sveltekit-reload
     >
@@ -121,25 +99,23 @@
         </button>
     </div>
 
-    <div class="w-72">
-        <input
-            class="primary w-full"
-            type="text"
-            placeholder="Search"
-            oninput={search}
-            onfocus={() => {
-                focused = true;
-                searching = true;
-            }}
-            onblur={() => {
-                focused = false;
+    <input
+        class="primary w-[30%]"
+        type="text"
+        placeholder="Looking for something?"
+        oninput={search}
+        onfocus={() => {
+            focused = true;
+            searching = true;
+        }}
+        onblur={() => {
+            focused = false;
 
-                if (focusedOnResults) return;
+            if (focusedOnResults) return;
 
-                searching = false;
-            }}
-        />
-    </div>
+            searching = false;
+        }}
+    />
 
     <div>
         <img class="size-10 rounded-full border border-primary" src={user.image} alt={user.name} />
