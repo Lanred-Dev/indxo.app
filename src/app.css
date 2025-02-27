@@ -50,6 +50,17 @@
     font-display: swap;
 }
 
+@font-face {
+    font-family: "Quetine";
+    src:
+        local("Quetine"),
+        url("/fonts/Quetine/Quetine.woff2") format("woff2"),
+        url("/fonts/Quetine/Quetine.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 @layer base {
     body {
         @apply bg-primary font-EireneSans text-primary;
@@ -132,19 +143,6 @@
 
     div.primary {
         @apply overflow-hidden rounded-primary bg-primary-700;
-    }
-
-    .divider-x,
-    .divider-y {
-        @apply bg-divider;
-    }
-
-    .divider-x {
-        height: 2px;
-    }
-
-    .divider-y {
-        width: 2px;
     }
 
     .bt-cover {

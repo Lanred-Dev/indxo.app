@@ -9,6 +9,7 @@ export default {
     theme: {
         fontFamily: {
             EireneSans: ["EireneSans", "sans-serif"],
+            Quetine: ["Quetine", "serif"],
         },
 
         extend: {
