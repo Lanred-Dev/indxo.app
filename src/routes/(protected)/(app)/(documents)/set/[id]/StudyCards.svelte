@@ -33,6 +33,10 @@
 
     onMount(() => {
         window.addEventListener("keydown", (event: KeyboardEvent) => {
+            if (document.activeElement?.tagName !== "BODY") return;
+
+            event.preventDefault();
+
             switch (event.key) {
                 case " ":
                     showDescription = !showDescription;
