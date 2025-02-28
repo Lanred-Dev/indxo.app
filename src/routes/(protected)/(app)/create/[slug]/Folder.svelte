@@ -88,15 +88,15 @@
                     <div class="flex-shrink-0">
                         <button
                             onclick={() => {
-                                if (setsToAdd.includes(set._id)) {
-                                    setsToAdd.splice(setsToAdd.indexOf(set._id), 1);
+                                if (setsToAdd.includes(set._id.toString())) {
+                                    setsToAdd.splice(setsToAdd.indexOf(set._id.toString()), 1);
                                 } else {
-                                    setsToAdd.push(set._id);
+                                    setsToAdd.push(set._id.toString());
                                 }
                             }}
                             type="button"
                         >
-                            {#if setsToAdd.includes(set._id)}
+                            {#if setsToAdd.includes(set._id.toString())}
                                 <img class="size-6" src="/icons/general/X.svg" alt="Remove" />
                             {:else}
                                 <img class="size-6" src="/icons/general/Plus.svg" alt="Add" />
