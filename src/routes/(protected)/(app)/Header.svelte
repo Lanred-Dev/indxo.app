@@ -3,10 +3,13 @@
     import type { PublicFolder } from "$lib/database/documents/Folder";
     import type { PublicSet } from "$lib/database/documents/Set";
     import type { PublicUser } from "$lib/database/documents/User";
+    import type { User } from "@auth/sveltekit";
     import determineSearchResultType from "$lib/utils/determineSearchResultType";
+    import { onMount } from "svelte";
 
-    let { user, sidebarVisible }: { user: any; sidebarVisible: Writable<boolean> } = $props();
+    let { user, sidebarVisible }: { user: User; sidebarVisible: Writable<boolean> } = $props();
 
+    let showAccountInfo: boolean = $state(false);
     let searching: boolean = $state(false);
     let focused: boolean = $state(false);
     let focusedOnResults: boolean = $state(false);
@@ -41,6 +44,14 @@
         focusedOnResults = false;
         searching = false;
     }
+
+    onMount(() => {
+        window.addEventListener("click", (event: MouseEvent) => {
+            if (showAccountInfo && !(event.target as HTMLElement).closest("header")) {
+                showAccountInfo = false;
+            }
+        });
+    });
 </script>
 
 {#snippet searchResult({
@@ -86,7 +97,13 @@
         data-sveltekit-reload
     >
         <img class="size-6" src={icon} alt={name} />
-        <p>Search "<span class="max-w-12 text-ellipsis">{searchQuery}</span>" in {name}</p>
+        <p class="flex-center text-nowrap">
+            <span>Search "</span>
+            <span class="block w-full max-w-20 overflow-hidden text-ellipsis"
+                >{searchQuery.trim()}</span
+            >
+            <span>" in {name}</span>
+        </p>
     </a>
 {/snippet}
 
@@ -99,30 +116,35 @@
         </button>
     </div>
 
-    <input
-        class="primary w-[30%]"
-        type="text"
-        placeholder="Looking for something?"
-        oninput={search}
-        onfocus={() => {
-            focused = true;
-            searching = true;
-        }}
-        onblur={() => {
-            focused = false;
+    <div data-input class="flex-center w-[40vw] gap-2">
+        <img class="size-5" src="/icons/general/Search.svg" alt="Search" />
 
-            if (focusedOnResults) return;
+        <input
+            class="w-full border-0 bg-transparent p-0 outline-none focus:ring-0"
+            type="text"
+            placeholder="Looking for something?"
+            oninput={search}
+            onfocus={() => {
+                focused = true;
+                searching = true;
+            }}
+            onblur={() => {
+                focused = false;
 
-            searching = false;
-        }}
-    />
+                if (focusedOnResults) return;
 
-    <div>
-        <img class="size-10 rounded-full border border-primary" src={user.image} alt={user.name} />
+                searching = false;
+            }}
+        />
     </div>
 
+    <button onclick={() => (showAccountInfo = !showAccountInfo)}>
+        <img class="size-10 rounded-full border border-primary" src={user.image} alt={user.name} />
+    </button>
+
+    <!--Search results-->
     <div
-        class="x-center primary top-[90%] z-50 w-96 rounded-lg border border-primary"
+        class="x-center primary top-[90%] z-50 w-[40vw] rounded-lg border border-primary p-4"
         style:display={searching && searchQuery.length > 0 ? "block" : "none"}
         onmouseenter={() => {
             focusedOnResults = true;
@@ -136,7 +158,7 @@
         }}
         role="region"
     >
-        <div class="space-y-2 p-4">
+        <div class="space-y-3">
             {#each searchResults as result}
                 {@render searchResult(result as any)}
             {/each}
@@ -144,6 +166,25 @@
             {@render searchCategory("user", "Users", "/icons/navigation/Account.svg")}
             {@render searchCategory("set", "Sets", "/icons/navigation/Document.svg")}
             {@render searchCategory("folder", "Folders", "/icons/navigation/Folder.svg")}
+        </div>
+    </div>
+
+    <!--Account info-->
+    <div
+        class="primary absolute right-10 top-[90%] z-50 rounded-lg border border-primary p-4"
+        style:display={showAccountInfo ? "block" : "none"}
+    >
+        <div class="flex-center gap-2">
+            <img
+                class="size-12 rounded-full border border-primary"
+                src={user.image}
+                alt={user.name}
+            />
+
+            <div class="space-y-0.5 [&>p]:leading-none">
+                <p class="text-lg font-bold">{user.name}</p>
+                <p>{user.email}</p>
+            </div>
         </div>
     </div>
 </header>
