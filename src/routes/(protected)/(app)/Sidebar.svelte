@@ -10,12 +10,12 @@
             <p class="text-light mb-2">{name}...</p>
         {/if}
 
-        <ul class="space-y-1">
+        <ul class="space-y-2">
             {#each links as { url, text, icon }}
                 <li>
                     <a class="flex items-center gap-2" href={url} data-sveltekit-reload>
                         <img class="size-6" src={icon} alt={text} />
-                        <p class="text-lg">{text}</p>
+                        <p class="text-lg leading-none">{text}</p>
                     </a>
                 </li>
             {/each}
