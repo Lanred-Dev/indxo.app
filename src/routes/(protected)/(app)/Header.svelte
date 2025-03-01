@@ -6,6 +6,7 @@
     import type { User } from "@auth/sveltekit";
     import determineSearchResultType from "$lib/utils/determineSearchResultType";
     import { onMount } from "svelte";
+    import { signOut } from "@auth/sveltekit/client";
 
     let { user, sidebarVisible }: { user: User; sidebarVisible: Writable<boolean> } = $props();
 
@@ -171,12 +172,12 @@
 
     <!--Account info-->
     <div
-        class="primary absolute right-10 top-[90%] z-50 rounded-lg border border-primary p-4"
+        class="primary absolute right-10 top-[90%] z-50 space-y-6 rounded-lg border border-primary p-4"
         style:display={showAccountInfo ? "block" : "none"}
     >
-        <div class="flex-center gap-2">
+        <div class="flex-center w-full gap-2">
             <img
-                class="size-12 rounded-full border border-primary"
+                class="size-10 rounded-full border border-primary"
                 src={user.image}
                 alt={user.name}
             />
@@ -186,5 +187,13 @@
                 <p>{user.email}</p>
             </div>
         </div>
+
+        <button
+            class="flex w-full items-center gap-1 rounded-button bg-red-400 bg-opacity-20 px-3 py-2 font-bold"
+            onclick={() => signOut()}
+        >
+            <img class="size-6" src="/icons/general/LogOut.svg" alt="Log out" />
+            Log out</button
+        >
     </div>
 </header>
