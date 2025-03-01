@@ -106,13 +106,15 @@
         </div>
 
         <div class="flex-center y-center absolute right-8 gap-2">
-            <button
-                class="transition-transform hover:rotate-[28deg] hover:scale-110 active:rotate-[180deg]"
-                style="-webkit-animation-fill-mode: forwards; animation-fill-mode: forwards;"
-                onclick={() => shuffle()}
-            >
-                <img class="size-6" src="/icons/general/Shuffle.svg" alt="Shuffle" />
-            </button>
+            {#if actualTerms.length > 1}
+                <button
+                    class="transition-transform hover:rotate-[28deg] hover:scale-110 active:rotate-[180deg]"
+                    style="-webkit-animation-fill-mode: forwards; animation-fill-mode: forwards;"
+                    onclick={() => shuffle()}
+                >
+                    <img class="size-6" src="/icons/general/Shuffle.svg" alt="Shuffle" />
+                </button>
+            {/if}
         </div>
     </div>
 </div>
