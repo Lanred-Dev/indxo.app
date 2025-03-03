@@ -11,7 +11,7 @@
     let { groups, CardComponent }: props = $props();
 </script>
 
-<div class="space-y-8">
+<div class="w-full space-y-8">
     {#each groups as [items, name]}
         <div class="space-y-2">
             {#if typeof name === "string" && name.length > 0}
