@@ -1,11 +1,12 @@
 <script lang="ts">
     import SetCard from "./Cards/Set.svelte";
     import FolderCard from "./Cards/Folder.svelte";
+    import Search from "./Search.svelte";
+    import List from "./List.svelte";
     import { page } from "$app/state";
     import type { PublicFolder } from "$lib/database/documents/Folder";
     import type { PublicSet } from "$lib/database/documents/Set";
     import { millisecondsToMinutes } from "date-fns";
-    import List from "./List.svelte";
 
     let { data } = $props();
 
@@ -18,13 +19,40 @@
         ["A long time ago", Infinity],
     ];
 
-    let type: string = $derived(page.params.slug);
-    let filter: "none" | "created" | "subject" = $state("created");
+    let type: "sets" | "folders" = $derived(page.params.slug as any);
+    let searchQuery: string = $state("");
+    // This filter is the one that the user has set, it is not always the one that is being used
+    let userSetFilter: "none" | "created" | "subject" = $state("created");
+    let filter: string = $derived.by(() => {
+        if (searchQuery.length > 0) return "none";
+
+        return userSetFilter;
+    });
     let groups: [(PublicFolder | PublicSet)[], string | null][] = $derived.by(() => {
         let groups: { [key: string]: (PublicFolder | PublicSet)[] } = {};
 
         data.documents.forEach((document) => {
-            let group: string;
+            // Check if it matches the search query
+            if (searchQuery.length > 0) {
+                let matches: boolean = false;
+
+                if (
+                    document.name.toLowerCase().includes(searchQuery) ||
+                    document.description.toLowerCase().includes(searchQuery)
+                )
+                    matches = true;
+
+                // Check the subject if it is a set
+                if (
+                    type === "sets" &&
+                    (document as PublicSet).subject.toLowerCase().includes(searchQuery)
+                )
+                    matches = true;
+
+                if (!matches) return;
+            }
+
+            let group: string = "";
 
             if (filter === "created") {
                 const created: number = millisecondsToMinutes(Date.now() - document.created);
@@ -41,8 +69,6 @@
                 }
 
                 group = subject;
-            } else {
-                group = "";
             }
 
             if (!groups[group]) {
@@ -78,9 +104,17 @@
     });
 </script>
 
-<h1 class="flex flex-col gap-4 pl-3">
-    <span class="text-5xl font-bold">All of your</span>
-    <span class="pl-44 font-Quetine text-7xl">{type}</span>
-</h1>
+<svelte:head>
+    <title>Your {type === "folders" ? "folders" : "study sets"}</title>
+</svelte:head>
+
+<div>
+    <p class="text-light text-xl leading-tight">Browse your library</p>
+    <h1 class="text-5xl font-bold leading-none">
+        Your {type === "folders" ? "folders" : "study sets"}
+    </h1>
+</div>
+
+<Search bind:searchQuery />
 
 <List {groups} CardComponent={(type === "folders" ? FolderCard : SetCard) as any} />
