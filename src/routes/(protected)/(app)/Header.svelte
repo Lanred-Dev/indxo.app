@@ -7,6 +7,7 @@
     import determineSearchResultType from "$lib/utils/determineSearchResultType";
     import { onMount } from "svelte";
     import { signOut } from "@auth/sveltekit/client";
+    import { goto } from "$app/navigation";
 
     let { user, sidebarVisible }: { user: User; sidebarVisible: Writable<boolean> } = $props();
 
@@ -50,6 +51,14 @@
         window.addEventListener("click", (event: MouseEvent) => {
             if (showAccountInfo && !(event.target as HTMLElement).closest("header")) {
                 showAccountInfo = false;
+            }
+        });
+
+        // If the user presses enter, search for the query
+        // This has to be done because the search input is not treated as a form
+        window.addEventListener("keydown", (event: KeyboardEvent) => {
+            if (event.key === "Enter" && searchQuery.length > 0) {
+                goto(`/search?query=${searchQuery}`);
             }
         });
     });
