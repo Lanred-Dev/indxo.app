@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { PublicSet } from "$lib/database/documents/Set";
 
-    let { _id, name, subject, description, isPublic }: PublicSet = $props();
+    let { _id, name, subject, description }: PublicSet = $props();
 </script>
 
 <div class="primary inline-block w-full border border-primary">

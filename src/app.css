@@ -50,6 +50,17 @@
     font-display: swap;
 }
 
+@font-face {
+    font-family: "Quetine";
+    src:
+        local("Quetine"),
+        url("/fonts/Quetine/Quetine.woff2") format("woff2"),
+        url("/fonts/Quetine/Quetine.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 @layer base {
     body {
         @apply bg-primary font-EireneSans text-primary;
@@ -92,7 +103,7 @@
     a.primary,
     button.secondary,
     a.secondary {
-        @apply px-6 py-3 font-semibold;
+        @apply px-6 py-3 font-bold;
     }
 
     button.primary:has(> img),
@@ -114,7 +125,8 @@
     input.primary,
     textarea.primary,
     select.primary,
-    button[data-input] {
+    button[data-input],
+    div[data-input] {
         @apply border border-primary;
     }
 
@@ -126,25 +138,13 @@
     input.primary,
     textarea.primary,
     select.primary,
-    button[data-input] {
+    button[data-input],
+    div[data-input] {
         @apply rounded-button bg-primary-500 px-3 py-2 text-primary placeholder:text-primary-200 focus:border-transparent focus:outline-none focus:ring-1 focus:ring-primary;
     }
 
     div.primary {
         @apply overflow-hidden rounded-primary bg-primary-700;
-    }
-
-    .divider-x,
-    .divider-y {
-        @apply bg-divider;
-    }
-
-    .divider-x {
-        height: 2px;
-    }
-
-    .divider-y {
-        width: 2px;
     }
 
     .bt-cover {

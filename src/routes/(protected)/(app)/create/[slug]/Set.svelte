@@ -26,5 +26,5 @@
         classes="h-40"
     />
 {:else}
-    <FormInput id="terms" type="editableList" editableListAddText="Add card" />
+    <FormInput id="terms" type="editableList" editableListAddText="Add term" />
 {/if}

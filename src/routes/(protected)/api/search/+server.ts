@@ -1,6 +1,6 @@
 import { json } from "@sveltejs/kit";
 import { loadCollection } from "$lib/database/mongo";
-import { ObjectId, type Collection } from "mongodb";
+import { type Collection } from "mongodb";
 import type { Set } from "$lib/database/documents/Set";
 import type { User } from "$lib/database/documents/User";
 import type { Folder } from "$lib/database/documents/Folder";
@@ -9,14 +9,16 @@ const users: Collection<User> = loadCollection("accounts", "users");
 const sets: Collection<Set> = loadCollection("documents", "sets");
 const folders: Collection<Folder> = loadCollection("documents", "folders");
 
-export async function POST({ request, locals }) {
+export type returnOnly = "user" | "set" | "folder";
+
+export async function POST({ request }) {
     const {
         query,
         returnOnly,
         maxResults = 5,
     }: {
         query: string;
-        returnOnly?: "user" | "set" | "folder";
+        returnOnly?: returnOnly;
         maxResults?: number;
     } = await request.json();
 

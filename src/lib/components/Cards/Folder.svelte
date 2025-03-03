@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { PublicFolder } from "$lib/database/documents/Folder";
 
-    let { _id, name, description, isPublic }: PublicFolder = $props();
+    let { _id, name, description }: PublicFolder = $props();
 </script>
 
 <div class="primary inline-block w-full border border-primary">

@@ -7,13 +7,13 @@ import type { Folder } from "$lib/database/documents/Folder.ts";
  *
  * @param document The document to check.
  * @param userID The ID of the user to check.
- * @param mustHaveUpdatePermission Also check if the user has permission to update the document.
- * @returns If the user has permission to view the document.
+ * @param mustHaveEditPermission Also check if the user has permission to edit/update the document.
+ * @returns If the user has permission to view the document, or edit a document.
  */
 export default function permissionCheck(
     document: Set | Folder | null,
-    userID: ObjectId,
-    mustHaveUpdatePermission?: boolean
+    userID: ObjectId | string,
+    mustHaveEditPermission?: boolean
 ): boolean {
     if (!document) {
         return false;
@@ -25,13 +25,13 @@ export default function permissionCheck(
             : "_id" in document.owner
               ? (document.owner._id as string)
               : document.owner.toString();
-    const isOwner: boolean = ownerID === userID.toString();
+    const isOwner: boolean = ownerID === (typeof userID === "string" ? userID : userID.toString());
 
     if (!document.isPublic && !isOwner) {
         return false;
     }
 
-    if (mustHaveUpdatePermission) {
+    if (mustHaveEditPermission) {
         if (!isOwner) {
             return false;
         }

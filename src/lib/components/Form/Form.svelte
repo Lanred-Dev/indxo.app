@@ -72,9 +72,11 @@
                 }
                 case "custom": {
                     const dataElement: HTMLElement = input.querySelector(".data")!;
-                    const dataType: "json" | "string" | "number" =
-                        dataElement.getAttribute("data-type");
-                    const dataValue: string = dataElement.getAttribute("data-value");
+                    const dataType = (dataElement.getAttribute("data-type") ?? "string") as
+                        | "json"
+                        | "string"
+                        | "number";
+                    const dataValue: string = dataElement.getAttribute("data-value") ?? "";
                     value =
                         dataType === "json"
                             ? JSON.parse(dataValue)

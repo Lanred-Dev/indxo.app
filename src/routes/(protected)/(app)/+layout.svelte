@@ -3,14 +3,15 @@
     import Header from "./Header.svelte";
     import Sidebar from "./Sidebar.svelte";
     import type { Snippet } from "svelte";
+    import type { Session, User } from "@auth/sveltekit";
 
-    let { data, children }: { data: any; children: Snippet<[]> } = $props();
+    let { data, children }: { data: { session: Session }; children: Snippet<[]> } = $props();
 
     const sidebarVisible: Writable<boolean> = writable(true);
 </script>
 
 <div class="flex h-screen w-full flex-col">
-    <Header user={data.session.user} {sidebarVisible} />
+    <Header user={data.session.user as User} {sidebarVisible} />
 
     <div class="flex w-full flex-grow overflow-hidden">
         <Sidebar visible={sidebarVisible} />

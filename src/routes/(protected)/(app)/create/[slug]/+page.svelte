@@ -2,9 +2,8 @@
     import { Form, FormSubmit } from "$lib/components/Form";
     import FolderForm from "./Folder.svelte";
     import SetForm from "./Set.svelte";
-    import { onMount } from "svelte";
     import { page } from "$app/state";
-    import { goto, afterNavigate } from "$app/navigation";
+    import { goto } from "$app/navigation";
 
     let type: string = $derived(page.params.slug);
     let stage: "creation" | "setup" = $state("creation");
