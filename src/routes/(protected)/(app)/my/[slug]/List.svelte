@@ -15,7 +15,7 @@
     {#each groups as [items, name]}
         <div class="space-y-2">
             {#if typeof name === "string" && name.length > 0}
-                <p class="text-dark text-xl">{name}</p>
+                <p class="text-dark text-xl font-bold">{name}</p>
             {/if}
 
             <div class="space-y-2">
