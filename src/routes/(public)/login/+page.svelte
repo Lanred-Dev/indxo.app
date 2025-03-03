@@ -12,10 +12,7 @@
     </li>
 {/snippet}
 
-<SimplePage
-    title="Study at your full potential."
-    text="Sign in with your preferred provider and get started."
->
+<SimplePage title="indxo.app" text="Sign in with your preferred provider and get started.">
     <ul class="space-y-3">
         {@render provider("Sign in with Google", "/icons/Google.svg", "google")}
     </ul>
