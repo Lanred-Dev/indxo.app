@@ -14,6 +14,13 @@
             : `/api/documents/${type}/${documentID}/update`
     );
 
+    /**
+     * This function is called after the form is submitted, it determines what to do next.
+     *
+     * @param success If submission was successful
+     * @param meta Meta data from the submission
+     * @returns never
+     */
     function afterSubmit(success: boolean, meta: any) {
         if (!success) {
             return location.reload();
