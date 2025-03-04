@@ -154,7 +154,7 @@
 
     <!--Search results-->
     <div
-        class="x-center primary top-[90%] z-50 w-[40vw] rounded-lg border border-primary p-4"
+        class="x-center primary top-[90%] z-50 w-[40vw] rounded-lg border border-primary p-4 shadow-lg"
         style:display={searching && searchQuery.length > 0 ? "block" : "none"}
         onmouseenter={() => {
             focusedOnResults = true;
@@ -181,7 +181,7 @@
 
     <!--Account info-->
     <div
-        class="primary absolute right-10 top-[90%] z-50 space-y-6 rounded-lg border border-primary p-4"
+        class="primary absolute right-10 top-[90%] z-50 space-y-6 rounded-lg border border-primary p-4 shadow-lg"
         style:display={showAccountInfo ? "block" : "none"}
     >
         <div class="flex-center w-full gap-2">
