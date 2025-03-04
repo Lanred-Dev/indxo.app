@@ -1,7 +1,7 @@
 <script lang="ts">
     import SetCard from "./Cards/Set.svelte";
     import FolderCard from "./Cards/Folder.svelte";
-    import Search from "./Search.svelte";
+    import Search, { type sortFilters } from "./Search.svelte";
     import List from "./List.svelte";
     import { page } from "$app/state";
     import type { PublicFolder } from "$lib/database/documents/Folder";
@@ -11,6 +11,9 @@
     let { data } = $props();
 
     const DISTANCE_WORDING: [string, number][] = [
+        ["Just now", 1],
+        ["A few minutes ago", 5],
+        ["A few hours ago", 60],
         ["Today", 1440],
         ["Yesterday", 2880],
         ["This week", 10080],
@@ -22,11 +25,11 @@
     let type: "sets" | "folders" = $derived(page.params.slug as any);
     let searchQuery: string = $state("");
     // This filter is the one that the user has set, it is not always the one that is being used
-    let userSetFilter: "none" | "created" | "subject" = $state("created");
-    let filter: string = $derived.by(() => {
+    let userSortFilter: sortFilters = $state("created");
+    let sortFilter: sortFilters = $derived.by(() => {
         if (searchQuery.length > 0) return "none";
 
-        return userSetFilter;
+        return userSortFilter;
     });
     let groups: [(PublicFolder | PublicSet)[], string | null][] = $derived.by(() => {
         let groups: { [key: string]: (PublicFolder | PublicSet)[] } = {};
@@ -54,14 +57,11 @@
 
             let group: string = "";
 
-            if (filter === "created") {
+            if (sortFilter === "created") {
                 const created: number = millisecondsToMinutes(Date.now() - document.created);
-                const [wording] = DISTANCE_WORDING.find(([_, distance]) => created < distance) as [
-                    string,
-                    number,
-                ];
+                const [wording] = DISTANCE_WORDING.find(([_, distance]) => created < distance)!;
                 group = wording;
-            } else if (filter === "subject") {
+            } else if (sortFilter === "subject") {
                 let subject: string = (document as PublicSet).subject;
 
                 if (subject.length <= 0) {
@@ -115,6 +115,6 @@
     </h1>
 </div>
 
-<Search bind:searchQuery />
+<Search bind:searchQuery bind:userSortFilter />
 
 <List {groups} CardComponent={(type === "folders" ? FolderCard : SetCard) as any} />
