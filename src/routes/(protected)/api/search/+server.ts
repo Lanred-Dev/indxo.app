@@ -4,6 +4,7 @@ import { type Collection } from "mongodb";
 import type { Set } from "$lib/database/documents/Set";
 import type { User } from "$lib/database/documents/User";
 import type { Folder } from "$lib/database/documents/Folder";
+import determineSearchResultType from "$lib/utils/determineSearchResultType.js";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 const sets: Collection<Set> = loadCollection("documents", "sets");
@@ -94,6 +95,32 @@ export async function POST({ request }) {
                   })
                   .splice(maxResults)
             : results;
+
+    // Go through the results and remove the fields that are not needed return only the _id, name, image and description (and subject for sets)
+    for (const result of bestResults) {
+        const type = determineSearchResultType(result);
+
+        switch (type) {
+            case "account":
+                delete result.email;
+                delete result.banned;
+                delete result.sets;
+                delete result.folders;
+                delete result.homeSectionPreferences;
+                delete result.openedSets;
+                break;
+            case "set":
+                delete result.isPublic;
+                delete result.terms;
+                delete result.owner;
+                break;
+            case "folder":
+                delete result.isPublic;
+                break;
+        }
+
+        delete result.created;
+    }
 
     return json(bestResults);
 }
