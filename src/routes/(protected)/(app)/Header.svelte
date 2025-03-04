@@ -152,57 +152,57 @@
         <img class="size-10 rounded-full border border-primary" src={user.image} alt={user.name} />
     </button>
 
-    <!--Search results-->
-    <div
-        class="x-center primary top-[90%] z-50 w-[40vw] rounded-lg border border-primary p-4 shadow-lg"
-        style:display={searching && searchQuery.length > 0 ? "block" : "none"}
-        onmouseenter={() => {
-            focusedOnResults = true;
-            searching = true;
-        }}
-        onmouseleave={() => {
-            focusedOnResults = false;
-            if (focused) return;
+    {#if searching && searchQuery.length > 0}
+        <div
+            class="x-center primary top-[90%] z-50 w-[40vw] rounded-lg border border-primary p-4 shadow-lg"
+            onmouseenter={() => {
+                focusedOnResults = true;
+                searching = true;
+            }}
+            onmouseleave={() => {
+                focusedOnResults = false;
+                if (focused) return;
 
-            searching = false;
-        }}
-        role="region"
-    >
-        <div class="space-y-3">
-            {#each searchResults as result}
-                {@render searchResult(result as any)}
-            {/each}
+                searching = false;
+            }}
+            role="region"
+        >
+            <div class="space-y-3">
+                {#each searchResults as result}
+                    {@render searchResult(result as any)}
+                {/each}
 
-            {@render searchCategory("user", "Users", "/icons/navigation/Account.svg")}
-            {@render searchCategory("set", "Sets", "/icons/navigation/Document.svg")}
-            {@render searchCategory("folder", "Folders", "/icons/navigation/Folder.svg")}
-        </div>
-    </div>
-
-    <!--Account info-->
-    <div
-        class="primary absolute right-10 top-[90%] z-50 space-y-6 rounded-lg border border-primary p-4 shadow-lg"
-        style:display={showAccountInfo ? "block" : "none"}
-    >
-        <div class="flex-center w-full gap-2">
-            <img
-                class="size-10 rounded-full border border-primary"
-                src={user.image}
-                alt={user.name}
-            />
-
-            <div class="space-y-0.5 [&>p]:leading-none">
-                <p class="text-lg font-bold">{user.name}</p>
-                <p>{user.email}</p>
+                {@render searchCategory("user", "Users", "/icons/navigation/Account.svg")}
+                {@render searchCategory("set", "Sets", "/icons/navigation/Document.svg")}
+                {@render searchCategory("folder", "Folders", "/icons/navigation/Folder.svg")}
             </div>
         </div>
+    {/if}
 
-        <button
-            class="flex w-full items-center gap-1 rounded-button bg-red-400 bg-opacity-20 px-3 py-2 font-bold"
-            onclick={() => signOut()}
+    {#if showAccountInfo}
+        <div
+            class="primary absolute right-10 top-[90%] z-50 space-y-6 rounded-lg border border-primary p-4 shadow-lg"
         >
-            <img class="size-6" src="/icons/general/LogOut.svg" alt="Log out" />
-            Log out</button
-        >
-    </div>
+            <div class="flex-center w-full gap-2">
+                <img
+                    class="size-10 rounded-full border border-primary"
+                    src={user.image}
+                    alt={user.name}
+                />
+
+                <div class="space-y-0.5 [&>p]:leading-none">
+                    <p class="text-lg font-bold">{user.name}</p>
+                    <p>{user.email}</p>
+                </div>
+            </div>
+
+            <button
+                class="flex w-full items-center gap-1 rounded-button bg-red-400 bg-opacity-20 px-3 py-2 font-bold"
+                onclick={() => signOut()}
+            >
+                <img class="size-6" src="/icons/general/LogOut.svg" alt="Log out" />
+                Log out</button
+            >
+        </div>
+    {/if}
 </header>
