@@ -32,10 +32,13 @@
 {:else}
     <div class="flex w-4/5 items-center justify-between gap-2">
         <div>
-            <a
-                class="text-light text-xl leading-tight"
-                href="/search?query={data.set?.subject}&returnOnly=set">{data.set?.subject}</a
-            >
+            {#if data.set?.subject.length ?? 0 > 0}
+                <a
+                    class="text-light text-xl leading-tight"
+                    href="/search?query={data.set?.subject}&returnOnly=set">{data.set?.subject}</a
+                >
+            {/if}
+
             <h1 class="text-5xl font-bold leading-none">{data.set?.name}</h1>
         </div>
 
