@@ -1,17 +1,18 @@
 <script lang="ts">
     import { onMount, type Snippet } from "svelte";
-    import { writable, type Writable } from "svelte/store";
     import { twMerge } from "tailwind-merge";
     import type { props as DropdownItemProps } from "./DropdownItem.svelte";
 
-    export const visible: Writable<boolean> = writable(false);
-
     let {
+        visible = $bindable(false),
         placeholder = "",
+        currentRawValue = $bindable(""),
         classes,
         children,
     }: {
+        visible?: boolean;
         placeholder?: string | DropdownItemProps;
+        currentRawValue?: string;
         classes?: string;
         children?: Snippet<[]>;
     } = $props();
@@ -43,8 +44,9 @@
             const text: string = dropdownItem.getAttribute("data-text")!;
             const image: string = dropdownItem.getAttribute("data-image")!;
 
+            currentRawValue = value;
             currentValue = { value, text, image };
-            visible.set(false);
+            visible = false;
         }
     }
 
@@ -114,7 +116,7 @@
     <button
         class="relative {!currentValue.text && currentValue.image ? '!p-2' : ''}"
         data-input
-        onclick={() => visible.update((visible: boolean) => !visible)}
+        onclick={() => (visible = !visible)}
         type="button"
     >
         <div class="y-center flex items-center justify-start gap-1">
@@ -144,7 +146,7 @@
         currentValue.image
             ? 'p-2'
             : 'px-3 py-2'}"
-        style:display={$visible ? "block" : "none"}
+        style:display={visible ? "block" : "none"}
     >
         <ul class="space-y-2" bind:this={listContainer}>
             {@render children?.()}
