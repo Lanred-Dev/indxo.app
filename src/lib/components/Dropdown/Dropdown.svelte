@@ -119,7 +119,7 @@
         onclick={() => (visible = !visible)}
         type="button"
     >
-        <div class="y-center flex items-center justify-start gap-1">
+        <div class="{visible ? 'y-center' : ''} flex items-center justify-start gap-1">
             {#if currentValue.image}
                 <img class="size-7" src={currentValue.image} alt={currentValue.text} />
             {/if}
@@ -129,16 +129,18 @@
             {/if}
         </div>
 
-        <!--Render a hidden non-interable item that is used for setting the size-->
-        <div class="invisible flex items-center justify-start gap-1">
-            {#if largestValue.image}
-                <img class="size-7" src={largestValue.image} alt={largestValue.text} />
-            {/if}
+        {#if visible}
+            <!--This is simple used for making sure the size of the list is correct-->
+            <div class="invisible flex items-center justify-start gap-1">
+                {#if largestValue.image}
+                    <img class="size-7" src={largestValue.image} alt={largestValue.text} />
+                {/if}
 
-            {#if largestValue.text}
-                <span class="text-nowrap">{largestValue.text}</span>
-            {/if}
-        </div>
+                {#if largestValue.text}
+                    <span class="text-nowrap">{largestValue.text}</span>
+                {/if}
+            </div>
+        {/if}
     </button>
 
     <div
