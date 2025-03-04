@@ -1,7 +1,7 @@
 import { redirect } from "@sveltejs/kit";
 
 export async function load({ locals }) {
-    if (locals.session) {
-        throw redirect(307, "/");
-    }
+    if (!locals.session) return;
+
+    throw redirect(307, "/");
 }
