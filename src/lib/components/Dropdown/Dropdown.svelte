@@ -129,8 +129,8 @@
             {/if}
         </div>
 
+        <!--This is simple used for making sure the size of the list is correct-->
         {#if visible}
-            <!--This is simple used for making sure the size of the list is correct-->
             <div class="invisible flex items-center justify-start gap-1">
                 {#if largestValue.image}
                     <img class="size-7" src={largestValue.image} alt={largestValue.text} />
