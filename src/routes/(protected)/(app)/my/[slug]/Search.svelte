@@ -1,7 +1,7 @@
 <script lang="ts">
     import { Dropdown, DropdownItem } from "$lib/components/Dropdown";
 
-    export type sortFilters = "none" | "created" | "subject";
+    export type sortFilters = "none" | "created" | "subject" | "alphabetical";
 
     let {
         searchQuery = $bindable(""),
@@ -28,6 +28,7 @@
     >
         <DropdownItem value="created" text="Created" />
         <DropdownItem value="subject" text="Subject" />
+        <DropdownItem value="alphabetical" text="Alphabetical" />
         <DropdownItem value="none" text="None" />
     </Dropdown>
 </div>

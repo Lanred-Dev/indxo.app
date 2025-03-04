@@ -69,6 +69,8 @@
                 }
 
                 group = subject;
+            } else if (sortFilter === "alphabetical") {
+                group = document.name[0].toUpperCase();
             }
 
             if (!groups[group]) {
@@ -82,22 +84,30 @@
             groups
         ).map(([name, items]) => [items, name]);
 
-        groupsActual.forEach(([items]) => {
-            items.sort((item1, item2) => {
-                const item1Relative: number = Date.now() - item1.created;
-                const item2Relative: number = Date.now() - item2.created;
-                return item1Relative - item2Relative;
+        if (sortFilter !== "none") {
+            groupsActual.forEach(([items]) => {
+                items.sort((item1, item2) => {
+                    const item1Relative: number = Date.now() - item1.created;
+                    const item2Relative: number = Date.now() - item2.created;
+                    return item1Relative - item2Relative;
+                });
             });
-        });
+        }
 
         groupsActual.sort(([_items1, group1], [_items2, group2]) => {
-            const group1Index: number = DISTANCE_WORDING.findIndex(
-                ([wording]) => wording === group1
-            );
-            const group2Index: number = DISTANCE_WORDING.findIndex(
-                ([wording]) => wording === group2
-            );
-            return group1Index - group2Index;
+            if (sortFilter === "created") {
+                const group1Index: number = DISTANCE_WORDING.findIndex(
+                    ([wording]) => wording === group1
+                );
+                const group2Index: number = DISTANCE_WORDING.findIndex(
+                    ([wording]) => wording === group2
+                );
+                return group1Index - group2Index;
+            } else if (sortFilter === "alphabetical" && group1 && group2) {
+                return group1.localeCompare(group2);
+            } else {
+                return 0;
+            }
         });
 
         return groupsActual;
