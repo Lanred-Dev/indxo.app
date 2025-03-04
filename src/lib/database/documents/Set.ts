@@ -1,7 +1,7 @@
 // This document is used to represent a set in the database.
 
 import type { Document, ObjectId } from "mongodb";
-import type { PublicUser } from "./User";
+import type { SimpleUser } from "./User";
 
 export type Term = {
     name: string;
@@ -28,9 +28,17 @@ export interface PublicSet {
     subject: string;
     isPublic: boolean;
     terms: Term[];
-    owner: PublicUser;
+    owner: SimpleUser;
     created: number;
     folder: ObjectId[];
+}
+
+export interface SimpleSet {
+    _id: ObjectId;
+    icon: string;
+    name: string;
+    description: string;
+    subject: string;
 }
 
 export const updatableFields: { [key: string]: "string" | "boolean" | "array" } = {

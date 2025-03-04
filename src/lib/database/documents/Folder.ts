@@ -1,7 +1,7 @@
 // This document is used to represent a folder in the database.
 
 import type { Document, ObjectId } from "mongodb";
-import type { PublicUser } from "./User";
+import type { SimpleUser } from "./User";
 import type { Set } from "./Set";
 
 export interface Folder extends Document {
@@ -22,8 +22,15 @@ export interface PublicFolder {
     description: string;
     isPublic: boolean;
     sets: Set[];
-    owner: PublicUser;
+    owner: SimpleUser;
     created: number;
+}
+
+export interface SimpleFolder {
+    _id: ObjectId;
+    icon: string;
+    name: string;
+    description: string;
 }
 
 export const updatableFields: { [key: string]: "string" | "boolean" | "array" } = {

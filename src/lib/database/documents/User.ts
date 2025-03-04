@@ -32,6 +32,12 @@ export interface PublicUser {
     folders: Folder[];
 }
 
+export interface SimpleUser {
+    _id: ObjectId;
+    name: string;
+    image: string;
+}
+
 export const fields: [string, "string" | "boolean" | "array"][] = [
     ["banned", "boolean"],
     ["sets", "array"],
