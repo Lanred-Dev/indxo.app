@@ -1,8 +1,8 @@
 <script lang="ts">
     import { type Writable } from "svelte/store";
-    import type { PublicFolder } from "$lib/database/documents/Folder";
-    import type { PublicSet } from "$lib/database/documents/Set";
-    import type { PublicUser } from "$lib/database/documents/User";
+    import type { SimpleFolder } from "$lib/database/documents/Folder";
+    import type { SimpleSet } from "$lib/database/documents/Set";
+    import type { SimpleUser } from "$lib/database/documents/User";
     import type { User } from "@auth/sveltekit";
     import determineSearchResultType from "$lib/utils/determineSearchResultType";
     import { onMount } from "svelte";
@@ -16,7 +16,7 @@
     let focused: boolean = $state(false);
     let focusedOnResults: boolean = $state(false);
     let searchQuery: string = $state("");
-    let searchResults: (PublicUser | PublicSet | PublicFolder)[] = $state([]);
+    let searchResults: (SimpleUser | SimpleSet | SimpleFolder)[] = $state([]);
 
     async function search(event: Event) {
         searchQuery = (event.target as HTMLInputElement)?.value;
