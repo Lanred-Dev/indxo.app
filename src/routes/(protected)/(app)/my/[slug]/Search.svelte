@@ -11,10 +11,10 @@
 
 <div class="flex w-full items-center gap-4 pb-16 pt-12">
     <div data-input class="flex-center w-3/5 gap-2">
-        <img class="size-5" src="/icons/general/Search.svg" alt="Search" />
+        <img class="size-6" src="/icons/general/Search.svg" alt="Search" />
 
         <input
-            class="w-full border-0 bg-transparent p-0 outline-none focus:ring-0"
+            class="w-full border-0 bg-transparent p-0 text-lg outline-none focus:ring-0"
             type="text"
             placeholder="Cant find something?"
             bind:value={searchQuery}
@@ -22,6 +22,7 @@
     </div>
 
     <Dropdown
+        classes="text-lg"
         placeholder={{ value: "created", text: "Created" }}
         bind:currentRawValue={userSortFilter}
     >
