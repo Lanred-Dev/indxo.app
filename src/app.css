@@ -69,6 +69,10 @@
     *::placeholder {
         @apply overflow-visible;
     }
+
+    img {
+        @apply select-none;
+    }
 }
 
 @layer utilities {
@@ -107,21 +111,7 @@
     a.primary,
     button.secondary,
     a.secondary {
-        @apply px-6 py-3 font-bold;
-    }
-
-    button.primary:has(> img),
-    a.primary:has(> img),
-    button.secondary:has(> img),
-    a.secondary:has(> img) {
-        @apply flex-center gap-1.5;
-    }
-
-    button.primary img,
-    a.primary img,
-    button.secondary img,
-    a.secondary img {
-        @apply size-7 select-none;
+        @apply px-6 py-3;
     }
 
     button.primary,
@@ -129,9 +119,24 @@
     input.primary,
     textarea.primary,
     select.primary,
-    button[data-input],
-    div[data-input] {
+    button.input-primary,
+    div.input-primary {
         @apply border border-primary;
+    }
+
+    a.navigation-primary,
+    button.navigation-primary {
+        @apply flex items-center gap-2 rounded-button px-3 py-2 transition-colors hover:bg-primary-400;
+    }
+
+    a.navigation-primary img,
+    button.navigation-primary img {
+        @apply size-7;
+    }
+
+    a.navigation-primary span,
+    button.navigation-primary span {
+        @apply text-lg;
     }
 
     button.primary,
@@ -142,13 +147,22 @@
     input.primary,
     textarea.primary,
     select.primary,
-    button[data-input],
-    div[data-input] {
+    button.input-primary,
+    div.input-primary {
         @apply rounded-button bg-primary-500 px-3 py-2 text-primary placeholder:text-primary-200 focus:border-transparent focus:outline-none focus:ring-1 focus:ring-primary;
     }
 
+    div.primary,
+    div.popup {
+        @apply overflow-hidden rounded-primary border p-4;
+    }
+
     div.primary {
-        @apply overflow-hidden rounded-primary bg-primary-700;
+        @apply border-primary bg-primary-500;
+    }
+
+    div.popup {
+        @apply border-primary bg-primary shadow-lg;
     }
 
     .bt-cover {
