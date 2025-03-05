@@ -9,7 +9,7 @@
 </script>
 
 <li class="dropdownItem w-full" data-value={value} data-text={text} data-image={image}>
-    <button class="navigation-primary w-full !py-1" type="button" role="menuitem">
+    <button class="navigation-primary !py-1" type="button" role="menuitem">
         {#if image}
             <img src={image} alt={text} />
         {/if}
