@@ -7,7 +7,7 @@
     let actualTerms: Term[] = $state(terms);
     let showDescription: boolean = $state(false);
     let currentTermIndex: number = $state(0);
-    let currentTerm: Term = $derived(terms[currentTermIndex]);
+    let currentTerm: Term = $derived(actualTerms[currentTermIndex]);
 
     /**
      * Shuffle the terms in the set. Resets the current term to the first one.
@@ -17,7 +17,7 @@
     function shuffle() {
         currentTermIndex = 0;
         showDescription = false;
-        actualTerms = actualTerms.sort(() => Math.random() - 0.5);
+        actualTerms.sort(() => Math.random() - 0.5);
     }
 
     /**
@@ -85,7 +85,7 @@
                     onclick={() => cycle(-1)}
                 >
                     <img
-                        class="relative size-6 transition-transform group-hover:-translate-x-0.5 group-hover:scale-105"
+                        class="relative size-8 transition-transform group-hover:-translate-x-0.5 group-hover:scale-105"
                         src="/icons/general/LeftArrow.svg"
                         alt="Previous"
                     />
@@ -101,7 +101,7 @@
                     onclick={() => cycle(1)}
                 >
                     <img
-                        class="relative size-6 transition-transform group-hover:translate-x-0.5 group-hover:scale-105"
+                        class="relative size-8 transition-transform group-hover:translate-x-0.5 group-hover:scale-105"
                         src="/icons/general/RightArrow.svg"
                         alt="Next"
                     />
