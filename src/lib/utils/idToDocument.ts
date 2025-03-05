@@ -18,10 +18,10 @@ const folders: Collection<Folder> = loadCollection("documents", "folders");
 export default async function idToDocument(
     collectionName: "users" | "sets" | "folders",
     id: ObjectId | string
-): Promise<any> {
+): Promise<any | null> {
     try {
         const collection: Collection<any> =
-            collectionName === "users" ? users : collectionName === "sets" ? sets : folders;
+            collectionName === "users" ? users : collectionName === "folders" ? folders : sets;
 
         return await collection.findOne({ _id: typeof id === "string" ? new ObjectId(id) : id });
     } catch (_error) {
