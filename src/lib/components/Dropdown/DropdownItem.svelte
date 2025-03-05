@@ -9,13 +9,13 @@
 </script>
 
 <li class="dropdownItem w-full" data-value={value} data-text={text} data-image={image}>
-    <button class="flex items-center justify-start gap-1" type="button">
+    <button class="navigation-primary w-full !py-1" type="button" role="menuitem">
         {#if image}
-            <img class="size-7" src={image} alt={text} />
+            <img src={image} alt={text} />
         {/if}
 
         {#if text}
-            <span class="text-nowrap">{text}</span>
+            <span>{text}</span>
         {/if}
     </button>
 </li>
