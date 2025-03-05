@@ -26,34 +26,22 @@
         id,
         label,
         type,
-        placeholder,
         classes,
         options = [],
-        checkboxIcons,
-        checkboxText,
-        editableListAddText,
+        componentProps,
         children,
     }: {
         id: string;
         label?: string;
         type: inputType;
-        placeholder?: string | boolean | DropdownItemProps;
         classes?: string;
         options?: string[] | { value: string; text?: string; image?: string }[];
-
-        // These is only used for the checkbox component
-        checkboxIcons?: [string, string];
-        checkboxText?: [string, string];
-
-        // These are only used for the editableList component
-        editableListAddText?: string;
+        componentProps?: { [key: string]: any };
 
         // This is used for custom inputs
         children?: Snippet<[]>;
     } = $props();
 
-    const stringPlaceholder: string | undefined =
-        typeof placeholder === "string" ? placeholder : undefined;
     const inputClasses: string = twMerge(
         `${type === "dropdown" || type === "checkbox" || type === "editableList" ? "" : "primary"} w-full text-lg`,
         classes
@@ -72,7 +60,7 @@
     {/if}
 
     {#if type === "dropdown"}
-        <Dropdown placeholder={placeholder as DropdownItemProps} classes={inputClasses}>
+        <Dropdown classes={inputClasses} {...componentProps}>
             {#each options as option}
                 {#if typeof option === "string"}
                     <DropdownItem value={option} text={option} />
@@ -82,20 +70,14 @@
             {/each}
         </Dropdown>
     {:else if type === "editableList"}
-        <EditableList classes={inputClasses} addText={editableListAddText} />
+        <EditableList classes={inputClasses} {...componentProps} />
     {:else if type === "checkbox"}
-        <Checkbox
-            placeholder={typeof placeholder === "boolean" ? placeholder : false}
-            classes={inputClasses}
-            text={checkboxText}
-            icons={checkboxIcons}
-        />
+        <Checkbox classes={inputClasses} {...componentProps} />
     {:else if type === "textarea"}
-        <textarea class="resize-none {inputClasses}" name={id} {id} placeholder={stringPlaceholder}
-        ></textarea>
+        <textarea class="resize-none {inputClasses}" name={id} {id} {...componentProps}></textarea>
     {:else if type === "custom"}
         {@render children?.()}
     {:else}
-        <input class={inputClasses} name={id} {id} {type} placeholder={stringPlaceholder} />
+        <input class={inputClasses} name={id} {id} {type} {...componentProps} />
     {/if}
 </div>
