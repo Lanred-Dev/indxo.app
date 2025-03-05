@@ -106,6 +106,7 @@ export async function POST({ request }) {
                 delete result.banned;
                 delete result.sets;
                 delete result.folders;
+                delete result.favorites;
                 delete result.homeSectionPreferences;
                 delete result.openedSets;
                 break;

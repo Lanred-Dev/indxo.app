@@ -22,5 +22,6 @@ export async function GET({ params, fetch }) {
         image: user.image,
         sets: sets,
         folders: folders,
+        favorites: user.favorites,
     });
 }
