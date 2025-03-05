@@ -7,15 +7,15 @@
 {#snippet group(links: { url: string; text: string; icon: string }[], name?: string)}
     <div>
         {#if name}
-            <p class="text-light mb-3">{name}</p>
+            <p class="text-light mb-2 pl-3">{name}</p>
         {/if}
 
-        <ul class="space-y-2.5">
+        <ul>
             {#each links as { url, text, icon }}
                 <li>
-                    <a class="flex items-center gap-2" href={url} data-sveltekit-reload>
-                        <img class="size-7" src={icon} alt={text} />
-                        <p class="text-lg leading-none">{text}</p>
+                    <a class="navigation-primary" href={url} data-sveltekit-reload>
+                        <img src={icon} alt={text} />
+                        <span>{text}</span>
                     </a>
                 </li>
             {/each}
@@ -24,7 +24,7 @@
 {/snippet}
 
 <div
-    class="relative w-[15%] min-w-fit space-y-10 border-r border-primary bg-primary-400 p-10"
+    class="relative w-[15%] min-w-fit space-y-10 bg-primary p-7"
     style="display: {$visible ? 'block' : 'none'};"
 >
     {@render group([
@@ -49,5 +49,5 @@
         "Create a new"
     )}
 
-    <p class="text-dark absolute bottom-10 text-sm">Made for Savannah ❤️</p>
+    <p class="text-dark absolute bottom-7 text-sm">Made for Savannah ❤️</p>
 </div>
