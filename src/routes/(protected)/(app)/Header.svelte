@@ -12,9 +12,10 @@
     let { user, sidebarVisible }: { user: User; sidebarVisible: Writable<boolean> } = $props();
 
     let showAccountInfo: boolean = $state(false);
-    let searching: boolean = $state(false);
-    let focused: boolean = $state(false);
-    let focusedOnResults: boolean = $state(false);
+    let focusedOnAccountInfo: boolean = $state(false);
+    let isSearching: boolean = $state(false);
+    let focusedOnSearch: boolean = $state(false);
+    let focusedOnSearchResults: boolean = $state(false);
     let searchQuery: string = $state("");
     let searchResults: (SimpleUser | SimpleSet | SimpleFolder)[] = $state([]);
 
@@ -42,25 +43,35 @@
      * @returns never
      */
     function removeFocusFromSearch() {
-        focused = false;
-        focusedOnResults = false;
-        searching = false;
+        isSearching = false;
+        focusedOnSearch = false;
+        focusedOnSearchResults = false;
     }
 
-    onMount(() => {
-        window.addEventListener("click", (event: MouseEvent) => {
-            if (showAccountInfo && !(event.target as HTMLElement).closest("header")) {
-                showAccountInfo = false;
-            }
-        });
+    $effect(() => {
+        if (showAccountInfo) {
+            window.addEventListener("click", () => {
+                if (!focusedOnAccountInfo) showAccountInfo = false;
+            });
+        } else {
+            window.removeEventListener("click", () => {
+                if (!focusedOnAccountInfo) showAccountInfo = false;
+            });
+        }
+    });
 
-        // If the user presses enter, search for the query
-        // This has to be done because the search input is not treated as a form
-        window.addEventListener("keydown", (event: KeyboardEvent) => {
-            if (event.key === "Enter" && searchQuery.length > 0) {
-                goto(`/search?query=${searchQuery}`);
-            }
-        });
+    // If the user presses enter, search for the query
+    // This has to be done because the search input is not treated as a form
+    $effect(() => {
+        if (searchQuery.length > 0 && focusedOnSearch) {
+            window.addEventListener("keydown", (event: KeyboardEvent) => {
+                if (event.key === "Enter") goto(`/search?query=${searchQuery}`);
+            });
+        } else {
+            window.addEventListener("keydown", (event: KeyboardEvent) => {
+                if (event.key === "Enter") goto(`/search?query=${searchQuery}`);
+            });
+        }
     });
 </script>
 
@@ -117,16 +128,14 @@
     </a>
 {/snippet}
 
-<header
-    class="relative top-0 flex w-full items-center justify-between border-b border-primary bg-accent-primary px-10 py-4"
->
+<header class="relative top-0 flex w-full items-center justify-between bg-accent-light px-10 py-4">
     <div class="flex-center gap-1">
         <button onclick={() => sidebarVisible.update((visible: boolean) => !visible)}>
             <img class="size-10" src="/icons/navigation/Hamburger.svg" alt="Sidebar toggle" />
         </button>
     </div>
 
-    <div data-input class="flex-center w-[40vw] gap-2">
+    <div class="input-primary flex-center w-[40vw] gap-2">
         <img class="size-5" src="/icons/general/Search.svg" alt="Search" />
 
         <input
@@ -134,36 +143,37 @@
             type="text"
             placeholder="Looking for something?"
             oninput={search}
-            onfocus={() => {
-                focused = true;
-                searching = true;
+            onfocusin={() => {
+                isSearching = true;
+                focusedOnSearch = true;
             }}
-            onblur={() => {
-                focused = false;
+            onfocusout={() => {
+                focusedOnSearch = false;
 
-                if (focusedOnResults) return;
-
-                searching = false;
+                if (!focusedOnSearchResults) isSearching = false;
             }}
         />
     </div>
 
-    <button onclick={() => (showAccountInfo = !showAccountInfo)}>
+    <button
+        onclick={() => (showAccountInfo = !showAccountInfo)}
+        onmouseenter={() => (focusedOnAccountInfo = true)}
+        onmouseleave={() => (focusedOnAccountInfo = false)}
+    >
         <img class="size-10 rounded-full border border-primary" src={user.image} alt={user.name} />
     </button>
 
-    {#if searching && searchQuery.length > 0}
+    {#if isSearching && searchQuery.length > 0}
         <div
-            class="x-center primary top-[90%] z-50 w-[40vw] rounded-lg border border-primary p-4 shadow-lg"
+            class="x-center popup top-[90%] z-50 w-[40vw]"
             onmouseenter={() => {
-                focusedOnResults = true;
-                searching = true;
+                isSearching = true;
+                focusedOnSearchResults = true;
             }}
             onmouseleave={() => {
-                focusedOnResults = false;
-                if (focused) return;
+                focusedOnSearchResults = false;
 
-                searching = false;
+                if (!focusedOnSearch) isSearching = false;
             }}
             role="region"
         >
@@ -181,9 +191,12 @@
 
     {#if showAccountInfo}
         <div
-            class="primary absolute right-10 top-[90%] z-50 space-y-6 rounded-lg border border-primary p-4 shadow-lg"
+            class="popup absolute right-10 top-[90%] z-50 space-y-1 !px-1 !pb-1"
+            onmouseenter={() => (focusedOnAccountInfo = true)}
+            onmouseleave={() => (focusedOnAccountInfo = false)}
+            role="region"
         >
-            <div class="flex-center w-full gap-2">
+            <div class="flex-center w-full gap-2 px-3 pb-1">
                 <img
                     class="size-10 rounded-full border border-primary"
                     src={user.image}
@@ -196,11 +209,20 @@
                 </div>
             </div>
 
+            <ul>
+                <li>
+                    <a class="navigation-primary" href="/settings">
+                        <img src="/icons/navigation/Settings.svg" alt="Settings" />
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+
             <button
-                class="flex w-full items-center gap-1 rounded-button bg-red-400 bg-opacity-20 px-3 py-2 font-bold"
+                class="flex w-full items-center gap-1 rounded-button !bg-red-400 !bg-opacity-20 px-3 py-2 font-bold"
                 onclick={() => signOut()}
             >
-                <img class="size-6" src="/icons/general/LogOut.svg" alt="Log out" />
+                <img class="size-6" src="/icons/navigation/LogOut.svg" alt="Log out" />
                 Log out</button
             >
         </div>
