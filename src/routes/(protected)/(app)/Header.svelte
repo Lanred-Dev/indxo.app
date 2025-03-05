@@ -219,12 +219,12 @@
             </ul>
 
             <button
-                class="flex w-full items-center gap-1 rounded-button !bg-red-400 !bg-opacity-20 px-3 py-2 font-bold"
+                class="navigation-primary !bg-red-400 !bg-opacity-20 font-bold"
                 onclick={() => signOut()}
             >
-                <img class="size-6" src="/icons/navigation/LogOut.svg" alt="Log out" />
-                Log out</button
-            >
+                <img src="/icons/navigation/LogOut.svg" alt="Log out" />
+                <span>Log out</span>
+            </button>
         </div>
     {/if}
 </header>
