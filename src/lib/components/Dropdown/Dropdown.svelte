@@ -23,11 +23,6 @@
         text: typeof placeholder === "string" ? placeholder : placeholder?.text,
         image: typeof placeholder === "string" ? "" : placeholder?.image,
     });
-    let largestValue: DropdownItemProps = $state({
-        value: typeof placeholder === "string" ? placeholder : placeholder?.value,
-        text: typeof placeholder === "string" ? placeholder : placeholder?.text,
-        image: typeof placeholder === "string" ? "" : placeholder?.image,
-    });
 
     /**
      * Handles when a dropdown item is clicked and updates the current value.
@@ -69,11 +64,6 @@
 
             if (text.length > largestTextValue.length) {
                 largestTextValue = text;
-                largestValue = {
-                    value: dropdownItem.getAttribute("data-value")!,
-                    text,
-                    image: dropdownItem.getAttribute("data-image")!,
-                };
             }
         });
     }
@@ -114,43 +104,33 @@
 
 <div class={twMerge("dropdown relative", classes)} data-value={currentValue.value}>
     <button
-        class="relative {!currentValue.text && currentValue.image ? '!p-2' : ''}"
-        data-input
+        class="input-primary relative flex items-center gap-1 {!currentValue.text &&
+        currentValue.image
+            ? '!p-2'
+            : ''}"
         onclick={() => (visible = !visible)}
         type="button"
     >
-        <div class="{visible ? 'y-center' : ''} flex items-center justify-start gap-1">
-            {#if currentValue.image}
-                <img class="size-7" src={currentValue.image} alt={currentValue.text} />
-            {/if}
-
-            {#if currentValue.text}
-                <span class="text-nowrap">{currentValue.text}</span>
-            {/if}
-        </div>
-
-        <!--This is simple used for making sure the size of the list is correct-->
-        {#if visible}
-            <div class="invisible flex items-center justify-start gap-1">
-                {#if largestValue.image}
-                    <img class="size-7" src={largestValue.image} alt={largestValue.text} />
-                {/if}
-
-                {#if largestValue.text}
-                    <span class="text-nowrap">{largestValue.text}</span>
-                {/if}
-            </div>
+        {#if currentValue.image}
+            <img class="size-7" src={currentValue.image} alt={currentValue.text} />
         {/if}
+
+        {#if currentValue.text}
+            <span class="text-nowrap">{currentValue.text}</span>
+        {/if}
+
+        <img
+            class="ml-0.5 size-4"
+            src="/icons/general/{visible ? 'UpChevron' : 'DownChevron'}.svg"
+            alt="Arrow {visible ? 'up' : 'down'}"
+        />
     </button>
 
     <div
-        class="primary absolute top-full z-20 mt-1 border border-primary shadow-md {!currentValue.text &&
-        currentValue.image
-            ? 'p-2'
-            : 'px-3 py-2'}"
-        style:display={visible ? "block" : "none"}
+        class="popup absolute top-full z-20 mt-1 w-56 border border-primary !p-1 shadow-md"
+        style:visibility={visible ? "visible" : "hidden"}
     >
-        <ul class="space-y-2" bind:this={listContainer}>
+        <ul bind:this={listContainer}>
             {@render children?.()}
         </ul>
     </div>
