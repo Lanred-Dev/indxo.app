@@ -110,38 +110,42 @@
     button.primary,
     a.primary,
     button.secondary,
-    a.secondary {
-        @apply px-6 py-3;
-    }
-
-    button.primary,
-    a.primary,
+    a.secondary,
     input.primary,
     textarea.primary,
     select.primary,
     button.input-primary,
     div.input-primary {
-        @apply border border-primary;
-    }
-
-    a.navigation-primary,
-    button.navigation-primary {
-        @apply flex items-center gap-2 rounded-button px-3 py-2 transition-colors hover:bg-primary-400;
-    }
-
-    a.navigation-primary img,
-    button.navigation-primary img {
-        @apply size-7;
-    }
-
-    a.navigation-primary span,
-    button.navigation-primary span {
-        @apply text-lg;
+        @apply rounded-button border border-primary px-3 py-2 text-primary;
     }
 
     button.primary,
     a.primary {
-        @apply rounded-button bg-button-primary text-primary;
+        @apply bg-button-primary text-primary;
+    }
+
+    button.secondary,
+    a.secondary {
+        @apply flex items-center gap-2 bg-button-secondary;
+    }
+
+    a.navigation-primary,
+    button.navigation-primary {
+        @apply flex w-full items-center gap-2 rounded-button px-3 py-2 transition-colors hover:bg-primary-400;
+    }
+
+    a.navigation-primary img,
+    button.navigation-primary img,
+    button.secondary img,
+    a.secondary img {
+        @apply size-7;
+    }
+
+    a.navigation-primary span,
+    button.navigation-primary span,
+    button.secondary span,
+    a.secondary span {
+        @apply text-lg;
     }
 
     input.primary,
@@ -149,7 +153,7 @@
     select.primary,
     button.input-primary,
     div.input-primary {
-        @apply rounded-button bg-primary-500 px-3 py-2 text-primary placeholder:text-primary-200 focus:border-transparent focus:outline-none focus:ring-1 focus:ring-primary;
+        @apply bg-primary-500 placeholder:text-primary-200 focus:border-transparent focus:outline-none focus:ring-1 focus:ring-primary;
     }
 
     div.primary,
