@@ -10,21 +10,39 @@
             id="isPublic"
             label="Visiblity"
             type="checkbox"
-            placeholder={true}
-            checkboxText={["Public", "Private"]}
-            checkboxIcons={["/icons/general/Web.svg", "/icons/general/Lock.svg"]}
+            componentProps={{
+                placeholder: true,
+                text: ["Public", "Private"],
+                icons: ["/icons/general/Web.svg", "/icons/general/Lock.svg"],
+            }}
         />
-        <FormInput id="name" label="Name" type="text" placeholder="Yapping 101 final exam..." />
-        <FormInput id="subject" label="Subject" type="text" placeholder="Math, English, ..." />
+
+        <FormInput
+            id="name"
+            label="Name"
+            type="text"
+            componentProps={{ placeholder: "Yapping 101 final exam..." }}
+        />
+
+        <FormInput
+            id="subject"
+            label="Subject"
+            type="text"
+            componentProps={{ placeholder: "Math, English, ..." }}
+        />
     </FormRow>
 
     <FormInput
         id="description"
         label="What is this study set for?"
         type="textarea"
-        placeholder="This study set is for my final exam..."
         classes="h-40"
+        componentProps={{ placeholder: "This study set is for my final exam..." }}
     />
 {:else}
-    <FormInput id="terms" type="editableList" editableListAddText="Add term" />
+    <FormInput
+        id="terms"
+        type="editableList"
+        componentProps={{ addText: "Add term", startingItems: 3, isDraggable: true }}
+    />
 {/if}

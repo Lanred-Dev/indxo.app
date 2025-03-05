@@ -24,46 +24,57 @@
             id="isPublic"
             label="Visiblity"
             type="checkbox"
-            placeholder={true}
-            checkboxText={["Public", "Private"]}
-            checkboxIcons={["/icons/general/Web.svg", "/icons/general/Lock.svg"]}
+            componentProps={{
+                placeholder: true,
+                text: ["Public", "Private"],
+                icons: ["/icons/general/Web.svg", "/icons/general/Lock.svg"],
+            }}
         />
+
         <FormInput
             id="icon"
             label="Icon"
             type="dropdown"
-            options={[
-                {
+            componentProps={{
+                placeholder: {
                     value: "/icons/folder/Folder.svg",
                     image: "/icons/folder/Folder.svg",
                     text: "Folder",
                 },
-                {
-                    value: "/icons/folder/Camera.svg",
-                    image: "/icons/folder/Camera.svg",
-                    text: "Camera",
-                },
-                {
-                    value: "/icons/folder/Briefcase.svg",
-                    image: "/icons/folder/Briefcase.svg",
-                    text: "Briefcase",
-                },
-            ]}
-            placeholder={{
-                value: "/icons/folder/Folder.svg",
-                image: "/icons/folder/Folder.svg",
-                text: "Folder",
+                options: [
+                    {
+                        value: "/icons/folder/Folder.svg",
+                        image: "/icons/folder/Folder.svg",
+                        text: "Folder",
+                    },
+                    {
+                        value: "/icons/folder/Camera.svg",
+                        image: "/icons/folder/Camera.svg",
+                        text: "Camera",
+                    },
+                    {
+                        value: "/icons/folder/Briefcase.svg",
+                        image: "/icons/folder/Briefcase.svg",
+                        text: "Briefcase",
+                    },
+                ],
             }}
         />
-        <FormInput id="name" label="Name" type="text" placeholder="AP Lit Exam" />
+
+        <FormInput
+            id="name"
+            label="Name"
+            type="text"
+            componentProps={{ placeholder: "AP Lit Exam" }}
+        />
     </FormRow>
 
     <FormInput
         id="description"
         label="What is this folder for?"
         type="textarea"
-        placeholder="This folder contains all my study sets for..."
         classes="h-40"
+        componentProps={{ placeholder: "This folder contains all my study sets for..." }}
     />
 {:else}
     <FormInput id="sets" type="custom">
