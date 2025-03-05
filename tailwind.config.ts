@@ -30,8 +30,7 @@ export default {
                 },
 
                 accent: {
-                    primary: "#5E8AB4",
-                    light: "#A4C8E1",
+                    light: "#adc2d4",
                 },
 
                 button: {
