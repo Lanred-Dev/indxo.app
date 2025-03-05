@@ -6,9 +6,9 @@
     let { stage }: { stage: "creation" | "setup" } = $props();
 
     let sets: PublicSet[] = $state([]);
-    let setsToAdd: string[] = $state([]);
-    let setsToAddValue: string = $derived.by(() => {
-        const sets = setsToAdd;
+    let addedSets: string[] = $state([]);
+    let value: string = $derived.by(() => {
+        const sets = addedSets;
         return JSON.stringify(sets);
     });
 
@@ -67,7 +67,7 @@
     />
 {:else}
     <FormInput id="sets" type="custom">
-        <div class="data" data-type="json" data-value={setsToAddValue}></div>
+        <div class="data" data-type="json" data-value={value}></div>
 
         <div class="grid grid-cols-2 gap-4">
             {#each sets as set}
@@ -88,15 +88,15 @@
                     <div class="flex-shrink-0">
                         <button
                             onclick={() => {
-                                if (setsToAdd.includes(set._id.toString())) {
-                                    setsToAdd.splice(setsToAdd.indexOf(set._id.toString()), 1);
+                                if (addedSets.includes(set._id.toString())) {
+                                    addedSets.splice(addedSets.indexOf(set._id.toString()), 1);
                                 } else {
-                                    setsToAdd.push(set._id.toString());
+                                    addedSets.push(set._id.toString());
                                 }
                             }}
                             type="button"
                         >
-                            {#if setsToAdd.includes(set._id.toString())}
+                            {#if addedSets.includes(set._id.toString())}
                                 <img class="size-6" src="/icons/general/X.svg" alt="Remove" />
                             {:else}
                                 <img class="size-6" src="/icons/general/Plus.svg" alt="Add" />
