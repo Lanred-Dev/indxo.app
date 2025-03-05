@@ -16,6 +16,7 @@ export interface User extends Document {
     banned: boolean;
     sets: ObjectId[];
     folders: ObjectId[];
+    favorites: ObjectId[];
     homeSectionPreferences: string[];
     openedSets: [ObjectId, number][];
 }
@@ -30,6 +31,7 @@ export interface PublicUser {
     // App specific fields
     sets: Set[];
     folders: Folder[];
+    favorites: ObjectId[];
 }
 
 export interface SimpleUser {
@@ -42,6 +44,7 @@ export const fields: [string, "string" | "boolean" | "array"][] = [
     ["banned", "boolean"],
     ["sets", "array"],
     ["folders", "array"],
+    ["favorites", "array"],
     ["homeSectionPreferences", "array"],
     ["openedSets", "array"],
 ];
