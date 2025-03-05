@@ -30,26 +30,22 @@
         button={["Go back", "/"]}
     />
 {:else}
-    <div class="flex w-4/5 items-center justify-between gap-2">
-        <div>
-            {#if data.set?.subject.length ?? 0 > 0}
-                <a
-                    class="text-light text-xl leading-tight"
-                    href="/search?query={data.set?.subject}&returnOnly=set">{data.set?.subject}</a
-                >
-            {/if}
-
-            <h1 class="text-5xl font-bold leading-none">{data.set?.name}</h1>
-        </div>
-
-        {#if data.hasEditPermission === true}
-            <a href="/set/{data.set?._id}/edit">
-                <img class="size-6" src="/icons/general/Pencil.svg" alt="Edit" />
-            </a>
+    <div>
+        {#if data.set?.subject.length ?? 0 > 0}
+            <a
+                class="text-light text-xl leading-tight"
+                href="/search?query={data.set?.subject}&returnOnly=set">{data.set?.subject}</a
+            >
         {/if}
+
+        <h1 class="text-5xl font-bold leading-none">{data.set?.name}</h1>
     </div>
 
     <StudyCards {...data.set as PublicSet} />
 
-    <Info {...data.set as PublicSet} />
+    <Info
+        hasEditPermission={data.hasEditPermission ?? false}
+        didFavorite={data.didFavorite ?? false}
+        set={data.set as PublicSet}
+    />
 {/if}
