@@ -36,6 +36,7 @@ export default {
                 button: {
                     primary: "#5E8AB4",
                     secondary: "#D4D9DE",
+                    danger: "#fd5a51",
                 },
 
                 divider: "#E7E7E7",
@@ -73,6 +74,8 @@ export default {
                     900: "#9B9B9B",
                     950: "#989898",
                 },
+
+                alert: "#fd5a51",
             },
 
             ringColor: {
