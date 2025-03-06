@@ -119,9 +119,19 @@
         @apply rounded-button border border-primary px-3 py-2 text-primary;
     }
 
+    button.primary:has(img),
+    a.primary:has(img) {
+        @apply flex-center gap-2;
+    }
+
     button.primary,
     a.primary {
-        @apply bg-button-primary text-primary;
+        @apply bg-button-primary;
+    }
+
+    button.primary img,
+    a.primary img {
+        @apply size-7;
     }
 
     button.secondary,
