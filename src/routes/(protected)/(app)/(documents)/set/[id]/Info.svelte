@@ -10,7 +10,7 @@
         set,
     }: { hasEditPermission: boolean; didFavorite: boolean; set: PublicSet } = $props();
 
-    let isFavorite = $state(didFavorite);
+    let isFavorite: boolean = $state(didFavorite);
 
     /**
      * Sends a request to the server to update the favorite status of the set.
