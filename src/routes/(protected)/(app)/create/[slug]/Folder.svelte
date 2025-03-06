@@ -36,12 +36,7 @@
             label="Icon"
             type="dropdown"
             componentProps={{
-                placeholder: {
-                    value: "/icons/folder/Folder.svg",
-                    image: "/icons/folder/Folder.svg",
-                    text: "Folder",
-                },
-                options: [
+                items: [
                     {
                         value: "/icons/folder/Folder.svg",
                         image: "/icons/folder/Folder.svg",
