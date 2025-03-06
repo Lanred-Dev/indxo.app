@@ -67,7 +67,7 @@
                 }
 
                 group = subject;
-            } else if (actualSortFilter === "alphabetical") {
+            } else if (actualSortFilter === "alphabetical" && document.name.length > 0) {
                 group = document.name[0].toUpperCase();
             }
 
