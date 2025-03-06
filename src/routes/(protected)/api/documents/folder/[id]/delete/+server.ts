@@ -10,7 +10,7 @@ const users: Collection<User> = loadCollection("accounts", "users");
 const folders: Collection<Folder> = loadCollection("documents", "folders");
 const sets: Collection<Set> = loadCollection("documents", "sets");
 
-export async function GET({ params, locals }) {
+export async function DELETE({ params, locals, fetch }) {
     const folder: Folder = await (await fetch(`/api/documents/folder/${params.id}`)).json();
 
     if (!permissionCheck(folder, locals.userID, true)) {
