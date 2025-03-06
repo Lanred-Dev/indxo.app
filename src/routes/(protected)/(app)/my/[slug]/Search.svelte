@@ -1,5 +1,6 @@
 <script lang="ts">
-    import { Dropdown, DropdownItem } from "$lib/components/Dropdown";
+    import Dropdown from "$lib/components/Dropdown";
+    import type { props as DropdownItemProps } from "$lib/components/Dropdown/DropdownItem.svelte";
 
     export type sortFilters = "none" | "created" | "subject" | "alphabetical";
 
@@ -7,6 +8,12 @@
         searchQuery = $bindable(""),
         userSortFilter = $bindable("created"),
     }: { searchQuery: string; userSortFilter: sortFilters } = $props();
+
+    let sortFilterDropdownValue: DropdownItemProps = $state({ value: "created", text: "Created" });
+
+    $effect(() => {
+        userSortFilter = sortFilterDropdownValue.value as sortFilters;
+    });
 </script>
 
 <div class="flex w-full items-center gap-4 pb-16 pt-12">
@@ -22,13 +29,12 @@
     </div>
 
     <Dropdown
-        classes="text-lg"
-        placeholder={{ value: "created", text: "Created" }}
-        bind:currentRawValue={userSortFilter}
-    >
-        <DropdownItem value="created" text="Created" />
-        <DropdownItem value="subject" text="Subject" />
-        <DropdownItem value="alphabetical" text="Alphabetical" />
-        <DropdownItem value="none" text="None" />
-    </Dropdown>
+        bind:currentValue={sortFilterDropdownValue}
+        items={[
+            { value: "created", text: "Created" },
+            { value: "subject", text: "Subject" },
+            { value: "alphabetical", text: "Alphabetical" },
+            { value: "none", text: "None" },
+        ]}
+    />
 </div>
