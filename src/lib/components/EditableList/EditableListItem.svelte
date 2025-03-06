@@ -1,5 +1,6 @@
 <script lang="ts">
     export type actionButton = {
+        isActualButton?: boolean;
         classes?: string;
         image?: [string, string];
         onClick?: (event: MouseEvent) => void;
@@ -53,18 +54,22 @@
         <p class="text-lg font-bold">#{id + 1}</p>
 
         <div class="flex-center gap-3">
-            {#each actionButtons as { classes, image, onClick, onMouseDown, onMouseUp }}
-                <button
-                    class={classes}
-                    type="button"
-                    onclick={onClick}
-                    onmousedown={onMouseDown}
-                    onmouseup={onMouseUp}
-                >
-                    {#if image}
-                        <img class="size-6" src={image[0]} alt={image[1]} />
-                    {/if}
-                </button>
+            {#each actionButtons as { isActualButton, classes, image, onClick, onMouseDown, onMouseUp }}
+                {#if isActualButton}
+                    <button
+                        class={classes}
+                        type="button"
+                        onclick={onClick}
+                        onmousedown={onMouseDown}
+                        onmouseup={onMouseUp}
+                    >
+                        {#if image}
+                            <img class="size-6" src={image[0]} alt={image[1]} />
+                        {/if}
+                    </button>
+                {:else if image}
+                    <img class="size-6" src={image[0]} alt={image[1]} />
+                {/if}
             {/each}
         </div>
     </div>

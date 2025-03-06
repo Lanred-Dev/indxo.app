@@ -55,10 +55,9 @@
 
             // Adding it at the start of the array ensures the order of the buttons stays correct
             actionButtonsClone.unshift({
+                isActualButton: false,
                 classes: "cursor-move",
                 image: ["/icons/general/Drag.svg", "Drag"],
-                onMouseDown: onDragStart,
-                onMouseUp: onDragEnd,
             });
         }
 
@@ -107,11 +106,12 @@
         {#each items as { id, actionButtons }}
             <!--The `li` element is used for MOST of the dragging features. However, if using a custom list component, the `ListComponent` must support action buttons in order for dragging to work!-->
             <li
-                class="transition-all {draggingElementID === id
+                class="cursor-move transition-all {draggingElementID === id
                     ? 'opacity-35'
                     : draggingOverElementID === id
                       ? '[&>.editableListItem]:!border [&>.editableListItem]:!border-dashed [&>.editableListItem]:!border-alert'
                       : ''}"
+                draggable={isDraggable}
             >
                 <ItemComponent {id} bind:properties={items[id].properties} {actionButtons} />
             </li>
