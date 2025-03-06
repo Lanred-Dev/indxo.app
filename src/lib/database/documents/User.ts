@@ -4,6 +4,8 @@ import type { Document, ObjectId } from "mongodb";
 import type { Set } from "./Set";
 import type { Folder } from "./Folder";
 
+type favorite = [ObjectId, "set" | "folder"];
+
 export interface User extends Document {
     _id: ObjectId;
 
@@ -16,7 +18,7 @@ export interface User extends Document {
     banned: boolean;
     sets: ObjectId[];
     folders: ObjectId[];
-    favorites: ObjectId[];
+    favorites: favorite[];
     homeSectionPreferences: string[];
     openedSets: [ObjectId, number][];
 }
@@ -31,7 +33,7 @@ export interface PublicUser {
     // App specific fields
     sets: Set[];
     folders: Folder[];
-    favorites: ObjectId[];
+    favorites: favorite[];
 }
 
 export interface SimpleUser {
