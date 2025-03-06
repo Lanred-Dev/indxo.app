@@ -166,7 +166,7 @@
     }
 
     div.popup {
-        @apply border-primary bg-primary shadow-lg;
+        @apply absolute z-50 border-primary bg-primary shadow-lg;
     }
 
     .bt-cover {
