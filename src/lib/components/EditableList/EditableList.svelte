@@ -121,7 +121,9 @@
             <li
                 class="transition-all {isDraggable ? 'cursor-move' : ''} {draggingID === id
                     ? 'rotate-1 opacity-45'
-                    : ''}"
+                    : draggingID !== -1
+                      ? '[&>.editableListItem]:!border [&>.editableListItem]:!border-dashed [&>.editableListItem]:!border-alert'
+                      : ''}"
                 draggable={isDraggable}
                 ondragstart={(event: MouseEvent) => {
                     draggingID = id;
@@ -144,5 +146,8 @@
         {/each}
     </ol>
 
-    <button class="primary w-full text-xl" onclick={addItem} type="button">{addText}</button>
+    <button class="primary w-full" onclick={addItem} type="button">
+        <img src="/icons/general/Plus.svg" alt="Plus" />
+        <span>{addText}</span>
+    </button>
 </div>
