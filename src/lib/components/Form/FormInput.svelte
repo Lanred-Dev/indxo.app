@@ -1,12 +1,11 @@
 <!--NOTE: This component combines a lot of individual components into one.-->
 
 <script lang="ts">
-    import { Dropdown, DropdownItem } from "$lib/components/Dropdown";
+    import Dropdown from "$lib/components/Dropdown";
     import EditableList from "$lib/components/EditableList";
     import Checkbox from "$lib/components/Checkbox.svelte";
     import { twMerge } from "tailwind-merge";
     import { type Snippet } from "svelte";
-    import type { props as DropdownItemProps } from "$lib/components/Dropdown/DropdownItem.svelte";
 
     export type inputType =
         | "text"
@@ -27,7 +26,6 @@
         label,
         type,
         classes,
-        options = [],
         componentProps,
         children,
     }: {
@@ -35,7 +33,6 @@
         label?: string;
         type: inputType;
         classes?: string;
-        options?: string[] | { value: string; text?: string; image?: string }[];
         componentProps?: { [key: string]: any };
 
         // This is used for custom inputs
@@ -60,15 +57,7 @@
     {/if}
 
     {#if type === "dropdown"}
-        <Dropdown classes={inputClasses} {...componentProps}>
-            {#each options as option}
-                {#if typeof option === "string"}
-                    <DropdownItem value={option} text={option} />
-                {:else}
-                    <DropdownItem value={option.value} text={option.text} image={option.image} />
-                {/if}
-            {/each}
-        </Dropdown>
+        <Dropdown classes={inputClasses} {...componentProps} />
     {:else if type === "editableList"}
         <EditableList classes={inputClasses} {...componentProps} />
     {:else if type === "checkbox"}
