@@ -2,17 +2,39 @@
     import Dropdown from "$lib/components/Dropdown";
     import type { props as DropdownItemProps } from "$lib/components/Dropdown/DropdownItem.svelte";
 
-    export type sortFilters = "none" | "created" | "subject" | "alphabetical";
+    export type sortFilter = "none" | "created" | "subject" | "alphabetical";
 
     let {
         searchQuery = $bindable(""),
         userSortFilter = $bindable("created"),
-    }: { searchQuery: string; userSortFilter: sortFilters } = $props();
+        hideSubjectFilter = false,
+        defaultFilter = "created",
+    }: {
+        searchQuery: string;
+        userSortFilter: sortFilter;
+        hideSubjectFilter?: boolean;
+        defaultFilter?: sortFilter;
+    } = $props();
 
-    let sortFilterDropdownValue: DropdownItemProps = $state({ value: "created", text: "Created" });
+    let sortFilterDropdownValue: DropdownItemProps = $state({
+        value: defaultFilter,
+        text: defaultFilter.charAt(0).toUpperCase() + defaultFilter.slice(1),
+    });
+    let sortFilters: DropdownItemProps[] = $derived.by(() => {
+        const filters: DropdownItemProps[] = [
+            { value: "created", text: "Created" },
+            { value: "alphabetical", text: "Alphabetical" },
+            { value: "subject", text: "Subject" },
+            { value: "none", text: "None" },
+        ];
+
+        if (hideSubjectFilter) filters.splice(2, 1);
+
+        return filters;
+    });
 
     $effect(() => {
-        userSortFilter = sortFilterDropdownValue.value as sortFilters;
+        userSortFilter = sortFilterDropdownValue.value as sortFilter;
     });
 </script>
 
@@ -28,13 +50,5 @@
         />
     </div>
 
-    <Dropdown
-        bind:currentValue={sortFilterDropdownValue}
-        items={[
-            { value: "created", text: "Created" },
-            { value: "subject", text: "Subject" },
-            { value: "alphabetical", text: "Alphabetical" },
-            { value: "none", text: "None" },
-        ]}
-    />
+    <Dropdown bind:currentValue={sortFilterDropdownValue} items={sortFilters} />
 </div>

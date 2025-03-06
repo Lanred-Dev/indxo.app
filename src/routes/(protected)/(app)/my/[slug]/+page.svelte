@@ -1,8 +1,6 @@
 <script lang="ts">
-    import SetCard from "./Cards/Set.svelte";
-    import FolderCard from "./Cards/Folder.svelte";
-    import Search, { type sortFilters } from "./Search.svelte";
-    import List from "./List.svelte";
+    import Search, { type sortFilter } from "./Search.svelte";
+    import List, { type group } from "./List.svelte";
     import { page } from "$app/state";
     import type { PublicFolder } from "$lib/database/documents/Folder";
     import type { PublicSet } from "$lib/database/documents/Set";
@@ -22,11 +20,11 @@
         ["A long time ago", Infinity],
     ];
 
-    let type: "sets" | "folders" = $derived(page.params.slug as any);
+    let type: "sets" | "folders" | "favorites" = $derived(page.params.slug as any);
     let searchQuery: string = $state("");
     // This filter is the one that the user has set, it is not always the one that is being used
-    let userSortFilter: sortFilters = $state("created");
-    let sortFilter: sortFilters = $derived.by(() => {
+    let userSortFilter: sortFilter = $state("created");
+    let actualSortFilter: sortFilter = $derived.by(() => {
         if (searchQuery.length > 0) return "none";
 
         return userSortFilter;
@@ -45,7 +43,7 @@
                 )
                     matches = true;
 
-                // Check the subject if it is a set
+                // Check the subject, if it is a set
                 if (
                     type === "sets" &&
                     (document as PublicSet).subject.toLowerCase().includes(searchQuery)
@@ -57,11 +55,11 @@
 
             let group: string = "";
 
-            if (sortFilter === "created") {
+            if (actualSortFilter === "created") {
                 const created: number = millisecondsToMinutes(Date.now() - document.created);
                 const [wording] = DISTANCE_WORDING.find(([_, distance]) => created < distance)!;
                 group = wording;
-            } else if (sortFilter === "subject") {
+            } else if (actualSortFilter === "subject" && "subject" in document) {
                 let subject: string = (document as PublicSet).subject;
 
                 if (subject.length <= 0) {
@@ -69,7 +67,7 @@
                 }
 
                 group = subject;
-            } else if (sortFilter === "alphabetical") {
+            } else if (actualSortFilter === "alphabetical") {
                 group = document.name[0].toUpperCase();
             }
 
@@ -77,14 +75,12 @@
                 groups[group] = [];
             }
 
-            groups[group].push(document as any);
+            groups[group].push(document);
         });
 
-        let groupsActual: [(PublicFolder | PublicSet)[], string | null][] = Object.entries(
-            groups
-        ).map(([name, items]) => [items, name]);
+        let groupsActual: group[] = Object.entries(groups).map(([name, items]) => [items, name]);
 
-        if (sortFilter !== "none") {
+        if (actualSortFilter !== "none") {
             groupsActual.forEach(([items]) => {
                 items.sort((item1, item2) => {
                     const item1Relative: number = Date.now() - item1.created;
@@ -95,7 +91,7 @@
         }
 
         groupsActual.sort(([_items1, group1], [_items2, group2]) => {
-            if (sortFilter === "created") {
+            if (actualSortFilter === "created") {
                 const group1Index: number = DISTANCE_WORDING.findIndex(
                     ([wording]) => wording === group1
                 );
@@ -103,7 +99,7 @@
                     ([wording]) => wording === group2
                 );
                 return group1Index - group2Index;
-            } else if (sortFilter === "alphabetical" && group1 && group2) {
+            } else if (actualSortFilter === "alphabetical" && group1 && group2) {
                 return group1.localeCompare(group2);
             } else {
                 return 0;
@@ -115,16 +111,21 @@
 </script>
 
 <svelte:head>
-    <title>Your {type === "folders" ? "folders" : "study sets"}</title>
+    <title>Your {type === "sets" ? "study sets" : type}</title>
 </svelte:head>
 
 <div>
     <p class="text-light text-xl leading-tight">Browse your library</p>
     <h1 class="text-5xl font-bold leading-none">
-        Your {type === "folders" ? "folders" : "study sets"}
+        Your {type === "sets" ? "study sets" : type}
     </h1>
 </div>
 
-<Search bind:searchQuery bind:userSortFilter />
+<Search
+    bind:searchQuery
+    bind:userSortFilter
+    hideSubjectFilter={type === "folders" ? true : false}
+    defaultFilter={type === "favorites" ? "alphabetical" : "created"}
+/>
 
-<List {groups} CardComponent={(type === "folders" ? FolderCard : SetCard) as any} />
+<List {...groups} />
