@@ -144,5 +144,5 @@
         {/each}
     </ol>
 
-    <button class="primary" onclick={addItem} type="button">{addText}</button>
+    <button class="primary w-full text-xl" onclick={addItem} type="button">{addText}</button>
 </div>
