@@ -165,7 +165,7 @@
 
     {#if isSearching && searchQuery.length > 0}
         <div
-            class="x-center popup top-[90%] z-50 w-[40vw]"
+            class="x-center popup top-[90%] w-[40vw]"
             onmouseenter={() => {
                 isSearching = true;
                 focusedOnSearchResults = true;
@@ -191,7 +191,7 @@
 
     {#if showAccountInfo}
         <div
-            class="popup absolute right-10 top-[90%] z-50 space-y-1 !px-1 !pb-1"
+            class="popup right-10 top-[90%] space-y-1 !px-1 !pb-1"
             onmouseenter={() => (focusedOnAccountInfo = true)}
             onmouseleave={() => (focusedOnAccountInfo = false)}
             role="region"
