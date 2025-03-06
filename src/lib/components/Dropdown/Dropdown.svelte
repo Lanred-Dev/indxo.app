@@ -1,108 +1,36 @@
 <script lang="ts">
-    import { onMount, type Snippet } from "svelte";
+    import { type Component } from "svelte";
     import { twMerge } from "tailwind-merge";
     import type { props as DropdownItemProps } from "./DropdownItem.svelte";
+    import DropdownItem from "./DropdownItem.svelte";
 
     let {
-        visible = $bindable(false),
-        placeholder = "",
-        currentRawValue = $bindable(""),
         classes,
-        children,
+        visible = $bindable(false),
+        items = [],
+        currentValue = $bindable(items[0] ?? { value: "" }),
+        ItemComponent = DropdownItem,
     }: {
-        visible?: boolean;
-        placeholder?: string | DropdownItemProps;
-        currentRawValue?: string;
         classes?: string;
-        children?: Snippet<[]>;
+        visible?: boolean;
+        items?: DropdownItemProps[];
+        currentValue?: DropdownItemProps;
+        ItemComponent?: Component<DropdownItemProps, {}, "">;
     } = $props();
-
-    let listContainer: HTMLElement;
-    let currentValue: DropdownItemProps = $state({
-        value: typeof placeholder === "string" ? placeholder : placeholder?.value,
-        text: typeof placeholder === "string" ? placeholder : placeholder?.text,
-        image: typeof placeholder === "string" ? "" : placeholder?.image,
-    });
 
     /**
      * Handles when a dropdown item is clicked and updates the current value.
      *
-     * @param event
+     * @param value The value of the clicked item.
      * @returns never
      */
-    function dropdownItemClicked(event: MouseEvent) {
-        const target = event.target as HTMLElement;
-        const dropdownItem = target.closest(".dropdownItem");
-
-        if (dropdownItem) {
-            const value: string = dropdownItem.getAttribute("data-value")!;
-            const text: string = dropdownItem.getAttribute("data-text")!;
-            const image: string = dropdownItem.getAttribute("data-image")!;
-
-            currentRawValue = value;
-            currentValue = { value, text, image };
-            visible = false;
-        }
+    function onItemClicked(value: DropdownItemProps) {
+        currentValue = value;
+        visible = false;
     }
-
-    /**
-     * Sets up event listeners for the dropdown items, removes any existing event listeners, and finds the largest text value (used for correct sizing).
-     *
-     * @returns never
-     */
-    function setup() {
-        removeEventListeners();
-
-        const dropdownItems: NodeListOf<HTMLElement> =
-            listContainer.querySelectorAll(".dropdownItem")!;
-        let largestTextValue: string = "";
-
-        dropdownItems.forEach((dropdownItem: HTMLElement) => {
-            dropdownItem.addEventListener("click", dropdownItemClicked);
-
-            const text: string = dropdownItem.getAttribute("data-text")!;
-
-            if (text.length > largestTextValue.length) {
-                largestTextValue = text;
-            }
-        });
-    }
-
-    /**
-     * Removes event listeners from the dropdown items.
-     *
-     * @returns never
-     */
-    function removeEventListeners() {
-        const dropdownItems: NodeListOf<HTMLElement> =
-            listContainer.querySelectorAll(".dropdownItem")!;
-
-        dropdownItems.forEach((dropdownItem: HTMLElement) => {
-            dropdownItem.removeEventListener("click", dropdownItemClicked);
-        });
-    }
-
-    onMount(() => {
-        setup();
-
-        const observer: MutationObserver = new MutationObserver((mutationList) => {
-            mutationList.forEach((mutation) => {
-                if (mutation.type === "childList") {
-                    setup();
-                }
-            });
-        });
-
-        observer.observe(listContainer, { childList: true });
-
-        return () => {
-            observer.disconnect();
-            removeEventListeners();
-        };
-    });
 </script>
 
-<div class={twMerge("dropdown relative", classes)} data-value={currentValue.value}>
+<div class={twMerge("dropdown relative text-lg", classes)} data-value={currentValue.value}>
     <button
         class="input-primary relative flex items-center gap-1 {!currentValue.text &&
         currentValue.image
@@ -126,12 +54,21 @@
         />
     </button>
 
-    <div
-        class="popup absolute top-full z-20 mt-1 w-56 border border-primary !p-1 shadow-md"
-        style:visibility={visible ? "visible" : "hidden"}
-    >
-        <ul bind:this={listContainer}>
-            {@render children?.()}
-        </ul>
-    </div>
+    {#if visible}
+        <div class="popup top-full mt-1 w-56 !p-1">
+            <ul>
+                {#each items as item}
+                    <li class="w-full">
+                        <button
+                            class="navigation-primary !py-1"
+                            role="menuitem"
+                            onclick={() => onItemClicked(item)}
+                        >
+                            <ItemComponent {...item} />
+                        </button>
+                    </li>
+                {/each}
+            </ul>
+        </div>
+    {/if}
 </div>
