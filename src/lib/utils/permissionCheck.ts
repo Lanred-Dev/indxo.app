@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
-import type { Set } from "$lib/database/documents/Set.ts";
-import type { Folder } from "$lib/database/documents/Folder.ts";
+import type { PublicSet, Set } from "$lib/database/documents/Set.ts";
+import type { Folder, PublicFolder } from "$lib/database/documents/Folder.ts";
 
 /**
  * Checks if the user has permission to view/update the document.
@@ -11,7 +11,7 @@ import type { Folder } from "$lib/database/documents/Folder.ts";
  * @returns If the user has permission to view the document, or edit a document.
  */
 export default function permissionCheck(
-    document: Set | Folder | null,
+    document: Set | PublicSet | Folder | PublicFolder | null,
     userID: ObjectId | string,
     mustHaveEditPermission?: boolean
 ): boolean {
@@ -19,12 +19,9 @@ export default function permissionCheck(
         return false;
     }
 
-    const ownerID: string =
-        typeof document.owner === "string"
-            ? document.owner
-            : "_id" in document.owner
-              ? (document.owner._id as string)
-              : document.owner.toString();
+    const ownerID: string = (
+        "_id" in document.owner ? document.owner._id : document.owner
+    ).toString();
     const isOwner: boolean = ownerID === (typeof userID === "string" ? userID : userID.toString());
 
     if (!document.isPublic && !isOwner) {
