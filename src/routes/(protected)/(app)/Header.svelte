@@ -218,10 +218,7 @@
                 </li>
             </ul>
 
-            <button
-                class="navigation-primary !bg-red-400 !bg-opacity-20 font-bold"
-                onclick={() => signOut()}
-            >
+            <button class="navigation-primary !bg-button-danger" onclick={() => signOut()}>
                 <img src="/icons/navigation/LogOut.svg" alt="Log out" />
                 <span>Log out</span>
             </button>
