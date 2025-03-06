@@ -11,16 +11,16 @@ export async function load({ fetch, params }) {
         };
     }
 
-    const userID: string = await (await fetch("/api/account")).json();
-    const userFavorites: ObjectId[] = await (
-        await fetch(`/api/account/${userID}/favorites`)
-    ).json();
     const set: PublicSet = await response.json();
+    const userID: string = await (await fetch("/api/account")).json();
+    const isFavorite: boolean = await (
+        await fetch(`/api/documents/${params.id}/is-favorite`)
+    ).json();
 
     return {
         set,
-        didFavorite: userFavorites.includes(set._id),
+        didFavorite: isFavorite,
         permission: true,
-        hasEditPermission: permissionCheck(set as unknown as Set, userID, true),
+        hasEditPermission: permissionCheck(set, userID, true),
     };
 }
