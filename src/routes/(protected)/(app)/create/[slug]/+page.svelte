@@ -36,13 +36,13 @@
 </script>
 
 <svelte:head>
-    <title>Create a {type === "folder" ? "folder" : "study set"}</title>
+    <title>Create a {type === "set" ? "study set" : type}</title>
 </svelte:head>
 
 <div class="mb-7">
     <p class="text-3xl font-bold">
         {#if stage === "creation"}
-            Lets create a new {type === "folder" ? "folder" : "study set"}!
+            Lets create a new {type === "set" ? "study set" : type}!
         {:else if type === "folder"}
             Now lets add some sets to your folder.
         {:else}
