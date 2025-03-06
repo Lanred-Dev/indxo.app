@@ -39,8 +39,10 @@
 
     let listContainer: HTMLElement;
     let items: { id: number; [key: string]: any }[] = $state([]);
-    let draggingElementID: number = $state(-1);
-    let draggingOverElementID: number = $state(-1);
+    // NOTE: -1 is used to indicate that no item is being dragged
+    let draggingID: number = $state(-1);
+    let draggingOverID: number = $state(-1);
+    let mouseY: number = $state(-1);
 
     /**
      * Adds an item to the list.
@@ -89,9 +91,20 @@
         });
     }
 
-    function onDragStart(event: MouseEvent) {}
+    $effect(() => {
+        if (
+            !isDraggable ||
+            draggingID === -1 ||
+            draggingOverID === -1 ||
+            draggingID === draggingOverID
+        )
+            return;
 
-    function onDragEnd() {}
+        [items[draggingID], items[draggingOverID]] = [items[draggingOverID], items[draggingID]];
+        items[draggingID].id = draggingID;
+        items[draggingOverID].id = draggingOverID;
+        draggingID = draggingOverID;
+    });
 
     onMount(() => {
         // Add the requested number of items to start with
@@ -102,16 +115,29 @@
 </script>
 
 <div class={twMerge("editableList space-y-5", classes)} bind:this={listContainer}>
-    <ol class="space-y-5">
+    <ol class="relative space-y-5">
         {#each items as { id, actionButtons }}
             <!--The `li` element is used for MOST of the dragging features. However, if using a custom list component, the `ListComponent` must support action buttons in order for dragging to work!-->
             <li
-                class="cursor-move transition-all {draggingElementID === id
-                    ? 'opacity-35'
-                    : draggingOverElementID === id
-                      ? '[&>.editableListItem]:!border [&>.editableListItem]:!border-dashed [&>.editableListItem]:!border-alert'
-                      : ''}"
+                class="transition-all {isDraggable ? 'cursor-move' : ''} {draggingID === id
+                    ? 'rotate-1 opacity-45'
+                    : ''}"
                 draggable={isDraggable}
+                ondragstart={(event: MouseEvent) => {
+                    draggingID = id;
+                    mouseY = event.clientY;
+                }}
+                ondragend={() => {
+                    draggingID = -1;
+                    draggingOverID = -1;
+                    mouseY = -1;
+                }}
+                ondrag={(event: MouseEvent) => {
+                    mouseY = event.clientY;
+                }}
+                ondragover={() => {
+                    draggingOverID = id;
+                }}
             >
                 <ItemComponent {id} bind:properties={items[id].properties} {actionButtons} />
             </li>
