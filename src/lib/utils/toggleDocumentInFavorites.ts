@@ -51,7 +51,7 @@ export default async function toggleDocumentInFavorites(
 
     if (!wasInFavorites) {
         isFavorite = true;
-        user?.favorites.push(documentID);
+        user?.favorites.push([documentID, documentType]);
     }
 
     await users.updateOne(
