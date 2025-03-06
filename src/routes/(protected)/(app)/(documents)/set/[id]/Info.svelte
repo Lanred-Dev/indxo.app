@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { goto } from "$app/navigation";
     import type { PublicSet } from "$lib/database/documents/Set";
     import { formatDistanceToNow } from "date-fns";
 
@@ -23,6 +24,21 @@
 
         if (success) isFavorite = favorite;
     }
+
+    /**
+     * Sends a request to the server to delete the set.
+     *
+     * @returns never
+     */
+    async function deleteSet() {
+        const { success }: { success: boolean } = await (
+            await fetch(`/api/documents/set/${set._id}/delete`, {
+                method: "DELETE",
+            })
+        ).json();
+
+        if (success) goto("/");
+    }
 </script>
 
 <div class="space-y-6">
@@ -40,6 +56,11 @@
         >
             <img src="/icons/general/Star.svg" alt="Favorite" />
             <span>{isFavorite ? "Unfavorite" : "Favorite"}</span>
+        </button>
+
+        <button class="secondary !bg-button-danger" onclick={deleteSet}>
+            <img src="/icons/general/Trash.svg" alt="Delete" />
+            <span>Delete</span>
         </button>
     </div>
 
