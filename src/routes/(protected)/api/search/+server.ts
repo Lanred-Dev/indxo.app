@@ -4,7 +4,7 @@ import { type Collection } from "mongodb";
 import type { Set } from "$lib/database/documents/Set";
 import type { User } from "$lib/database/documents/User";
 import type { Folder } from "$lib/database/documents/Folder";
-import determineSearchResultType from "$lib/utils/determineSearchResultType.js";
+import determineDocumentType from "$lib/utils/determineDocumentType";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 const sets: Collection<Set> = loadCollection("documents", "sets");
@@ -98,7 +98,7 @@ export async function POST({ request }) {
 
     // Go through the results and remove the fields that are not needed return only the _id, name, image and description (and subject for sets)
     for (const result of bestResults) {
-        const type = determineSearchResultType(result);
+        const type = determineDocumentType(result);
 
         switch (type) {
             case "account":

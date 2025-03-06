@@ -4,8 +4,7 @@
     import type { SimpleSet } from "$lib/database/documents/Set";
     import type { SimpleUser } from "$lib/database/documents/User";
     import type { User } from "@auth/sveltekit";
-    import determineSearchResultType from "$lib/utils/determineSearchResultType";
-    import { onMount } from "svelte";
+    import determineDocumentType from "$lib/utils/determineDocumentType";
     import { signOut } from "@auth/sveltekit/client";
     import { goto } from "$app/navigation";
 
@@ -92,7 +91,7 @@
 })}
     <a
         class="flex items-center gap-1"
-        href="/{determineSearchResultType({ icon, image, subject })}/{_id}"
+        href="/{determineDocumentType({ icon, image, subject })}/{_id}"
         onclick={removeFocusFromSearch}
         data-sveltekit-reload
     >
