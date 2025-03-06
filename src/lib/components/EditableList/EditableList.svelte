@@ -26,15 +26,15 @@
         ],
         isDraggable = false,
         addText = "Add item",
-        ListComponent = EditableListItem,
+        ItemComponent = EditableListItem,
     }: {
         classes?: string;
         startingItems?: number;
         properties?: property[];
         actionButtons?: actionButton[];
-        ListComponent?: Component<{ index: number } & any, {}, "properties">;
         addText?: string;
         isDraggable?: boolean;
+        ItemComponent?: Component<{ index: number } & any, {}, "properties">;
     } = $props();
 
     let listContainer: HTMLElement;
@@ -110,10 +110,10 @@
                 class="transition-all {draggingElementID === id
                     ? 'opacity-35'
                     : draggingOverElementID === id
-                      ? '[&>.editableListItem]:!border-alert [&>.editableListItem]:!border [&>.editableListItem]:!border-dashed'
+                      ? '[&>.editableListItem]:!border [&>.editableListItem]:!border-dashed [&>.editableListItem]:!border-alert'
                       : ''}"
             >
-                <ListComponent {id} bind:properties={items[id].properties} {actionButtons} />
+                <ItemComponent {id} bind:properties={items[id].properties} {actionButtons} />
             </li>
         {/each}
     </ol>
