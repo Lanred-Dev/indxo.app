@@ -54,7 +54,7 @@
         <p class="text-lg font-bold">#{id + 1}</p>
 
         <div class="flex-center gap-3">
-            {#each actionButtons as { isActualButton, classes, image, onClick, onMouseDown, onMouseUp }}
+            {#each actionButtons as { isActualButton = true, classes, image, onClick, onMouseDown, onMouseUp }}
                 {#if isActualButton}
                     <button
                         class={classes}
