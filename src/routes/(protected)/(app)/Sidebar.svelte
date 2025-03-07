@@ -25,7 +25,7 @@
 {/snippet}
 
 <div
-    class="relative w-[15%] min-w-fit space-y-10 bg-primary p-7"
+    class="relative min-w-fit space-y-10 bg-primary p-7 xl:w-[17.5%] 2xl:w-[15%]"
     style="display: {$visible ? 'block' : 'none'};"
 >
     {@render group([
