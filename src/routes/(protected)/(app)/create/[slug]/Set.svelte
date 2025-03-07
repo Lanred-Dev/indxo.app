@@ -61,6 +61,18 @@
             addText: `Add ${determineWording("card")}`,
             startingItems: 3,
             isDraggable: true,
+            properties: [
+                {
+                    id: "term",
+                    type: "input",
+                    placeholder: "Term",
+                },
+                {
+                    id: "definition",
+                    type: "textarea",
+                    placeholder: "definition",
+                },
+            ],
         }}
     />
 {/if}
