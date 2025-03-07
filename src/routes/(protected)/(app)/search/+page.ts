@@ -13,18 +13,21 @@ export async function load({ fetch, url }) {
         };
     }
 
-    const returnOnly: returnOnly | null = searchParams.get("returnOnly") as any;
+    const returnOnly: returnOnly | null = searchParams.get("returnOnly") as returnOnly;
     const results: PublicUser | PublicSet | PublicFolder = await (
         await fetch("/api/search", {
             method: "POST",
             body: JSON.stringify({
                 query,
                 returnOnly,
+                maxResults: 50,
             }),
         })
     ).json();
 
     return {
+        query,
+        returnOnly,
         results,
     };
 }
