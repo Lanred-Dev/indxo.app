@@ -32,7 +32,7 @@ export async function POST({ request }) {
         .find({
             name: searchQuery,
         })
-        .limit(5)
+        .limit(maxResults)
         .toArray();
 
     const setsResults: Set[] = await sets
@@ -50,7 +50,7 @@ export async function POST({ request }) {
                 },
             ],
         })
-        .limit(5)
+        .limit(maxResults)
         .toArray();
 
     const foldersResults: Folder[] = await folders
@@ -59,7 +59,7 @@ export async function POST({ request }) {
             name: searchQuery,
             description: searchQuery,
         })
-        .limit(5)
+        .limit(maxResults)
         .toArray();
 
     let results = [];
