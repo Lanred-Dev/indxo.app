@@ -10,7 +10,5 @@ export async function load({ fetch, params }) {
 
     const set: PublicSet = await response.json();
 
-    return {
-        set,
-    };
+    return set;
 }

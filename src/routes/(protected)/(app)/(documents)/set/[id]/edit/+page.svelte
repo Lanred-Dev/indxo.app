@@ -22,9 +22,9 @@
     }
 </script>
 
-<Form classes="w-full" action="/api/documents/set/{data.set._id}/update" {afterSubmit}>
+<Form classes="w-full" action="/api/documents/set/{data._id}/update" {afterSubmit}>
     <div class="flex items-center justify-between">
-        <a class="primary" href="/set/{data.set._id}">Back to {determineWording("set")}</a>
+        <a class="primary" href="/set/{data._id}">Back to {determineWording("set")}</a>
 
         <div class="flex-center gap-3">
             {#if lastUpdated}
@@ -47,7 +47,7 @@
                 label="Visiblity"
                 type="checkbox"
                 componentProps={{
-                    placeholder: data.set.isPublic,
+                    placeholder: data.isPublic,
                     text: ["Public", "Private"],
                     icons: ["/icons/general/Web.svg", "/icons/general/Lock.svg"],
                 }}
@@ -57,14 +57,14 @@
                 id="name"
                 label="Name"
                 type="text"
-                componentProps={{ value: data.set.name, placeholder: "Yapping 101 final exam..." }}
+                componentProps={{ value: data.name, placeholder: "Yapping 101 final exam..." }}
             />
 
             <FormInput
                 id="subject"
                 label="Subject"
                 type="text"
-                componentProps={{ value: data.set.subject, placeholder: "Math, English, ..." }}
+                componentProps={{ value: data.subject, placeholder: "Math, English, ..." }}
             />
         </FormRow>
 
@@ -74,7 +74,7 @@
             type="textarea"
             classes="h-40"
             componentProps={{
-                value: data.set.description,
+                value: data.description,
                 placeholder: "This study set is for my final exam...",
             }}
         />
@@ -87,7 +87,7 @@
             addText: `Add ${determineWording("card")}`,
             startingItems: 3,
             isDraggable: true,
-            items: data.set.terms.map((term) => [
+            items: data.terms.map((term) => [
                 {
                     id: "term",
                     type: "input",
