@@ -43,11 +43,8 @@
                 )
                     matches = true;
 
-                // Check the subject, if it is a set
-                if (
-                    type === "sets" &&
-                    (document as PublicSet).subject.toLowerCase().includes(searchQuery)
-                )
+                // If it has a subject, check the subject
+                if ("subject" in document && document.subject.toLowerCase().includes(searchQuery))
                     matches = true;
 
                 if (!matches) return;
