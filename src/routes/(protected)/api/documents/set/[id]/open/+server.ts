@@ -15,13 +15,12 @@ export async function GET({ params, fetch, locals }) {
         });
     }
 
-    const setID: ObjectId = new ObjectId(params.id);
     const user: User = await idToDocument("users", locals.userID);
     const openedSets = user.openedSets.filter((set) => {
-        return set[0] !== setID;
+        return set[0].toString() !== params.id;
     });
 
-    openedSets.push([setID, new Date().getTime()]);
+    openedSets.push([new ObjectId(params.id), new Date().getTime()]);
 
     await users.updateOne(
         { _id: locals.userID },
