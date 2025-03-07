@@ -70,7 +70,7 @@
                 {
                     id: "definition",
                     type: "textarea",
-                    placeholder: "definition",
+                    placeholder: "Definition",
                 },
             ],
         }}
