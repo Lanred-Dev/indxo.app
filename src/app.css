@@ -175,7 +175,7 @@
     select.primary,
     button.input-primary,
     div.input-primary {
-        @apply bg-primary-500 placeholder:text-primary-200 focus:border-transparent focus:outline-none focus:ring-1 focus:ring-primary;
+        @apply focus:ring-focus bg-primary-500 placeholder:text-primary-200 focus:border-transparent focus:outline-none focus:ring-1;
     }
 
     /* Containers */

@@ -75,11 +75,11 @@ export default {
                     950: "#989898",
                 },
 
-                alert: "#fd5a51",
+                focus: "#5E8AB4",
             },
 
             ringColor: {
-                primary: "#5E8AB4",
+                focus: "#5E8AB4",
             },
 
             borderRadius: {
