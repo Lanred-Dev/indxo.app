@@ -1,4 +1,5 @@
 <script lang="ts">
+    import determineWording from "$lib/utils/determineWording";
     import { type Writable } from "svelte/store";
 
     let { visible }: { visible: Writable<boolean> } = $props();
@@ -34,17 +35,37 @@
 
     {@render group(
         [
-            { icon: "/icons/navigation/Stars.svg", text: "Favorites", url: "/my/favorites" },
-            { icon: "/icons/navigation/Folder.svg", text: "Folders", url: "/my/folders" },
-            { icon: "/icons/navigation/Document.svg", text: "Study Sets", url: "/my/sets" },
+            {
+                icon: "/icons/navigation/Stars.svg",
+                text: determineWording("favorites"),
+                url: "/my/favorites",
+            },
+            {
+                icon: "/icons/navigation/Folder.svg",
+                text: determineWording("folders"),
+                url: "/my/folders",
+            },
+            {
+                icon: "/icons/navigation/Document.svg",
+                text: determineWording("sets"),
+                url: "/my/sets",
+            },
         ],
         "Your library"
     )}
 
     {@render group(
         [
-            { icon: "/icons/navigation/FolderPlus.svg", text: "Folder", url: "/create/folder" },
-            { icon: "/icons/navigation/DocumentPlus.svg", text: "Study Set", url: "/create/set" },
+            {
+                icon: "/icons/navigation/FolderPlus.svg",
+                text: determineWording("folder"),
+                url: "/create/folder",
+            },
+            {
+                icon: "/icons/navigation/DocumentPlus.svg",
+                text: determineWording("set"),
+                url: "/create/set",
+            },
         ],
         "Create a new"
     )}
