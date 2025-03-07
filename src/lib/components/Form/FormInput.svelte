@@ -40,7 +40,7 @@
     } = $props();
 
     const inputClasses: string = twMerge(
-        `${type === "dropdown" || type === "checkbox" || type === "editableList" ? "" : "primary"} w-full text-lg`,
+        `w-full ${type === "dropdown" || type === "checkbox" || type === "editableList" ? "" : "primary"}`,
         classes
     );
 </script>

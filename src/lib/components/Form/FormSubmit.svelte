@@ -28,7 +28,7 @@
     });
 </script>
 
-<button type="submit" class="primary w-full text-lg" bind:this={button} disabled={submitting}>
+<button type="submit" class="primary w-full" bind:this={button} disabled={submitting}>
     {#if submitting}
         ...
     {:else}
