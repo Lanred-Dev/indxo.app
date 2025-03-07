@@ -50,7 +50,7 @@
 </script>
 
 <svelte:window
-    on:keydown={(event: KeyboardEvent) => {
+    onkeydown={(event: KeyboardEvent) => {
         // If the user presses enter, search for the query. This has to be done because the search input is not treated as a form
         if (event.key !== "Enter" || searchQuery.length === 0 || !focusedOnSearch) return;
 
