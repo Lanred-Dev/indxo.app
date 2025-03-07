@@ -1,6 +1,5 @@
 <script lang="ts">
     import type { PublicSet, Term } from "$lib/database/documents/Set";
-    import { onMount } from "svelte";
 
     let { terms }: PublicSet = $props();
 
@@ -30,29 +29,27 @@
         showDescription = false;
         currentTermIndex += direction;
     }
-
-    onMount(() => {
-        window.addEventListener("keydown", (event: KeyboardEvent) => {
-            if (document.activeElement?.tagName !== "BODY") return;
-
-            event.preventDefault();
-
-            switch (event.key) {
-                case " ":
-                    showDescription = !showDescription;
-                    break;
-                case "ArrowLeft":
-                    cycle(-1);
-                    break;
-                case "ArrowRight":
-                    cycle(1);
-                    break;
-                default:
-                    break;
-            }
-        });
-    });
 </script>
+
+<svelte:window
+    onkeydown={(event: KeyboardEvent) => {
+        if (document.activeElement?.tagName !== "BODY") return;
+
+        event.preventDefault();
+
+        switch (event.key) {
+            case " ":
+                showDescription = !showDescription;
+                break;
+            case "ArrowLeft":
+                cycle(-1);
+                break;
+            case "ArrowRight":
+                cycle(1);
+                break;
+        }
+    }}
+/>
 
 {#if actualTerms.length === 0}
     <p class="my-24 text-center text-lg font-bold">This set has no terms</p>
