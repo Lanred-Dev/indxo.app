@@ -137,7 +137,8 @@
                 ondrag={(event: MouseEvent) => {
                     mouseY = event.clientY;
                 }}
-                ondragover={() => {
+                ondragover={(event: MouseEvent) => {
+                    event.preventDefault();
                     draggingOverID = id;
                 }}
             >
