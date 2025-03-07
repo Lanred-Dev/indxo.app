@@ -67,7 +67,7 @@
     }
 
     *::placeholder {
-        @apply overflow-visible;
+        @apply select-none overflow-visible;
     }
 
     img {
@@ -115,10 +115,26 @@
     textarea.primary,
     select.primary,
     button.input-primary,
-    div.input-primary {
-        @apply rounded-button border border-primary px-3 py-2 text-primary;
+    div.input-primary,
+    a.navigation-primary,
+    button.navigation-primary {
+        @apply rounded-button px-3 py-2 text-lg text-primary;
     }
 
+    /* navigation-primary does not have borders! Thats why this statement is seperate. */
+    button.primary,
+    a.primary,
+    button.secondary,
+    a.secondary,
+    input.primary,
+    textarea.primary,
+    select.primary,
+    button.input-primary,
+    div.input-primary {
+        @apply border border-primary;
+    }
+
+    /* Primary button */
     button.primary:has(img),
     a.primary:has(img) {
         @apply flex-center gap-2;
@@ -134,14 +150,16 @@
         @apply size-7;
     }
 
+    /* Secondary button */
     button.secondary,
     a.secondary {
         @apply flex items-center gap-2 bg-button-secondary;
     }
 
+    /* Navigation button */
     a.navigation-primary,
     button.navigation-primary {
-        @apply flex w-full items-center gap-2 rounded-button px-3 py-2 transition-colors hover:bg-primary-400;
+        @apply flex w-full items-center gap-2 transition-colors hover:bg-primary-400;
     }
 
     a.navigation-primary img,
@@ -151,13 +169,7 @@
         @apply size-7;
     }
 
-    a.navigation-primary span,
-    button.navigation-primary span,
-    button.secondary span,
-    a.secondary span {
-        @apply text-lg;
-    }
-
+    /* Primary input */
     input.primary,
     textarea.primary,
     select.primary,
@@ -166,6 +178,7 @@
         @apply bg-primary-500 placeholder:text-primary-200 focus:border-transparent focus:outline-none focus:ring-1 focus:ring-primary;
     }
 
+    /* Containers */
     div.primary,
     div.popup {
         @apply overflow-hidden rounded-primary border p-4;
