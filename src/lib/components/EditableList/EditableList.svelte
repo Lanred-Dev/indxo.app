@@ -37,12 +37,10 @@
         ItemComponent?: Component<{ index: number } & any, {}, "properties">;
     } = $props();
 
-    let listContainer: HTMLElement;
     let items: { id: number; [key: string]: any }[] = $state([]);
     // NOTE: -1 is used to indicate that no item is being dragged
     let draggingID: number = $state(-1);
     let draggingOverID: number = $state(-1);
-    let mouseY: number = $state(-1);
 
     /**
      * Adds an item to the list.
@@ -114,7 +112,7 @@
     });
 </script>
 
-<div class={twMerge("editableList space-y-5", classes)} bind:this={listContainer}>
+<div class={twMerge("editableList space-y-5", classes)}>
     <ol class="relative space-y-5">
         {#each items as { id, actionButtons }}
             <!--The `li` element is used for MOST of the dragging features. However, if using a custom list component, the `ListComponent` must support action buttons in order for dragging to work!-->
@@ -122,23 +120,20 @@
                 class="transition-all {isDraggable ? 'cursor-move' : ''} {draggingID === id
                     ? 'rotate-1 opacity-45'
                     : draggingID !== -1
-                      ? '[&>.editableListItem]:!border-focus [&>.editableListItem]:!border [&>.editableListItem]:!border-dashed'
+                      ? '[&>.editableListItem]:!border [&>.editableListItem]:!border-dashed [&>.editableListItem]:!border-focus'
                       : ''}"
                 draggable={isDraggable}
-                ondragstart={(event: MouseEvent) => {
+                ondragstart={() => {
                     draggingID = id;
-                    mouseY = event.clientY;
                 }}
                 ondragend={() => {
                     draggingID = -1;
                     draggingOverID = -1;
-                    mouseY = -1;
-                }}
-                ondrag={(event: MouseEvent) => {
-                    mouseY = event.clientY;
                 }}
                 ondragover={(event: MouseEvent) => {
+                    // Preventing the default hides the not allowed cursor when dragging
                     event.preventDefault();
+
                     draggingOverID = id;
                 }}
             >
