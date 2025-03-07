@@ -77,7 +77,7 @@
             <p class="text-dark text-sm leading-snug">Created by</p>
             <p class="text-lg font-bold">{set.owner.name}</p>
             <p class="text-light text-sm">
-                {formatDistanceToNow(set.created || new Date(), {
+                {formatDistanceToNow(set.created ?? new Date(), {
                     includeSeconds: true,
                     addSuffix: true,
                 })}
