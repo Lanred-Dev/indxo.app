@@ -33,10 +33,12 @@
 
 <svelte:window
     onkeydown={(event: KeyboardEvent) => {
+        // Only register events if the user is not focused on anything
         if (document.activeElement?.tagName !== "BODY") return;
 
         event.preventDefault();
 
+        // Allow keyboard shortcuts
         switch (event.key) {
             case " ":
                 showDescription = !showDescription;
@@ -61,14 +63,14 @@
                 onclick={() => (showDescription = !showDescription)}
             >
                 {#if showDescription}
-                    <p class="text-light x-center top-6">{currentTerm.name}</p>
+                    <p class="text-light x-center top-6">{currentTerm.term}</p>
                 {/if}
 
                 <p class="text-2xl">
                     {#if showDescription}
-                        {currentTerm.description}
+                        {currentTerm.definition}
                     {:else}
-                        {currentTerm.name}
+                        {currentTerm.term}
                     {/if}
                 </p>
             </button>
