@@ -97,6 +97,8 @@
                     ([wording]) => wording === group2
                 );
                 return group1Index - group2Index;
+            } else if (actualSortFilter === "subject" && group1 && group2) {
+                return group1.localeCompare(group2);
             } else if (actualSortFilter === "alphabetical" && group1 && group2) {
                 return group1.localeCompare(group2);
             } else {
