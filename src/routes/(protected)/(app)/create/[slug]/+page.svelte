@@ -1,12 +1,18 @@
 <script lang="ts">
     import { Form, FormSubmit } from "$lib/components/Form";
-    import FolderForm from "./Folder.svelte";
-    import SetForm from "./Set.svelte";
+    import FolderForm, { WORDING as FolderFormWording } from "./Folder.svelte";
+    import SetForm, { WORDING as SetFormWording } from "./Set.svelte";
     import { page } from "$app/state";
     import { goto } from "$app/navigation";
+    import determineWording from "$lib/utils/determineWording";
 
     let type: string = $derived(page.params.slug);
     let stage: "creation" | "setup" = $state("creation");
+    let wording: string[] = $derived.by(() => {
+        if (type === "folder") return FolderFormWording[stage];
+
+        return SetFormWording[stage];
+    });
     let documentID: string = $state("");
     let endpoint: string = $derived(
         stage === "creation"
@@ -36,29 +42,12 @@
 </script>
 
 <svelte:head>
-    <title>Create a {type === "set" ? "study set" : type}</title>
+    <title>Create a {determineWording(type)}</title>
 </svelte:head>
 
 <div class="mb-7">
-    <p class="text-3xl font-bold">
-        {#if stage === "creation"}
-            Lets create a new {type === "set" ? "study set" : type}!
-        {:else if type === "folder"}
-            Now lets add some sets to your folder.
-        {:else}
-            Nows its time to create some terms.
-        {/if}
-    </p>
-
-    <p class="text-light text-lg">
-        {#if stage === "creation"}
-            Get started by entering the basics below.
-        {:else if type === "folder"}
-            Select the sets, from below, that you'd like to add to this folder.
-        {:else}
-            Get started by entering some terms and definitions below.
-        {/if}
-    </p>
+    <p class="text-3xl font-bold">{wording[0]}</p>
+    <p class="text-light text-lg">{wording[1]}</p>
 </div>
 
 <Form classes="w-full" action={endpoint} {afterSubmit}>

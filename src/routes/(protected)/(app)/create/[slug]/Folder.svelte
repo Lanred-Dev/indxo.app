@@ -1,6 +1,20 @@
+<script lang="ts" module>
+    export const WORDING = {
+        creation: [
+            `Lets create a new ${determineWording("folder")}!`,
+            "Get started by entering the basics below.",
+        ],
+        setup: [
+            `Now lets add some ${determineWording("sets")} to your ${determineWording("folder")}.`,
+            `Select the ${determineWording("sets")}, from below, that you'd like to add to this ${determineWording("folder")}.`,
+        ],
+    };
+</script>
+
 <script lang="ts">
     import { FormRow, FormInput } from "$lib/components/Form";
     import type { PublicSet } from "$lib/database/documents/Set";
+    import determineWording from "$lib/utils/determineWording";
     import { onMount } from "svelte";
 
     let { stage }: { stage: "creation" | "setup" } = $props();

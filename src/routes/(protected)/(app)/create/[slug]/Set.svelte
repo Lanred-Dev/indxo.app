@@ -1,5 +1,19 @@
+<script lang="ts" module>
+    export const WORDING = {
+        creation: [
+            `Lets create a new ${determineWording("set")}!`,
+            "Get started by entering the basics below.",
+        ],
+        setup: [
+            `Now its time to create some ${determineWording("card")}.`,
+            "Get started by entering some terms and definitions below.",
+        ],
+    };
+</script>
+
 <script lang="ts">
     import { FormRow, FormInput } from "$lib/components/Form";
+    import determineWording from "$lib/utils/determineWording";
 
     let { stage }: { stage: "creation" | "setup" } = $props();
 </script>
@@ -43,6 +57,10 @@
     <FormInput
         id="terms"
         type="editableList"
-        componentProps={{ addText: "Add term", startingItems: 3, isDraggable: true }}
+        componentProps={{
+            addText: `Add ${determineWording("card")}`,
+            startingItems: 3,
+            isDraggable: true,
+        }}
     />
 {/if}

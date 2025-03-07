@@ -5,6 +5,7 @@
     import type { PublicFolder } from "$lib/database/documents/Folder";
     import type { PublicSet } from "$lib/database/documents/Set";
     import { millisecondsToMinutes } from "date-fns";
+    import determineWording from "$lib/utils/determineWording";
 
     let { data } = $props();
 
@@ -108,14 +109,12 @@
 </script>
 
 <svelte:head>
-    <title>Your {type === "sets" ? "study sets" : type}</title>
+    <title>Your {determineWording(type)}</title>
 </svelte:head>
 
 <div>
     <p class="text-light text-xl leading-tight">Browse your library</p>
-    <h1 class="text-5xl font-bold leading-none">
-        Your {type === "sets" ? "study sets" : type}
-    </h1>
+    <h1 class="text-5xl font-bold leading-none">Your {determineWording(type)}</h1>
 </div>
 
 <Search
