@@ -7,6 +7,7 @@
     import determineDocumentType from "$lib/utils/determineDocumentType";
     import { signOut } from "@auth/sveltekit/client";
     import { goto } from "$app/navigation";
+    import { fly } from "svelte/transition";
 
     let { user, sidebarVisible }: { user: User; sidebarVisible: Writable<boolean> } = $props();
 
@@ -175,6 +176,7 @@
                 if (!focusedOnSearch) isSearching = false;
             }}
             role="region"
+            transition:fly={{ y: 10, duration: 100 }}
         >
             <div class="space-y-3">
                 {#each searchResults as result}
@@ -194,6 +196,7 @@
             onmouseenter={() => (focusedOnAccountInfo = true)}
             onmouseleave={() => (focusedOnAccountInfo = false)}
             role="region"
+            transition:fly={{ y: 10, duration: 100 }}
         >
             <div class="flex-center w-full gap-2 px-3 pb-1">
                 <img

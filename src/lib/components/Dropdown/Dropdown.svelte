@@ -3,6 +3,7 @@
     import { twMerge } from "tailwind-merge";
     import type { props as DropdownItemProps } from "./DropdownItem.svelte";
     import DropdownItem from "./DropdownItem.svelte";
+    import { fly } from "svelte/transition";
 
     let {
         classes,
@@ -55,7 +56,7 @@
     </button>
 
     {#if visible}
-        <div class="popup top-full mt-1 w-56 !p-1">
+        <div class="popup top-full mt-1 w-56 !p-1" transition:fly={{ y: 10, duration: 100 }}>
             <ul>
                 {#each items as item}
                     <li class="w-full">
