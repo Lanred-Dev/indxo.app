@@ -47,33 +47,16 @@
         focusedOnSearch = false;
         focusedOnSearchResults = false;
     }
-
-    $effect(() => {
-        if (showAccountInfo) {
-            window.addEventListener("click", () => {
-                if (!focusedOnAccountInfo) showAccountInfo = false;
-            });
-        } else {
-            window.removeEventListener("click", () => {
-                if (!focusedOnAccountInfo) showAccountInfo = false;
-            });
-        }
-    });
-
-    // If the user presses enter, search for the query
-    // This has to be done because the search input is not treated as a form
-    $effect(() => {
-        if (searchQuery.length > 0 && focusedOnSearch) {
-            window.addEventListener("keydown", (event: KeyboardEvent) => {
-                if (event.key === "Enter") goto(`/search?query=${searchQuery}`);
-            });
-        } else {
-            window.addEventListener("keydown", (event: KeyboardEvent) => {
-                if (event.key === "Enter") goto(`/search?query=${searchQuery}`);
-            });
-        }
-    });
 </script>
+
+<svelte:window
+    on:keydown={(event: KeyboardEvent) => {
+        // If the user presses enter, search for the query. This has to be done because the search input is not treated as a form
+        if (event.key !== "Enter" || searchQuery.length === 0 || !focusedOnSearch) return;
+
+        goto(`/search?query=${searchQuery}`);
+    }}
+/>
 
 {#snippet searchResult({
     _id,
