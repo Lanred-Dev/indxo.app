@@ -40,7 +40,7 @@
         </div>
     </div>
 
-    <div class="space-y-5 py-10">
+    <div class="space-y-5 py-12">
         <FormRow>
             <FormInput
                 id="isPublic"
@@ -80,43 +80,39 @@
         />
     </div>
 
-    <div class="space-y-2">
-        <p class="text-lg">{determineWording("cards")}</p>
-
-        <FormInput
-            id="terms"
-            type="editableList"
-            componentProps={{
-                addText: `Add ${determineWording("card")}`,
-                startingItems: 3,
-                isDraggable: true,
-                items: data.set.terms.map((term) => [
-                    {
-                        id: "term",
-                        type: "input",
-                        value: term.term,
-                        placeholder: "Term",
-                    },
-                    {
-                        id: "definition",
-                        type: "textarea",
-                        value: term.definition,
-                        placeholder: "Definition",
-                    },
-                ]),
-                properties: [
-                    {
-                        id: "term",
-                        type: "input",
-                        placeholder: "Term",
-                    },
-                    {
-                        id: "definition",
-                        type: "textarea",
-                        placeholder: "Definition",
-                    },
-                ],
-            }}
-        />
-    </div>
+    <FormInput
+        id="terms"
+        type="editableList"
+        componentProps={{
+            addText: `Add ${determineWording("card")}`,
+            startingItems: 3,
+            isDraggable: true,
+            items: data.set.terms.map((term) => [
+                {
+                    id: "term",
+                    type: "input",
+                    value: term.term,
+                    placeholder: "Term",
+                },
+                {
+                    id: "definition",
+                    type: "textarea",
+                    value: term.definition,
+                    placeholder: "Definition",
+                },
+            ]),
+            properties: [
+                {
+                    id: "term",
+                    type: "input",
+                    placeholder: "Term",
+                },
+                {
+                    id: "definition",
+                    type: "textarea",
+                    placeholder: "Definition",
+                },
+            ],
+        }}
+    />
 </Form>
