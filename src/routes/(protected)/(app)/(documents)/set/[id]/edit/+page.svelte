@@ -22,6 +22,10 @@
     }
 </script>
 
+<svelte:head>
+    <title>Edit {data.name}</title>
+</svelte:head>
+
 <Form classes="w-full" action="/api/documents/set/{data._id}/update" {afterSubmit}>
     <div class="flex items-center justify-between">
         <a class="primary" href="/set/{data._id}">Back to {determineWording("set")}</a>
