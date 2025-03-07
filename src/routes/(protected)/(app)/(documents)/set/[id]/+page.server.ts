@@ -1,6 +1,5 @@
-import type { PublicSet, Set } from "$lib/database/documents/Set";
+import type { PublicSet } from "$lib/database/documents/Set";
 import permissionCheck from "$lib/utils/permissionCheck.js";
-import type { ObjectId } from "mongodb";
 
 export async function load({ fetch, params }) {
     const response = await fetch(`/api/documents/set/${params.id}`);
