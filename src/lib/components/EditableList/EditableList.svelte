@@ -43,13 +43,7 @@
         id: number;
         properties: property[];
         actionButtons: actionButton[];
-    }[] = $state(
-        items.map((item, index) => ({
-            id: index,
-            properties: item,
-            actionButtons,
-        }))
-    );
+    }[] = $state([]);
     // NOTE: -1 is used to indicate that no item is being dragged
     let draggingID: number = $state(-1);
     let draggingOverID: number = $state(-1);
@@ -59,7 +53,7 @@
      *
      * @returns never
      */
-    function addItem() {
+    function addItem(itemProperties: property[] = properties) {
         let actionButtonsClone: actionButton[] | null = [...actionButtons];
 
         if (isDraggable) {
@@ -75,7 +69,7 @@
 
         actualItems.push({
             id: actualItems.length,
-            properties: properties,
+            properties: itemProperties,
             actionButtons: actionButtonsClone,
         });
     }
@@ -120,11 +114,15 @@
     });
 
     onMount(() => {
-        if (items.length > 0) return;
-
-        // Add the requested number of items to start with
-        for (let index: number = 0; index < startingItems; index++) {
-            addItem();
+        if (items.length > 0) {
+            items.forEach((properties: property[]) => {
+                addItem(properties);
+            });
+        } else {
+            // Add the requested number of items to start with
+            for (let index: number = 0; index < startingItems; index++) {
+                addItem();
+            }
         }
     });
 </script>
@@ -159,7 +157,7 @@
         {/each}
     </ol>
 
-    <button class="primary w-full" onclick={addItem} type="button">
+    <button class="primary w-full" onclick={() => addItem()} type="button">
         <img src="/icons/general/Plus.svg" alt="Plus" />
         <span>{addText}</span>
     </button>
