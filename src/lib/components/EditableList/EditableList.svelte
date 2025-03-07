@@ -24,6 +24,7 @@
                 onClick: onItemDeleteClicked,
             },
         ],
+        items = [],
         isDraggable = false,
         addText = "Add item",
         ItemComponent = EditableListItem,
@@ -32,12 +33,23 @@
         startingItems?: number;
         properties?: property[];
         actionButtons?: actionButton[];
+        items?: property[][];
         addText?: string;
         isDraggable?: boolean;
         ItemComponent?: Component<{ index: number } & any, {}, "properties">;
     } = $props();
 
-    let items: { id: number; [key: string]: any }[] = $state([]);
+    let actualItems: {
+        id: number;
+        properties: property[];
+        actionButtons: actionButton[];
+    }[] = $state(
+        items.map((item, index) => ({
+            id: index,
+            properties: item,
+            actionButtons,
+        }))
+    );
     // NOTE: -1 is used to indicate that no item is being dragged
     let draggingID: number = $state(-1);
     let draggingOverID: number = $state(-1);
@@ -61,8 +73,8 @@
             });
         }
 
-        items.push({
-            id: items.length,
+        actualItems.push({
+            id: actualItems.length,
             properties: properties,
             actionButtons: actionButtonsClone,
         });
@@ -82,9 +94,9 @@
         if (!editableListItem) return;
 
         const id: number = parseInt(editableListItem.getAttribute("data-id")!);
-        items.splice(id, 1);
+        actualItems.splice(id, 1);
 
-        items.forEach((item, index) => {
+        actualItems.forEach((item, index) => {
             item.id = index;
         });
     }
@@ -98,13 +110,18 @@
         )
             return;
 
-        [items[draggingID], items[draggingOverID]] = [items[draggingOverID], items[draggingID]];
-        items[draggingID].id = draggingID;
-        items[draggingOverID].id = draggingOverID;
+        [actualItems[draggingID], actualItems[draggingOverID]] = [
+            actualItems[draggingOverID],
+            actualItems[draggingID],
+        ];
+        actualItems[draggingID].id = draggingID;
+        actualItems[draggingOverID].id = draggingOverID;
         draggingID = draggingOverID;
     });
 
     onMount(() => {
+        if (items.length > 0) return;
+
         // Add the requested number of items to start with
         for (let index: number = 0; index < startingItems; index++) {
             addItem();
@@ -114,7 +131,7 @@
 
 <div class={twMerge("editableList space-y-5", classes)}>
     <ol class="relative space-y-5">
-        {#each items as { id, actionButtons }}
+        {#each actualItems as { id, actionButtons }}
             <!--The `li` element is used for MOST of the dragging features. However, if using a custom list component, the `ListComponent` must support action buttons in order for dragging to work!-->
             <li
                 class="transition-all {isDraggable ? 'cursor-move' : ''} {draggingID === id
@@ -137,7 +154,7 @@
                     draggingOverID = id;
                 }}
             >
-                <ItemComponent {id} bind:properties={items[id].properties} {actionButtons} />
+                <ItemComponent {id} bind:properties={actualItems[id].properties} {actionButtons} />
             </li>
         {/each}
     </ol>
