@@ -29,7 +29,7 @@
         />
 
         {#if text}
-            <p>{currentValue ? text[0] : text[1]}</p>
+            <p class="select-none">{currentValue ? text[0] : text[1]}</p>
         {/if}
     </button>
 </div>
