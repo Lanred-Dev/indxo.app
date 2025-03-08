@@ -175,7 +175,7 @@
     select.primary,
     button.input-primary,
     div.input-primary {
-        @apply focus:ring-focus bg-primary-500 placeholder:text-primary-200 focus:border-transparent focus:outline-none focus:ring-1;
+        @apply bg-primary-500 placeholder:text-primary-200 focus:border-transparent focus:outline-none focus:ring-1 focus:ring-focus;
     }
 
     /* Containers */
@@ -190,14 +190,5 @@
 
     div.popup {
         @apply absolute z-50 border-primary bg-primary shadow-lg;
-    }
-
-    .bt-cover {
-        -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
-        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
-        -webkit-mask-repeat: no-repeat;
-        mask-repeat: no-repeat;
-        -webkit-mask-position: 0% 15%;
-        mask-position: 0% 15%;
     }
 }
