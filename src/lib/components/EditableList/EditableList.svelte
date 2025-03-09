@@ -130,7 +130,7 @@
 <div class={twMerge("editableList space-y-5", classes)}>
     <ol class="relative space-y-5">
         {#each actualItems as { id, actionButtons }}
-            <!--The `li` element is used for MOST of the dragging features. However, if using a custom list component, the `ListComponent` must support action buttons in order for dragging to work!-->
+            <!--The `li` element is used for the dragging features.-->
             <li
                 class="transition-all {isDraggable ? 'cursor-move' : ''} {draggingID === id
                     ? 'rotate-1 opacity-45'
