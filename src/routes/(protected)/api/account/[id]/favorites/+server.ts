@@ -17,6 +17,11 @@ export async function GET({ params }) {
 
     for (const [id, type] of user.favorites) {
         const document: Set | Folder = await idToDocument(`${type}s`, id);
+
+        if (!document) {
+            continue;
+        }
+
         favorites.push(document as unknown as PublicSet | PublicFolder);
     }
 
