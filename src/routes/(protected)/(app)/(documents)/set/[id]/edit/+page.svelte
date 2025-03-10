@@ -28,7 +28,7 @@
 
 <Form classes="w-full" action="/api/documents/set/{data._id}/update" {afterSubmit}>
     <div class="flex items-center justify-between">
-        <a class="primary" href="/set/{data._id}">Back to {determineWording("set")}</a>
+        <a class="secondary" href="/set/{data._id}">Back to {determineWording("set")}</a>
 
         <div class="flex-center gap-3">
             {#if lastUpdated}
