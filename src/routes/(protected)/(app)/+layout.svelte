@@ -10,14 +10,14 @@
     const sidebarVisible: Writable<boolean> = writable(true);
 </script>
 
-<div class="flex h-screen w-full flex-col">
+<div class="flex h-screen max-h-screen w-full flex-col overflow-hidden">
     <Header user={data.session.user as User} {sidebarVisible} />
 
-    <div class="flex w-full flex-grow overflow-hidden">
+    <div class="flex max-h-full w-full flex-grow overflow-hidden">
         <Sidebar visible={sidebarVisible} />
 
         <main
-            class="relative flex h-full w-full flex-col items-start justify-start overflow-y-auto overflow-x-hidden px-4 pb-6 pt-4 sm:px-14 sm:pt-12 md:px-36 md:pt-16 lg:px-52 lg:pt-24"
+            class="md:px-18 relative flex h-full w-full flex-col items-start justify-start overflow-y-auto overflow-x-hidden px-7 pb-6 pt-12 sm:px-14 md:pt-16 lg:px-52 lg:pt-24"
         >
             {@render children?.()}
         </main>

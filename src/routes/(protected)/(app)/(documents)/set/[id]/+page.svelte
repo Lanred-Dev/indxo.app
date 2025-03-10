@@ -38,7 +38,7 @@
             >
         {/if}
 
-        <h1 class="text-5xl font-bold leading-none">{data.set?.name}</h1>
+        <h1 class="text-3xl font-bold leading-none md:text-5xl">{data.set?.name}</h1>
     </div>
 
     <StudyCards {...data.set as PublicSet} />

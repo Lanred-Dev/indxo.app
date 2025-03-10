@@ -23,7 +23,7 @@
         searchQuery = (event.target as HTMLInputElement)?.value;
 
         // 3 is the minimum search query
-        if (searchQuery.length < 3) return;
+        if (searchQuery.length < 3) return (searchResults = []);
 
         searchResults = await (
             await fetch("/api/search", {
@@ -55,6 +55,11 @@
         if (event.key !== "Enter" || searchQuery.length === 0 || !focusedOnSearch) return;
 
         goto(`/search?query=${searchQuery}`);
+    }}
+    onfocusout={() => {
+        if (focusedOnAccountInfo) return;
+
+        showAccountInfo = false;
     }}
 />
 
@@ -111,7 +116,9 @@
     </a>
 {/snippet}
 
-<header class="relative top-0 flex w-full items-center justify-between bg-accent-light px-10 py-4">
+<header
+    class="relative top-0 flex w-full items-center justify-between bg-accent-light px-7 py-4 md:px-10"
+>
     <div class="flex-center gap-1">
         <button onclick={() => sidebarVisible.update((visible: boolean) => !visible)}>
             <img class="size-10" src="/icons/navigation/Hamburger.svg" alt="Sidebar toggle" />

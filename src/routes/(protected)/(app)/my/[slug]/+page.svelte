@@ -116,7 +116,7 @@
 
 <div>
     <p class="text-light text-xl leading-tight">Browse your library</p>
-    <h1 class="text-5xl font-bold leading-none">Your {determineWording(type)}</h1>
+    <h1 class="text-3xl font-bold leading-none md:text-5xl">Your {determineWording(type)}</h1>
 </div>
 
 <Search

@@ -54,12 +54,12 @@
 />
 
 {#if actualTerms.length === 0}
-    <p class="my-24 text-center text-lg font-bold">This set has no terms</p>
+    <p class="my-20 text-center text-lg font-bold md:my-24">This set has no terms</p>
 {:else}
-    <div class="my-24 w-4/5 space-y-4">
+    <div class="my-20 w-full space-y-4 md:my-24 md:w-4/5 2xl:w-8/12">
         <div class="w-full">
             <button
-                class="relative aspect-[1.9] max-h-96 w-full rounded-primary border border-primary bg-primary-200 p-6 shadow-2xl"
+                class="relative aspect-[1.6] max-h-96 w-full overflow-y-auto rounded-primary border border-primary bg-primary-200 p-6 shadow-2xl sm:aspect-[1.9]"
                 onclick={() => (showDescription = !showDescription)}
             >
                 {#if showDescription}

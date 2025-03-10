@@ -42,7 +42,7 @@
 </script>
 
 <div class="space-y-6">
-    <div class="flex gap-3">
+    <div class="flex flex-wrap gap-3">
         {#if hasEditPermission === true}
             <a class="secondary" href="/set/{set._id}/edit">
                 <img src="/icons/general/Pencil.svg" alt="Edit" />
