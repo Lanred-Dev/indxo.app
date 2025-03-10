@@ -22,7 +22,7 @@
         <ul>
             {#each links as { url, text, icon }}
                 <li>
-                    <a class="navigation-primary" href={url} data-sveltekit-reload>
+                    <a class="navigation-primary" href={url}>
                         <img src={icon} alt={text} />
                         <span class="text-nowrap">{text}</span>
                     </a>
