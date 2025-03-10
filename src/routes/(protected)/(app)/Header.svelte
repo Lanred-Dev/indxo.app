@@ -9,7 +9,12 @@
     import { goto } from "$app/navigation";
     import { fly } from "svelte/transition";
 
-    let { user, sidebarVisible }: { user: User; sidebarVisible: Writable<boolean> } = $props();
+    let {
+        user,
+        sidebarVisible,
+        mobileSidebarVisible,
+    }: { user: User; sidebarVisible: Writable<boolean>; mobileSidebarVisible: Writable<boolean> } =
+        $props();
 
     let showAccountInfo: boolean = $state(false);
     let focusedOnAccountInfo: boolean = $state(false);
@@ -19,6 +24,12 @@
     let searchQuery: string = $state("");
     let searchResults: (SimpleUser | SimpleSet | SimpleFolder)[] = $state([]);
 
+    /**
+     * Fetches the results to display on the quick search.
+     *
+     * @param event The event
+     * @returns never
+     */
     async function search(event: Event) {
         searchQuery = (event.target as HTMLInputElement)?.value;
 
@@ -120,8 +131,13 @@
     class="relative top-0 flex w-full items-center justify-between bg-accent-light px-7 py-4 md:px-10"
 >
     <div class="flex-center gap-1">
-        <button onclick={() => sidebarVisible.update((visible: boolean) => !visible)}>
-            <img class="size-10" src="/icons/navigation/Hamburger.svg" alt="Sidebar toggle" />
+        <button
+            onclick={() => {
+                sidebarVisible.update((visible: boolean) => !visible);
+                mobileSidebarVisible.update((visible: boolean) => !visible);
+            }}
+        >
+            <img class="size-7" src="/icons/navigation/Hamburger.svg" alt="Sidebar toggle" />
         </button>
     </div>
 

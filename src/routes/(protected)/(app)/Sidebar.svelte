@@ -2,13 +2,21 @@
     import determineWording from "$lib/utils/determineWording";
     import { type Writable } from "svelte/store";
 
-    let { visible }: { visible: Writable<boolean> } = $props();
+    let {
+        visible,
+        mobileVisible,
+    }: { visible: Writable<boolean>; mobileVisible: Writable<boolean> } = $props();
+
+    let windowWidth: number = $state(0);
+    let useMobile: boolean = $derived(windowWidth < 786);
 </script>
+
+<svelte:window bind:innerWidth={windowWidth} />
 
 {#snippet group(links: { url: string; text: string; icon: string }[], name?: string)}
     <div>
         {#if name}
-            <p class="text-light mb-2 pl-3">{name}</p>
+            <p class="text-light mb-2 text-nowrap pl-3">{name}</p>
         {/if}
 
         <ul>
@@ -16,7 +24,7 @@
                 <li>
                     <a class="navigation-primary" href={url} data-sveltekit-reload>
                         <img src={icon} alt={text} />
-                        <span>{text}</span>
+                        <span class="text-nowrap">{text}</span>
                     </a>
                 </li>
             {/each}
@@ -25,10 +33,10 @@
 {/snippet}
 
 <div
-    class="absolute left-0 top-0 z-50 h-full w-fit min-w-fit flex-col justify-between overflow-y-auto overflow-x-hidden bg-primary py-7 pl-4 pr-16 md:static md:px-7 md:pr-4 xl:w-[17.5%] 2xl:w-[15%]"
-    style:display={$visible ? "flex" : "none"}
+    class="absolute left-0 top-0 z-50 h-full w-fit flex-col justify-between gap-10 overflow-y-auto overflow-x-hidden bg-primary py-7 pl-4 pr-16 md:static md:pl-7 md:pr-4 xl:w-[17.5%] 2xl:w-[15%]"
+    style:display={(!useMobile && $visible) || (useMobile && $mobileVisible) ? "flex" : "none"}
 >
-    <div class="space-y-10">
+    <nav class="min-w-fit space-y-10">
         {@render group([
             { icon: "/icons/navigation/Home.svg", text: "Home", url: "/" },
             { icon: "/icons/navigation/Account.svg", text: "Account", url: "/account" },
@@ -70,7 +78,7 @@
             ],
             "Create a new"
         )}
-    </div>
+    </nav>
 
-    <p class="text-dark text-sm">Made for Savannah ❤️</p>
+    <p class="text-dark pl-3 text-sm">Made for Savannah ❤️</p>
 </div>
