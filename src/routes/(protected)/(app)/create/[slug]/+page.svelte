@@ -3,16 +3,17 @@
     import FolderForm, { WORDING as FolderFormWording } from "./Folder.svelte";
     import SetForm, { WORDING as SetFormWording } from "./Set.svelte";
     import { page } from "$app/state";
-    import { goto } from "$app/navigation";
+    import { goto, beforeNavigate } from "$app/navigation";
     import determineWording from "$lib/utils/determineWording";
 
     let type: string = $derived(page.params.slug);
     let stage: "creation" | "setup" = $state("creation");
-    let wording: string[] = $derived.by(() => {
+    let wording: [string, string] = $derived.by(() => {
         if (type === "folder") return FolderFormWording[stage];
+        if (type === "set") return SetFormWording[stage];
 
-        return SetFormWording[stage];
-    });
+        return ["", ""];
+    }) as [string, string];
     let documentID: string = $state("");
     let endpoint: string = $derived(
         stage === "creation"
@@ -39,6 +40,13 @@
             documentID = meta.id;
         }
     }
+
+    // This resets the stage if navigating to another creation page
+    beforeNavigate((navigation) => {
+        if (!navigation.to?.url.pathname.includes("/create/")) return;
+
+        stage = "creation";
+    });
 </script>
 
 <svelte:head>
