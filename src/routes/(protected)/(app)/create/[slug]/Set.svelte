@@ -5,7 +5,7 @@
             "Get started by entering the basics below.",
         ],
         setup: [
-            `Now its time to create some ${determineWording("card")}.`,
+            `Now its time to create some ${determineWording("cards")}.`,
             "Get started by entering some terms and definitions below.",
         ],
     };
