@@ -33,10 +33,15 @@
 
 <svelte:window
     onkeydown={(event: KeyboardEvent) => {
-        // Only register events if the user is not focused on anything
-        if (document.activeElement?.tagName !== "BODY") return;
+        // Only register events if the user is not focused on anything or if they are focused on the study cards
+        if (
+            document.activeElement?.tagName !== "BODY" &&
+            !(event.target as HTMLElement | null)?.closest(".studyCards")
+        )
+            return;
 
         event.preventDefault();
+        (event.target as HTMLElement).blur();
 
         // Allow keyboard shortcuts
         switch (event.key) {
@@ -56,7 +61,7 @@
 {#if actualTerms.length === 0}
     <p class="my-20 text-center text-lg font-bold md:my-24">This set has no terms</p>
 {:else}
-    <div class="my-20 w-full space-y-4 md:my-24 md:w-4/5 2xl:w-8/12">
+    <div class="studyCards my-20 w-full space-y-4 md:my-24 md:w-4/5 2xl:w-8/12">
         <div class="w-full">
             <button
                 class="relative aspect-[1.6] max-h-96 w-full overflow-y-auto rounded-primary border border-primary bg-primary-200 p-6 shadow-2xl sm:aspect-[1.9]"
