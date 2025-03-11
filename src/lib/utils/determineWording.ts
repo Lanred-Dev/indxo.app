@@ -9,6 +9,8 @@ const WORDING: { [key: string]: string } = {
     users: "Users",
     favorite: "Favorite",
     favorites: "Favorites",
+    mode: "Study Mode",
+    modes: "Study Modes",
 };
 
 /**
