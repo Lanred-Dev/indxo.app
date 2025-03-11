@@ -18,7 +18,7 @@ export async function load({ fetch, params }) {
 
     return {
         set,
-        didFavorite: isFavorite,
+        isFavorite,
         permission: true,
         hasEditPermission: permissionCheck(set, userID, true),
     };
