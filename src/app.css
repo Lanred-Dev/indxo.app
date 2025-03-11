@@ -124,8 +124,6 @@
     /* navigation-primary does not have borders! Thats why this statement is seperate. */
     button.primary,
     a.primary,
-    button.secondary,
-    a.secondary,
     input.primary,
     textarea.primary,
     select.primary,
@@ -153,7 +151,7 @@
     /* Secondary button */
     button.secondary,
     a.secondary {
-        @apply flex items-center gap-2 bg-button-secondary;
+        @apply bg-primary-400 shadow-md;
     }
 
     /* Navigation button */
