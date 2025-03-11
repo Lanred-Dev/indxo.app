@@ -32,10 +32,14 @@
         showDescription = false;
         currentTermIndex += direction;
     }
-</script>
 
-<svelte:window
-    onkeydown={(event: KeyboardEvent) => {
+    /**
+     * Handles the keyboard shortcuts for the study cards.
+     *
+     * @param event The keyboard event
+     * @returns never
+     */
+    function handleKeyboardShortcuts(event: KeyboardEvent) {
         // Only register events if the user is not focused on anything or if they are focused on the study cards
         if (
             document.activeElement?.tagName !== "BODY" &&
@@ -58,8 +62,10 @@
                 cycle(1);
                 break;
         }
-    }}
-/>
+    }
+</script>
+
+<svelte:window onkeydown={handleKeyboardShortcuts} />
 
 {#if actualTerms.length === 0}
     <p class="my-20 text-center text-lg font-bold md:my-24">This set has no terms</p>

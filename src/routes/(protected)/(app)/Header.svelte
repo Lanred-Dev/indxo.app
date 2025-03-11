@@ -58,15 +58,22 @@
         focusedOnSearch = false;
         focusedOnSearchResults = false;
     }
-</script>
 
-<svelte:window
-    onkeydown={(event: KeyboardEvent) => {
-        // If the user presses enter, search for the query. This has to be done because the search input is not treated as a form
+    /**
+     * Navigates to the search page with the query.
+     *
+     * @param event The keyboard event
+     * @returns never
+     */
+    function gotoSearch(event: KeyboardEvent) {
         if (event.key !== "Enter" || searchQuery.length === 0 || !focusedOnSearch) return;
 
         goto(`/search?query=${searchQuery}`);
-    }}
+    }
+</script>
+
+<svelte:window
+    onkeydown={gotoSearch}
     onfocusout={() => {
         if (focusedOnAccountInfo) return;
 
