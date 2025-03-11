@@ -11,5 +11,5 @@ export async function GET({ params, locals }) {
         });
     }
 
-    return json(user.favorites.map((id) => id.toString()).includes(params.id));
+    return json(user.favorites.map((favorite) => favorite[0].toString()).includes(params.id));
 }
