@@ -4,6 +4,7 @@
     import type { props as DropdownItemProps } from "./DropdownItem.svelte";
     import DropdownItem from "./DropdownItem.svelte";
     import { fly } from "svelte/transition";
+    import { goto } from "$app/navigation";
 
     let {
         classes,
@@ -26,12 +27,17 @@
      * @returns never
      */
     function onItemClicked(value: DropdownItemProps) {
+        if (value.isLink) goto(value.value);
+
         currentValue = value;
         visible = false;
     }
 </script>
 
-<div class={twMerge("dropdown relative text-lg", classes)} data-value={currentValue.value}>
+<div
+    class={twMerge("dropdown relative min-w-fit text-lg", classes)}
+    data-value={currentValue.value}
+>
     <button
         class="input-primary relative flex items-center gap-1 {!currentValue.text &&
         currentValue.image

@@ -3,6 +3,7 @@
         value: string;
         text?: string;
         image?: string;
+        isLink?: boolean;
     };
 
     let { text, image }: props = $props();
