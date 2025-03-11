@@ -26,6 +26,9 @@
      * @returns never
      */
     function cycle(direction: -1 | 1) {
+        if (currentTermIndex + direction < 0 || currentTermIndex + direction >= actualTerms.length)
+            return;
+
         showDescription = false;
         currentTermIndex += direction;
     }
@@ -117,7 +120,7 @@
                     <button
                         class="transition-transform hover:rotate-[28deg] hover:scale-110 active:rotate-[180deg]"
                         style="-webkit-animation-fill-mode: forwards; animation-fill-mode: forwards;"
-                        onclick={() => shuffle()}
+                        onclick={shuffle}
                     >
                         <img class="size-6" src="/icons/general/Shuffle.svg" alt="Shuffle" />
                     </button>
