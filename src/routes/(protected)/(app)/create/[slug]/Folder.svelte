@@ -15,6 +15,7 @@
     import { FormRow, FormInput } from "$lib/components/Form";
     import type { PublicSet } from "$lib/database/documents/Set";
     import determineWording from "$lib/utils/determineWording";
+    import type { ObjectId } from "mongodb";
     import { onMount } from "svelte";
 
     let { stage }: { stage: "creation" | "setup" } = $props();
@@ -25,6 +26,20 @@
         const sets = addedSets;
         return JSON.stringify(sets);
     });
+
+    /**
+     * Adds or removes a set from the list of sets to be added to the folder.
+     *
+     * @param id The ID of the set to add or remove.
+     * @returns never
+     */
+    function addSetToList(id: ObjectId) {
+        if (addedSets.includes(id.toString())) {
+            addedSets.splice(addedSets.indexOf(id.toString()), 1);
+        } else {
+            addedSets.push(id.toString());
+        }
+    }
 
     onMount(async () => {
         const userID: string = await (await fetch("/api/account")).json();
@@ -106,16 +121,7 @@
                     </div>
 
                     <div class="flex-shrink-0">
-                        <button
-                            onclick={() => {
-                                if (addedSets.includes(set._id.toString())) {
-                                    addedSets.splice(addedSets.indexOf(set._id.toString()), 1);
-                                } else {
-                                    addedSets.push(set._id.toString());
-                                }
-                            }}
-                            type="button"
-                        >
+                        <button onclick={() => addSetToList(set._id)} type="button">
                             {#if addedSets.includes(set._id.toString())}
                                 <img class="size-6" src="/icons/general/X.svg" alt="Remove" />
                             {:else}
