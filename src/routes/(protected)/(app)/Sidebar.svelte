@@ -7,8 +7,8 @@
         mobileVisible,
     }: { visible: Writable<boolean>; mobileVisible: Writable<boolean> } = $props();
 
-    let windowWidth: number = $state(0);
-    let useMobile: boolean = $derived(windowWidth < 786);
+    let windowWidth: number = $state(Infinity);
+    let useMobileVisible: boolean = $derived(windowWidth < 786);
 </script>
 
 <svelte:window bind:innerWidth={windowWidth} />
@@ -34,7 +34,9 @@
 
 <div
     class="absolute left-0 top-0 z-50 h-full w-fit flex-col justify-between gap-10 overflow-y-auto overflow-x-hidden bg-primary py-7 pl-4 pr-16 md:static md:pl-7 md:pr-4 xl:w-[17.5%] 2xl:w-[15%]"
-    style:display={(!useMobile && $visible) || (useMobile && $mobileVisible) ? "flex" : "none"}
+    style:display={(!useMobileVisible && $visible) || (useMobileVisible && $mobileVisible)
+        ? "flex"
+        : "none"}
 >
     <nav class="min-w-fit space-y-10">
         {@render group([
