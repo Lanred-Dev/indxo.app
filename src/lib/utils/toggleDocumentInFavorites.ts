@@ -39,19 +39,19 @@ export default async function toggleDocumentInFavorites(
     let wasInFavorites: boolean = false;
     let isFavorite: boolean = false;
 
-    if (user) {
-        user.favorites = user.favorites.filter((id) => {
-            const matches: boolean = id.toString() === documentID.toString();
+    if (!user) return [false, false];
 
-            if (matches) wasInFavorites = true;
+    user.favorites = user.favorites.filter((favorite) => {
+        const matches: boolean = favorite[0].toString() === documentID.toString();
 
-            return !matches;
-        });
-    }
+        if (matches) wasInFavorites = true;
+
+        return !matches;
+    });
 
     if (!wasInFavorites) {
         isFavorite = true;
-        user?.favorites.push([documentID, documentType]);
+        user.favorites.push([documentID, documentType]);
     }
 
     await users.updateOne(
@@ -60,7 +60,7 @@ export default async function toggleDocumentInFavorites(
         },
         {
             $set: {
-                favorites: user?.favorites,
+                favorites: user.favorites,
             },
         }
     );
