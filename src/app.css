@@ -191,4 +191,9 @@
     div.popup {
         @apply absolute z-50 border-primary bg-primary shadow-lg;
     }
+
+    /* Text */
+    p.section-title {
+        @apply text-2xl font-bold;
+    }
 }
