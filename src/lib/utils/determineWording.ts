@@ -11,6 +11,8 @@ const WORDING: { [key: string]: string } = {
     favorites: "Favorites",
     mode: "Study Mode",
     modes: "Study Modes",
+    test: "Quiz",
+    sort: "Sort",
 };
 
 /**
