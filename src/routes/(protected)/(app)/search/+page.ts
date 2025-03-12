@@ -1,6 +1,7 @@
 import type { PublicFolder } from "$lib/database/documents/Folder.js";
 import type { PublicSet } from "$lib/database/documents/Set.js";
 import type { PublicUser } from "$lib/database/documents/User.js";
+import determineWording from "$lib/utils/determineWording.js";
 import type { returnOnly } from "../../api/search/+server.js";
 
 export async function load({ fetch, url }) {
@@ -27,7 +28,7 @@ export async function load({ fetch, url }) {
 
     return {
         query,
-        returnOnly,
+        returnOnly: typeof returnOnly === "string" ? determineWording(`${returnOnly}s`) : "all",
         results,
     };
 }
