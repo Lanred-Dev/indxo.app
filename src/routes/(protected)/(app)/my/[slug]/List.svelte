@@ -12,20 +12,22 @@
 
 <div class="w-full space-y-8">
     {#each groups as [items, name]}
-        <div class="space-y-2">
+        <div class="list-primary">
             {#if typeof name === "string" && name.length > 0}
                 <p class="text-dark text-xl font-bold">{name}</p>
             {/if}
 
-            <div class="space-y-2">
+            <ul>
                 {#each items as item}
-                    {#if determineDocumentType(item) === "folder"}
-                        <FolderCard {...item as PublicFolder} />
-                    {:else if determineDocumentType(item) === "set"}
-                        <SetCard {...item as PublicSet} />
-                    {/if}
+                    <li>
+                        {#if determineDocumentType(item) === "folder"}
+                            <FolderCard {...item as PublicFolder} />
+                        {:else if determineDocumentType(item) === "set"}
+                            <SetCard {...item as PublicSet} />
+                        {/if}
+                    </li>
                 {/each}
-            </div>
+            </ul>
         </div>
     {/each}
 </div>
