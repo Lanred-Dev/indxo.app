@@ -4,21 +4,18 @@
     let { _id, name, subject, description, terms }: PublicSet = $props();
 </script>
 
-<div class="primary inline-block w-full border border-primary">
-    <a
-        class="flex h-full w-full flex-col justify-between gap-4 overflow-hidden px-8 py-6 [&>p]:leading-tight"
-        href="/set/{_id}"
-    >
+<div class="inline-block w-full">
+    <a class="secondary h-full w-full space-y-2 overflow-hidden" href="/set/{_id}">
         <div class="w-full">
-            <p class="w-full overflow-hidden overflow-ellipsis text-xl font-bold">{name}</p>
-
-            <div class="[&>p]:text-dark flex items-center gap-2 [&>p]:text-sm">
+            <div class="[&>p]:text-dark flex items-center gap-2 [&>p]:leading-none">
                 {#if subject.length > 0}
                     <p>{subject}</p>
                 {/if}
 
-                <p>{terms.length} {terms.length === 1 ? "term" : "terms"}</p>
+                <p class="leading-tight">{terms.length} {terms.length === 1 ? "term" : "terms"}</p>
             </div>
+
+            <p class="w-full overflow-hidden overflow-ellipsis text-2xl font-bold">{name}</p>
         </div>
 
         <p class="text-light line-clamp-1 overflow-hidden overflow-ellipsis">{description}</p>
