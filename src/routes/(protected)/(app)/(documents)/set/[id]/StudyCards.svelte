@@ -1,9 +1,8 @@
 <script lang="ts">
     import type { PublicSet, Term } from "$lib/database/documents/Set";
 
-    let { terms }: PublicSet = $props();
-
-    let actualTerms: Term[] = $state(terms);
+    let { set, activity }: { set: PublicSet; activity: string } = $props();
+    let actualTerms: Term[] = $state(set.terms);
     let showDescription: boolean = $state(false);
     let currentTermIndex: number = $state(0);
     let currentTerm: Term = $derived(actualTerms[currentTermIndex]);
@@ -30,7 +29,11 @@
             return;
 
         showDescription = false;
-        currentTermIndex += direction;
+
+        if (activity === "study") {
+            currentTermIndex += direction;
+        } else {
+        }
     }
 
     /**
@@ -70,17 +73,17 @@
 {#if actualTerms.length === 0}
     <p class="my-20 text-center text-lg font-bold md:my-24">This set has no terms</p>
 {:else}
-    <div class="studyCards my-20 w-full space-y-4 md:my-24 md:w-4/5 2xl:w-8/12">
+    <div class="studyCards w-full space-y-4 2xl:w-8/12">
         <div class="w-full">
             <button
-                class="relative aspect-[1.6] max-h-96 w-full overflow-y-auto rounded-primary border border-primary bg-primary-200 p-6 shadow-2xl sm:aspect-[1.9]"
+                class="relative aspect-[1.6] max-h-96 w-full overflow-y-auto rounded-primary border border-primary bg-primary-200 p-6 shadow-xl sm:aspect-[2]"
                 onclick={() => (showDescription = !showDescription)}
             >
                 {#if showDescription}
                     <p class="text-light x-center top-6">{currentTerm.term}</p>
                 {/if}
 
-                <p class="text-2xl">
+                <p class="text-3xl">
                     {#if showDescription}
                         {currentTerm.definition}
                     {:else}
@@ -99,8 +102,10 @@
                 >
                     <img
                         class="relative size-8 transition-transform group-hover:-translate-x-0.5 group-hover:scale-105"
-                        src="/icons/general/LeftArrow.svg"
-                        alt="Previous"
+                        src={activity === "sort"
+                            ? "/icons/general/X.svg"
+                            : "/icons/general/LeftArrow.svg"}
+                        alt={activity === "sort" ? "X" : "Previous"}
                     />
                 </button>
 
@@ -115,8 +120,10 @@
                 >
                     <img
                         class="relative size-8 transition-transform group-hover:translate-x-0.5 group-hover:scale-105"
-                        src="/icons/general/RightArrow.svg"
-                        alt="Next"
+                        src={activity === "sort"
+                            ? "/icons/general/Check.svg"
+                            : "/icons/general/RightArrow.svg"}
+                        alt={activity === "sort" ? "Check" : "Next"}
                     />
                 </button>
             </div>

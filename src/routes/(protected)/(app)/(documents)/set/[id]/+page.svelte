@@ -4,6 +4,8 @@
     import StudyCards from "./StudyCards.svelte";
     import type { PublicSet } from "$lib/database/documents/Set";
     import { onMount } from "svelte";
+    import Header from "./Header.svelte";
+    import StudyModeSelector from "./StudyModeSelector.svelte";
 
     let { data } = $props();
 
@@ -30,22 +32,15 @@
         button={["Go back", "/"]}
     />
 {:else}
-    <div>
-        {#if data.set?.subject.length ?? 0 > 0}
-            <a
-                class="text-light text-xl leading-tight"
-                href="/search?query={data.set?.subject}&returnOnly=set">{data.set?.subject}</a
-            >
-        {/if}
-
-        <h1 class="text-3xl font-bold leading-none md:text-5xl">{data.set?.name}</h1>
-    </div>
-
-    <StudyCards {...data.set as PublicSet} />
-
-    <Info
-        hasEditPermission={data.hasEditPermission ?? false}
-        didFavorite={data.didFavorite ?? false}
+    <Header
         set={data.set as PublicSet}
+        isFavorite={data.isFavorite ?? false}
+        hasEditPermission={data.hasEditPermission ?? false}
     />
+
+    <StudyCards set={data.set as PublicSet} activity="study" />
+
+    <Info {...data.set as PublicSet} />
+
+    <StudyModeSelector />
 {/if}
