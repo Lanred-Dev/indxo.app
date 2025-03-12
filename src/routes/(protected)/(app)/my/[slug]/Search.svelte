@@ -39,6 +39,8 @@
 </script>
 
 <div class="flex w-full items-center gap-4 pb-16 pt-12">
+    <Dropdown bind:currentValue={sortFilterDropdownValue} items={sortFilters} />
+
     <div class="input-primary flex-center w-full gap-2">
         <img class="size-6" src="/icons/general/Search.svg" alt="Search" />
 
@@ -49,6 +51,4 @@
             bind:value={searchQuery}
         />
     </div>
-
-    <Dropdown bind:currentValue={sortFilterDropdownValue} items={sortFilters} />
 </div>
