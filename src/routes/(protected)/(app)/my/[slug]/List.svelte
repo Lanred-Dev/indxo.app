@@ -10,14 +10,14 @@
     let groups: group[] = $props();
 </script>
 
-<div class="w-full space-y-8">
+<div class="w-full space-y-10">
     {#each groups as [items, name]}
-        <div class="space-y-2">
+        <div>
             {#if typeof name === "string" && name.length > 0}
-                <p class="text-dark text-xl font-bold">{name}</p>
+                <p class="section-title mb-3">{name}</p>
             {/if}
 
-            <div class="space-y-2">
+            <div class="space-y-2.5">
                 {#each items as item}
                     {#if determineDocumentType(item) === "folder"}
                         <FolderCard {...item as PublicFolder} />
