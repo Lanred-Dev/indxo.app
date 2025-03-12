@@ -7,7 +7,7 @@
 <div class="inline-block w-full">
     <a class="secondary h-full w-full space-y-2 overflow-hidden" href="/set/{_id}">
         <div class="w-full">
-            <div class="[&>p]:text-dark flex items-center gap-2 [&>p]:leading-none">
+            <div class="[&>p]:text-dark flex items-center gap-4 [&>p]:leading-none">
                 {#if subject.length > 0}
                     <p>{subject}</p>
                 {/if}
