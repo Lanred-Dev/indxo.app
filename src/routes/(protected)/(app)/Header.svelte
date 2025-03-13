@@ -148,7 +148,7 @@
         </button>
     </div>
 
-    <div class="input-primary flex-center w-[40vw] gap-2">
+    <div class="input-primary flex-center x-center y-center w-[40vw] gap-2">
         <img class="size-5" src="/icons/general/Search.svg" alt="Search" />
 
         <input
@@ -233,7 +233,7 @@
                 </li>
             </ul>
 
-            <button class="button-navigation !bg-button-danger" onclick={() => signOut()}>
+            <button class="button-navigation hover:!bg-button-alert" onclick={() => signOut()}>
                 <img src="/icons/navigation/LogOut.svg" alt="Log out" />
                 <span>Log out</span>
             </button>
