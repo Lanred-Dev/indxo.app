@@ -60,11 +60,15 @@
             {/if}
 
             <button onclick={toggleSetInFavorites}>
-                <img class="size-7" src="/icons/general/Star.svg" alt="Favorite" />
+                <img
+                    class="size-7"
+                    src={isFavorite ? "/icons/general/StarColored.svg" : "/icons/general/Star.svg"}
+                    alt="Favorite"
+                />
             </button>
 
             <button onclick={deleteSet}>
-                <img class="size-7" src="/icons/general/Trash.svg" alt="Delete" />
+                <img class="size-7" src="/icons/general/TrashColored.svg" alt="Delete" />
             </button>
         </div>
     </div>

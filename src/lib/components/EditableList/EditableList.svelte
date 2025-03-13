@@ -157,7 +157,7 @@
         {/each}
     </ol>
 
-    <button class="primary w-full" onclick={() => addItem()} type="button">
+    <button class="button-attention w-full" onclick={() => addItem()} type="button">
         <img src="/icons/general/Plus.svg" alt="Plus" />
         <span>{addText}</span>
     </button>

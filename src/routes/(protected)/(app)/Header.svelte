@@ -178,7 +178,7 @@
 
     {#if isSearching && searchQuery.length > 0}
         <div
-            class="x-center popup top-[90%] w-[40vw]"
+            class="x-center container-popup top-[90%] w-[40vw]"
             onmouseenter={() => {
                 isSearching = true;
                 focusedOnSearchResults = true;
@@ -205,7 +205,7 @@
 
     {#if showAccountInfo}
         <div
-            class="popup right-10 top-[90%] space-y-1 !px-1 !pb-1"
+            class="container-popup right-10 top-[90%] space-y-1 !px-1 !pb-1"
             onmouseenter={() => (focusedOnAccountInfo = true)}
             onmouseleave={() => (focusedOnAccountInfo = false)}
             role="region"
@@ -226,14 +226,14 @@
 
             <ul>
                 <li>
-                    <a class="navigation-primary" href="/settings">
+                    <a class="button-navigation" href="/settings">
                         <img src="/icons/navigation/Settings.svg" alt="Settings" />
                         <span>Settings</span>
                     </a>
                 </li>
             </ul>
 
-            <button class="navigation-primary !bg-button-danger" onclick={() => signOut()}>
+            <button class="button-navigation !bg-button-danger" onclick={() => signOut()}>
                 <img src="/icons/navigation/LogOut.svg" alt="Log out" />
                 <span>Log out</span>
             </button>

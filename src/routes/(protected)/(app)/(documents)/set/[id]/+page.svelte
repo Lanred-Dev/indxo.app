@@ -5,9 +5,12 @@
     import type { PublicSet } from "$lib/database/documents/Set";
     import { onMount } from "svelte";
     import Header from "./Header.svelte";
-    import StudyModeSelector from "./StudyModeSelector.svelte";
+    import ModeSelector from "./ModeSelector.svelte";
+    import { writable, type Writable } from "svelte/store";
 
     let { data } = $props();
+
+    let mode: Writable<string> = writable("cards");
 
     onMount(async () => {
         await fetch(`/api/documents/set/${data.set?._id}/open`);
@@ -38,9 +41,9 @@
         hasEditPermission={data.hasEditPermission ?? false}
     />
 
-    <StudyCards set={data.set as PublicSet} activity="study" />
+    <StudyCards set={data.set as PublicSet} {mode} />
 
     <Info {...data.set as PublicSet} />
 
-    <StudyModeSelector />
+    <ModeSelector id={data.set?._id.toString() ?? ""} {mode} />
 {/if}

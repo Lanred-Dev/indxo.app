@@ -14,7 +14,7 @@
     {#each groups as [items, name]}
         <div class="list-primary">
             {#if typeof name === "string" && name.length > 0}
-                <p>{name}</p>
+                <p class="list-title">{name}</p>
             {/if}
 
             <ul>

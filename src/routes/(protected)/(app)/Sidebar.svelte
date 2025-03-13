@@ -22,9 +22,9 @@
         <ul>
             {#each links as { url, text, icon }}
                 <li>
-                    <a class="navigation-primary" href={url}>
+                    <a class="button-navigation" href={url}>
                         <img src={icon} alt={text} />
-                        <span class="text-nowrap">{text}</span>
+                        <span>{text}</span>
                     </a>
                 </li>
             {/each}

@@ -8,4 +8,4 @@
     <p class="text-light text-lg">{text}</p>
 </div>
 
-<a class="primary block w-fit" href={button[1]}>{button[0]}</a>
+<a class="button-primary block w-fit" href={button[1]}>{button[0]}</a>

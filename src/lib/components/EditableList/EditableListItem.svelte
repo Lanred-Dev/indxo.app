@@ -45,7 +45,7 @@
 </script>
 
 <div
-    class="editableListItem primary flex flex-col gap-3 border border-primary px-8 py-6"
+    class="editableListItem container-primary flex flex-col gap-3 px-8 py-6"
     data-id={id}
     data-value={currentValue}
     data-hasValue={hasValue}
@@ -78,13 +78,13 @@
         {#each properties as { type, placeholder }, index}
             {#if type === "input"}
                 <input
-                    class="primary flex-grow !bg-primary-300"
+                    class="input-primary flex-grow"
                     {placeholder}
                     bind:value={properties[index].value}
                 />
             {:else if type === "textarea"}
                 <textarea
-                    class="primary min-h-28 w-full resize-none !bg-primary-300"
+                    class="input-primary min-h-28 w-full resize-none"
                     {placeholder}
                     bind:value={properties[index].value}
                 ></textarea>

@@ -67,7 +67,7 @@
     }
 
     *::placeholder {
-        @apply select-none overflow-visible;
+        @apply select-none overflow-visible text-primary-50;
     }
 
     img {
@@ -107,99 +107,86 @@
 }
 
 @layer components {
-    button.primary,
-    a.primary,
-    button.secondary,
-    a.secondary,
-    input.primary,
-    textarea.primary,
-    select.primary,
+    button.button-attention,
+    a.button-attention,
+    button.button-primary,
+    a.button-primary,
+    input.input-primary,
+    textarea.input-primary,
+    select.input-primary,
     button.input-primary,
     div.input-primary,
-    a.navigation-primary,
-    button.navigation-primary {
-        @apply rounded-button px-3 py-2 text-lg text-primary;
+    a.button-navigation,
+    button.button-navigation {
+        @apply rounded-button border border-primary px-3 py-2 text-lg text-primary;
     }
 
-    /* navigation-primary does not have borders! Thats why this statement is seperate. */
-    button.primary,
-    a.primary,
-    input.primary,
-    textarea.primary,
-    select.primary,
-    button.input-primary,
-    div.input-primary {
-        @apply border border-primary;
+    a.button-navigation img,
+    button.button-navigation img,
+    button.button-primary img,
+    a.button-primary img,
+    button.button-attention img,
+    a.button-attention img {
+        @apply size-7;
     }
 
-    /* Primary button */
-    button.primary:has(img),
-    a.primary:has(img) {
-        @apply flex-center gap-2;
-    }
-
-    button.primary,
-    a.primary {
+    button.button-attention,
+    a.button-attention {
         @apply bg-button-primary;
     }
 
-    button.primary img,
-    a.primary img {
-        @apply size-7;
+    button.button-attention:has(img),
+    a.button-attention:has(img) {
+        @apply flex-center gap-2;
     }
 
-    /* Secondary button */
-    button.secondary,
-    a.secondary {
-        @apply bg-primary-400 shadow-md;
+    button.button-primary,
+    a.button-primary {
+        @apply !border-none bg-primary-300 shadow-md transition-all duration-200 hover:bg-primary-400 hover:shadow-sm disabled:pointer-events-none disabled:opacity-50;
     }
 
-    /* Navigation button */
-    a.navigation-primary,
-    button.navigation-primary {
-        @apply flex w-full items-center gap-2 transition-colors hover:bg-primary-400;
+    a.button-navigation,
+    button.button-navigation {
+        @apply flex w-full items-center gap-2 text-nowrap !border-none transition-colors hover:bg-primary-400;
     }
 
-    a.navigation-primary img,
-    button.navigation-primary img,
-    button.secondary img,
-    a.secondary img {
-        @apply size-7;
-    }
-
-    /* Primary input */
-    input.primary,
-    textarea.primary,
-    select.primary,
+    input.input-primary,
+    textarea.input-primary,
+    select.input-primary,
     button.input-primary,
     div.input-primary {
-        @apply bg-primary-500 placeholder:text-primary-200 focus:border-transparent focus:outline-none focus:ring-1 focus:ring-focus;
+        @apply bg-primary-200 focus:border-transparent focus:outline-none focus:ring-1 focus:ring-focus;
     }
 
     /* Containers */
-    div.primary,
-    div.popup {
+    div.container-primary,
+    div.container-popup {
         @apply overflow-hidden rounded-primary border p-4;
     }
 
-    div.primary {
+    div.container-primary {
         @apply border-primary bg-primary-500;
     }
 
-    div.popup {
+    div.container-popup {
         @apply absolute z-50 border-primary bg-primary shadow-lg;
     }
 
-    div.list-primary p {
-        @apply section-title mb-3;
+    div.list-primary p.list-title {
+        @apply text-light mb-3 text-xl font-bold;
     }
 
+    div.list-primary,
     div.list-primary ul {
+        @apply w-full;
+    }
+
+    div.list-primary ul:not(.flex) {
         @apply space-y-2.5;
     }
 
-    /* Text */
-    p.section-title {
-        @apply text-2xl font-bold;
+    div.list-primary ul.flex,
+    div.list-primary ul.grid {
+        @apply flex-wrap gap-4;
     }
 }

@@ -1,7 +1,8 @@
 <script lang="ts">
     import type { PublicSet, Term } from "$lib/database/documents/Set";
+    import type { Writable } from "svelte/store";
 
-    let { set, activity }: { set: PublicSet; activity: string } = $props();
+    let { set, mode }: { set: PublicSet; mode: Writable<string> } = $props();
     let actualTerms: Term[] = $state(set.terms);
     let showDescription: boolean = $state(false);
     let currentTermIndex: number = $state(0);
@@ -30,10 +31,7 @@
 
         showDescription = false;
 
-        if (activity === "study") {
-            currentTermIndex += direction;
-        } else {
-        }
+        currentTermIndex += direction;
     }
 
     /**
@@ -46,7 +44,7 @@
         // Only register events if the user is not focused on anything or if they are focused on the study cards
         if (
             document.activeElement?.tagName !== "BODY" &&
-            !(event.target as HTMLElement | null)?.closest(".studyCards")
+            !(event.target as HTMLElement | null)?.closest("#study")
         )
             return;
 
@@ -70,10 +68,20 @@
 
 <svelte:window onkeydown={handleKeyboardShortcuts} />
 
+{#snippet navigationButton(icon: string, text: string, disabled: number, direction: -1 | 1)}
+    <button
+        class="button-primary group !rounded-full !p-3.5"
+        disabled={currentTermIndex === disabled}
+        onclick={() => cycle(direction)}
+    >
+        <img class="size-9" src={icon} alt={text} />
+    </button>
+{/snippet}
+
 {#if actualTerms.length === 0}
     <p class="my-20 text-center text-lg font-bold md:my-24">This set has no terms</p>
 {:else}
-    <div class="studyCards w-full space-y-4 2xl:w-8/12">
+    <div class="w-full space-y-4 2xl:w-8/12" id="#study">
         <div class="w-full">
             <button
                 class="relative aspect-[1.6] max-h-96 w-full overflow-y-auto rounded-primary border border-primary bg-primary-200 p-6 shadow-xl sm:aspect-[2]"
@@ -95,37 +103,23 @@
 
         <div class="relative w-full">
             <div class="flex-center gap-1">
-                <button
-                    class="primary group transition-opacity disabled:pointer-events-none disabled:opacity-50"
-                    disabled={currentTermIndex === 0}
-                    onclick={() => cycle(-1)}
-                >
-                    <img
-                        class="relative size-8 transition-transform group-hover:-translate-x-0.5 group-hover:scale-105"
-                        src={activity === "sort"
-                            ? "/icons/general/X.svg"
-                            : "/icons/general/LeftArrow.svg"}
-                        alt={activity === "sort" ? "X" : "Previous"}
-                    />
-                </button>
+                {@render navigationButton(
+                    $mode === "sort" ? "/icons/general/X.svg" : "/icons/general/LeftArrow.svg",
+                    $mode === "sort" ? "X" : "Previous",
+                    0,
+                    -1
+                )}
 
                 <p class="w-20 text-center text-lg font-bold">
                     {currentTermIndex + 1}<span class="font-normal">/</span>{actualTerms.length}
                 </p>
 
-                <button
-                    class="primary group transition-opacity disabled:pointer-events-none disabled:opacity-50"
-                    disabled={currentTermIndex === actualTerms.length - 1}
-                    onclick={() => cycle(1)}
-                >
-                    <img
-                        class="relative size-8 transition-transform group-hover:translate-x-0.5 group-hover:scale-105"
-                        src={activity === "sort"
-                            ? "/icons/general/Check.svg"
-                            : "/icons/general/RightArrow.svg"}
-                        alt={activity === "sort" ? "Check" : "Next"}
-                    />
-                </button>
+                {@render navigationButton(
+                    $mode === "sort" ? "/icons/general/Check.svg" : "/icons/general/RightArrow.svg",
+                    $mode === "sort" ? "Check" : "Next",
+                    actualTerms.length - 1,
+                    1
+                )}
             </div>
 
             <div class="flex-center y-center absolute right-8 gap-2">

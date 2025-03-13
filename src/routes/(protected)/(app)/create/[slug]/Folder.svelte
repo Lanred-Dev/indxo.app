@@ -107,7 +107,7 @@
         <div class="grid grid-cols-2 gap-4">
             {#each sets as set}
                 <div
-                    class="primary flex w-full justify-between gap-6 border border-primary px-8 py-6 [&>p]:leading-tight"
+                    class="container-primary flex w-full justify-between gap-6 px-8 py-6 [&>p]:leading-tight"
                 >
                     <div class="space-y-2">
                         <div>
