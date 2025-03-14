@@ -2,34 +2,24 @@
     import { twMerge } from "tailwind-merge";
 
     let {
-        placeholder,
         classes,
         text,
         icons = ["/icons/general/Check.svg", "/icons/general/X.svg"],
+        value = $bindable(false),
     }: {
-        placeholder?: boolean;
         classes?: string;
         icons?: [string, string];
         text?: [string, string];
+        value?: boolean;
     } = $props();
-
-    let currentValue: boolean = $state(placeholder || false);
 </script>
 
-<div class={twMerge("checkbox relative", classes)} data-value={currentValue}>
-    <button
-        class="input-primary flex-center gap-1 {!text ? '!p-2' : ''}"
-        onclick={() => (currentValue = !currentValue)}
-        type="button"
-    >
-        <img
-            class="size-7"
-            src={currentValue ? icons[0] : icons[1]}
-            alt={currentValue ? "True" : "False"}
-        />
+<div class={twMerge("checkbox relative", classes)} data-value={value}>
+    <button class="input-primary" onclick={() => (value = !value)} type="button">
+        <img class="size-7" src={value ? icons[0] : icons[1]} alt={value ? "True" : "False"} />
 
         {#if text}
-            <p class="select-none">{currentValue ? text[0] : text[1]}</p>
+            <span class="select-none">{value ? text[0] : text[1]}</span>
         {/if}
     </button>
 </div>

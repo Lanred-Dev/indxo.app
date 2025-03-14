@@ -10,15 +10,23 @@
         classes,
         visible = $bindable(false),
         items = [],
-        currentValue = $bindable(items[0] ?? { value: "" }),
+        value = $bindable(),
         ItemComponent = DropdownItem,
     }: {
         classes?: string;
         visible?: boolean;
         items?: DropdownItemProps[];
-        currentValue?: DropdownItemProps;
+        value?: string;
         ItemComponent?: Component<DropdownItemProps, {}, "">;
     } = $props();
+
+    let { text, image }: DropdownItemProps = $derived(
+        items.find((item, index) => {
+            if (typeof value === "string" && value.length > 0) return item.value === value;
+
+            return index === 0;
+        }) ?? { value: "" }
+    );
 
     /**
      * Handles when a dropdown item is clicked and updates the current value.
@@ -26,32 +34,22 @@
      * @param value The value of the clicked item.
      * @returns never
      */
-    function onItemClicked(value: DropdownItemProps) {
-        if (value.isLink) goto(value.value);
+    function onItemClicked({ isLink, value: newValue }: DropdownItemProps) {
+        if (isLink) goto(newValue);
 
-        currentValue = value;
+        value = newValue;
         visible = false;
     }
 </script>
 
-<div
-    class={twMerge("dropdown relative min-w-fit text-lg", classes)}
-    data-value={currentValue.value}
->
-    <button
-        class="input-primary relative flex items-center gap-1 {!currentValue.text &&
-        currentValue.image
-            ? '!p-2'
-            : ''}"
-        onclick={() => (visible = !visible)}
-        type="button"
-    >
-        {#if currentValue.image}
-            <img class="size-7" src={currentValue.image} alt={currentValue.text} />
+<div class={twMerge("dropdown relative min-w-fit text-lg", classes)} data-value={value}>
+    <button class="input-primary" onclick={() => (visible = !visible)} type="button">
+        {#if image}
+            <img class="size-7" src={image} alt={text} />
         {/if}
 
-        {#if currentValue.text}
-            <span class="text-nowrap">{currentValue.text}</span>
+        {#if text}
+            <span class="text-nowrap">{text}</span>
         {/if}
 
         <img
@@ -73,6 +71,7 @@
                             class="button-navigation !py-1"
                             role="menuitem"
                             onclick={() => onItemClicked(item)}
+                            type="button"
                         >
                             <ItemComponent {...item} />
                         </button>

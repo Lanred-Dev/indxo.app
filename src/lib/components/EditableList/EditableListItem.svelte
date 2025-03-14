@@ -23,7 +23,7 @@
 
     let { id, properties = $bindable([]), actionButtons = [] }: item = $props();
 
-    let currentValue: string = $derived.by(() => {
+    let value: string = $derived.by(() => {
         const actualProperties: { [id: string]: string } = {};
 
         for (const { id, value = "" } of properties) {
@@ -47,7 +47,7 @@
 <div
     class="editableListItem container-primary flex flex-col gap-3 px-8 py-6"
     data-id={id}
-    data-value={currentValue}
+    data-value={value}
     data-hasValue={hasValue}
 >
     <div class="flex items-center justify-between px-3">
