@@ -147,7 +147,7 @@
 
     a.button-navigation,
     button.button-navigation {
-        @apply flex w-full items-center gap-2 text-nowrap !border-none transition-colors hover:bg-primary-400;
+        @apply flex w-full items-center gap-2 text-nowrap !border-none transition-all duration-200 hover:bg-primary-400;
     }
 
     input.input-primary,
@@ -155,7 +155,7 @@
     select.input-primary,
     button.input-primary,
     div.input-primary {
-        @apply bg-primary-200 focus:border-transparent focus:outline-none focus:ring-1 focus:ring-focus;
+        @apply flex items-center gap-1 bg-primary-200 focus:border-transparent focus:outline-none focus:ring-1 focus:ring-focus;
     }
 
     /* Containers */
