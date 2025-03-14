@@ -21,6 +21,7 @@ export interface User extends Document {
     favorites: favorite[];
     homeSectionPreferences: string[];
     openedSets: [ObjectId, number][];
+    meta: { [key: string]: any };
 }
 
 export interface PublicUser {
@@ -42,11 +43,12 @@ export interface SimpleUser {
     image: string;
 }
 
-export const fields: [string, "string" | "boolean" | "array"][] = [
+export const fields: [string, "string" | "boolean" | "array" | "dictionary"][] = [
     ["banned", "boolean"],
     ["sets", "array"],
     ["folders", "array"],
     ["favorites", "array"],
     ["homeSectionPreferences", "array"],
     ["openedSets", "array"],
+    ["meta", "dictionary"],
 ];
