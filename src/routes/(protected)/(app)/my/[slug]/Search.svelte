@@ -8,18 +8,12 @@
         searchQuery = $bindable(""),
         userSortFilter = $bindable("created"),
         hideSubjectFilter = false,
-        defaultFilter = "created",
     }: {
         searchQuery: string;
         userSortFilter: sortFilter;
         hideSubjectFilter?: boolean;
-        defaultFilter?: sortFilter;
     } = $props();
 
-    let sortFilterDropdownValue: DropdownItemProps = $state({
-        value: defaultFilter,
-        text: defaultFilter.charAt(0).toUpperCase() + defaultFilter.slice(1),
-    });
     let sortFilters: DropdownItemProps[] = $derived.by(() => {
         const filters: DropdownItemProps[] = [
             { value: "created", text: "Created" },
@@ -32,14 +26,10 @@
 
         return filters;
     });
-
-    $effect(() => {
-        userSortFilter = sortFilterDropdownValue.value as sortFilter;
-    });
 </script>
 
 <div class="flex w-full items-center gap-4 pb-16 pt-12">
-    <Dropdown bind:currentValue={sortFilterDropdownValue} items={sortFilters} />
+    <Dropdown bind:value={userSortFilter} items={sortFilters} />
 
     <div class="input-primary flex-center w-full gap-2">
         <img class="size-6" src="/icons/general/Search.svg" alt="Search" />
