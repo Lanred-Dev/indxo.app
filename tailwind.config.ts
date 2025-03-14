@@ -36,7 +36,7 @@ export default {
                 button: {
                     primary: "#5E8AB4",
                     secondary: "#D4D9DE",
-                    danger: "#fd5a51",
+                    alert: "#f26a63",
                 },
 
                 divider: "#E7E7E7",
