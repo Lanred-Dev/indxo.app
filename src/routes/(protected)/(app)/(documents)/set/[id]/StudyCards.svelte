@@ -44,7 +44,7 @@
         // Only register events if the user is not focused on anything or if they are focused on the study cards
         if (
             document.activeElement?.tagName !== "BODY" &&
-            !(event.target as HTMLElement | null)?.closest("#study")
+            !(event.target as HTMLElement | null)?.closest(".study")
         )
             return;
 
@@ -81,7 +81,15 @@
 {#if actualTerms.length === 0}
     <p class="my-20 text-center text-lg font-bold md:my-24">This set has no terms</p>
 {:else}
-    <div class="w-full space-y-4 2xl:w-8/12" id="#study">
+    <div class="study w-full 2xl:w-8/12">
+        {#if $mode === "sort"}
+            <div class="mb-1 flex items-center justify-between px-3">
+                <p class="text-red-400">0 still learning</p>
+
+                <p class="text-green-400">know 0</p>
+            </div>
+        {/if}
+
         <div class="w-full">
             <button
                 class="relative aspect-[1.6] max-h-96 w-full overflow-y-auto rounded-primary border border-primary bg-primary-200 p-6 shadow-xl sm:aspect-[2]"
@@ -101,7 +109,7 @@
             </button>
         </div>
 
-        <div class="relative w-full">
+        <div class="relative mt-4 w-full">
             <div class="flex-center gap-1">
                 {@render navigationButton(
                     $mode === "sort" ? "/icons/general/X.svg" : "/icons/general/LeftArrow.svg",
