@@ -161,15 +161,15 @@
     /* Containers */
     div.container-primary,
     div.container-popup {
-        @apply overflow-hidden rounded-primary border p-4;
+        @apply overflow-hidden rounded-primary border border-primary p-4;
     }
 
     div.container-primary {
-        @apply border-primary bg-primary-500;
+        @apply bg-primary-500;
     }
 
     div.container-popup {
-        @apply absolute z-50 border-primary bg-primary shadow-lg;
+        @apply absolute z-50 bg-primary shadow-lg;
     }
 
     div.list-primary p.list-title {
