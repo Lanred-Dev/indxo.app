@@ -6,6 +6,7 @@
     import type { PublicSet } from "$lib/database/documents/Set";
     import { millisecondsToMinutes } from "date-fns";
     import determineWording from "$lib/utils/determineWording";
+    import { afterNavigate } from "$app/navigation";
 
     let { data } = $props();
 
@@ -108,6 +109,12 @@
 
         return groupsActual;
     });
+
+    afterNavigate((navigation) => {
+        if (!navigation.to?.url.pathname.includes("/my/")) return;
+
+        userSortFilter = type === "favorites" ? "alphabetical" : "created";
+    });
 </script>
 
 <svelte:head>
@@ -123,7 +130,6 @@
     bind:searchQuery
     bind:userSortFilter
     hideSubjectFilter={type === "folders" ? true : false}
-    defaultFilter={type === "favorites" ? "alphabetical" : "created"}
 />
 
 <List {...groups} />
