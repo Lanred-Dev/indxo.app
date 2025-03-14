@@ -42,7 +42,22 @@ async function updateUserWithFields(email: string) {
 
     if (!user) return;
 
-    const missingFields = fields.filter((field) => user[field[0]] === undefined);
+    const missingFields = fields.filter(([key, type]) => {
+        if (!(key in user)) return true;
+
+        const value: any = user[key];
+
+        switch (type) {
+            case "array":
+                return !Array.isArray(value);
+            case "dictionary":
+                return !(typeof value === "object" && !Array.isArray(value));
+            case "string":
+                return typeof value !== "string";
+            case "boolean":
+                return typeof value !== "boolean";
+        }
+    });
 
     await users.updateOne(
         {
@@ -51,10 +66,26 @@ async function updateUserWithFields(email: string) {
         {
             $set: {
                 ...Object.fromEntries(
-                    missingFields.map((field) => [
-                        field[0],
-                        field[1] === "array" ? [] : field[1] === "boolean" ? false : "",
-                    ])
+                    missingFields.map(([key, type]) => {
+                        let value: any;
+
+                        switch (type) {
+                            case "array":
+                                value = [];
+                                break;
+                            case "dictionary":
+                                value = {};
+                                break;
+                            case "string":
+                                value = "";
+                                break;
+                            case "boolean":
+                                value = "";
+                                break;
+                        }
+
+                        return [key, value];
+                    })
                 ),
             },
         }
