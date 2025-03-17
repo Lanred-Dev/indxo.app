@@ -41,7 +41,7 @@
 <div class="list-primary">
     <p class="list-title">{determineWording("modes")}</p>
 
-    <ul class="flex">
+    <ul class="list flex">
         {#each MODES as mode}
             <li class="flex-grow">
                 <button
