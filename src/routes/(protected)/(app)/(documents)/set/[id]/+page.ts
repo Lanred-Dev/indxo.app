@@ -1,12 +1,11 @@
 import type { PublicSet } from "$lib/database/documents/Set";
-import permissionCheck from "$lib/utils/permissionCheck.js";
 
 export async function load({ fetch, params }) {
     const response = await fetch(`/api/documents/set/${params.id}`);
 
     if (response.status === 403) {
         return {
-            permission: false,
+            canView: false,
         };
     }
 
@@ -15,11 +14,14 @@ export async function load({ fetch, params }) {
     const isFavorite: boolean = await (
         await fetch(`/api/documents/${params.id}/is-favorite`)
     ).json();
+    const hasPermission: boolean = await (
+        await fetch(`/api/documents/set/${params.id}/has-permission`)
+    ).json();
 
     return {
+        canView: true,
         set,
         isFavorite,
-        permission: true,
-        hasEditPermission: permissionCheck(set, userID, true),
+        hasPermission,
     };
 }

@@ -18,7 +18,7 @@
 </script>
 
 <svelte:head>
-    {#if data.permission !== false}
+    {#if data.canView !== false}
         <title>{data.set?.name} by {data.set?.owner?.name}</title>
         <meta name="description" content={data.set?.description} />
         <meta property="og:title" content={data.set?.name} />
@@ -28,7 +28,7 @@
     {/if}
 </svelte:head>
 
-{#if data.permission === false}
+{#if data.canView === false}
     <PageMessage
         title="Sorry, couldn't find that set"
         text="The set you're looking for doesn't exist or you don't have permission to view it."
@@ -38,7 +38,7 @@
     <Header
         set={data.set as PublicSet}
         isFavorite={data.isFavorite ?? false}
-        hasEditPermission={data.hasEditPermission ?? false}
+        hasPermission={data.hasPermission ?? false}
     />
 
     <StudyCards set={data.set as PublicSet} {mode} />

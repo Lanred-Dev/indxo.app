@@ -3,11 +3,11 @@
     import type { PublicSet } from "$lib/database/documents/Set";
 
     let {
-        hasEditPermission,
+        hasPermission,
         isFavorite = $bindable(false),
         set,
     }: {
-        hasEditPermission: boolean;
+        hasPermission: boolean;
         isFavorite: boolean;
         set: PublicSet;
     } = $props();
@@ -53,7 +53,7 @@
         <h1 class="text-3xl font-bold leading-none md:text-5xl">{set?.name}</h1>
 
         <div class="flex-center gap-3">
-            {#if hasEditPermission === true}
+            {#if hasPermission === true}
                 <a href="/set/{set._id}/edit">
                     <img class="size-7" src="/icons/general/Pencil.svg" alt="Edit" />
                 </a>
