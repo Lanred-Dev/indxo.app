@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { PublicSet, Term } from "$lib/database/documents/Set";
-    import type { Writable } from "svelte/store";
+    import { get, type Writable } from "svelte/store";
 
     let { set, mode }: { set: PublicSet; mode: Writable<string> } = $props();
     let actualTerms: Term[] = $state(set.terms);
@@ -30,6 +30,10 @@
             return;
 
         showDescription = false;
+
+        if (get(mode) === "sort") {
+            direction = 1;
+        }
 
         currentTermIndex += direction;
     }
@@ -84,9 +88,8 @@
     <div class="study w-full">
         {#if $mode === "sort"}
             <div class="mb-1 flex items-center justify-between px-3">
-                <p class="text-red-400">0 still learning</p>
-
-                <p class="text-green-400">know 0</p>
+                <p class="text-lg text-red-500">0</p>
+                <p class="text-lg text-green-500">0</p>
             </div>
         {/if}
 
