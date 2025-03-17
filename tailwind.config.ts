@@ -34,7 +34,7 @@ export default {
                 },
 
                 button: {
-                    primary: "#5E8AB4",
+                    primary: "#5685d6",
                     secondary: "#D4D9DE",
                     alert: "#f26a63",
                 },
