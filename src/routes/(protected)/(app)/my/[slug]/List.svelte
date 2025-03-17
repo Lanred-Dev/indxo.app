@@ -17,7 +17,7 @@
                 <p class="list-title">{name}</p>
             {/if}
 
-            <ul>
+            <ul class="list">
                 {#each items as item}
                     <li>
                         {#if determineDocumentType(item) === "folder"}

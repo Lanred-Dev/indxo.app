@@ -4,7 +4,7 @@
     let { _id, name, subject, description, terms }: PublicSet = $props();
 </script>
 
-<a class="button-primary inline-block w-full space-y-2" href="/set/{_id}">
+<a class="button-primary inline-block w-full space-y-2 !px-6 !py-4" href="/set/{_id}">
     <div class="w-full">
         <p class="w-full overflow-hidden overflow-ellipsis text-2xl font-bold">{name}</p>
 

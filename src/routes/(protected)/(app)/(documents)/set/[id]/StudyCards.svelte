@@ -81,7 +81,7 @@
 {#if actualTerms.length === 0}
     <p class="my-20 text-center text-lg font-bold md:my-24">This set has no terms</p>
 {:else}
-    <div class="study w-full 2xl:w-8/12">
+    <div class="study w-full">
         {#if $mode === "sort"}
             <div class="mb-1 flex items-center justify-between px-3">
                 <p class="text-red-400">0 still learning</p>

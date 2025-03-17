@@ -22,18 +22,18 @@
     let { title, type, cards, linkTo }: section = $props();
 </script>
 
-<div class="w-full space-y-2">
+<div class="list-primary">
     <div class="{linkTo ? 'flex items-center justify-between' : ''} w-full px-3">
-        <p class="text-3xl font-bold">{title}</p>
+        <p class="list-title">{title}</p>
 
         {#if linkTo}
             <a class="text-light text-lg" href={linkTo}>View all</a>
         {/if}
     </div>
 
-    <ul class="list flex w-full gap-2 overflow-hidden">
+    <ul class="list flex !flex-nowrap overflow-x-hidden px-1 pb-2">
         {#each cards as card}
-            <li>
+            <li class="h-full min-w-fit flex-grow">
                 {#if type === "set"}
                     <Set {...card} />
                 {:else if type === "folder"}
@@ -45,7 +45,7 @@
 </div>
 
 <style lang="postcss">
-    .list {
+    .list-primary .list {
         -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 75%, rgba(0, 0, 0, 0));
         mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 75%, rgba(0, 0, 0, 0));
         -webkit-mask-repeat: no-repeat;
