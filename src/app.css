@@ -177,16 +177,16 @@
     }
 
     div.list-primary,
-    div.list-primary ul {
+    div.list-primary ul.list {
         @apply w-full;
     }
 
-    div.list-primary ul:not(.flex) {
+    div.list-primary ul.list:not(.flex) {
         @apply space-y-2.5;
     }
 
-    div.list-primary ul.flex,
-    div.list-primary ul.grid {
+    div.list-primary ul.list.flex:not(.flex-row),
+    div.list-primary ul.list.grid {
         @apply flex-wrap gap-4;
     }
 }
