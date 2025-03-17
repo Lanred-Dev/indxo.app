@@ -116,6 +116,11 @@
     select.input-primary,
     button.input-primary,
     div.input-primary,
+    input.input-secondary,
+    textarea.input-secondary,
+    select.input-secondary,
+    button.input-secondary,
+    div.input-secondary,
     a.button-navigation,
     button.button-navigation {
         @apply rounded-button border border-primary px-3 py-2 text-lg text-primary;
@@ -132,11 +137,13 @@
 
     button.button-attention,
     a.button-attention {
-        @apply bg-button-primary;
+        @apply bg-button-primary shadow-md;
     }
 
     button.button-attention:has(img),
-    a.button-attention:has(img) {
+    a.button-attention:has(img),
+    button.button-primary:has(img),
+    a.button-primary:has(img) {
         @apply flex-center gap-2;
     }
 
@@ -154,8 +161,29 @@
     textarea.input-primary,
     select.input-primary,
     button.input-primary,
+    div.input-primary,
+    input.input-secondary,
+    textarea.input-secondary,
+    select.input-secondary,
+    button.input-secondary,
+    div.input-secondary {
+        @apply flex items-center gap-1 focus:border-transparent focus:outline-none focus:ring-1 focus:ring-focus;
+    }
+
+    input.input-primary,
+    textarea.input-primary,
+    select.input-primary,
+    button.input-primary,
     div.input-primary {
-        @apply flex items-center gap-1 bg-primary-200 focus:border-transparent focus:outline-none focus:ring-1 focus:ring-focus;
+        @apply bg-primary-200;
+    }
+
+    input.input-secondary,
+    textarea.input-secondary,
+    select.input-secondary,
+    button.input-secondary,
+    div.input-secondary {
+        @apply bg-primary-400;
     }
 
     /* Containers */
@@ -165,7 +193,7 @@
     }
 
     div.container-primary {
-        @apply bg-primary-500;
+        @apply bg-primary-200;
     }
 
     div.container-popup {
