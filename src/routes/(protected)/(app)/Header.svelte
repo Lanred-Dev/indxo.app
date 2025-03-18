@@ -135,7 +135,7 @@
 {/snippet}
 
 <header
-    class="relative top-0 flex w-full items-center justify-between bg-primary-300 px-7 py-4 md:px-10"
+    class="relative top-0 flex w-full items-center justify-between bg-accent-light px-7 py-4 md:px-10"
 >
     <div class="flex-center gap-1">
         <button
