@@ -21,8 +21,8 @@ export async function GET({ locals, fetch }) {
     });
 
     return json({
-        type: "set",
+        type: "card",
         linkTo: "/my/recents/",
-        cards: sets,
+        items: sets,
     });
 }

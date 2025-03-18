@@ -5,8 +5,8 @@ export async function GET({ fetch, locals }) {
     const sets: PublicSet[] = await (await fetch(`/api/account/${locals.userID}/sets`)).json();
 
     return json({
-        type: "set",
+        type: "card",
         linkTo: "/my/sets/",
-        cards: sets,
+        items: sets,
     });
 }
