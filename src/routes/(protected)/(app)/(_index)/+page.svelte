@@ -1,6 +1,6 @@
 <script lang="ts">
     import PageMessage from "$lib/components/PageMessage.svelte";
-    import Section from "./Section";
+    import CardSection from "./Sections/Card.svelte";
     import type { PageData } from "./$types";
 
     let { data }: { data: PageData } = $props();
@@ -19,7 +19,9 @@
 {:else}
     <div class="w-full space-y-20">
         {#each data.sections as section}
-            <Section {...section} />
+            {#if section.type === "card"}
+                <CardSection {...section} />
+            {/if}
         {/each}
 
         <p class="text-center">You've reached the end of your feed!</p>
