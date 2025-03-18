@@ -1,4 +1,5 @@
 import type { SimpleUser } from "$lib/database/documents/User.js";
+import determineDocumentType from "$lib/utils/determineDocumentType.js";
 
 export type itemProps = {
     name: string;
@@ -30,7 +31,8 @@ export async function load({ fetch }) {
 
         // Add the `linkTo` property to each item
         for (const item of items) {
-            item.linkTo = `/${type}/${item._id.toString()}`;
+            const documentType = determineDocumentType(item);
+            item.linkTo = `/${documentType}/${item._id.toString()}`;
         }
 
         // Limit the number of cards to 6
