@@ -46,7 +46,7 @@
 </script>
 
 <div
-    class="formInput space-y-1 {type === 'dropdown' || type === 'checkbox'
+    class="formInput space-y-0.5 {type === 'dropdown' || type === 'checkbox'
         ? 'min-w-fit'
         : 'w-full flex-grow'}"
     data-type={type}
