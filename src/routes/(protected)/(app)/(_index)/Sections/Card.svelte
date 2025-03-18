@@ -4,7 +4,7 @@
     let { title, items, linkTo }: sectionProps = $props();
 </script>
 
-{#snippet card({ linkTo, name, description, section, owner }: itemProps)}
+{#snippet card({ linkTo, name, description, owner }: itemProps)}
     <li class="h-full w-full">
         <a class="button-primary inline-block h-full w-full space-y-2 !px-6 !py-4" href={linkTo}>
             <div class="w-full">
@@ -28,7 +28,7 @@
         {/if}
     </div>
 
-    <ul class="list grid grid-cols-2 grid-rows-2 overflow-x-hidden pb-2">
+    <ul class="list grid grid-cols-2 grid-rows-2">
         {#each items as item}
             {@render card(item)}
         {/each}
