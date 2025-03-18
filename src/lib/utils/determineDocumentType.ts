@@ -8,6 +8,7 @@ export default function determineDocumentType(document: {
     icon?: string;
     image?: string;
     subject?: string;
+    [key: string]: any;
 }): "account" | "folder" | "set" {
     if ("icon" in document) return "folder";
     if ("subject" in document) return "set";
