@@ -21,7 +21,12 @@ export interface User extends Document {
     favorites: favorite[];
     homeSectionPreferences: string[];
     openedSets: [ObjectId, number][];
-    meta: { [key: string]: any };
+    setData: [
+        ObjectId,
+        {
+            sorted: [ObjectId, -1 | 1];
+        },
+    ];
 }
 
 export interface PublicUser {
