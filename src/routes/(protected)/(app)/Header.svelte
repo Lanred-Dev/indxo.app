@@ -31,8 +31,6 @@
      * @returns never
      */
     async function search(event: Event) {
-        searchQuery = (event.target as HTMLInputElement)?.value;
-
         // 3 is the minimum search query
         if (searchQuery.length < 3) return (searchResults = []);
 
@@ -155,6 +153,7 @@
             class="w-full border-0 bg-transparent p-0 outline-none focus:ring-0"
             type="text"
             placeholder="Looking for something?"
+            bind:value={searchQuery}
             oninput={search}
             onfocusin={() => {
                 isSearching = true;
