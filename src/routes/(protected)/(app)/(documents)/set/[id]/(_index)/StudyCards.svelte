@@ -13,9 +13,14 @@
     let endOfSortingMessage: string = $derived.by(() => {
         if (!endOfCards || $mode !== "sort") return "";
 
-        const [_, messages] = SORTING_MESSAGES.find(([threshold]) => {
-            return knowTerms.length / actualTerms.length <= threshold;
-        })!;
+        let messages: string[] = [];
+
+        SORTING_MESSAGES.forEach(([threshold, potentialMessages]) => {
+            if (knowTerms.length / actualTerms.length < threshold) return;
+
+            messages = potentialMessages;
+        });
+
         return messages[Math.floor(Math.random() * messages.length)];
     });
 
