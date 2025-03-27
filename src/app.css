@@ -208,7 +208,7 @@
     }
 
     div.list-primary p.list-title {
-        @apply text-light mb-3 pl-3 text-xl font-bold;
+        @apply text-light mb-3 text-xl font-bold;
     }
 
     div.list-primary,
