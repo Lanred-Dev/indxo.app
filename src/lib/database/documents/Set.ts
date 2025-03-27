@@ -4,6 +4,7 @@ import type { Document, ObjectId } from "mongodb";
 import type { SimpleUser } from "./User";
 
 export type Term = {
+    _id: ObjectId;
     term: string;
     definition: string;
     image?: string;
