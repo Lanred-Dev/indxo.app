@@ -5,5 +5,5 @@ import type { Document, ObjectId } from "mongodb";
 export interface Session extends Document {
     _id: ObjectId;
     user: ObjectId;
-    expires: Date;
+    expires: number;
 }
