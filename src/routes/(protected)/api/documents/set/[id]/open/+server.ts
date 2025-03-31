@@ -20,7 +20,7 @@ export async function GET({ params, fetch, locals }) {
         return set[0].toString() !== params.id;
     });
 
-    openedSets.push([new ObjectId(params.id), new Date().getTime()]);
+    openedSets.push([new ObjectId(params.id), Date.now()]);
 
     await users.updateOne(
         { _id: locals.userID },

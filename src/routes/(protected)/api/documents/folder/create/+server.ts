@@ -25,7 +25,7 @@ export async function POST({ request, locals }) {
         isPublic,
         sets: [],
         owner: locals.userID,
-        created: new Date().getTime(),
+        created: Date.now(),
     });
 
     await users.updateOne(
