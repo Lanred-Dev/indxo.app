@@ -127,12 +127,38 @@
         cardFlipped = !cardFlipped;
     }
 
-    $effect(() => {
+    /**
+     * Restarts the study session by resetting all the state variables.
+     *
+     * @returns never
+     */
+    function restart() {
         endOfCards = false;
+        currentTermIndex = 0;
         cardFlipped = false;
         knowTerms = [];
         stillLearningTerms = [];
-        unsortedTerms = [];
+
+        if ($mode === "sort") {
+            unsortedTerms = [...Array(actualTerms.length).keys()];
+            shuffle();
+        } else {
+            unsortedTerms = [];
+        }
+    }
+
+    function studyStillLearningTerms() {
+        if (stillLearningTerms.length === 0) return;
+
+        actualTerms = actualTerms.filter((_term, index) => {
+            return stillLearningTerms.includes(index);
+        });
+
+        restart();
+    }
+
+    $effect(() => {
+        restart();
 
         switch ($mode) {
             case "sort":
@@ -144,11 +170,7 @@
 <svelte:window onkeydown={handleKeyboardShortcuts} />
 
 {#snippet navigationButton(icon: string, text: string, disabled: boolean, direction: -1 | 1)}
-    <button
-        class="button-primary group !rounded-full !p-3.5"
-        {disabled}
-        onclick={() => cycle(direction)}
-    >
+    <button class="button-primary !rounded-full !p-3.5" {disabled} onclick={() => cycle(direction)}>
         <img class="size-9" src={icon} alt={text} />
     </button>
 {/snippet}
@@ -157,35 +179,72 @@
     <p class="my-20 text-center text-lg font-bold md:my-24">This set has no terms</p>
 {:else}
     <div class="study w-full">
-        {#if $mode === "sort"}
-            <div class="mb-1 flex items-center justify-between px-3">
-                <p class="text-lg text-red-500">{stillLearningTerms.length}</p>
-                <p class="text-lg text-green-500">{knowTerms.length}</p>
-            </div>
-        {/if}
+        {#if $mode === "sort" && endOfCards}
+            <div class="w-full space-y-6">
+                <div>
+                    <p class="text-4xl font-bold leading-none">{endOfSortingMessage}</p>
+                    <p class="text-lg">Heres how you did.</p>
+                </div>
 
-        <button
-            class="relative aspect-[1.6] max-h-96 w-full text-3xl sm:aspect-[2] {$mode === 'sort' &&
-            endOfCards
-                ? 'cursor-default'
-                : 'cursor-pointer'}"
-            style:perspective="1000px"
-            onclick={flipCard}
-        >
-            <div
-                class="absolute left-0 top-0 h-full w-full transition-transform duration-300 will-change-transform"
-                style:transform-style="preserve-3d"
-                style:transform={cardFlipped ? "rotateX(180deg)" : "rotateX(0deg)"}
-            >
-                {#if $mode === "sort" && endOfCards}
-                    <div class="cardFace">
-                        <div>
-                            <p>
-                                {endOfSortingMessage} lklk
-                            </p>
+                <div class="flex-center w-full gap-4">
+                    <div class="w-3/5">
+                        <p class="text-lg text-green-500">
+                            {knowTerms.length} know{knowTerms.length !== 1 ? "s" : ""}
+                        </p>
+                        <p class="text-sm text-gray-500">You know {knowTerms.length} terms</p>
+                    </div>
+
+                    <div class="flex-center flex-grow flex-col gap-4 [&>button]:w-full">
+                        <button
+                            class="button-attention"
+                            onclick={studyStillLearningTerms}
+                            disabled={stillLearningTerms.length === 0}
+                            >Study {stillLearningTerms.length} still learning</button
+                        >
+                        <button class="button-primary">Study struggling terms</button>
+                        <button class="text-lg" onclick={restart}>Restart</button>
+                    </div>
+                </div>
+            </div>
+        {:else}
+            {#if $mode === "sort"}
+                <div class="relative mb-1 flex items-center justify-between px-3">
+                    <p class="text-lg text-red-500">{stillLearningTerms.length}</p>
+
+                    <!--Progress bar along with the amount correct and wrong-->
+                    <div class="x-center y-center h-1 w-1/2 rounded-full bg-primary-400">
+                        <div
+                            class="relative h-full overflow-hidden rounded-full bg-green-500 transition-[width] duration-200"
+                            style:width="{((actualTerms.length - unsortedTerms.length) /
+                                actualTerms.length) *
+                                100}%"
+                        >
+                            <span
+                                class="y-center left-0 h-full bg-red-500 transition-[width] duration-200"
+                                style:width="{(stillLearningTerms.length /
+                                    (actualTerms.length - unsortedTerms.length)) *
+                                    100}%"
+                            ></span>
                         </div>
                     </div>
-                {:else}
+
+                    <p class="text-lg text-green-500">{knowTerms.length}</p>
+                </div>
+            {/if}
+
+            <button
+                class="relative aspect-[1.6] max-h-96 w-full text-3xl sm:aspect-[2] {$mode ===
+                    'sort' && endOfCards
+                    ? 'cursor-default'
+                    : 'cursor-pointer'}"
+                style:perspective="1000px"
+                onclick={flipCard}
+            >
+                <div
+                    class="absolute left-0 top-0 h-full w-full transition-transform duration-300 will-change-transform"
+                    style:transform-style="preserve-3d"
+                    style:transform={cardFlipped ? "rotateX(180deg)" : "rotateX(0deg)"}
+                >
                     <div class="cardFace">
                         <p>{actualTerms[currentTermIndex].term}</p>
                     </div>
@@ -196,51 +255,53 @@
                         </p>
                         <p>{actualTerms[currentTermIndex].definition}</p>
                     </div>
-                {/if}
 
-                <style lang="postcss">
-                    .cardFace {
-                        backface-visibility: hidden;
-                        @apply absolute left-0 top-0 flex h-full w-full items-center justify-center overflow-y-auto rounded-primary border border-primary bg-primary-200 p-6 shadow-xl;
-                    }
-                </style>
+                    <style lang="postcss">
+                        .cardFace {
+                            backface-visibility: hidden;
+                            @apply absolute left-0 top-0 flex h-full w-full items-center justify-center overflow-y-auto rounded-primary border border-primary bg-primary-200 p-6 shadow-xl;
+                        }
+                    </style>
+                </div>
+            </button>
+
+            <div class="relative mt-4 w-full">
+                <div class="flex-center gap-1">
+                    {@render navigationButton(
+                        $mode === "sort" ? "/icons/general/X.svg" : "/icons/general/LeftArrow.svg",
+                        $mode === "sort" ? "X" : "Previous",
+                        $mode === "sort" ? endOfCards : currentTermIndex === 0,
+                        -1
+                    )}
+
+                    <p class="w-20 text-center text-lg font-bold">
+                        {Math.min(actualTerms.length, currentTermIndex + 1)}<span
+                            class="font-normal">/</span
+                        >{actualTerms.length}
+                    </p>
+
+                    {@render navigationButton(
+                        $mode === "sort"
+                            ? "/icons/general/Check.svg"
+                            : "/icons/general/RightArrow.svg",
+                        $mode === "sort" ? "Check" : "Next",
+                        endOfCards,
+                        1
+                    )}
+                </div>
+
+                <div class="flex-center y-center absolute right-8 gap-2">
+                    {#if actualTerms.length > 1}
+                        <button
+                            class="transition-transform hover:rotate-[28deg] hover:scale-110 active:rotate-[180deg]"
+                            style="-webkit-animation-fill-mode: forwards; animation-fill-mode: forwards;"
+                            onclick={shuffle}
+                        >
+                            <img class="size-6" src="/icons/general/Shuffle.svg" alt="Shuffle" />
+                        </button>
+                    {/if}
+                </div>
             </div>
-        </button>
-
-        <div class="relative mt-4 w-full">
-            <div class="flex-center gap-1">
-                {@render navigationButton(
-                    $mode === "sort" ? "/icons/general/X.svg" : "/icons/general/LeftArrow.svg",
-                    $mode === "sort" ? "X" : "Previous",
-                    $mode === "sort" ? endOfCards : currentTermIndex === 0,
-                    -1
-                )}
-
-                <p class="w-20 text-center text-lg font-bold">
-                    {Math.min(actualTerms.length, currentTermIndex + 1)}<span class="font-normal"
-                        >/</span
-                    >{actualTerms.length}
-                </p>
-
-                {@render navigationButton(
-                    $mode === "sort" ? "/icons/general/Check.svg" : "/icons/general/RightArrow.svg",
-                    $mode === "sort" ? "Check" : "Next",
-                    endOfCards,
-                    1
-                )}
-            </div>
-
-            <div class="flex-center y-center absolute right-8 gap-2">
-                {#if actualTerms.length > 1}
-                    <button
-                        class="transition-transform hover:rotate-[28deg] hover:scale-110 active:rotate-[180deg]"
-                        style="-webkit-animation-fill-mode: forwards; animation-fill-mode: forwards;"
-                        onclick={shuffle}
-                    >
-                        <img class="size-6" src="/icons/general/Shuffle.svg" alt="Shuffle" />
-                    </button>
-                {/if}
-            </div>
-        </div>
+        {/if}
     </div>
 {/if}
