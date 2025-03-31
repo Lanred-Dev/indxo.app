@@ -1,16 +1,8 @@
-<script lang="ts">
-    import { signIn } from "@auth/sveltekit/client";
-</script>
-
-{#snippet provider(text: string, icon: string, providerID: string)}
-    <li>
-        <button class="w-full" onclick={() => signIn(providerID)}>
-            <img class={providerID === "github" ? "dark:invert" : ""} src={icon} alt={text} />
-            {text}
-        </button>
-    </li>
-{/snippet}
-
 <ul class="space-y-3">
-    {@render provider("Sign in with Google", "/icons/Google.svg", "google")}
+    <li>
+        <a class="w-full" href="/api/auth/google">
+            <img class="size-6" src="/icons/Google.svg" alt="Google" />
+            Sign in with Google
+        </a>
+    </li>
 </ul>
