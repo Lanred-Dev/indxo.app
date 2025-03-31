@@ -5,6 +5,7 @@ import type { Session } from "$lib/database/documents/Session";
 import type { PublicUser } from "$lib/database/documents/User";
 import { ObjectId, type Collection } from "mongodb";
 import { loadCollection } from "$lib/database/mongo";
+import { milliseconds } from "date-fns";
 
 const sessions: Collection<Session> = loadCollection("accounts", "sessions");
 
@@ -34,8 +35,9 @@ export async function validateToken(
         return null;
     }
 
-    if (Date.now() >= session.expires.getTime() - 1000 * 60 * 60 * 24 * 15) {
-        session.expires = new Date(Date.now() + 1000 * 60 * 60 * 24 * 30);
+    // If the session is within 15 days of expiration, extend it by 30.
+    if (Date.now() >= session.expires.getTime() - milliseconds({ days: 15 })) {
+        session.expires = new Date(Date.now() + milliseconds({ days: 30 }));
 
         await sessions.updateOne({ _id: session._id }, { $set: { expires: session.expires } });
     }
@@ -51,7 +53,8 @@ export async function deleteSession(token: string) {
 }
 
 export function generateToken(): string {
-    const tokenBytes = new Uint8Array(20);
-    crypto.getRandomValues(tokenBytes);
-    return encodeBase32(tokenBytes).toLowerCase();
+    const bytes = new Uint8Array(20);
+    crypto.getRandomValues(bytes);
+
+    return encodeBase32(bytes).toLowerCase();
 }
