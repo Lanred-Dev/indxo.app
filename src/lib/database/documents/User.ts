@@ -8,13 +8,12 @@ type favorite = [ObjectId, "set" | "folder"];
 
 export interface User extends Document {
     _id: ObjectId;
+    google: string;
 
-    // auth.js fields
     name: string;
     email: string;
     image: string;
 
-    // App specific fields
     banned: boolean;
     sets: ObjectId[];
     folders: ObjectId[];

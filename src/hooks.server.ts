@@ -1,6 +1,6 @@
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from "$env/static/private";
 import type { Handle } from "@sveltejs/kit";
-import { SvelteKitAuth, type Profile, type Session } from "@auth/sveltekit";
+import { SvelteKitAuth, type Session } from "@auth/sveltekit";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import Google from "@auth/sveltekit/providers/google";
 import mongo from "$lib/database/mongo";
@@ -20,6 +20,9 @@ const users: Collection<User> = loadCollection("accounts", "users");
  */
 const addSessionToLocals: Handle = async ({ event, resolve }) => {
     const session: Session | null = await event.locals.auth();
+
+    if (!session) return resolve(event);
+
     event.locals.session = session;
 
     // Add the user id to the locals if the user is signed in.
