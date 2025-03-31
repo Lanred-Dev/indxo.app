@@ -1,5 +1,4 @@
 <script lang="ts">
-    import SetCard from "$lib/components/Cards/Set.svelte";
     import PageMessage from "$lib/components/PageMessage.svelte";
     import { formatDistanceToNow } from "date-fns";
 
@@ -47,9 +46,5 @@
         <p class="text-lg">{data.description}</p>
     </div>
 
-    <div class="mt-16 flex w-full flex-wrap gap-2">
-        {#each data.sets ?? [] as set}
-            <SetCard {...set} />
-        {/each}
-    </div>
+    <div class="mt-16 flex w-full flex-wrap gap-2"></div>
 {/if}
