@@ -123,7 +123,7 @@
     div.input-secondary,
     a.button-navigation,
     button.button-navigation {
-        @apply rounded-button border border-primary px-3 py-2 text-lg text-primary transition-all duration-200 disabled:pointer-events-none disabled:opacity-50;
+        @apply rounded-button border border-primary px-3 py-2 text-lg text-primary transition-all duration-200 disabled:pointer-events-none disabled:select-none disabled:opacity-50;
     }
 
     a.button-navigation img,
