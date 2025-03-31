@@ -3,8 +3,10 @@ import { loadCollection } from "$lib/database/mongo";
 import type { User } from "$lib/database/documents/User.ts";
 import type { Set } from "$lib/database/documents/Set.ts";
 import type { Folder } from "$lib/database/documents/Folder.ts";
+import type { Session } from "$lib/database/documents/Session";
 
 const users: Collection<User> = loadCollection("accounts", "users");
+const sessions: Collection<Session> = loadCollection("accounts", "sessions");
 const sets: Collection<Set> = loadCollection("documents", "sets");
 const folders: Collection<Folder> = loadCollection("documents", "folders");
 
@@ -16,12 +18,26 @@ const folders: Collection<Folder> = loadCollection("documents", "folders");
  * @returns The document if found, otherwise null.
  */
 export default async function idToDocument(
-    collectionName: "users" | "sets" | "folders",
+    collectionName: "users" | "sets" | "folders" | "sessions",
     id: ObjectId | string
 ): Promise<any | null> {
     try {
-        const collection: Collection<any> =
-            collectionName === "users" ? users : collectionName === "folders" ? folders : sets;
+        let collection: Collection<any>;
+
+        switch (collectionName) {
+            case "users":
+                collection = users;
+                break;
+            case "sessions":
+                collection = sessions;
+                break;
+            case "sets":
+                collection = sets;
+                break;
+            case "folders":
+                collection = folders;
+                break;
+        }
 
         return await collection.findOne({ _id: typeof id === "string" ? new ObjectId(id) : id });
     } catch (_error) {
