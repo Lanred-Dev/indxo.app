@@ -2,10 +2,8 @@
     import { type Writable } from "svelte/store";
     import type { SimpleFolder } from "$lib/database/documents/Folder";
     import type { SimpleSet } from "$lib/database/documents/Set";
-    import type { SimpleUser } from "$lib/database/documents/User";
-    import type { User } from "@auth/sveltekit";
+    import type { SimpleUser, SimpleUserWithEmail } from "$lib/database/documents/User";
     import determineDocumentType from "$lib/utils/determineDocumentType";
-    import { signOut } from "@auth/sveltekit/client";
     import { goto } from "$app/navigation";
     import { fly } from "svelte/transition";
 
@@ -13,8 +11,11 @@
         user,
         sidebarVisible,
         mobileSidebarVisible,
-    }: { user: User; sidebarVisible: Writable<boolean>; mobileSidebarVisible: Writable<boolean> } =
-        $props();
+    }: {
+        user: SimpleUserWithEmail;
+        sidebarVisible: Writable<boolean>;
+        mobileSidebarVisible: Writable<boolean>;
+    } = $props();
 
     let showAccountInfo: boolean = $state(false);
     let focusedOnAccountInfo: boolean = $state(false);
@@ -232,10 +233,10 @@
                 </li>
             </ul>
 
-            <button class="button-navigation hover:!bg-button-alert" onclick={() => signOut()}>
+            <a class="button-navigation hover:!bg-button-alert" href="/api/auth/logout">
                 <img src="/icons/navigation/LogOut.svg" alt="Log out" />
                 <span>Log out</span>
-            </button>
+            </a>
         </div>
     {/if}
 </header>
