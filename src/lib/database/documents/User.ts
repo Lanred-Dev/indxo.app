@@ -47,6 +47,13 @@ export interface SimpleUser {
     image: string;
 }
 
+export interface SimpleUserWithEmail {
+    _id: ObjectId;
+    name: string;
+    image: string;
+    email: string;
+}
+
 export const fields: [string, "string" | "boolean" | "array" | "dictionary"][] = [
     ["banned", "boolean"],
     ["sets", "array"],
