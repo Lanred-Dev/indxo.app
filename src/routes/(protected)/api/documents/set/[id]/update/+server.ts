@@ -6,7 +6,7 @@ import permissionCheck from "$lib/utils/permissionCheck";
 
 const sets: Collection<Set> = loadCollection("documents", "sets");
 
-export async function PUT({ params, request, fetch, locals }) {
+export async function POST({ params, request, fetch, locals }) {
     const set: Set = await (await fetch(`/api/documents/set/${params.id}`)).json();
 
     if (!permissionCheck(set, locals.user._id, true))
