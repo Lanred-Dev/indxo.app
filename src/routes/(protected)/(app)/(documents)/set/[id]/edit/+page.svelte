@@ -10,13 +10,11 @@
     /**
      * This function is called after the form is submitted. It sets the last updated time so that the user knows when the set was last updated.
      *
-     * @param success If submission was successful
+     * @param status The status code of the response
      * @returns never
      */
-    function afterSubmit(success: boolean) {
-        if (!success) {
-            return location.reload();
-        }
+    function afterSubmit(status: number) {
+        if (status !== 204) return location.reload();
 
         lastUpdated = Date.now();
     }

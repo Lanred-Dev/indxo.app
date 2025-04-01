@@ -5,8 +5,8 @@
 
     export type props = {
         action: string;
-        method?: "POST" | "GET";
-        afterSubmit?: (success: boolean, meta?: any) => void;
+        method?: "POST" | "GET" | "PUT";
+        afterSubmit?: (status: number, data?: any) => void;
         classes?: string;
         children?: Snippet<[]>;
     };
@@ -97,21 +97,18 @@
             data[id] = value;
         });
 
-        const response = await (
-            await fetch(action, {
-                method,
-                body: JSON.stringify(data),
-            })
-        ).json();
+        const response = await fetch(action, {
+            method,
+            body: JSON.stringify(data),
+        });
 
-        afterSubmit(response.success, response);
+        afterSubmit(response.status, await response.json());
         submitting = false;
     }
 </script>
 
 <form
     class={twMerge("space-y-5", classes)}
-    {method}
     {action}
     onsubmit={onSubmit}
     autocomplete="off"

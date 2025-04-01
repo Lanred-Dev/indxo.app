@@ -24,20 +24,18 @@
     /**
      * This function is called after the form is submitted, it determines what to do next.
      *
-     * @param success If submission was successful
-     * @param meta Meta data from the submission
+     * @param status The status code of the response
+     * @param data Meta data from the submission
      * @returns never
      */
-    function afterSubmit(success: boolean, meta: any) {
-        if (!success) {
-            return location.reload();
-        }
+    function afterSubmit(status: number, data: any) {
+        if (status !== 201 && status !== 204) return location.reload();
 
         if (stage === "setup") {
             goto(`/${type}/${documentID}`);
-        } else {
+        } else if (stage === "creation") {
             stage = "setup";
-            documentID = meta.id;
+            documentID = data;
         }
     }
 
