@@ -1,4 +1,4 @@
-import { json } from "@sveltejs/kit";
+import { error, json } from "@sveltejs/kit";
 import idToDocument from "$lib/utils/idToDocument";
 import type { Folder, PublicFolder } from "$lib/database/documents/Folder";
 import type { Set } from "$lib/database/documents/Set";
@@ -8,9 +8,8 @@ import type { SimpleUser } from "$lib/database/documents/User";
 export async function GET({ params, fetch, locals }) {
     const folder: Folder = await idToDocument("folders", params.id);
 
-    if (!permissionCheck(folder, locals.userID)) {
-        return json({ success: false }, { status: 403 });
-    }
+    if (!permissionCheck(folder, locals.user._id))
+        return error(403, "You do not have permission to view this folder.");
 
     const sets: Set[] = [];
 

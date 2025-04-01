@@ -1,4 +1,4 @@
-import { json } from "@sveltejs/kit";
+import { error } from "@sveltejs/kit";
 import { loadCollection } from "$lib/database/mongo";
 import { ObjectId, type Collection } from "mongodb";
 import { updatableFields, type Folder } from "$lib/database/documents/Folder";
@@ -6,12 +6,11 @@ import permissionCheck from "$lib/utils/permissionCheck";
 
 const folders: Collection<Folder> = loadCollection("documents", "folders");
 
-export async function POST({ params, request, fetch, locals }) {
+export async function PUT({ params, request, fetch, locals }) {
     const folder: Folder = await (await fetch(`/api/documents/folder/${params.id}`)).json();
 
-    if (!permissionCheck(folder, locals.userID, true)) {
-        return json({ success: false }, { status: 403 });
-    }
+    if (!permissionCheck(folder, locals.user._id, true))
+        return error(403, "You do not have permission to update this folder.");
 
     const newFields: { [key: string]: any } = await request.json();
     const validFields: { [key: string]: any } = {};
@@ -38,7 +37,7 @@ export async function POST({ params, request, fetch, locals }) {
         }
     );
 
-    return json({
-        success: true,
+    return new Response(null, {
+        status: 204,
     });
 }

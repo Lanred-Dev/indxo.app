@@ -24,13 +24,13 @@ export async function POST({ request, locals }) {
         subject,
         isPublic,
         terms: [],
-        owner: locals.userID,
+        owner: locals.user._id,
         created: Date.now(),
         folder: [],
     });
 
     await users.updateOne(
-        { _id: locals.userID },
+        { _id: locals.user._id },
         {
             // For some reason a type error is thrown here, but it works fine
             // @ts-ignore
@@ -40,8 +40,7 @@ export async function POST({ request, locals }) {
         }
     );
 
-    return json({
-        success: true,
-        id,
+    return json(id, {
+        status: 201,
     });
 }

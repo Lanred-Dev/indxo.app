@@ -1,4 +1,4 @@
-import { json } from "@sveltejs/kit";
+import { error } from "@sveltejs/kit";
 import { loadCollection } from "$lib/database/mongo";
 import { ObjectId, type Collection } from "mongodb";
 import type { Folder } from "$lib/database/documents/Folder";
@@ -13,9 +13,8 @@ const sets: Collection<Set> = loadCollection("documents", "sets");
 export async function DELETE({ params, locals, fetch }) {
     const folder: Folder = await (await fetch(`/api/documents/folder/${params.id}`)).json();
 
-    if (!permissionCheck(folder, locals.userID, true)) {
-        return json({ success: false }, { status: 403 });
-    }
+    if (!permissionCheck(folder, locals.user._id, true))
+        return error(403, "You do not have permission to delete this folder.");
 
     const id: ObjectId = new ObjectId(params.id);
 
@@ -24,7 +23,7 @@ export async function DELETE({ params, locals, fetch }) {
     });
 
     await users.updateOne(
-        { _id: locals.userID },
+        { _id: locals.user._id },
         {
             // For some reason a type error is thrown here, but it works fine
             // @ts-ignore
@@ -46,7 +45,7 @@ export async function DELETE({ params, locals, fetch }) {
         }
     );
 
-    return json({
-        success: true,
+    return new Response(null, {
+        status: 204,
     });
 }
