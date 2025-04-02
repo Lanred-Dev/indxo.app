@@ -25,7 +25,7 @@ export interface User extends Document {
         {
             sorted: [ObjectId, -1 | 1];
         },
-    ];
+    ][];
 }
 
 export interface PublicUser {
@@ -48,7 +48,7 @@ export interface SimpleUser {
 }
 
 export interface SimpleUserWithEmail {
-    _id: ObjectId;
+    _id: string;
     name: string;
     image: string;
     email: string;
@@ -61,5 +61,5 @@ export const fields: [string, "string" | "boolean" | "array" | "dictionary"][] =
     ["favorites", "array"],
     ["homeSectionPreferences", "array"],
     ["openedSets", "array"],
-    ["meta", "dictionary"],
+    ["setData", "array"],
 ];

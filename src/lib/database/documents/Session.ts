@@ -3,7 +3,7 @@
 import type { Document, ObjectId } from "mongodb";
 
 export interface Session extends Document {
-    _id: ObjectId;
+    _id: string;
     user: ObjectId;
     expires: Date;
 }
