@@ -39,7 +39,7 @@ export default async function idToDocument(
                 break;
         }
 
-        return await collection.findOne({ _id: id });
+        return await collection.findOne({ _id: id.toLowerCase() });
     } catch (_error) {
         return null;
     }
