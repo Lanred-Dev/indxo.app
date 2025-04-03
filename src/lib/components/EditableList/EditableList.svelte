@@ -1,5 +1,9 @@
 <script lang="ts">
-    import EditableListItem, { type actionButton, type property } from "./EditableListItem.svelte";
+    import EditableListItem, {
+        type actionButton,
+        type item,
+        type property,
+    } from "./EditableListItem.svelte";
     import { onMount, type Component } from "svelte";
     import { twMerge } from "tailwind-merge";
 
@@ -39,11 +43,7 @@
         ItemComponent?: Component<{ index: number } & any, {}, "properties">;
     } = $props();
 
-    let actualItems: {
-        id: number;
-        properties: property[];
-        actionButtons: actionButton[];
-    }[] = $state([]);
+    let actualItems: item[] = $state([]);
     // NOTE: -1 is used to indicate that no item is being dragged
     let draggingID: number = $state(-1);
     let draggingOverID: number = $state(-1);
@@ -68,7 +68,7 @@
         }
 
         actualItems.push({
-            id: actualItems.length,
+            _listID: actualItems.length,
             properties: itemProperties,
             actionButtons: actionButtonsClone,
         });
@@ -91,7 +91,7 @@
         actualItems.splice(id, 1);
 
         actualItems.forEach((item, index) => {
-            item.id = index;
+            item._listID = index;
         });
     }
 
@@ -108,8 +108,8 @@
             actualItems[draggingOverID],
             actualItems[draggingID],
         ];
-        actualItems[draggingID].id = draggingID;
-        actualItems[draggingOverID].id = draggingOverID;
+        actualItems[draggingID]._listID = draggingID;
+        actualItems[draggingOverID]._listID = draggingOverID;
         draggingID = draggingOverID;
     });
 
@@ -120,26 +120,24 @@
             });
         } else {
             // Add the requested number of items to start with
-            for (let index: number = 0; index < startingItems; index++) {
-                addItem();
-            }
+            for (let index: number = 0; index < startingItems; index++) addItem();
         }
     });
 </script>
 
 <div class={twMerge("editableList space-y-5", classes)}>
     <ol class="relative space-y-5">
-        {#each actualItems as { id, actionButtons }}
+        {#each actualItems as { _listID, actionButtons }}
             <!--The `li` element is used for the dragging features.-->
             <li
-                class="transition-all {isDraggable ? 'cursor-move' : ''} {draggingID === id
+                class="transition-all {isDraggable ? 'cursor-move' : ''} {draggingID === _listID
                     ? 'rotate-1 opacity-45'
                     : draggingID !== -1
                       ? '[&>.editableListItem]:!border [&>.editableListItem]:!border-dashed [&>.editableListItem]:!border-focus'
                       : ''}"
                 draggable={isDraggable}
                 ondragstart={() => {
-                    draggingID = id;
+                    draggingID = _listID;
                 }}
                 ondragend={() => {
                     draggingID = -1;
@@ -149,10 +147,14 @@
                     // Preventing the default hides the not allowed cursor when dragging
                     event.preventDefault();
 
-                    draggingOverID = id;
+                    draggingOverID = _listID;
                 }}
             >
-                <ItemComponent {id} bind:properties={actualItems[id].properties} {actionButtons} />
+                <ItemComponent
+                    {_listID}
+                    bind:properties={actualItems[_listID].properties}
+                    {actionButtons}
+                />
             </li>
         {/each}
     </ol>

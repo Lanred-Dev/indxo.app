@@ -16,12 +16,12 @@
     };
 
     export type item = {
-        id: number;
+        _listID: number;
         properties?: property[];
         actionButtons?: actionButton[];
     };
 
-    let { id, properties = $bindable([]), actionButtons = [] }: item = $props();
+    let { _listID, properties = $bindable([]), actionButtons = [] }: item = $props();
 
     let value: string = $derived.by(() => {
         const actualProperties: { [id: string]: string } = {};
@@ -46,12 +46,12 @@
 
 <div
     class="editableListItem container-primary flex flex-col gap-3 px-8 py-6"
-    data-id={id}
+    data-id={_listID}
     data-value={value}
     data-hasValue={hasValue}
 >
     <div class="flex items-center justify-between px-3">
-        <p class="text-lg font-bold">#{id + 1}</p>
+        <p class="text-lg font-bold">#{_listID + 1}</p>
 
         <div class="flex-center gap-3">
             {#each actionButtons as { isActualButton = true, classes, image, onClick, onMouseDown, onMouseUp }}
