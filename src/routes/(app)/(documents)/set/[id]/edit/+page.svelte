@@ -2,10 +2,12 @@
     import { Form, FormSubmit, FormRow, FormInput } from "$lib/components/Form";
     import determineWording from "$lib/utils/determineWording";
     import { formatDistanceToNow } from "date-fns";
+    import { onMount } from "svelte";
 
     let { data } = $props();
 
-    let lastUpdated: number | null = $state(null);
+    let updated: number | null = null;
+    let updatedText: string = $state("");
 
     /**
      * This function is called after the form is submitted. It sets the last updated time so that the user knows when the set was last updated.
@@ -16,8 +18,24 @@
     function afterSubmit(status: number) {
         if (status !== 204) return location.reload();
 
-        lastUpdated = Date.now();
+        updated = Date.now();
+        updateLastUpdatedText();
     }
+
+    function updateLastUpdatedText() {
+        if (updated === null) return;
+
+        updatedText = formatDistanceToNow(updated, {
+            includeSeconds: true,
+            addSuffix: true,
+        });
+    }
+
+    onMount(() => {
+        const updateTextInterval = setInterval(updateLastUpdatedText, 5000);
+
+        return () => clearInterval(updateTextInterval);
+    });
 </script>
 
 <svelte:head>
@@ -29,13 +47,8 @@
         <a class="button-primary" href="/set/{data._id}">Back to {determineWording("set")}</a>
 
         <div class="flex-center gap-3">
-            {#if lastUpdated}
-                <p class="text-light text-nowrap">
-                    Last updated {formatDistanceToNow(lastUpdated, {
-                        includeSeconds: true,
-                        addSuffix: true,
-                    })}
-                </p>
+            {#if updatedText.length > 0}
+                <p class="text-light text-nowrap">Last updated {updatedText}</p>
             {/if}
 
             <FormSubmit text="Update" />
