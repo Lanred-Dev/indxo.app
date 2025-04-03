@@ -1,29 +1,29 @@
 // This document is used to represent a set in the database.
 
-import type { Document, ObjectId } from "mongodb";
+import type { Document } from "mongodb";
 import type { SimpleUser } from "./User";
 
 export type Term = {
-    _id: ObjectId;
+    _id: string;
     term: string;
     definition: string;
     image?: string;
 };
 
 export interface Set extends Document {
-    _id: ObjectId;
+    _id: string;
     name: string;
     description: string;
     subject: string;
     isPublic: boolean;
     terms: Term[];
-    owner: ObjectId;
+    owner: string;
     created: number;
-    folder: ObjectId[];
+    folder: string[];
 }
 
 export interface PublicSet {
-    _id: ObjectId;
+    _id: string;
     name: string;
     description: string;
     subject: string;
@@ -31,11 +31,11 @@ export interface PublicSet {
     terms: Term[];
     owner: SimpleUser;
     created: number;
-    folder: ObjectId[];
+    folder: string[];
 }
 
 export interface SimpleSet {
-    _id: ObjectId;
+    _id: string;
     icon: string;
     name: string;
     description: string;

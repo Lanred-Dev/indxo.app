@@ -1,12 +1,14 @@
 import { error } from "@sveltejs/kit";
 import { loadCollection } from "$lib/database/mongo";
 import type { User } from "$lib/database/documents/User";
-import { ObjectId, type Collection } from "mongodb";
+import { type Collection } from "mongodb";
 import idToDocument from "$lib/utils/idToDocument";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 
 export async function GET({ params, fetch, locals }) {
+    if (!locals.session) error(401, "Unauthorized.");
+
     const response = await fetch(`/api/documents/set/${params.id}`);
 
     if (response.status !== 200) return error(403, "You do not have permission to view this set.");
@@ -17,7 +19,7 @@ export async function GET({ params, fetch, locals }) {
         return set[0].toString() !== params.id;
     });
 
-    openedSets.push([new ObjectId(params.id), Date.now()]);
+    openedSets.push([params.id, Date.now()]);
 
     await users.updateOne(
         { _id: locals.user._id },

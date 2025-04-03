@@ -6,7 +6,7 @@ import type { User } from "$lib/database/documents/User.js";
 import { loadCollection } from "$lib/database/mongo.js";
 import { error, redirect } from "@sveltejs/kit";
 import { decodeIdToken, type OAuth2Tokens } from "arctic";
-import { ObjectId, type Collection } from "mongodb";
+import { type Collection } from "mongodb";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 
@@ -49,7 +49,7 @@ export async function GET({ cookies, url }) {
 
     if (!user) {
         user = {
-            _id: new ObjectId(),
+            _id: crypto.randomUUID(),
             google: claims.sub,
             name: claims.name,
             email: claims.email,
@@ -66,9 +66,10 @@ export async function GET({ cookies, url }) {
         await users.insertOne(user);
     }
 
-    const session: Session = await createSession(generateToken(), user._id);
+    const token: string = generateToken();
+    const session: Session = await createSession(token, user._id);
 
-    cookies.set("session", session._id, {
+    cookies.set("session", token, {
         httpOnly: true,
         path: "/",
         sameSite: "lax",

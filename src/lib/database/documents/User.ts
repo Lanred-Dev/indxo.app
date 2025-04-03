@@ -1,13 +1,13 @@
 // This document is used to represent a user in the database.
 
-import type { Document, ObjectId } from "mongodb";
+import type { Document } from "mongodb";
 import type { Set } from "./Set";
 import type { Folder } from "./Folder";
 
-type favorite = [ObjectId, "set" | "folder"];
+type favorite = [string, "set" | "folder"];
 
 export interface User extends Document {
-    _id: ObjectId;
+    _id: string;
     google: string;
 
     name: string;
@@ -15,21 +15,21 @@ export interface User extends Document {
     image: string;
 
     banned: boolean;
-    sets: ObjectId[];
-    folders: ObjectId[];
+    sets: string[];
+    folders: string[];
     favorites: favorite[];
     homeSectionPreferences: string[];
-    openedSets: [ObjectId, number][];
+    openedSets: [string, number][];
     setData: [
-        ObjectId,
+        string,
         {
-            sorted: [ObjectId, -1 | 1];
+            sorted: [string, -1 | 1];
         },
     ][];
 }
 
 export interface PublicUser {
-    _id: ObjectId;
+    _id: string;
 
     // auth.js fields
     name: string;
@@ -42,7 +42,7 @@ export interface PublicUser {
 }
 
 export interface SimpleUser {
-    _id: ObjectId;
+    _id: string;
     name: string;
     image: string;
 }

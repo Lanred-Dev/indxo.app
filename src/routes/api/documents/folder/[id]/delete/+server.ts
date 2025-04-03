@@ -1,6 +1,6 @@
 import { error } from "@sveltejs/kit";
 import { loadCollection } from "$lib/database/mongo";
-import { ObjectId, type Collection } from "mongodb";
+import { type Collection } from "mongodb";
 import type { Folder } from "$lib/database/documents/Folder";
 import type { User } from "$lib/database/documents/User";
 import type { Set } from "$lib/database/documents/Set";
@@ -11,12 +11,14 @@ const folders: Collection<Folder> = loadCollection("documents", "folders");
 const sets: Collection<Set> = loadCollection("documents", "sets");
 
 export async function DELETE({ params, locals, fetch }) {
+    if (!locals.session) error(401, "Unauthorized.");
+
     const folder: Folder = await (await fetch(`/api/documents/folder/${params.id}`)).json();
 
     if (!permissionCheck(folder, locals.user._id, true))
         error(403, "You do not have permission to delete this folder.");
 
-    const id: ObjectId = new ObjectId(params.id);
+    const id: string = crypto.randomUUID();
 
     await folders.deleteOne({
         _id: id,

@@ -1,7 +1,6 @@
 import type { Handle } from "@sveltejs/kit";
 import { dev } from "$app/environment";
 import { validateToken } from "$lib/auth/session";
-import { ObjectId } from "mongodb";
 
 const BLANK_USER = {
     _id: "",
@@ -12,8 +11,6 @@ const BLANK_USER = {
 
 export const handle: Handle = async ({ event, resolve }) => {
     const token: string | null = event.cookies.get("session") ?? null;
-
-    console.log(event.cookies.getAll());
 
     // If the token is not set, set the user and session to null and return.
     if (!token) {

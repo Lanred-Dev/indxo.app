@@ -15,7 +15,6 @@
     import { FormRow, FormInput } from "$lib/components/Form";
     import type { PublicSet } from "$lib/database/documents/Set";
     import determineWording from "$lib/utils/determineWording";
-    import type { ObjectId } from "mongodb";
     import { onMount } from "svelte";
 
     let { stage }: { stage: "creation" | "setup" } = $props();
@@ -33,7 +32,7 @@
      * @param id The ID of the set to add or remove.
      * @returns never
      */
-    function addSetToList(id: ObjectId) {
+    function addSetToList(id: string) {
         if (addedSets.includes(id.toString())) {
             addedSets.splice(addedSets.indexOf(id.toString()), 1);
         } else {

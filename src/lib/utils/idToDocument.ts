@@ -1,4 +1,4 @@
-import { ObjectId, type Collection } from "mongodb";
+import { type Collection } from "mongodb";
 import { loadCollection } from "$lib/database/mongo";
 import type { User } from "$lib/database/documents/User.ts";
 import type { Set } from "$lib/database/documents/Set.ts";
@@ -15,13 +15,11 @@ const folders: Collection<Folder> = loadCollection("documents", "folders");
  *
  * @param collectionName The name of the collection to search.
  * @param id The id of the document to find.
- * @param forceString If true, the id will be converted to a string.
  * @returns The document if found, otherwise null.
  */
 export default async function idToDocument(
     collectionName: "users" | "sets" | "folders" | "sessions",
-    id: ObjectId | string,
-    forceString: boolean = false
+    id: string
 ): Promise<any | null> {
     try {
         let collection: Collection<any>;
@@ -41,15 +39,8 @@ export default async function idToDocument(
                 break;
         }
 
-        if (forceString) {
-            id = typeof id !== "string" ? id.toString() : id;
-        } else {
-            id = typeof id === "string" ? new ObjectId(id) : id;
-        }
-
         return await collection.findOne({ _id: id });
     } catch (_error) {
-        console.error("Error finding document:", _error);
         return null;
     }
 }

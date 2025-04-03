@@ -1,4 +1,3 @@
-import { ObjectId } from "mongodb";
 import type { PublicSet, Set } from "$lib/database/documents/Set.ts";
 import type { Folder, PublicFolder } from "$lib/database/documents/Folder.ts";
 
@@ -12,17 +11,18 @@ import type { Folder, PublicFolder } from "$lib/database/documents/Folder.ts";
  */
 export default function permissionCheck(
     document: Set | PublicSet | Folder | PublicFolder | null,
-    userID: ObjectId | string,
+    userID: string,
     mustHaveEditPermission?: boolean
 ): boolean {
     if (!document) {
         return false;
     }
 
-    const ownerID: string = (
-        "_id" in document.owner ? document.owner._id : document.owner
-    ).toString();
-    const isOwner: boolean = ownerID === (typeof userID === "string" ? userID : userID.toString());
+    const ownerID: string =
+        typeof document.owner === "object" && "_id" in document.owner
+            ? document.owner._id
+            : document.owner;
+    const isOwner: boolean = ownerID === userID;
 
     if (!document.isPublic && !isOwner) {
         return false;

@@ -1,22 +1,22 @@
 // This document is used to represent a folder in the database.
 
-import type { Document, ObjectId } from "mongodb";
+import type { Document } from "mongodb";
 import type { SimpleUser } from "./User";
 import type { Set } from "./Set";
 
 export interface Folder extends Document {
-    _id: ObjectId;
+    _id: string;
     icon: string;
     name: string;
     description: string;
     isPublic: boolean;
-    sets: ObjectId[];
-    owner: ObjectId;
+    sets: string[];
+    owner: string;
     created: number;
 }
 
 export interface PublicFolder {
-    _id: ObjectId;
+    _id: string;
     icon: string;
     name: string;
     description: string;
@@ -27,7 +27,7 @@ export interface PublicFolder {
 }
 
 export interface SimpleFolder {
-    _id: ObjectId;
+    _id: string;
     icon: string;
     name: string;
     description: string;

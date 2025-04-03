@@ -2,8 +2,11 @@ import { json } from "@sveltejs/kit";
 import idToDocument from "$lib/utils/idToDocument";
 import type { User } from "$lib/database/documents/User";
 import type { PublicSet } from "$lib/database/documents/Set.js";
+import { error } from "@sveltejs/kit";
 
 export async function GET({ locals, fetch }) {
+    if (!locals.session) error(401, "Unauthorized.");
+
     const user: User = await idToDocument("users", locals.user._id);
     const openedSets = user.openedSets;
 

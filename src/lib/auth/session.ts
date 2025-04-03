@@ -3,16 +3,19 @@ import { sha256 } from "@oslojs/crypto/sha2";
 import idToDocument from "$lib/utils/idToDocument";
 import type { Session } from "$lib/database/documents/Session";
 import type { User } from "$lib/database/documents/User";
-import { ObjectId, type Collection } from "mongodb";
+import { type Collection } from "mongodb";
 import { loadCollection } from "$lib/database/mongo";
 import { milliseconds } from "date-fns";
 
 const sessions: Collection<Session> = loadCollection("accounts", "sessions");
 
-export async function createSession(token: string, userID: ObjectId): Promise<Session> {
-    const sessionID: string = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
+function encodeToken(token: string): string {
+    return encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
+}
+
+export async function createSession(token: string, userID: string): Promise<Session> {
     const session: Session = {
-        _id: sessionID,
+        _id: encodeToken(token),
         user: userID,
         expires: Date.now() + milliseconds({ days: 30 }),
     };
@@ -25,9 +28,8 @@ export async function createSession(token: string, userID: ObjectId): Promise<Se
 export async function validateToken(
     token: string
 ): Promise<{ user: User; session: Session } | null> {
-    const sessionID = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
-    const session: Session = (await idToDocument("sessions", sessionID, true)) as Session;
-    console.log("Session", session);
+    const session: Session = await idToDocument("sessions", encodeToken(token));
+
     if (!session) return null;
 
     if (Date.now() >= session.expires) {
@@ -55,6 +57,5 @@ export async function deleteSession(token: string) {
 export function generateToken(): string {
     const bytes = new Uint8Array(20);
     crypto.getRandomValues(bytes);
-
     return encodeBase32(bytes).toLowerCase();
 }

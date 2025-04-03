@@ -1,5 +1,5 @@
 import { fields, type User } from "$lib/database/documents/User";
-import type { Collection, ObjectId } from "mongodb";
+import type { Collection } from "mongodb";
 import { loadCollection } from "$lib/database/mongo";
 
 const users: Collection<User> = loadCollection("accounts", "users");
@@ -10,7 +10,7 @@ const users: Collection<User> = loadCollection("accounts", "users");
  * @param id The ID of the user to update.
  * @returns
  */
-export async function checkUserForUpdates(id: ObjectId) {
+export async function checkUserForUpdates(id: string) {
     const user: User | null = await users.findOne({ _id: id });
 
     if (!user) return;

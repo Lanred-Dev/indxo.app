@@ -1,12 +1,14 @@
 import { error } from "@sveltejs/kit";
 import { loadCollection } from "$lib/database/mongo";
-import { ObjectId, type Collection } from "mongodb";
+import { type Collection } from "mongodb";
 import { updatableFields, type Folder } from "$lib/database/documents/Folder";
 import permissionCheck from "$lib/utils/permissionCheck";
 
 const folders: Collection<Folder> = loadCollection("documents", "folders");
 
 export async function POST({ params, request, fetch, locals }) {
+    if (!locals.session) error(401, "Unauthorized.");
+
     const folder: Folder = await (await fetch(`/api/documents/folder/${params.id}`)).json();
 
     if (!permissionCheck(folder, locals.user._id, true))
@@ -14,7 +16,6 @@ export async function POST({ params, request, fetch, locals }) {
 
     const newFields: { [key: string]: any } = await request.json();
     const validFields: { [key: string]: any } = {};
-    const id: ObjectId = new ObjectId(params.id);
 
     // Check if the new fields are valid
     for (const key in newFields) {
@@ -30,7 +31,7 @@ export async function POST({ params, request, fetch, locals }) {
 
     await folders.updateOne(
         {
-            _id: id,
+            _id: params.id,
         },
         {
             $set: validFields,
