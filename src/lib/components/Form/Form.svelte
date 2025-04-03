@@ -102,7 +102,11 @@
             body: JSON.stringify(data),
         });
 
-        afterSubmit(response.status, await response.json());
+        // If the response is 204 (No Content), we don't expect any JSON response body.
+        afterSubmit(
+            response.status,
+            response.ok && response.status !== 204 ? await response.json() : {}
+        );
         submitting = false;
     }
 </script>
