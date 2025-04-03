@@ -15,11 +15,13 @@ const folders: Collection<Folder> = loadCollection("documents", "folders");
  *
  * @param collectionName The name of the collection to search.
  * @param id The id of the document to find.
+ * @param forceString If true, the id will be converted to a string.
  * @returns The document if found, otherwise null.
  */
 export default async function idToDocument(
     collectionName: "users" | "sets" | "folders" | "sessions",
-    id: ObjectId | string
+    id: ObjectId | string,
+    forceString: boolean = false
 ): Promise<any | null> {
     try {
         let collection: Collection<any>;
@@ -39,8 +41,15 @@ export default async function idToDocument(
                 break;
         }
 
-        return await collection.findOne({ _id: typeof id === "string" ? new ObjectId(id) : id });
+        if (forceString) {
+            id = typeof id !== "string" ? id.toString() : id;
+        } else {
+            id = typeof id === "string" ? new ObjectId(id) : id;
+        }
+
+        return await collection.findOne({ _id: id });
     } catch (_error) {
+        console.error("Error finding document:", _error);
         return null;
     }
 }

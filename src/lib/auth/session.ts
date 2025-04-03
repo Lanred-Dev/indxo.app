@@ -26,8 +26,8 @@ export async function validateToken(
     token: string
 ): Promise<{ user: User; session: Session } | null> {
     const sessionID = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
-    const session: Session = (await idToDocument("sessions", sessionID)) as Session;
-
+    const session: Session = (await idToDocument("sessions", sessionID, true)) as Session;
+    console.log("Session", session);
     if (!session) return null;
 
     if (Date.now() >= session.expires) {
@@ -35,8 +35,8 @@ export async function validateToken(
         return null;
     }
 
-    // If the session is within 15 days of expiration, extend it by 30.
-    if (Date.now() >= session.expires - milliseconds({ days: 15 })) {
+    // If the session is within 10 days of expiration, extend it by 30, because this session is still in use.
+    if (Date.now() >= session.expires - milliseconds({ days: 10 })) {
         session.expires = Date.now() + milliseconds({ days: 30 });
 
         await sessions.updateOne({ _id: session._id }, { $set: { expires: session.expires } });

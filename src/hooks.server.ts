@@ -11,7 +11,9 @@ const BLANK_USER = {
 };
 
 export const handle: Handle = async ({ event, resolve }) => {
-    const token: string | null = event.cookies.get("session-token") ?? null;
+    const token: string | null = event.cookies.get("session") ?? null;
+
+    console.log(event.cookies.getAll());
 
     // If the token is not set, set the user and session to null and return.
     if (!token) {
@@ -32,18 +34,18 @@ export const handle: Handle = async ({ event, resolve }) => {
             email: validation.user.email,
         };
 
-        event.cookies.set("session-token", token, {
+        event.cookies.set("session", token, {
             httpOnly: true,
             path: "/",
             secure: !dev,
             sameSite: "lax",
-            expires: validation.session.expires,
+            expires: new Date(validation.session.expires),
         });
     } else {
         event.locals.session = null;
         event.locals.user = BLANK_USER;
 
-        event.cookies.set("session-token", "", {
+        event.cookies.set("session", "", {
             httpOnly: true,
             path: "/",
             secure: !dev,

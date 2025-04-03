@@ -43,8 +43,6 @@ export async function GET({ cookies, url }) {
         email: string;
     } = decodeIdToken(tokens.idToken()) as any;
 
-    console.log(claims);
-
     let user: User | null = await users.findOne({
         email: claims.email,
     });
@@ -70,12 +68,12 @@ export async function GET({ cookies, url }) {
 
     const session: Session = await createSession(generateToken(), user._id);
 
-    cookies.set("session-token", session._id, {
+    cookies.set("session", session._id, {
         httpOnly: true,
         path: "/",
-        secure: !dev,
         sameSite: "lax",
-        expires: session.expires,
+        secure: !dev,
+        expires: new Date(session.expires),
     });
 
     return redirect(302, "/");

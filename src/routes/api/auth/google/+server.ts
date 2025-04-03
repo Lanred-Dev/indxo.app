@@ -1,6 +1,7 @@
 import { generateState, generateCodeVerifier } from "arctic";
 import { google } from "$lib/auth/oauth";
 import { redirect } from "@sveltejs/kit";
+import { dev } from "$app/environment";
 
 export async function GET({ cookies }) {
     const state: string = generateState();
@@ -12,6 +13,7 @@ export async function GET({ cookies }) {
         httpOnly: true,
         maxAge: 60000,
         sameSite: "lax",
+        secure: !dev,
     });
 
     cookies.set("google-verifier", verifier, {
@@ -19,6 +21,7 @@ export async function GET({ cookies }) {
         httpOnly: true,
         maxAge: 60000,
         sameSite: "lax",
+        secure: !dev,
     });
 
     return redirect(302, url);
