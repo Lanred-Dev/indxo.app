@@ -1,5 +1,6 @@
 <script lang="ts">
     import type { PublicSet, Term } from "$lib/database/documents/Set";
+    import { onMount } from "svelte";
     import { type Writable } from "svelte/store";
 
     let { set, mode }: { set: PublicSet; mode: Writable<string> } = $props();
@@ -8,10 +9,9 @@
     let currentTermIndex: number = $state(0);
     let stillLearningTerms: number[] = $state([]);
     let knowTerms: number[] = $state([]);
-    let endOfCards: boolean = $state(false);
     let unsortedTerms: number[] = $state([]);
     let endOfSortingMessage: string = $derived.by(() => {
-        if (!endOfCards || $mode !== "sort") return "";
+        if (unsortedTerms.length > 0 || $mode !== "sort") return "";
 
         let messages: string[] = [];
 
@@ -60,10 +60,9 @@
             unsortedTerms = unsortedTerms.filter(
                 (termIndex: number) => termIndex !== currentTermIndex
             );
-            endOfCards = unsortedTerms.length === 0;
 
             // If its the end of the sorting then we need to show the message
-            if (endOfCards) {
+            if (unsortedTerms.length === 0) {
                 currentTermIndex = actualTerms.length - 1;
             } else {
                 // If we are not at the end of the sorting then we need to show the next term
@@ -77,9 +76,12 @@
                     currentTermIndex = unsortedTerms[0];
                 }
             }
-        } else if ($mode === "cards" && currentTermIndex + direction >= 0) {
+        } else if (
+            $mode === "cards" &&
+            currentTermIndex + direction >= 0 &&
+            currentTermIndex + direction < actualTerms.length
+        ) {
             currentTermIndex += direction;
-            endOfCards = currentTermIndex >= actualTerms.length - 1;
         }
     }
 
@@ -120,7 +122,7 @@
      * @returns never
      */
     function flipCard() {
-        if ($mode === "sort" && endOfCards) return;
+        if ($mode === "sort" && unsortedTerms.length === 0) return;
 
         cardFlipped = !cardFlipped;
     }
@@ -133,7 +135,6 @@
      * @returns never
      */
     function restart(startAtIndex: number = 0, shuffleTerms: boolean = false) {
-        endOfCards = false;
         currentTermIndex = startAtIndex;
         cardFlipped = false;
         knowTerms = [];
@@ -158,13 +159,10 @@
         restart(0, true);
     }
 
-    $effect(() => {
-        restart(currentTermIndex);
+    onMount(() => {
+        const modeStoreUnsubscribe = mode.subscribe(() => restart(currentTermIndex));
 
-        switch ($mode) {
-            case "sort":
-                unsortedTerms = [...Array(actualTerms.length).keys()];
-        }
+        return () => modeStoreUnsubscribe();
     });
 </script>
 
@@ -180,7 +178,7 @@
     <p class="my-20 text-center text-lg font-bold md:my-24">This set has no terms</p>
 {:else}
     <div class="study w-full">
-        {#if $mode === "sort" && endOfCards}
+        {#if $mode === "sort" && unsortedTerms.length === 0}
             <div class="w-full space-y-6">
                 <div>
                     <p class="text-4xl font-bold leading-none">{endOfSortingMessage}</p>
@@ -234,10 +232,7 @@
             {/if}
 
             <button
-                class="relative aspect-[1.6] max-h-96 w-full text-3xl sm:aspect-[2] {$mode ===
-                    'sort' && endOfCards
-                    ? 'cursor-default'
-                    : 'cursor-pointer'}"
+                class="relative aspect-[1.6] max-h-96 w-full text-3xl sm:aspect-[2]"
                 style:perspective="1000px"
                 onclick={flipCard}
             >
@@ -271,7 +266,7 @@
                     {@render navigationButton(
                         $mode === "sort" ? "/icons/general/X.svg" : "/icons/general/LeftArrow.svg",
                         $mode === "sort" ? "X" : "Previous",
-                        $mode === "sort" ? endOfCards : currentTermIndex === 0,
+                        $mode === "cards" ? currentTermIndex === 0 : false,
                         -1
                     )}
 
@@ -286,7 +281,7 @@
                             ? "/icons/general/Check.svg"
                             : "/icons/general/RightArrow.svg",
                         $mode === "sort" ? "Check" : "Next",
-                        endOfCards,
+                        currentTermIndex >= actualTerms.length - 1,
                         1
                     )}
                 </div>
