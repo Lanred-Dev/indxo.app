@@ -48,8 +48,6 @@
      * @returns never
      */
     function cycle(direction: -1 | 1) {
-        if (endOfCards) return;
-
         cardFlipped = false;
 
         if ($mode === "sort") {
