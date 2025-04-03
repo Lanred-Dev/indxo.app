@@ -18,7 +18,9 @@
     />
 
     <div class="flex max-h-full w-full flex-grow overflow-hidden">
-        <Sidebar visible={sidebarVisible} mobileVisible={mobileSidebarVisible} />
+        {#if data.session}
+            <Sidebar visible={sidebarVisible} mobileVisible={mobileSidebarVisible} />
+        {/if}
 
         <main
             class="md:px-18 relative flex h-full w-full flex-col items-start justify-start overflow-y-auto overflow-x-hidden px-7 pb-6 pt-12 md:pl-[10%] md:pr-[22.5%] md:pt-16 lg:pt-24 2xl:pr-[28%]"
