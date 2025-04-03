@@ -5,6 +5,7 @@ import type { Folder } from "$lib/database/documents/Folder";
 import type { User } from "$lib/database/documents/User";
 import type { Set } from "$lib/database/documents/Set";
 import permissionCheck from "$lib/utils/permissionCheck";
+import generateRandomID from "$lib/utils/generateRandomID.js";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 const folders: Collection<Folder> = loadCollection("documents", "folders");
@@ -18,7 +19,7 @@ export async function DELETE({ params, locals, fetch }) {
     if (!permissionCheck(folder, locals.user._id, true))
         error(403, "You do not have permission to delete this folder.");
 
-    const id: string = crypto.randomUUID();
+    const id: string = generateRandomID();
 
     await folders.deleteOne({
         _id: id,

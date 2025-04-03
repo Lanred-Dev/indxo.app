@@ -4,6 +4,7 @@ import { type Collection } from "mongodb";
 import type { User } from "$lib/database/documents/User";
 import type { Folder } from "$lib/database/documents/Folder";
 import { error } from "@sveltejs/kit";
+import generateRandomID from "$lib/utils/generateRandomID.js";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 const folders: Collection<Folder> = loadCollection("documents", "folders");
@@ -18,7 +19,7 @@ export async function POST({ request, locals }) {
         isPublic,
     }: { name: string; icon: string; description: string; isPublic: boolean } =
         await request.json();
-    const id: string = crypto.randomUUID();
+    const id: string = generateRandomID();
 
     await folders.insertOne({
         _id: id,

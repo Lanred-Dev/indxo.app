@@ -4,6 +4,7 @@ import { createSession, generateToken } from "$lib/auth/session.js";
 import type { Session } from "$lib/database/documents/Session.js";
 import type { User } from "$lib/database/documents/User.js";
 import { loadCollection } from "$lib/database/mongo.js";
+import generateRandomID from "$lib/utils/generateRandomID.js";
 import { error, redirect } from "@sveltejs/kit";
 import { decodeIdToken, type OAuth2Tokens } from "arctic";
 import { type Collection } from "mongodb";
@@ -50,7 +51,7 @@ export async function GET({ cookies, url }) {
     // If the user doesn't exist, create a new user because they are logging in for the first time
     if (!user) {
         user = {
-            _id: crypto.randomUUID(),
+            _id: generateRandomID(),
             google: claims.sub,
             name: claims.name,
             email: claims.email,

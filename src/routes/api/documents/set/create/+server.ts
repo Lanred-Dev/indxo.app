@@ -3,6 +3,7 @@ import { loadCollection } from "$lib/database/mongo";
 import { type Collection } from "mongodb";
 import type { Set } from "$lib/database/documents/Set";
 import type { User } from "$lib/database/documents/User";
+import generateRandomID from "$lib/utils/generateRandomID.js";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 const sets: Collection<Set> = loadCollection("documents", "sets");
@@ -17,7 +18,7 @@ export async function POST({ request, locals }) {
         isPublic,
     }: { name: string; subject: string; description: string; isPublic: boolean } =
         await request.json();
-    const id: string = crypto.randomUUID();
+    const id: string = generateRandomID();
 
     await sets.insertOne({
         _id: id,
