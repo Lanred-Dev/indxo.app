@@ -21,7 +21,7 @@
             messages = potentialMessages;
         });
 
-        return messages[Math.floor(Math.random() * messages.length)];
+        return messages[(Math.random() * messages.length) | 0];
     });
 
     const SORTING_MESSAGES: [number, string[]][] = [
