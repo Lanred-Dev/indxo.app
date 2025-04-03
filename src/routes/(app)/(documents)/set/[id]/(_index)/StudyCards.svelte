@@ -128,21 +128,24 @@
     /**
      * Restarts the study session by resetting all the state variables.
      *
+     * @param startAtIndex The index to start the study session from. Defaults to 0 (the first term). NOTE: If shuffleTerms is true, this will be ignored.
+     * @param shuffleTerms Whether to shuffle the terms again or not. Defaults to false.
      * @returns never
      */
-    function restart() {
+    function restart(startAtIndex: number = 0, shuffleTerms: boolean = false) {
         endOfCards = false;
-        currentTermIndex = 0;
+        currentTermIndex = startAtIndex;
         cardFlipped = false;
         knowTerms = [];
         stillLearningTerms = [];
 
         if ($mode === "sort") {
             unsortedTerms = [...Array(actualTerms.length).keys()];
-            shuffle();
         } else {
             unsortedTerms = [];
         }
+
+        if (shuffleTerms) shuffle();
     }
 
     function studyStillLearningTerms() {
@@ -152,11 +155,11 @@
             return stillLearningTerms.includes(index);
         });
 
-        restart();
+        restart(0, true);
     }
 
     $effect(() => {
-        restart();
+        restart(currentTermIndex);
 
         switch ($mode) {
             case "sort":
@@ -200,7 +203,7 @@
                             >Study {stillLearningTerms.length} still learning</button
                         >
                         <button class="button-primary">Study struggling terms</button>
-                        <button class="text-lg" onclick={restart}>Restart</button>
+                        <button class="text-lg" onclick={() => restart(0, true)}>Restart</button>
                     </div>
                 </div>
             </div>
