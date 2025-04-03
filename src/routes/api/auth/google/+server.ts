@@ -24,5 +24,5 @@ export async function GET({ cookies }) {
         secure: !dev,
     });
 
-    return redirect(302, url);
+    redirect(302, url);
 }

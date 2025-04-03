@@ -79,5 +79,5 @@ export async function GET({ cookies, url }) {
         expires: new Date(session.expires),
     });
 
-    return redirect(302, "/");
+    redirect(302, "/");
 }
