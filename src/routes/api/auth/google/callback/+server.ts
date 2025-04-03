@@ -47,6 +47,7 @@ export async function GET({ cookies, url }) {
         email: claims.email,
     });
 
+    // If the user doesn't exist, create a new user because they are logging in for the first time
     if (!user) {
         user = {
             _id: crypto.randomUUID(),
