@@ -1,4 +1,4 @@
-const CHARACTERS: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+const CHARACTERS: string = "abcdefghijklmnopqrstuvwxyz0123456789";
 
 /**
  * Generates a random ID consisting of uppercase letters and digits.
