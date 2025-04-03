@@ -25,7 +25,7 @@ export const handle: Handle = async ({ event, resolve }) => {
     if (validation) {
         event.locals.session = validation.session;
         event.locals.user = {
-            _id: validation.user._id.toString(),
+            _id: validation.user._id,
             name: validation.user.name,
             image: validation.user.image,
             email: validation.user.email,
