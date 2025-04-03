@@ -10,7 +10,7 @@ export default function generateRandomID(length: number = 12): string {
     let id: string = "";
 
     for (let index: number = 0; index < length; index++) {
-        id += CHARACTERS.charAt(Math.floor(Math.random() * 36));
+        id += CHARACTERS.charAt((Math.random() * 36) | 0);
     }
 
     return id;
