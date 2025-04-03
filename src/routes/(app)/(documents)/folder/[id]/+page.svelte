@@ -1,5 +1,6 @@
 <script lang="ts">
     import PageMessage from "$lib/components/PageMessage.svelte";
+    import determineWording from "$lib/utils/determineWording.js";
     import { formatDistanceToNow } from "date-fns";
 
     let { data } = $props();
@@ -18,8 +19,10 @@
 
 {#if data.permission === false}
     <PageMessage
-        title="Sorry, couldn't find that folder"
-        text="The folder you're looking for doesn't exist or you don't have permission to view it."
+        title="Sorry, couldn't find that {determineWording('folder')}."
+        text="The {determineWording(
+            'folder'
+        )} you're looking for doesn't exist or you don't have permission to view it."
         button={["Go back", "/"]}
     />
 {:else}

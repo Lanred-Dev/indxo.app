@@ -7,6 +7,7 @@
     import Header from "./Header.svelte";
     import ModeSelector from "./ModeSelector.svelte";
     import { writable, type Writable } from "svelte/store";
+    import determineWording from "$lib/utils/determineWording";
 
     let { data } = $props();
 
@@ -30,8 +31,10 @@
 
 {#if data.canView === false}
     <PageMessage
-        title="Sorry, couldn't find that set"
-        text="The set you're looking for doesn't exist or you don't have permission to view it."
+        title="Sorry, couldn't find that {determineWording('set')}."
+        text="The {determineWording(
+            'set'
+        )} you're looking for doesn't exist or you don't have permission to view it."
         button={["Go back", "/"]}
     />
 {:else}
