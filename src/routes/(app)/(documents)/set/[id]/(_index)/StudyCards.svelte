@@ -94,8 +94,8 @@
                 {
                     opacity: [0, 1],
                     rotateX: [0, 0],
-                    rotateY: [direction === 1 ? -15 : 15, 0],
-                    translate: [direction === 1 ? "8%" : "-8%", "0%"],
+                    rotateY: [direction === 1 || $mode === "sort" ? -15 : 15, 0],
+                    translate: [direction === 1 || $mode === "sort" ? "8%" : "-8%", "0%"],
                 },
                 {
                     duration: 0.3,
