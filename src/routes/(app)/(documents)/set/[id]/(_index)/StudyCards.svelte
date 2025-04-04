@@ -294,10 +294,18 @@
 
                 <div class="flex-center w-full gap-4">
                     <div class="w-3/5">
-                        <p class="text-lg text-green-500">
-                            {knowTerms.length} know{knowTerms.length !== 1 ? "s" : ""}
-                        </p>
-                        <p class="text-sm text-gray-500">You know {knowTerms.length} terms</p>
+                        <div class="text-lg">
+                            <p>
+                                You are still learning <span class="text-alert font-bold"
+                                    >{stillLearningTerms.length}</span
+                                > terms
+                            </p>
+                            <p>
+                                You know <span class="font-bold text-green-500"
+                                    >{knowTerms.length}</span
+                                > terms
+                            </p>
+                        </div>
                     </div>
 
                     <div class="flex-center flex-grow flex-col gap-4 [&>button]:w-full">
@@ -316,7 +324,7 @@
             {#if $mode === "sort"}
                 <!--Sorting mode stats-->
                 <div class="relative mb-1 flex items-center justify-between px-3">
-                    <p class="text-lg text-red-500">{stillLearningTerms.length}</p>
+                    <p class="text-alert text-lg">{stillLearningTerms.length}</p>
 
                     <!--Progress bar for sorting-->
                     <div class="x-center y-center h-1 w-1/2 rounded-full bg-primary-400">
@@ -327,7 +335,7 @@
                                 100}%"
                         >
                             <span
-                                class="y-center left-0 h-full bg-red-500 transition-[width] duration-200"
+                                class="y-center bg-accent-alert left-0 h-full transition-[width] duration-200"
                                 style:width="{(stillLearningTerms.length /
                                     (actualTerms.length - unsortedTerms.length)) *
                                     100}%"
