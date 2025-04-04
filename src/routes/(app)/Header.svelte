@@ -137,16 +137,18 @@
 <header
     class="relative top-0 flex w-full items-center justify-between bg-accent-light px-7 py-4 md:px-10"
 >
-    {#if loggedIn}
-        <button
-            onclick={() => {
-                sidebarVisible.update((visible: boolean) => !visible);
-                mobileSidebarVisible.update((visible: boolean) => !visible);
-            }}
-        >
-            <img class="size-7" src="/icons/navigation/Hamburger.svg" alt="Sidebar toggle" />
-        </button>
-    {/if}
+    <div>
+        {#if loggedIn}
+            <button
+                onclick={() => {
+                    sidebarVisible.update((visible: boolean) => !visible);
+                    mobileSidebarVisible.update((visible: boolean) => !visible);
+                }}
+            >
+                <img class="size-7" src="/icons/navigation/Hamburger.svg" alt="Sidebar toggle" />
+            </button>
+        {/if}
+    </div>
 
     <div class="input-primary flex-center x-center y-center w-[40vw] gap-2">
         <img class="size-5" src="/icons/general/Search.svg" alt="Search" />
