@@ -2,6 +2,7 @@
     import type { PublicSet, Term } from "$lib/database/documents/Set";
     import { onMount } from "svelte";
     import { type Writable } from "svelte/store";
+    import { animate } from "motion";
 
     let { set, mode }: { set: PublicSet; mode: Writable<string> } = $props();
     let actualTerms: Term[] = $state(set.terms);
@@ -23,6 +24,8 @@
 
         return messages[(Math.random() * messages.length) | 0];
     });
+    // svelte-ignore non_reactive_update
+    let currentCard: HTMLDivElement;
 
     const SORTING_MESSAGES: [number, string[]][] = [
         [0, ["Youre still learning.", "Youve got room to grow."]],
@@ -47,8 +50,8 @@
      * @param direction The direction to cycle in. -1 for previous and 1 for next or during sort mode, 1 for knows term and -1 for still learning term
      * @returns never
      */
-    function cycle(direction: -1 | 1) {
-        cardFlipped = false;
+    async function cycle(direction: -1 | 1) {
+        const lastTermIndex: number = currentTermIndex;
 
         if ($mode === "sort") {
             if (direction === 1) {
@@ -80,8 +83,25 @@
             $mode === "cards" &&
             currentTermIndex + direction >= 0 &&
             currentTermIndex + direction < actualTerms.length
-        ) {
+        )
             currentTermIndex += direction;
+
+        if (lastTermIndex !== currentTermIndex) {
+            flipCard(false, false);
+
+            animate(
+                currentCard,
+                {
+                    opacity: [0, 1],
+                    rotateX: [0, 0],
+                    rotateY: [direction === 1 ? -15 : 15, 0],
+                    translate: [direction === 1 ? "8%" : "-8%", "0%"],
+                },
+                {
+                    duration: 0.3,
+                    ease: "easeInOut",
+                }
+            );
         }
     }
 
@@ -119,12 +139,35 @@
     /**
      * Flips the card.
      *
+     * @param flipped Whether to flip the card or not. If null, it will flip the card to the opposite side.
+     * @param animateFlip Whether to animate the flip or not. Defaults to true.
      * @returns never
      */
-    function flipCard() {
-        if ($mode === "sort" && unsortedTerms.length === 0) return;
+    function flipCard(flipped?: boolean, animateFlip: boolean = true) {
+        const lastFlippedState: boolean = cardFlipped;
 
-        cardFlipped = !cardFlipped;
+        if (typeof flipped === "boolean") {
+            cardFlipped = flipped;
+        } else if ($mode === "cards" || ($mode !== "sort" && unsortedTerms.length > 0)) {
+            cardFlipped = !cardFlipped;
+        }
+
+        if (lastFlippedState === cardFlipped) return;
+
+        if (animateFlip) {
+            animate(
+                currentCard,
+                {
+                    rotateX: [cardFlipped ? 0 : 180, cardFlipped ? 180 : 0],
+                },
+                {
+                    duration: 0.3,
+                    ease: "easeInOut",
+                }
+            );
+        } else {
+            currentCard.style.transform = `rotateX(${cardFlipped ? 180 : 0}deg)`;
+        }
     }
 
     /**
@@ -136,9 +179,9 @@
      */
     function restart(startAtIndex: number = 0, shuffleTerms: boolean = false) {
         currentTermIndex = startAtIndex;
-        cardFlipped = false;
         knowTerms = [];
         stillLearningTerms = [];
+        flipCard(false, false);
 
         if ($mode === "sort") {
             unsortedTerms = [...Array(actualTerms.length).keys()];
@@ -149,6 +192,11 @@
         if (shuffleTerms) shuffle();
     }
 
+    /**
+     * Studies the terms that the user is still learning.
+     *
+     * @returns never
+     */
     function studyStillLearningTerms() {
         if (stillLearningTerms.length === 0) return;
 
@@ -234,12 +282,12 @@
             <button
                 class="relative aspect-[1.6] max-h-96 w-full text-3xl sm:aspect-[2]"
                 style:perspective="1000px"
-                onclick={flipCard}
+                onclick={() => flipCard()}
             >
                 <div
-                    class="absolute left-0 top-0 h-full w-full transition-transform duration-300 will-change-transform"
+                    class="absolute left-0 top-0 h-full w-full"
                     style:transform-style="preserve-3d"
-                    style:transform={cardFlipped ? "rotateX(180deg)" : "rotateX(0deg)"}
+                    bind:this={currentCard}
                 >
                     <div class="cardFace">
                         <p>{actualTerms[currentTermIndex].term}</p>
