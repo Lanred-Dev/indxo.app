@@ -31,12 +31,12 @@ export default {
 
                 accent: {
                     light: "#adc2d4",
+                    alert: "#f26a63",
                 },
 
                 button: {
                     primary: "#5685d6",
                     secondary: "#D4D9DE",
-                    alert: "#f26a63",
                 },
 
                 divider: "#E7E7E7",
@@ -57,6 +57,8 @@ export default {
                     900: "#060606",
                     950: "#000000",
                 },
+
+                alert: "#f26a63",
             },
 
             borderColor: {
