@@ -247,7 +247,7 @@
                 </li>
             </ul>
 
-            <a class="button-navigation hover:!bg-button-alert" href="/api/auth/logout">
+            <a class="button-navigation hover:!bg-accent-alert" href="/api/auth/logout">
                 <img src="/icons/navigation/LogOut.svg" alt="Log out" />
                 <span>Log out</span>
             </a>
