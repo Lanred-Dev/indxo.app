@@ -5,6 +5,8 @@
     import { animate } from "motion";
 
     let { set, mode }: { set: PublicSet; mode: Writable<string> } = $props();
+    let canCycle: boolean = true;
+    let canFlip: boolean = true;
     let actualTerms: Term[] = $state(set.terms);
     let cardFlipped: boolean = $state(false);
     let currentTermIndex: number = $state(0);
@@ -25,7 +27,9 @@
         return messages[(Math.random() * messages.length) | 0];
     });
     // svelte-ignore non_reactive_update
-    let currentCard: HTMLDivElement;
+    let card: HTMLDivElement;
+    // svelte-ignore non_reactive_update
+    let cardColorOverlay: HTMLDivElement;
 
     const SORTING_MESSAGES: [number, string[]][] = [
         [0, ["Youre still learning.", "Youve got room to grow."]],
@@ -51,9 +55,15 @@
      * @returns never
      */
     async function cycle(direction: -1 | 1) {
-        const lastTermIndex: number = currentTermIndex;
+        if (!canCycle) return;
 
         if ($mode === "sort") {
+            flipCard(false, true);
+
+            // Disable flipping the card and cycling while animating so that it doesnt glitch the animation
+            canCycle = false;
+            canFlip = false;
+
             if (direction === 1) {
                 knowTerms.push(currentTermIndex);
             } else if (direction === -1) {
@@ -64,44 +74,88 @@
                 (termIndex: number) => termIndex !== currentTermIndex
             );
 
-            // If its the end of the sorting then we need to show the message
-            if (unsortedTerms.length === 0) {
-                currentTermIndex = actualTerms.length - 1;
-            } else {
-                // If we are not at the end of the sorting then we need to show the next term
-                const alreadySortedNextTerm: boolean = !unsortedTerms.includes(
-                    currentTermIndex + 1
-                );
-
-                if (currentTermIndex + 1 < actualTerms.length - 1 && !alreadySortedNextTerm) {
-                    currentTermIndex++;
-                } else if (alreadySortedNextTerm || unsortedTerms.length > 0) {
-                    currentTermIndex = unsortedTerms[0];
-                }
-            }
-        } else if (
-            $mode === "cards" &&
-            currentTermIndex + direction >= 0 &&
-            currentTermIndex + direction < actualTerms.length
-        )
-            currentTermIndex += direction;
-
-        if (lastTermIndex !== currentTermIndex) {
-            flipCard(false, false);
-
+            // Apply a color overlay to the card to indicate the direction of the cycle and then animate it in
+            cardColorOverlay.style.backgroundColor = direction === 1 ? "#4caf50" : "#f26a63";
             animate(
-                currentCard,
+                cardColorOverlay,
                 {
-                    opacity: [0, 1],
-                    rotateX: [0, 0],
-                    rotateY: [direction === 1 || $mode === "sort" ? -15 : 15, 0],
-                    translate: [direction === 1 || $mode === "sort" ? "8%" : "-8%", "0%"],
+                    opacity: [0, 0.3],
+                },
+                {
+                    duration: 0.2,
+                    ease: "easeInOut",
+                }
+            );
+
+            // Animate the card out to the left or right depending on the direction of the cycle
+            await animate(
+                card,
+                {
+                    opacity: [1, 0],
+                    translate: ["0%", direction === 1 ? "8%" : "-8%"],
                 },
                 {
                     duration: 0.3,
                     ease: "easeInOut",
                 }
             );
+
+            // Reset the card to the front and remove the color overlay
+            canCycle = unsortedTerms.length > 0;
+
+            if (canCycle) {
+                canFlip = true;
+                cardColorOverlay.style.opacity = "0";
+                animate(
+                    card,
+                    {
+                        opacity: [0, 1],
+                        translate: ["0%", "0%"],
+                    },
+                    {
+                        duration: 0.3,
+                        ease: "easeInOut",
+                    }
+                );
+            } else {
+                // `canCycle` will be false if there are no more unsorted terms
+                return;
+            }
+
+            // If we are not at the end of the sorting then we need to show the next term
+            const alreadySortedNextTerm: boolean = !unsortedTerms.includes(currentTermIndex + 1);
+
+            if (currentTermIndex + 1 < actualTerms.length - 1 && !alreadySortedNextTerm) {
+                currentTermIndex++;
+            } else if (alreadySortedNextTerm || unsortedTerms.length > 0) {
+                currentTermIndex = unsortedTerms[0];
+            }
+        } else if (
+            $mode === "cards" &&
+            currentTermIndex + direction >= 0 &&
+            currentTermIndex + direction < actualTerms.length
+        ) {
+            currentTermIndex += direction;
+
+            // Disable flipping the card while animating so that it doesnt glitch the animation
+            canFlip = false;
+            flipCard(false, false);
+
+            await animate(
+                card,
+                {
+                    opacity: [0, 1],
+                    rotateX: [0, 0],
+                    rotateY: [direction === 1 ? -15 : 15, 0],
+                    translate: [direction === 1 ? "8%" : "-8%", "0%"],
+                },
+                {
+                    duration: 0.3,
+                    ease: "easeInOut",
+                }
+            );
+
+            canFlip = true;
         }
     }
 
@@ -144,11 +198,13 @@
      * @returns never
      */
     function flipCard(flipped?: boolean, animateFlip: boolean = true) {
+        if (!canFlip) return;
+
         const lastFlippedState: boolean = cardFlipped;
 
         if (typeof flipped === "boolean") {
             cardFlipped = flipped;
-        } else if ($mode === "cards" || ($mode !== "sort" && unsortedTerms.length > 0)) {
+        } else {
             cardFlipped = !cardFlipped;
         }
 
@@ -156,17 +212,17 @@
 
         if (animateFlip) {
             animate(
-                currentCard,
+                card,
                 {
                     rotateX: [cardFlipped ? 0 : 180, cardFlipped ? 180 : 0],
                 },
                 {
-                    duration: 0.3,
+                    duration: 0.2,
                     ease: "easeInOut",
                 }
             );
         } else {
-            currentCard.style.transform = `rotateX(${cardFlipped ? 180 : 0}deg)`;
+            card.style.transform = `rotateX(${cardFlipped ? 180 : 0}deg)`;
         }
     }
 
@@ -181,6 +237,8 @@
         currentTermIndex = startAtIndex;
         knowTerms = [];
         stillLearningTerms = [];
+        canCycle = true;
+        canFlip = true;
         flipCard(false, false);
 
         if ($mode === "sort") {
@@ -227,6 +285,7 @@
 {:else}
     <div class="study w-full">
         {#if $mode === "sort" && unsortedTerms.length === 0}
+            <!--End of sorting results-->
             <div class="w-full space-y-6">
                 <div>
                     <p class="text-4xl font-bold leading-none">{endOfSortingMessage}</p>
@@ -255,10 +314,11 @@
             </div>
         {:else}
             {#if $mode === "sort"}
+                <!--Sorting mode stats-->
                 <div class="relative mb-1 flex items-center justify-between px-3">
                     <p class="text-lg text-red-500">{stillLearningTerms.length}</p>
 
-                    <!--Progress bar along with the amount correct and wrong-->
+                    <!--Progress bar for sorting-->
                     <div class="x-center y-center h-1 w-1/2 rounded-full bg-primary-400">
                         <div
                             class="relative h-full overflow-hidden rounded-full bg-green-500 transition-[width] duration-200"
@@ -279,6 +339,7 @@
                 </div>
             {/if}
 
+            <!--Term card-->
             <button
                 class="relative aspect-[1.6] max-h-96 w-full text-3xl sm:aspect-[2]"
                 style:perspective="1000px"
@@ -287,8 +348,13 @@
                 <div
                     class="absolute left-0 top-0 h-full w-full"
                     style:transform-style="preserve-3d"
-                    bind:this={currentCard}
+                    bind:this={card}
                 >
+                    <div
+                        class="absolute left-0 top-0 z-10 h-full w-full rounded-primary opacity-0"
+                        bind:this={cardColorOverlay}
+                    ></div>
+
                     <div class="cardFace">
                         <p>{actualTerms[currentTermIndex].term}</p>
                     </div>
@@ -309,6 +375,7 @@
                 </div>
             </button>
 
+            <!--Controls-->
             <div class="relative mt-4 w-full">
                 <div class="flex-center gap-1">
                     {@render navigationButton(
@@ -329,7 +396,7 @@
                             ? "/icons/general/Check.svg"
                             : "/icons/general/RightArrow.svg",
                         $mode === "sort" ? "Check" : "Next",
-                        currentTermIndex >= actualTerms.length - 1,
+                        $mode === "cards" ? currentTermIndex >= actualTerms.length - 1 : false,
                         1
                     )}
                 </div>
