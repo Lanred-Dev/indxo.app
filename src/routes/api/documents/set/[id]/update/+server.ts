@@ -3,6 +3,7 @@ import { loadCollection } from "$lib/database/mongo";
 import { type Collection } from "mongodb";
 import { updatableFields, type Set } from "$lib/database/documents/Set";
 import permissionCheck from "$lib/utils/permissionCheck";
+import generateRandomID from "$lib/utils/generateRandomID";
 
 const sets: Collection<Set> = loadCollection("documents", "sets");
 
@@ -27,6 +28,14 @@ export async function POST({ params, request, fetch, locals }) {
             continue;
 
         validFields[key] = newFields[key];
+    }
+
+    if ("terms" in validFields) {
+        for (const term of validFields.terms) {
+            if (!term._id) continue;
+
+            term._id = generateRandomID(5);
+        }
     }
 
     await sets.updateOne(
