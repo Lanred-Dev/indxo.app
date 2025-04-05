@@ -10,9 +10,9 @@
     let actualTerms: Term[] = $state(set.terms);
     let cardFlipped: boolean = $state(false);
     let currentTermIndex: number = $state(0);
-    let stillLearningTerms: number[] = $state([]);
-    let knowTerms: number[] = $state([]);
-    let unsortedTerms: number[] = $state([]);
+    let stillLearningTerms: string[] = $state([]);
+    let knowTerms: string[] = $state([]);
+    let unsortedTerms: string[] = $state([]);
     let endOfSortingMessage: string = $derived.by(() => {
         if (unsortedTerms.length > 0 || $mode !== "sort") return "";
 
@@ -30,6 +30,10 @@
     let card: HTMLDivElement;
     // svelte-ignore non_reactive_update
     let cardColorOverlay: HTMLDivElement;
+    // svelte-ignore non_reactive_update
+    let cardFront: HTMLDivElement;
+    // svelte-ignore non_reactive_update
+    let cardBack: HTMLDivElement;
 
     const SORTING_MESSAGES: [number, string[]][] = [
         [0, ["Youre still learning.", "Youve got room to grow."]],
@@ -58,20 +62,18 @@
         if (!canCycle) return;
 
         if ($mode === "sort") {
-            flipCard(false, true);
-
             // Disable flipping the card and cycling while animating so that it doesnt glitch the animation
             canCycle = false;
             canFlip = false;
 
             if (direction === 1) {
-                knowTerms.push(currentTermIndex);
+                knowTerms.push(set.terms[currentTermIndex]._id);
             } else if (direction === -1) {
-                stillLearningTerms.push(currentTermIndex);
+                stillLearningTerms.push(set.terms[currentTermIndex]._id);
             }
 
             unsortedTerms = unsortedTerms.filter(
-                (termIndex: number) => termIndex !== currentTermIndex
+                (termID: string) => termID !== set.terms[currentTermIndex]._id
             );
 
             // Apply a color overlay to the card to indicate the direction of the cycle and then animate it in
@@ -105,11 +107,14 @@
 
             if (canCycle) {
                 canFlip = true;
+                flipCard(false, false);
                 cardColorOverlay.style.opacity = "0";
+
                 animate(
                     card,
                     {
                         opacity: [0, 1],
+                        rotateX: [0, 0],
                         translate: ["0%", "0%"],
                     },
                     {
@@ -123,12 +128,14 @@
             }
 
             // If we are not at the end of the sorting then we need to show the next term
-            const alreadySortedNextTerm: boolean = !unsortedTerms.includes(currentTermIndex + 1);
+            const alreadySortedNextTerm: boolean = !unsortedTerms.includes(
+                actualTerms[currentTermIndex + 1]._id
+            );
 
             if (currentTermIndex + 1 < actualTerms.length - 1 && !alreadySortedNextTerm) {
                 currentTermIndex++;
             } else if (alreadySortedNextTerm || unsortedTerms.length > 0) {
-                currentTermIndex = unsortedTerms[0];
+                currentTermIndex = actualTerms.findIndex(({ _id }) => _id === unsortedTerms[0]);
             }
         } else if (
             $mode === "cards" &&
@@ -137,9 +144,9 @@
         ) {
             currentTermIndex += direction;
 
+            flipCard(false, false);
             // Disable flipping the card while animating so that it doesnt glitch the animation
             canFlip = false;
-            flipCard(false, false);
 
             await animate(
                 card,
@@ -197,7 +204,7 @@
      * @param animateFlip Whether to animate the flip or not. Defaults to true.
      * @returns never
      */
-    function flipCard(flipped?: boolean, animateFlip: boolean = true) {
+    async function flipCard(flipped?: boolean, animateFlip: boolean = true) {
         if (!canFlip) return;
 
         const lastFlippedState: boolean = cardFlipped;
@@ -211,18 +218,29 @@
         if (lastFlippedState === cardFlipped) return;
 
         if (animateFlip) {
-            animate(
+            canFlip = false;
+
+            setTimeout(() => {
+                cardFront.style.display = cardFlipped ? "none" : "flex";
+                cardBack.style.display = cardFlipped ? "flex" : "none";
+            }, 125);
+
+            await animate(
                 card,
                 {
                     rotateX: [cardFlipped ? 0 : 180, cardFlipped ? 180 : 0],
                 },
                 {
-                    duration: 0.2,
+                    duration: 0.25,
                     ease: "easeInOut",
                 }
             );
+
+            canFlip = true;
         } else {
             card.style.transform = `rotateX(${cardFlipped ? 180 : 0}deg)`;
+            cardFront.style.display = cardFlipped ? "none" : "flex";
+            cardBack.style.display = cardFlipped ? "flex" : "none";
         }
     }
 
@@ -242,8 +260,8 @@
         flipCard(false, false);
 
         if ($mode === "sort") {
-            unsortedTerms = [...Array(actualTerms.length).keys()];
-        } else {
+            unsortedTerms = actualTerms.map(({ _id }) => _id);
+        } else if ($mode === "cards") {
             unsortedTerms = [];
         }
 
@@ -258,8 +276,8 @@
     function studyStillLearningTerms() {
         if (stillLearningTerms.length === 0) return;
 
-        actualTerms = actualTerms.filter((_term, index) => {
-            return stillLearningTerms.includes(index);
+        actualTerms = actualTerms.filter(({ _id }) => {
+            return stillLearningTerms.includes(_id);
         });
 
         restart(0, true);
@@ -363,11 +381,16 @@
                         bind:this={cardColorOverlay}
                     ></div>
 
-                    <div class="cardFace">
+                    <div class="cardFace" bind:this={cardFront}>
                         <p>{actualTerms[currentTermIndex].term}</p>
                     </div>
 
-                    <div class="cardFace" style:transform="rotateX(180deg)">
+                    <div
+                        class="cardFace"
+                        style:display="none"
+                        style:transform="rotateX(180deg)"
+                        bind:this={cardBack}
+                    >
                         <p class="text-light x-center top-6 text-base">
                             {actualTerms[currentTermIndex].term}
                         </p>
@@ -376,7 +399,6 @@
 
                     <style lang="postcss">
                         .cardFace {
-                            backface-visibility: hidden;
                             @apply absolute left-0 top-0 flex h-full w-full items-center justify-center overflow-y-auto rounded-primary border border-primary bg-primary-200 p-6 shadow-xl;
                         }
                     </style>
