@@ -67,13 +67,13 @@
             canFlip = false;
 
             if (direction === 1) {
-                knowTerms.push(set.terms[currentTermIndex]._id);
+                knowTerms.push(actualTerms[currentTermIndex]._id);
             } else if (direction === -1) {
-                stillLearningTerms.push(set.terms[currentTermIndex]._id);
+                stillLearningTerms.push(actualTerms[currentTermIndex]._id);
             }
 
             unsortedTerms = unsortedTerms.filter(
-                (termID: string) => termID !== set.terms[currentTermIndex]._id
+                (termID: string) => termID !== actualTerms[currentTermIndex]._id
             );
 
             // Apply a color overlay to the card to indicate the direction of the cycle and then animate it in
@@ -320,7 +320,7 @@
                             </p>
                             <p>
                                 You know <span class="font-bold text-green-500"
-                                    >{knowTerms.length}</span
+                                    >{set.terms.length - stillLearningTerms.length}</span
                                 > terms
                             </p>
                         </div>
