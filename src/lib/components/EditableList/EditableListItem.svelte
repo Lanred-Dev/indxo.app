@@ -17,11 +17,12 @@
 
     export type item = {
         _listID: number;
+        _id?: string;
         properties?: property[];
         actionButtons?: actionButton[];
     };
 
-    let { _listID, properties = $bindable([]), actionButtons = [] }: item = $props();
+    let { _listID, _id, properties = $bindable([]), actionButtons = [] }: item = $props();
 
     let value: string = $derived.by(() => {
         const actualProperties: { [id: string]: string } = {};
@@ -46,7 +47,8 @@
 
 <div
     class="editableListItem container-primary flex flex-col gap-3 px-8 py-6"
-    data-id={_listID}
+    data-listID={_listID}
+    data-id={_id}
     data-value={value}
     data-hasValue={hasValue}
 >

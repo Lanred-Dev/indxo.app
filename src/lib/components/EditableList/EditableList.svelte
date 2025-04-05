@@ -37,7 +37,7 @@
         startingItems?: number;
         properties?: property[];
         actionButtons?: actionButton[];
-        items?: property[][];
+        items?: { _id: string; properties: property[] }[];
         addText?: string;
         isDraggable?: boolean;
         ItemComponent?: Component<{ index: number } & any, {}, "properties">;
@@ -53,7 +53,7 @@
      *
      * @returns never
      */
-    function addItem(itemProperties: property[] = properties) {
+    function addItem(_id: string | null = null, itemProperties: property[] = properties) {
         let actionButtonsClone: actionButton[] | null = [...actionButtons];
 
         if (isDraggable) {
@@ -69,6 +69,7 @@
 
         actualItems.push({
             _listID: actualItems.length,
+            _id: _id ?? undefined,
             properties: itemProperties,
             actionButtons: actionButtonsClone,
         });
@@ -115,8 +116,8 @@
 
     onMount(() => {
         if (items.length > 0) {
-            items.forEach((properties: property[]) => {
-                addItem(properties);
+            items.forEach(({ _id, properties }) => {
+                addItem(_id, properties);
             });
         } else {
             // Add the requested number of items to start with
@@ -127,7 +128,7 @@
 
 <div class={twMerge("editableList space-y-5", classes)}>
     <ol class="relative space-y-5">
-        {#each actualItems as { _listID, actionButtons }}
+        {#each actualItems as { _listID, _id, actionButtons }}
             <!--The `li` element is used for the dragging features.-->
             <li
                 class="transition-all {isDraggable ? 'cursor-move' : ''} {draggingID === _listID
@@ -152,6 +153,7 @@
             >
                 <ItemComponent
                     {_listID}
+                    {_id}
                     bind:properties={actualItems[_listID].properties}
                     {actionButtons}
                 />
