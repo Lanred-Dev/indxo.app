@@ -21,18 +21,28 @@ export async function POST({ params, request, fetch, locals }) {
     // Check if the new fields are valid
     for (const key in newFields) {
         if (
-            !(key in updatableFields) || Array.isArray(newFields[key])
+            !(key in updatableFields) ||
+            (Array.isArray(newFields[key])
                 ? updatableFields[key] !== "array"
-                : updatableFields[key] !== typeof newFields[key]
+                : updatableFields[key] !== typeof newFields[key]) ||
+            (Array.isArray(newFields[key])
+                ? JSON.stringify(newFields[key]) === JSON.stringify(set[key])
+                : set[key] === newFields[key])
         )
             continue;
 
         validFields[key] = newFields[key];
     }
 
+    if (validFields.length === 0)
+        return new Response(null, {
+            status: 204,
+        });
+
     if ("terms" in validFields) {
         for (const term of validFields.terms) {
-            if (!term._id) continue;
+            // The length is checked to make sure its a valid ID
+            if ("_id" in term || ("_id" in term && term._id.length !== 5)) continue;
 
             term._id = generateRandomID(5);
         }
