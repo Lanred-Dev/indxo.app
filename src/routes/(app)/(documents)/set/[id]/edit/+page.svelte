@@ -102,20 +102,23 @@
             addText: `Add ${determineWording("card")}`,
             startingItems: 3,
             isDraggable: true,
-            items: data.terms.map((term) => [
-                {
-                    id: "term",
-                    type: "input",
-                    value: term.term,
-                    placeholder: "Term",
-                },
-                {
-                    id: "definition",
-                    type: "textarea",
-                    value: term.definition,
-                    placeholder: "Definition",
-                },
-            ]),
+            items: data.terms.map(({ _id, term, definition }) => ({
+                _id,
+                properties: [
+                    {
+                        id: "term",
+                        type: "input",
+                        value: term,
+                        placeholder: "Term",
+                    },
+                    {
+                        id: "definition",
+                        type: "textarea",
+                        value: definition,
+                        placeholder: "Definition",
+                    },
+                ],
+            })),
             properties: [
                 {
                     id: "term",
