@@ -45,12 +45,18 @@
 
                     // Note: `1` is a placeholder value for items that don't have data.
                     for (const item of listItems) {
-                        const id: number = parseInt(item.getAttribute("data-id")!);
+                        const listID: number = parseInt(item.getAttribute("data-listID")!);
                         const hasData: boolean = item.getAttribute("data-hasValue") === "true";
+                        let itemValue: any = "1";
 
-                        listData[id] = !hasData
-                            ? "1"
-                            : JSON.parse(item.getAttribute("data-value")!);
+                        if (hasData) {
+                            itemValue = JSON.parse(item.getAttribute("data-value")!);
+
+                            const _id: string | null = item.getAttribute("data-id");
+                            itemValue._id = _id ?? undefined;
+                        }
+
+                        listData[listID] = itemValue;
                     }
 
                     value = listData.filter((item) => item !== "1");
