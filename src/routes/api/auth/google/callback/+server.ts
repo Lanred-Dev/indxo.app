@@ -1,10 +1,10 @@
 import { dev } from "$app/environment";
 import { google } from "$lib/auth/oauth";
-import { createSession, generateToken } from "$lib/auth/session.js";
-import type { Session } from "$lib/database/documents/Session.js";
-import type { User } from "$lib/database/documents/User.js";
-import { loadCollection } from "$lib/database/mongo.js";
-import generateRandomID from "$lib/utils/generateRandomID.js";
+import { createSession, generateToken } from "$lib/auth/session";
+import type { Session } from "$lib/database/documents/Session";
+import type { User } from "$lib/database/documents/User";
+import { loadCollection } from "$lib/database/mongo";
+import generateRandomID from "$lib/utils/generateRandomID";
 import { error, redirect } from "@sveltejs/kit";
 import { decodeIdToken, type OAuth2Tokens } from "arctic";
 import { type Collection } from "mongodb";
