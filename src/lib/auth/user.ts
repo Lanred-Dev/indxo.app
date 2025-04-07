@@ -7,14 +7,10 @@ const users: Collection<User> = loadCollection("accounts", "users");
 /**
  * Compares the current user's fields to the fields array and updates the user with any missing fields.
  *
- * @param id The ID of the user to update.
- * @returns
+ * @param user The user to check
+ * @returns never
  */
-export async function checkUserForUpdates(id: string) {
-    const user: User | null = await users.findOne({ _id: id });
-
-    if (!user) return;
-
+export async function checkUserForUpdates(user: User) {
     const missingFields = fields.filter(([key, type]) => {
         if (!(key in user)) return true;
 
@@ -32,9 +28,11 @@ export async function checkUserForUpdates(id: string) {
         }
     });
 
+    if (missingFields.length === 0) return;
+
     await users.updateOne(
         {
-            _id: id,
+            _id: user._id,
         },
         {
             $set: {
@@ -63,6 +61,4 @@ export async function checkUserForUpdates(id: string) {
             },
         }
     );
-
-    return user;
 }

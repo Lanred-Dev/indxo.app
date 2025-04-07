@@ -6,6 +6,7 @@ import type { User } from "$lib/database/documents/User";
 import { type Collection } from "mongodb";
 import { loadCollection } from "$lib/database/mongo";
 import { milliseconds } from "date-fns";
+import { checkUserForUpdates } from "./user";
 
 const sessions: Collection<Session> = loadCollection("accounts", "sessions");
 
@@ -45,6 +46,8 @@ export async function validateToken(
     }
 
     const user: User = await idToDocument("users", session.user);
+    checkUserForUpdates(user);
+
     return { user, session };
 }
 
