@@ -8,7 +8,7 @@
     <title>Results for "{data.query}"</title>
 </svelte:head>
 
-<div>
-    <p class="text-light text-xl leading-tight">Searching in {data.returnOnly}</p>
-    <h1 class="text-3xl font-bold leading-none md:text-5xl">Results for "{data.query}"</h1>
+<div class="page-title">
+    <p>Searching in {data.returnOnly}</p>
+    <h1>Results for "{data.query}"</h1>
 </div>

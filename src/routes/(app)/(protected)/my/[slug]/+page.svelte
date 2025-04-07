@@ -121,9 +121,9 @@
     <title>Your {determineWording(type)}</title>
 </svelte:head>
 
-<div>
-    <p class="text-light text-xl leading-tight">Browse your library</p>
-    <h1 class="text-3xl font-bold leading-none md:text-5xl">Your {determineWording(type)}</h1>
+<div class="page-title">
+    <p>Browse your library</p>
+    <h1>Your {determineWording(type)}</h1>
 </div>
 
 <Search

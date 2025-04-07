@@ -51,9 +51,9 @@
     <title>Create a {determineWording(type)}</title>
 </svelte:head>
 
-<div class="mb-7">
-    <p class="text-3xl font-bold">{wording[0]}</p>
-    <p class="text-light text-lg">{wording[1]}</p>
+<div class="page-message">
+    <p>{wording[0]}</p>
+    <p>{wording[1]}</p>
 </div>
 
 <Form classes="w-full" action={endpoint} {afterSubmit}>

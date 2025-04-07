@@ -224,4 +224,26 @@
     div.list-primary ul.list.grid {
         @apply flex-wrap gap-4;
     }
+
+    /* Text */
+    div.page-title p {
+        @apply text-light text-xl leading-tight;
+    }
+
+    h1.page-title,
+    div.page-title h1 {
+        @apply text-3xl font-bold leading-none md:text-5xl;
+    }
+
+    div.page-message {
+        @apply mb-7;
+    }
+
+    div.page-message p:nth-of-type(1) {
+        @apply text-4xl font-bold;
+    }
+
+    div.page-message p:nth-of-type(2) {
+        @apply text-light text-xl;
+    }
 }

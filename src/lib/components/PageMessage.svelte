@@ -3,7 +3,7 @@
         $props();
 </script>
 
-<div class="mb-7 block">
+<div class="page-message">
     <p class="text-3xl font-bold">{title}</p>
     <p class="text-light text-lg">{text}</p>
 </div>

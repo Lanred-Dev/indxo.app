@@ -50,7 +50,7 @@
     {/if}
 
     <div class="flex items-center justify-between">
-        <h1 class="text-3xl font-bold leading-none md:text-5xl">{set?.name}</h1>
+        <h1 class="page-title">{set?.name}</h1>
 
         <div class="flex-center gap-3">
             {#if hasPermission === true}
