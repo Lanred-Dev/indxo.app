@@ -10,6 +10,7 @@ export async function load({ fetch, params }) {
     }
 
     const set: PublicSet = await response.json();
+    const savedSorting = await (await fetch(`/api/documents/set/${params.id}/sorting`)).json();
     const isFavorite: boolean = await (
         await fetch(`/api/documents/${params.id}/is-favorite`)
     ).json();
@@ -20,6 +21,7 @@ export async function load({ fetch, params }) {
     return {
         canView: true,
         set,
+        savedSorting,
         isFavorite,
         hasPermission,
     };

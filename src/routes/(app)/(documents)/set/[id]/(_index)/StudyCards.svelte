@@ -1,11 +1,16 @@
 <script lang="ts">
     import type { PublicSet, Term } from "$lib/database/documents/Set";
-    import { onMount } from "svelte";
+    import { onDestroy, onMount } from "svelte";
     import { type Writable } from "svelte/store";
     import { animate } from "motion";
     import { fly } from "svelte/transition";
+    import type { sortingTerm } from "$lib/database/documents/User";
 
-    let { set, mode }: { set: PublicSet; mode: Writable<string> } = $props();
+    let {
+        set,
+        savedSorting,
+        mode,
+    }: { set: PublicSet; savedSorting: sortingTerm[]; mode: Writable<string> } = $props();
 
     let canCycle: boolean = true;
     let canFlip: boolean = true;
@@ -15,8 +20,12 @@
     let actualTerms: Term[] = $state(set.terms);
     let sortingTerms: string[] = [];
     let unsortedTerms: string[] = $state([]);
-    let stillLearningTerms: string[] = $state([]);
-    let knowTerms: string[] = $state([]);
+    let stillLearningTerms: string[] = $state(
+        savedSorting.map(([id, knows]) => (knows === -1 ? id : null)).filter((id) => id !== null)
+    );
+    let knowTerms: string[] = $state(
+        savedSorting.map(([id, knows]) => (knows === 1 ? id : null)).filter((id) => id !== null)
+    );
 
     let endOfSortingMessage: string = $derived.by(() => {
         if (unsortedTerms.length > 0 || $mode !== "sort") return "";
@@ -313,6 +322,32 @@
             }
 
             flipCard(false, false);
+        });
+    });
+
+    onDestroy(async () => {
+        if (unsortedTerms.length === 0 && knowTerms.length === 0 && stillLearningTerms.length === 0)
+            return;
+
+        savedSorting = [];
+
+        knowTerms.forEach((id) => {
+            savedSorting.push([id, 1]);
+        });
+
+        stillLearningTerms.forEach((id) => {
+            savedSorting.push([id, -1]);
+        });
+
+        set.terms.forEach(({ _id }) => {
+            if (knowTerms.includes(_id) || stillLearningTerms.includes(_id)) return;
+
+            savedSorting.push([_id, -1]);
+        });
+
+        await fetch(`/api/documents/set/${set._id}/sorting/update`, {
+            method: "POST",
+            body: JSON.stringify({ savedSorting }),
         });
     });
 </script>
