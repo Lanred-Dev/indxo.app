@@ -129,7 +129,7 @@
 
             // If we are not at the end of the sorting then we need to show the next term
             const alreadySortedNextTerm: boolean = !unsortedTerms.includes(
-                actualTerms[currentTermIndex + 1]._id
+                actualTerms[currentTermIndex + 1]?._id
             );
 
             if (currentTermIndex + 1 < actualTerms.length - 1 && !alreadySortedNextTerm) {
@@ -143,9 +143,7 @@
             currentTermIndex + direction < actualTerms.length
         ) {
             currentTermIndex += direction;
-
             flipCard(false, false);
-            // Disable flipping the card while animating so that it doesnt glitch the animation
             canFlip = false;
 
             await animate(
@@ -247,25 +245,19 @@
     /**
      * Restarts the study session by resetting all the state variables.
      *
-     * @param startAtIndex The index to start the study session from. Defaults to 0 (the first term). NOTE: If shuffleTerms is true, this will be ignored.
-     * @param shuffleTerms Whether to shuffle the terms again or not. Defaults to false.
      * @returns never
      */
-    function restart(startAtIndex: number = 0, shuffleTerms: boolean = false) {
-        currentTermIndex = startAtIndex;
+    function restart() {
+        // Setting this first allows the card component to reload before `flipCard` is called
+        if ($mode === "sort") unsortedTerms = actualTerms.map(({ _id }) => _id);
+
+        currentTermIndex = 0;
         knowTerms = [];
         stillLearningTerms = [];
         canCycle = true;
         canFlip = true;
         flipCard(false, false);
-
-        if ($mode === "sort") {
-            unsortedTerms = actualTerms.map(({ _id }) => _id);
-        } else if ($mode === "cards") {
-            unsortedTerms = [];
-        }
-
-        if (shuffleTerms) shuffle();
+        shuffle();
     }
 
     /**
@@ -274,17 +266,37 @@
      * @returns never
      */
     function studyStillLearningTerms() {
-        if (stillLearningTerms.length === 0) return;
-
         actualTerms = actualTerms.filter(({ _id }) => {
             return stillLearningTerms.includes(_id);
         });
 
-        restart(0, true);
+        restart();
     }
 
     onMount(() => {
-        const modeStoreUnsubscribe = mode.subscribe(() => restart(currentTermIndex));
+        const modeStoreUnsubscribe = mode.subscribe((mode: string) => {
+            if (mode === "sort") {
+                if (
+                    unsortedTerms.length === 0 &&
+                    knowTerms.length === 0 &&
+                    stillLearningTerms.length === 0
+                ) {
+                    unsortedTerms = actualTerms.map(({ _id }) => _id);
+                } else if (unsortedTerms.length > 0) {
+                    currentTermIndex = actualTerms.findIndex(({ _id }) => _id === unsortedTerms[0]);
+                }
+
+                canCycle = unsortedTerms.length > 0;
+                canFlip = unsortedTerms.length > 0;
+            } else if (mode === "cards") {
+                canCycle = true;
+                canFlip = true;
+                actualTerms = set.terms;
+                currentTermIndex = 0;
+            }
+
+            flipCard(false, false);
+        });
 
         return () => modeStoreUnsubscribe();
     });
@@ -314,7 +326,7 @@
                     <div class="w-3/5">
                         <div class="text-lg">
                             <p>
-                                You are still learning <span class="text-alert font-bold"
+                                You are still learning <span class="font-bold text-alert"
                                     >{stillLearningTerms.length}</span
                                 > terms
                             </p>
@@ -334,7 +346,7 @@
                             >Study {stillLearningTerms.length} still learning</button
                         >
                         <button class="button-primary">Study struggling terms</button>
-                        <button class="text-lg" onclick={() => restart(0, true)}>Restart</button>
+                        <button class="text-lg" onclick={() => restart()}>Restart</button>
                     </div>
                 </div>
             </div>
@@ -342,7 +354,7 @@
             {#if $mode === "sort"}
                 <!--Sorting mode stats-->
                 <div class="relative mb-1 flex items-center justify-between px-3">
-                    <p class="text-alert text-lg">{stillLearningTerms.length}</p>
+                    <p class="text-lg text-alert">{stillLearningTerms.length}</p>
 
                     <!--Progress bar for sorting-->
                     <div class="x-center y-center h-1 w-1/2 rounded-full bg-primary-400">
@@ -353,7 +365,7 @@
                                 100}%"
                         >
                             <span
-                                class="y-center bg-accent-alert left-0 h-full transition-[width] duration-200"
+                                class="y-center left-0 h-full bg-accent-alert transition-[width] duration-200"
                                 style:width="{(stillLearningTerms.length /
                                     (actualTerms.length - unsortedTerms.length)) *
                                     100}%"
