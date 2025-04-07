@@ -10,7 +10,7 @@
     <title>Home</title>
 </svelte:head>
 
-{#if data.sections.length === 0}
+{#if data.length === 0}
     <PageMessage
         title="Make this your home!"
         text="You currently dont have any sections visible on your home page."
@@ -18,7 +18,7 @@
     />
 {:else}
     <div class="w-full space-y-20">
-        {#each data.sections as section}
+        {#each data as section}
             {#if section.type === "card"}
                 <CardSection {...section} />
             {/if}
