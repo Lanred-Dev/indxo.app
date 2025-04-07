@@ -8,6 +8,7 @@
     let canCycle: boolean = true;
     let canFlip: boolean = true;
     let actualTerms: Term[] = $state(set.terms);
+    let sortingTerms: string[] = [];
     let cardFlipped: boolean = $state(false);
     let currentTermIndex: number = $state(0);
     let stillLearningTerms: string[] = $state([]);
@@ -269,6 +270,7 @@
         actualTerms = actualTerms.filter(({ _id }) => {
             return stillLearningTerms.includes(_id);
         });
+        sortingTerms = stillLearningTerms.slice();
 
         restart();
     }
@@ -276,13 +278,13 @@
     onMount(() => {
         const modeStoreUnsubscribe = mode.subscribe((mode: string) => {
             if (mode === "sort") {
-                if (
-                    unsortedTerms.length === 0 &&
-                    knowTerms.length === 0 &&
-                    stillLearningTerms.length === 0
-                ) {
-                    unsortedTerms = actualTerms.map(({ _id }) => _id);
+                if (sortingTerms.length === 0) {
+                    sortingTerms = actualTerms.map(({ _id }) => _id);
+                    unsortedTerms = sortingTerms;
                 } else if (unsortedTerms.length > 0) {
+                    actualTerms = set.terms.filter(({ _id }) => sortingTerms.includes(_id));
+
+                    // If the current term is not in the unsorted terms, find the next unsorted term
                     const currentTermID: string = unsortedTerms.includes(
                         actualTerms[currentTermIndex]?._id
                     )
