@@ -10,7 +10,6 @@ export async function load({ fetch, params }) {
     }
 
     const set: PublicSet = await response.json();
-    const userID: string = await (await fetch("/api/account")).json();
     const isFavorite: boolean = await (
         await fetch(`/api/documents/${params.id}/is-favorite`)
     ).json();
