@@ -20,12 +20,11 @@ export interface User extends Document {
     favorites: favorite[];
     homeSectionPreferences: string[];
     openedSets: [string, number][];
-    setData: [
-        string,
-        {
-            sorted: [string, -1 | 1];
-        },
-    ][];
+    meta: {
+        [id: string]: {
+            sorted: [string, -1 | 1 | null];
+        };
+    };
 }
 
 export interface PublicUser {
@@ -61,5 +60,5 @@ export const fields: [string, "string" | "boolean" | "array" | "dictionary"][] =
     ["favorites", "array"],
     ["homeSectionPreferences", "array"],
     ["openedSets", "array"],
-    ["setData", "array"],
+    ["meta", "dictionary"],
 ];
