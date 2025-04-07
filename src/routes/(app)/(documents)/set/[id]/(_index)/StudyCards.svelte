@@ -3,17 +3,21 @@
     import { onMount } from "svelte";
     import { type Writable } from "svelte/store";
     import { animate } from "motion";
+    import { fly } from "svelte/transition";
 
     let { set, mode }: { set: PublicSet; mode: Writable<string> } = $props();
+
     let canCycle: boolean = true;
     let canFlip: boolean = true;
-    let actualTerms: Term[] = $state(set.terms);
-    let sortingTerms: string[] = [];
     let cardFlipped: boolean = $state(false);
     let currentTermIndex: number = $state(0);
+
+    let actualTerms: Term[] = $state(set.terms);
+    let sortingTerms: string[] = [];
+    let unsortedTerms: string[] = $state([]);
     let stillLearningTerms: string[] = $state([]);
     let knowTerms: string[] = $state([]);
-    let unsortedTerms: string[] = $state([]);
+
     let endOfSortingMessage: string = $derived.by(() => {
         if (unsortedTerms.length > 0 || $mode !== "sort") return "";
 
@@ -27,6 +31,7 @@
 
         return messages[(Math.random() * messages.length) | 0];
     });
+
     // svelte-ignore non_reactive_update
     let card: HTMLDivElement;
     // svelte-ignore non_reactive_update
@@ -63,7 +68,6 @@
         if (!canCycle) return;
 
         if ($mode === "sort") {
-            // Disable flipping the card and cycling while animating so that it doesnt glitch the animation
             canCycle = false;
             canFlip = false;
 
@@ -103,14 +107,14 @@
                 }
             );
 
-            // Reset the card to the front and remove the color overlay
             canCycle = unsortedTerms.length > 0;
 
             if (canCycle) {
+                // Reset the card to the front and remove the color overlay
                 canFlip = true;
                 flipCard(false, false);
-                cardColorOverlay.style.opacity = "0";
 
+                cardColorOverlay.style.opacity = "0";
                 animate(
                     card,
                     {
@@ -124,8 +128,7 @@
                     }
                 );
             } else {
-                // `canCycle` will be false if there are no more unsorted terms
-                return;
+                return; // `canCycle` will be false if there are no more unsorted terms
             }
 
             // If we are not at the end of the sorting then we need to show the next term
@@ -182,7 +185,6 @@
         event.preventDefault();
         (event.target as HTMLElement).blur();
 
-        // Allow keyboard shortcuts
         switch (event.key) {
             case " ":
                 flipCard();
@@ -250,7 +252,10 @@
      */
     function restart() {
         // Setting this first allows the card component to reload before `flipCard` is called
-        if ($mode === "sort") unsortedTerms = actualTerms.map(({ _id }) => _id);
+        if ($mode === "sort") {
+            unsortedTerms = actualTerms.map(({ _id }) => _id);
+            sortingTerms = unsortedTerms;
+        }
 
         currentTermIndex = 0;
         knowTerms = [];
@@ -270,13 +275,12 @@
         actualTerms = actualTerms.filter(({ _id }) => {
             return stillLearningTerms.includes(_id);
         });
-        sortingTerms = stillLearningTerms.slice();
 
         restart();
     }
 
     onMount(() => {
-        const modeStoreUnsubscribe = mode.subscribe((mode: string) => {
+        return mode.subscribe((mode: string) => {
             if (mode === "sort") {
                 if (sortingTerms.length === 0) {
                     sortingTerms = actualTerms.map(({ _id }) => _id);
@@ -310,15 +314,18 @@
 
             flipCard(false, false);
         });
-
-        return () => modeStoreUnsubscribe();
     });
 </script>
 
 <svelte:window onkeydown={handleKeyboardShortcuts} />
 
 {#snippet navigationButton(icon: string, text: string, disabled: boolean, direction: -1 | 1)}
-    <button class="button-primary !rounded-full !p-3.5" {disabled} onclick={() => cycle(direction)}>
+    <button
+        class="button-primary !rounded-full !p-3.5"
+        {disabled}
+        onclick={() => cycle(direction)}
+        in:fly={{ y: 5 }}
+    >
         <img class="size-9" src={icon} alt={text} />
     </button>
 {/snippet}
@@ -339,7 +346,7 @@
                     <div class="w-3/5">
                         <div class="text-lg">
                             <p>
-                                You are still learning <span class="font-bold text-alert"
+                                You are still learning <span class="text-alert font-bold"
                                     >{stillLearningTerms.length}</span
                                 > terms
                             </p>
@@ -367,7 +374,7 @@
             {#if $mode === "sort"}
                 <!--Sorting mode stats-->
                 <div class="relative mb-1 flex items-center justify-between px-3">
-                    <p class="text-lg text-alert">{stillLearningTerms.length}</p>
+                    <p class="text-alert text-lg">{stillLearningTerms.length}</p>
 
                     <!--Progress bar for sorting-->
                     <div class="x-center y-center h-1 w-1/2 rounded-full bg-primary-400">
@@ -378,7 +385,7 @@
                                 100}%"
                         >
                             <span
-                                class="y-center left-0 h-full bg-accent-alert transition-[width] duration-200"
+                                class="y-center bg-accent-alert left-0 h-full transition-[width] duration-200"
                                 style:width="{(stillLearningTerms.length /
                                     (actualTerms.length - unsortedTerms.length)) *
                                     100}%"
@@ -433,12 +440,16 @@
             <!--Controls-->
             <div class="relative mt-4 w-full">
                 <div class="flex-center gap-1">
-                    {@render navigationButton(
-                        $mode === "sort" ? "/icons/general/X.svg" : "/icons/general/LeftArrow.svg",
-                        $mode === "sort" ? "X" : "Previous",
-                        $mode === "cards" ? currentTermIndex === 0 : false,
-                        -1
-                    )}
+                    {#if $mode === "sort"}
+                        {@render navigationButton("/icons/general/X.svg", "X", false, -1)}
+                    {:else}
+                        {@render navigationButton(
+                            "/icons/general/LeftArrow.svg",
+                            "Previous",
+                            currentTermIndex === 0,
+                            -1
+                        )}
+                    {/if}
 
                     <p class="w-20 text-center text-lg font-bold">
                         {Math.min(actualTerms.length, currentTermIndex + 1)}<span
@@ -446,14 +457,16 @@
                         >{actualTerms.length}
                     </p>
 
-                    {@render navigationButton(
-                        $mode === "sort"
-                            ? "/icons/general/Check.svg"
-                            : "/icons/general/RightArrow.svg",
-                        $mode === "sort" ? "Check" : "Next",
-                        $mode === "cards" ? currentTermIndex >= actualTerms.length - 1 : false,
-                        1
-                    )}
+                    {#if $mode === "sort"}
+                        {@render navigationButton("/icons/general/Check.svg", "Check", false, 1)}
+                    {:else}
+                        {@render navigationButton(
+                            "/icons/general/RightArrow.svg",
+                            "Next",
+                            currentTermIndex >= actualTerms.length - 1,
+                            1
+                        )}
+                    {/if}
                 </div>
 
                 <div class="flex-center y-center absolute right-8 gap-2">
