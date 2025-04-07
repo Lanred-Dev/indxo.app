@@ -11,8 +11,7 @@ export async function GET({ params, locals }) {
         locals.user._id
     );
 
-    return json({
-        success,
-        favorite,
-    });
+    if (!success) error(500, "Error toggling favorite.");
+
+    return json(favorite);
 }

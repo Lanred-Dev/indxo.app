@@ -7,8 +7,7 @@ export async function GET({ params, locals }) {
 
     const [success, favorite] = await toggleDocumentInFavorites("set", params.id, locals.user._id);
 
-    return json({
-        success,
-        favorite,
-    });
+    if (!success) error(500, "Error toggling favorite.");
+
+    return json(favorite);
 }
