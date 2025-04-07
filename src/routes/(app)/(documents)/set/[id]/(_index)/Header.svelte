@@ -52,23 +52,22 @@
     <div class="flex items-center justify-between">
         <h1 class="page-title">{set?.name}</h1>
 
-        <div class="flex-center gap-3">
+        <div class="flex-center">
             {#if hasPermission === true}
-                <a href="/set/{set._id}/edit">
-                    <img class="size-7" src="/icons/general/Pencil.svg" alt="Edit" />
+                <a class="button-icon" href="/set/{set._id}/edit">
+                    <img src="/icons/general/Pencil.svg" alt="Edit" />
                 </a>
             {/if}
 
-            <button onclick={toggleSetInFavorites}>
+            <button class="button-icon" onclick={toggleSetInFavorites}>
                 <img
-                    class="size-7"
                     src={isFavorite ? "/icons/general/StarColored.svg" : "/icons/general/Star.svg"}
                     alt="Favorite"
                 />
             </button>
 
-            <button onclick={deleteSet}>
-                <img class="size-7" src="/icons/general/TrashColored.svg" alt="Delete" />
+            <button class="button-icon" onclick={deleteSet}>
+                <img src="/icons/general/TrashColored.svg" alt="Delete" />
             </button>
         </div>
     </div>
