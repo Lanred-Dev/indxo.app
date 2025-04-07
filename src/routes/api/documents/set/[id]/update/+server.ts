@@ -7,12 +7,14 @@ import generateRandomID from "$lib/utils/generateRandomID";
 
 const sets: Collection<Set> = loadCollection("documents", "sets");
 
-export async function POST({ params, request, fetch, locals }) {
+export async function POST({ params, request, locals }) {
     if (!locals.session) error(401, "Unauthorized.");
 
-    const set: Set = await (await fetch(`/api/documents/set/${params.id}`)).json();
+    const set: Set | null = await sets.findOne({
+        _id: params.id,
+    });
 
-    if (!permissionCheck(set, locals.user._id, true))
+    if (!set || !permissionCheck(set, locals.user._id, true))
         error(403, "You do not have permission to update this set.");
 
     const newFields: { [key: string]: any } = await request.json();

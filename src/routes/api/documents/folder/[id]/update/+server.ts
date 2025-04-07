@@ -6,12 +6,14 @@ import permissionCheck from "$lib/utils/permissionCheck";
 
 const folders: Collection<Folder> = loadCollection("documents", "folders");
 
-export async function POST({ params, request, fetch, locals }) {
+export async function POST({ params, request, locals }) {
     if (!locals.session) error(401, "Unauthorized.");
 
-    const folder: Folder = await (await fetch(`/api/documents/folder/${params.id}`)).json();
+    const folder: Folder | null = await folders.findOne({
+        _id: params.id,
+    });
 
-    if (!permissionCheck(folder, locals.user._id, true))
+    if (!folder || !permissionCheck(folder, locals.user._id, true))
         error(403, "You do not have permission to update this folder.");
 
     const newFields: { [key: string]: any } = await request.json();
