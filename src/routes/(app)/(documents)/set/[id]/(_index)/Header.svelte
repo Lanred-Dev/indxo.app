@@ -18,11 +18,9 @@
      * @returns never
      */
     async function toggleSetInFavorites() {
-        const { success, favorite }: { success: boolean; favorite: boolean } = await (
-            await fetch(`/api/documents/set/${set._id}/favorite`)
-        ).json();
+        const response = await fetch(`/api/documents/set/${set._id}/favorite`);
 
-        if (success) isFavorite = favorite;
+        if (response.status === 200) isFavorite = await response.json();
     }
 
     /**
