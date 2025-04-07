@@ -1,16 +1,15 @@
 <script lang="ts">
     import PageMessage from "$lib/components/PageMessage.svelte";
     import CardSection from "./Sections/Card.svelte";
-    import type { PageData } from "./$types";
 
-    let { data }: { data: PageData } = $props();
+    let { data } = $props();
 </script>
 
 <svelte:head>
     <title>Home</title>
 </svelte:head>
 
-{#if data.length === 0}
+{#if data.sections.length === 0}
     <PageMessage
         title="Make this your home!"
         text="You currently dont have any sections visible on your home page."
@@ -18,7 +17,7 @@
     />
 {:else}
     <div class="w-full space-y-20">
-        {#each data as section}
+        {#each data.sections as section}
             {#if section.type === "card"}
                 <CardSection {...section} />
             {/if}

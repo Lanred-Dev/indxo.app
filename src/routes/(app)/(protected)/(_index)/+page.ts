@@ -46,5 +46,5 @@ export async function load({ fetch }) {
         });
     }
 
-    return sections;
+    return { sections };
 }
