@@ -6,6 +6,8 @@ import type { Folder } from "./Folder";
 
 type favorite = [string, "set" | "folder"];
 
+export type sortingTerm = [string, -1 | 1 | null];
+
 export interface User extends Document {
     _id: string;
     google: string;
@@ -22,7 +24,7 @@ export interface User extends Document {
     openedSets: [string, number][];
     meta: {
         [id: string]: {
-            sorted: [string, -1 | 1 | null];
+            sorting: sortingTerm[];
         };
     };
 }
