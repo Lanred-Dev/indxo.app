@@ -346,7 +346,7 @@
                     <div class="w-3/5">
                         <div class="text-lg">
                             <p>
-                                You are still learning <span class="text-alert font-bold"
+                                You are still learning <span class="font-bold text-alert"
                                     >{stillLearningTerms.length}</span
                                 > terms
                             </p>
@@ -374,7 +374,7 @@
             {#if $mode === "sort"}
                 <!--Sorting mode stats-->
                 <div class="relative mb-1 flex items-center justify-between px-3">
-                    <p class="text-alert text-lg">{stillLearningTerms.length}</p>
+                    <p class="text-lg text-alert">{stillLearningTerms.length}</p>
 
                     <!--Progress bar for sorting-->
                     <div class="x-center y-center h-1 w-1/2 rounded-full bg-primary-400">
@@ -385,7 +385,7 @@
                                 100}%"
                         >
                             <span
-                                class="y-center bg-accent-alert left-0 h-full transition-[width] duration-200"
+                                class="y-center left-0 h-full bg-accent-alert transition-[width] duration-200"
                                 style:width="{(stillLearningTerms.length /
                                     (actualTerms.length - unsortedTerms.length)) *
                                     100}%"
