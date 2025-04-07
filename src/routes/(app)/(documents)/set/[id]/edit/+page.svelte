@@ -22,6 +22,13 @@
         updateLastUpdatedText();
     }
 
+    /**
+     * This function updates the last updated text.
+     *
+     * NOTE: It is called every 5 seconds to update the text to show how long ago the set was last updated.
+     *
+     * @returns never
+     */
     function updateLastUpdatedText() {
         if (updated === null) return;
 
