@@ -14,9 +14,7 @@ export default function permissionCheck(
     userID: string,
     mustHaveEditPermission?: boolean
 ): boolean {
-    if (!document) {
-        return false;
-    }
+    if (!document) return false;
 
     const ownerID: string =
         typeof document.owner === "object" && "_id" in document.owner
@@ -24,15 +22,7 @@ export default function permissionCheck(
             : document.owner;
     const isOwner: boolean = ownerID === userID;
 
-    if (!document.isPublic && !isOwner) {
-        return false;
-    }
-
-    if (mustHaveEditPermission) {
-        if (!isOwner) {
-            return false;
-        }
-    }
+    if ((!document.isPublic && !isOwner) || (mustHaveEditPermission && !isOwner)) return false;
 
     return true;
 }
