@@ -131,7 +131,9 @@
     button.button-primary img,
     a.button-primary img,
     button.button-attention img,
-    a.button-attention img {
+    a.button-attention img,
+    a.button-icon img,
+    button.button-icon img {
         @apply size-7;
     }
 
@@ -162,6 +164,11 @@
     a.button-navigation,
     button.button-navigation {
         @apply flex w-full items-center gap-2 text-nowrap !border-none hover:bg-primary-400;
+    }
+
+    a.button-icon,
+    button.button-icon {
+        @apply rounded-full bg-transparent p-2 transition-colors duration-200 hover:bg-primary-400;
     }
 
     input.input-primary,
