@@ -88,8 +88,8 @@
 
         if (!editableListItem) return;
 
-        const id: number = parseInt(editableListItem.getAttribute("data-id")!);
-        actualItems.splice(id, 1);
+        const listID: number = parseInt(editableListItem.getAttribute("data-listID")!);
+        actualItems.splice(listID, 1);
 
         actualItems.forEach((item, index) => {
             item._listID = index;
