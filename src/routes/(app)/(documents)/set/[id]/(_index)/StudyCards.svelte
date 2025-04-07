@@ -283,7 +283,12 @@
                 ) {
                     unsortedTerms = actualTerms.map(({ _id }) => _id);
                 } else if (unsortedTerms.length > 0) {
-                    currentTermIndex = actualTerms.findIndex(({ _id }) => _id === unsortedTerms[0]);
+                    const currentTermID: string = unsortedTerms.includes(
+                        actualTerms[currentTermIndex]?._id
+                    )
+                        ? actualTerms[currentTermIndex]._id
+                        : unsortedTerms[0];
+                    currentTermIndex = actualTerms.findIndex(({ _id }) => _id === currentTermID);
                 }
 
                 canCycle = unsortedTerms.length > 0;
@@ -291,8 +296,14 @@
             } else if (mode === "cards") {
                 canCycle = true;
                 canFlip = true;
+
+                // If the current index and the initial term are the same, then keep the same index otherwise reset to the first term
+                const actualAndInitialIsSame: boolean =
+                    actualTerms[currentTermIndex]?._id === set.terms[currentTermIndex]._id;
+
                 actualTerms = set.terms;
-                currentTermIndex = 0;
+
+                if (!actualAndInitialIsSame) currentTermIndex = 0;
             }
 
             flipCard(false, false);
