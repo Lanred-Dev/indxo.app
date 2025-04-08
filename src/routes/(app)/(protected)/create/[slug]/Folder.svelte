@@ -105,8 +105,10 @@
 
         <div class="grid grid-cols-2 gap-4">
             {#each sets as { name, subject, terms, description, _id }}
-                <div
-                    class="container-primary flex w-full justify-between gap-6 px-8 py-6 [&>p]:leading-tight"
+                <button
+                    class="button-primary relative w-full !items-start gap-6 px-8 py-6 !text-left [&>p]:leading-tight"
+                    onclick={() => addSetToList(_id)}
+                    type="button"
                 >
                     <div class="space-y-2">
                         <div>
@@ -131,18 +133,14 @@
                         <p class="line-clamp-1 overflow-ellipsis">{description}</p>
                     </div>
 
-                    <div class="flex-shrink-0">
-                        <button onclick={() => addSetToList(_id)} type="button">
-                            <img
-                                class="size-6"
-                                src={addedSets.includes(_id)
-                                    ? "/icons/general/X.svg"
-                                    : "/icons/general/Plus.svg"}
-                                alt={addedSets.includes(_id) ? "Remove" : "Add"}
-                            />
-                        </button>
-                    </div>
-                </div>
+                    <img
+                        class="absolute right-2 top-2 !size-6 flex-shrink-0"
+                        src={addedSets.includes(_id)
+                            ? "/icons/general/X.svg"
+                            : "/icons/general/Plus.svg"}
+                        alt={addedSets.includes(_id) ? "Remove" : "Add"}
+                    />
+                </button>
             {/each}
         </div>
     </FormInput>
