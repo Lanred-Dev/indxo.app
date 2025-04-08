@@ -62,7 +62,7 @@ export async function GET({ cookies, url }) {
             favorites: [],
             homeSectionPreferences: [],
             openedSets: [],
-            meta: {},
+            sorting: {},
         };
 
         await users.insertOne(user);
