@@ -18,15 +18,19 @@
     let currentTermIndex: number = $state(0);
 
     let actualTerms: Term[] = $state(set.terms);
-    let sortingTerms: string[] = [];
-    let unsortedTerms: string[] = $state([]);
     let stillLearningTerms: string[] = $state(
         savedSorting.map(([id, knows]) => (knows === -1 ? id : null)).filter((id) => id !== null)
     );
     let knowTerms: string[] = $state(
         savedSorting.map(([id, knows]) => (knows === 1 ? id : null)).filter((id) => id !== null)
     );
+    let sortingTerms: string[] = set.terms.map(({ _id }) => _id);
+    let unsortedTerms: string[] = $state(
+        sortingTerms.filter((id) => !knowTerms.includes(id) && !stillLearningTerms.includes(id))
+    );
 
+    // Save the ID for use during saving the sorting state
+    const setID: string = set._id;
     let endOfSortingMessage: string = $derived.by(() => {
         if (unsortedTerms.length > 0 || $mode !== "sort") return "";
 
@@ -257,18 +261,23 @@
     /**
      * Restarts the study session by resetting all the state variables.
      *
+     * @param fullReset Whether to reset the knowTerms and stillLearningTerms arrays. Defaults to true.
      * @returns never
      */
-    function restart() {
+    function restart(fullReset: boolean = true) {
         // Setting this first allows the card component to reload before `flipCard` is called
         if ($mode === "sort") {
             unsortedTerms = actualTerms.map(({ _id }) => _id);
             sortingTerms = unsortedTerms;
         }
 
+        // Full reset also resets `knowTerms` and `stillLearningTerms`
+        if (fullReset) {
+            knowTerms = [];
+            stillLearningTerms = [];
+        }
+
         currentTermIndex = 0;
-        knowTerms = [];
-        stillLearningTerms = [];
         canCycle = true;
         canFlip = true;
         flipCard(false, false);
@@ -284,27 +293,23 @@
         actualTerms = actualTerms.filter(({ _id }) => {
             return stillLearningTerms.includes(_id);
         });
+        stillLearningTerms = [];
 
-        restart();
+        restart(false);
     }
 
     onMount(() => {
         return mode.subscribe((mode: string) => {
             if (mode === "sort") {
-                if (sortingTerms.length === 0) {
-                    sortingTerms = actualTerms.map(({ _id }) => _id);
-                    unsortedTerms = sortingTerms;
-                } else if (unsortedTerms.length > 0) {
-                    actualTerms = set.terms.filter(({ _id }) => sortingTerms.includes(_id));
+                actualTerms = set.terms.filter(({ _id }) => sortingTerms.includes(_id));
 
-                    // If the current term is not in the unsorted terms, find the next unsorted term
-                    const currentTermID: string = unsortedTerms.includes(
-                        actualTerms[currentTermIndex]?._id
-                    )
-                        ? actualTerms[currentTermIndex]._id
-                        : unsortedTerms[0];
-                    currentTermIndex = actualTerms.findIndex(({ _id }) => _id === currentTermID);
-                }
+                // If the current term is not in the unsorted terms, find the next unsorted term
+                const currentTermID: string = unsortedTerms.includes(
+                    actualTerms[currentTermIndex]?._id
+                )
+                    ? actualTerms[currentTermIndex]._id
+                    : unsortedTerms[0];
+                currentTermIndex = actualTerms.findIndex(({ _id }) => _id === currentTermID);
 
                 canCycle = unsortedTerms.length > 0;
                 canFlip = unsortedTerms.length > 0;
@@ -326,7 +331,13 @@
     });
 
     onDestroy(async () => {
-        if (unsortedTerms.length === 0 && knowTerms.length === 0 && stillLearningTerms.length === 0)
+        // Dont run if its SRR.
+        if (
+            typeof window === "undefined" ||
+            (unsortedTerms.length === 0 &&
+                knowTerms.length === 0 &&
+                stillLearningTerms.length === 0)
+        )
             return;
 
         savedSorting = [];
@@ -339,15 +350,9 @@
             savedSorting.push([id, -1]);
         });
 
-        set.terms.forEach(({ _id }) => {
-            if (knowTerms.includes(_id) || stillLearningTerms.includes(_id)) return;
-
-            savedSorting.push([_id, -1]);
-        });
-
-        await fetch(`/api/documents/set/${set._id}/sorting/update`, {
+        await fetch(`/api/documents/set/${setID}/sorting/update`, {
             method: "POST",
-            body: JSON.stringify({ savedSorting }),
+            body: JSON.stringify(savedSorting),
         });
     });
 </script>
