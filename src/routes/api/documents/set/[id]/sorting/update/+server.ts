@@ -8,7 +8,7 @@ import { loadCollection } from "$lib/database/mongo";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 
-export async function GET({ params, request, locals, fetch }) {
+export async function POST({ params, request, locals, fetch }) {
     if (!locals.session) error(401, "Unauthorized.");
 
     const set: Set = await (await fetch(`/api/documents/set/${params.id}`)).json();
@@ -22,7 +22,7 @@ export async function GET({ params, request, locals, fetch }) {
         },
         {
             $set: {
-                [`meta.${params.id}.sorting`]: await request.json(),
+                [`sorting.${params.id}`]: await request.json(),
             },
         }
     );
