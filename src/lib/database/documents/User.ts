@@ -22,10 +22,8 @@ export interface User extends Document {
     favorites: favorite[];
     homeSectionPreferences: string[];
     openedSets: [string, number][];
-    meta: {
-        [id: string]: {
-            sorting: sortingTerm[];
-        };
+    sorting: {
+        [id: string]: sortingTerm[];
     };
 }
 
@@ -62,5 +60,5 @@ export const fields: [string, "string" | "boolean" | "array" | "dictionary"][] =
     ["favorites", "array"],
     ["homeSectionPreferences", "array"],
     ["openedSets", "array"],
-    ["meta", "dictionary"],
+    ["sorting", "dictionary"],
 ];
