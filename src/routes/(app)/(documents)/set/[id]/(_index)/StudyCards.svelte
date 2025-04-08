@@ -3,7 +3,7 @@
     import { onDestroy, onMount } from "svelte";
     import { type Writable } from "svelte/store";
     import { animate } from "motion";
-    import { fly } from "svelte/transition";
+    import { fade, fly } from "svelte/transition";
     import type { sortingTerm } from "$lib/database/documents/User";
 
     let {
@@ -318,12 +318,13 @@
                 canFlip = true;
 
                 // If the current index and the initial term are the same, then keep the same index otherwise reset to the first term
-                const actualAndInitialIsSame: boolean =
-                    actualTerms[currentTermIndex]?._id === set.terms[currentTermIndex]._id;
+                if (
+                    !set.terms[currentTermIndex] ||
+                    actualTerms[currentTermIndex]?._id !== set.terms[currentTermIndex]?._id
+                )
+                    currentTermIndex = 0;
 
                 actualTerms = set.terms;
-
-                if (!actualAndInitialIsSame) currentTermIndex = 0;
             }
 
             flipCard(false, false);
@@ -376,7 +377,7 @@
     <div class="study w-full">
         {#if $mode === "sort" && unsortedTerms.length === 0}
             <!--End of sorting results-->
-            <div class="w-full space-y-6">
+            <div class="w-full space-y-6" in:fade={{ duration: 200 }}>
                 <div>
                     <p class="text-4xl font-bold leading-none">{endOfSortingMessage}</p>
                     <p class="text-lg">Heres how you did.</p>
@@ -442,6 +443,7 @@
                 class="relative aspect-[1.6] max-h-96 w-full text-3xl sm:aspect-[2]"
                 style:perspective="1000px"
                 onclick={() => flipCard()}
+                in:fade={{ duration: 200 }}
             >
                 <div
                     class="absolute left-0 top-0 h-full w-full"
@@ -478,7 +480,7 @@
             </button>
 
             <!--Controls-->
-            <div class="relative mt-4 w-full">
+            <div class="relative mt-4 w-full" in:fade={{ duration: 200 }}>
                 <div class="flex-center gap-1">
                     {#if $mode === "sort"}
                         {@render navigationButton("/icons/general/X.svg", "X", false, -1)}
