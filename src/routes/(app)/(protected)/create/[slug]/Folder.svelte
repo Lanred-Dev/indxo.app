@@ -33,10 +33,10 @@
      * @returns never
      */
     function addSetToList(id: string) {
-        if (addedSets.includes(id.toString())) {
-            addedSets.splice(addedSets.indexOf(id.toString()), 1);
+        if (addedSets.includes(id)) {
+            addedSets.splice(addedSets.indexOf(id), 1);
         } else {
-            addedSets.push(id.toString());
+            addedSets.push(id);
         }
     }
 
@@ -104,28 +104,42 @@
         <div class="data" data-type="json" data-value={value}></div>
 
         <div class="grid grid-cols-2 gap-4">
-            {#each sets as set}
+            {#each sets as { name, subject, terms, description, _id }}
                 <div
                     class="container-primary flex w-full justify-between gap-6 px-8 py-6 [&>p]:leading-tight"
                 >
                     <div class="space-y-2">
                         <div>
                             <p class="w-full overflow-hidden overflow-ellipsis text-xl font-bold">
-                                {set.name}
+                                {name}
                             </p>
-                            <p class="text-dark text-sm">{set.subject}</p>
+
+                            <div
+                                class="[&>p]:text-dark flex items-center gap-3 text-sm [&>p]:leading-none"
+                            >
+                                {#if subject.length > 0}
+                                    <p>{subject}</p>
+                                {/if}
+
+                                <p class="leading-tight">
+                                    {terms.length}
+                                    {terms.length === 1 ? "term" : "terms"}
+                                </p>
+                            </div>
                         </div>
 
-                        <p class="line-clamp-1 overflow-ellipsis">{set.description}</p>
+                        <p class="line-clamp-1 overflow-ellipsis">{description}</p>
                     </div>
 
                     <div class="flex-shrink-0">
-                        <button onclick={() => addSetToList(set._id)} type="button">
-                            {#if addedSets.includes(set._id.toString())}
-                                <img class="size-6" src="/icons/general/X.svg" alt="Remove" />
-                            {:else}
-                                <img class="size-6" src="/icons/general/Plus.svg" alt="Add" />
-                            {/if}
+                        <button onclick={() => addSetToList(_id)} type="button">
+                            <img
+                                class="size-6"
+                                src={addedSets.includes(_id)
+                                    ? "/icons/general/X.svg"
+                                    : "/icons/general/Plus.svg"}
+                                alt={addedSets.includes(_id) ? "Remove" : "Add"}
+                            />
                         </button>
                     </div>
                 </div>
