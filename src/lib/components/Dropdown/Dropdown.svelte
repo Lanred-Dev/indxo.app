@@ -10,7 +10,7 @@
         classes,
         visible = $bindable(false),
         items = [],
-        value = $bindable(),
+        value = $bindable(items[0]?.value),
         ItemComponent = DropdownItem,
     }: {
         classes?: string;
