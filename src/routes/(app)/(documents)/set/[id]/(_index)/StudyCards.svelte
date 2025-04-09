@@ -265,7 +265,7 @@
     function restart(fullReset: boolean = true) {
         // Setting this first allows the card component to reload before `flipCard` is called
         if ($mode === "sort") {
-            unsortedTerms = actualTerms.map(({ _id }) => _id);
+            unsortedTerms = set.terms.map(({ _id }) => _id);
             sortingTerms = unsortedTerms;
         }
 
