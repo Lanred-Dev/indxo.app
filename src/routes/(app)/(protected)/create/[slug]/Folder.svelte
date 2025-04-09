@@ -122,7 +122,7 @@
 
                                 <p class="leading-tight">
                                     {terms.length}
-                                    {terms.length === 1 ? "term" : "terms"}
+                                    {determineWording(terms.length === 1 ? "term" : "terms")}
                                 </p>
                             </div>
                         </div>
