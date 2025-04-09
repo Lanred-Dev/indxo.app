@@ -1,31 +1,23 @@
 <script lang="ts">
-    import { type Writable } from "svelte/store";
     import type { SimpleFolder } from "$lib/database/documents/Folder";
     import type { SimpleSet } from "$lib/database/documents/Set";
     import type { SimpleUser, SimpleUserWithEmail } from "$lib/database/documents/User";
     import determineDocumentType from "$lib/utils/determineDocumentType";
     import { goto } from "$app/navigation";
     import { fly } from "svelte/transition";
+    import { getContext } from "svelte";
+    import type { Session } from "$lib/database/documents/Session";
 
-    let {
-        loggedIn,
-        user,
-        sidebarVisible,
-        mobileSidebarVisible,
-    }: {
-        loggedIn: boolean;
-        user: SimpleUserWithEmail;
-        sidebarVisible: Writable<boolean>;
-        mobileSidebarVisible: Writable<boolean>;
-    } = $props();
-
-    let showAccountInfo: boolean = $state(false);
-    let focusedOnAccountInfo: boolean = $state(false);
-    let isSearching: boolean = $state(false);
-    let focusedOnSearch: boolean = $state(false);
-    let focusedOnSearchResults: boolean = $state(false);
-    let searchQuery: string = $state("");
-    let searchResults: (SimpleUser | SimpleSet | SimpleFolder)[] = $state([]);
+    const session: Session | null = getContext("session");
+    const user: SimpleUserWithEmail = getContext("user");
+    const sidebarVisible: { visible: boolean } = getContext("sidebarVisible");
+    let showAccountInfo: boolean = $state.raw(false);
+    let focusedOnAccountInfo: boolean = $state.raw(false);
+    let isSearching: boolean = $state.raw(false);
+    let focusedOnSearch: boolean = $state.raw(false);
+    let focusedOnSearchResults: boolean = $state.raw(false);
+    let searchQuery: string = $state.raw("");
+    let searchResults: (SimpleUser | SimpleSet | SimpleFolder)[] = $state.raw([]);
 
     /**
      * Fetches the results to display on the quick search.
@@ -138,13 +130,8 @@
     class="relative top-0 flex w-full items-center justify-between bg-accent-light px-7 py-4 md:px-10"
 >
     <div>
-        {#if loggedIn}
-            <button
-                onclick={() => {
-                    sidebarVisible.update((visible: boolean) => !visible);
-                    mobileSidebarVisible.update((visible: boolean) => !visible);
-                }}
-            >
+        {#if session !== null}
+            <button onclick={() => (sidebarVisible.visible = !sidebarVisible.visible)}>
                 <img class="size-7" src="/icons/navigation/Hamburger.svg" alt="Sidebar toggle" />
             </button>
         {/if}
@@ -171,7 +158,7 @@
         />
     </div>
 
-    {#if loggedIn}
+    {#if session !== null}
         <button
             onclick={() => (showAccountInfo = !showAccountInfo)}
             onmouseenter={() => (focusedOnAccountInfo = true)}
@@ -217,7 +204,7 @@
         </div>
     {/if}
 
-    {#if showAccountInfo && loggedIn}
+    {#if showAccountInfo && session !== null}
         <div
             class="container-popup right-10 top-[90%] space-y-1 !px-1 !pb-1"
             onmouseenter={() => (focusedOnAccountInfo = true)}

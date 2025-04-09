@@ -1,17 +1,12 @@
 <script lang="ts">
     import determineWording from "$lib/utils/determineWording";
-    import { type Writable } from "svelte/store";
+    import { getContext, onMount } from "svelte";
 
-    let {
-        visible,
-        mobileVisible,
-    }: { visible: Writable<boolean>; mobileVisible: Writable<boolean> } = $props();
+    const sidebarVisible: { visible: boolean } = getContext("sidebarVisible");
+    let isLoading: boolean = $state.raw(true);
 
-    let windowWidth: number = $state(Infinity);
-    let useMobileVisible: boolean = $derived(windowWidth < 786);
+    onMount(() => (isLoading = false));
 </script>
-
-<svelte:window bind:innerWidth={windowWidth} />
 
 {#snippet group(links: { url: string; text: string; icon: string }[], name?: string)}
     <div>
@@ -33,10 +28,10 @@
 {/snippet}
 
 <div
-    class="absolute left-0 top-0 z-50 h-full min-w-fit flex-col justify-between gap-10 overflow-y-auto overflow-x-hidden bg-primary py-7 pl-4 pr-16 md:static md:pl-7 md:pr-4 xl:w-[17.5%] 2xl:w-[15%]"
-    style:display={(!useMobileVisible && $visible) || (useMobileVisible && $mobileVisible)
-        ? "flex"
-        : "none"}
+    class="absolute left-0 top-0 z-50 h-full min-w-fit flex-col justify-between gap-10 overflow-y-auto overflow-x-hidden bg-primary py-7 pl-4 pr-16 md:static md:pl-7 md:pr-4 xl:w-[17.5%] 2xl:w-[15%] {isLoading
+        ? 'pointer-events-none opacity-0'
+        : ''}"
+    style:display={sidebarVisible.visible ? "flex" : "none"}
 >
     <nav class="min-w-fit space-y-10">
         {@render group([
