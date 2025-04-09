@@ -107,7 +107,6 @@
                 }
             );
 
-            // Animate the card out to the left or right depending on the direction of the cycle
             await animate(
                 card,
                 {
@@ -123,7 +122,6 @@
             canCycle = unsortedTerms.length > 0;
 
             if (canCycle) {
-                // Reset the card to the front and remove the color overlay
                 canFlip = true;
                 flipCard(false, false);
 
