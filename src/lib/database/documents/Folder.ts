@@ -2,7 +2,7 @@
 
 import type { Document } from "mongodb";
 import type { SimpleUser } from "./User";
-import type { Set } from "./Set";
+import type { PublicSet, Set } from "./Set";
 
 export interface Folder extends Document {
     _id: string;
@@ -21,7 +21,7 @@ export interface PublicFolder {
     name: string;
     description: string;
     isPublic: boolean;
-    sets: Set[];
+    sets: PublicSet[];
     owner: SimpleUser;
     created: number;
 }
