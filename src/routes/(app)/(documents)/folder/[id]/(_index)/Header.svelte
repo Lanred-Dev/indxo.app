@@ -33,7 +33,7 @@
             method: "DELETE",
         });
 
-        if (response.status === 204) goto("/");
+        if (response.status === 204) goto("/my/folders");
     }
 </script>
 
