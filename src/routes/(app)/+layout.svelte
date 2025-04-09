@@ -11,6 +11,7 @@
     let windowWidth: number = $state.raw(Infinity);
     let isMobile: boolean = false;
     let isLoading: boolean = $state.raw(false);
+    let viewport: HTMLElement;
 
     setContext("session", data.session);
     setContext("user", data.user);
@@ -22,6 +23,7 @@
 
     afterNavigate(() => {
         isLoading = false;
+        viewport.scrollTop = 0;
     });
 
     $effect(() => {
@@ -45,11 +47,7 @@
             <Sidebar />
         {/if}
 
-        <main
-            class="md:px-18 relative flex h-full w-full flex-col items-start justify-start overflow-x-hidden px-7 pb-6 pt-12 md:pl-[10%] md:pr-[22.5%] md:pt-16 lg:pt-24 2xl:pr-[28%] {isLoading
-                ? 'overflow-y-hidden'
-                : 'overflow-y-auto'}"
-        >
+        <div class="relative h-full w-full">
             {#if isLoading}
                 <div
                     class="x-center y-center z-[100] flex h-full w-full items-center justify-center bg-primary"
@@ -103,7 +101,14 @@
                 </style>
             {/if}
 
-            {@render children?.()}
-        </main>
+            <main
+                class="md:px-18 relative flex h-full w-full flex-col items-start justify-start overflow-x-hidden px-7 pb-6 pt-12 md:pl-[10%] md:pr-[22.5%] md:pt-16 lg:pt-24 2xl:pr-[28%] {isLoading
+                    ? 'overflow-y-hidden'
+                    : 'overflow-y-auto'}"
+                bind:this={viewport}
+            >
+                {@render children?.()}
+            </main>
+        </div>
     </div>
 </div>
