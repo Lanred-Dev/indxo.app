@@ -5,7 +5,6 @@ import type { Folder } from "$lib/database/documents/Folder";
 import type { User } from "$lib/database/documents/User";
 import type { Set } from "$lib/database/documents/Set";
 import permissionCheck from "$lib/utils/permissionCheck";
-import generateRandomID from "$lib/utils/generateRandomID.js";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 const folders: Collection<Folder> = loadCollection("documents", "folders");
