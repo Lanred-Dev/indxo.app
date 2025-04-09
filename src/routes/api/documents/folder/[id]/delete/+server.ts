@@ -19,10 +19,8 @@ export async function DELETE({ params, locals, fetch }) {
     if (!permissionCheck(folder, locals.user._id, true))
         error(403, "You do not have permission to delete this folder.");
 
-    const id: string = generateRandomID();
-
     await folders.deleteOne({
-        _id: id,
+        _id: params.id,
     });
 
     await users.updateOne(
@@ -31,19 +29,19 @@ export async function DELETE({ params, locals, fetch }) {
             // For some reason a type error is thrown here, but it works fine
             // @ts-ignore
             $pull: {
-                folders: id,
+                folders: params.id,
             },
         }
     );
 
     // Also update all sets that are linked to the folder
     await sets.updateMany(
-        { folder: id },
+        { folder: { $in: [params.id] } },
         {
             // For some reason a type error is thrown here, but it works fine
             // @ts-ignore
             $pull: {
-                folder: id,
+                folder: params.id,
             },
         }
     );
