@@ -84,6 +84,12 @@ export default {
                 primary: "15px",
                 button: "12.5px",
             },
+
+            stroke: {
+                accent: {
+                    light: "#adc2d4",
+                },
+            },
         },
     },
 
