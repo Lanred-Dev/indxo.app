@@ -1,9 +1,9 @@
 <script lang="ts">
-    import FolderCard from "./Cards/Folder.svelte";
-    import SetCard from "./Cards/Set.svelte";
     import type { PublicFolder } from "$lib/database/documents/Folder";
     import type { PublicSet } from "$lib/database/documents/Set";
     import determineDocumentType from "$lib/utils/determineDocumentType";
+    import Card from "$lib/components/Card.svelte";
+    import determineWording from "$lib/utils/determineWording";
 
     export type group = [(PublicFolder | PublicSet)[], string | null];
 
@@ -21,9 +21,25 @@
                 {#each items as item}
                     <li>
                         {#if determineDocumentType(item) === "folder"}
-                            <FolderCard {...item as PublicFolder} />
+                            <Card
+                                name={item.name}
+                                description={item.description}
+                                url={`/folder/${item._id}`}
+                                icon={(item as PublicFolder).icon}
+                                meta={[
+                                    `${(item as PublicFolder).sets.length} ${determineWording((item as PublicFolder).sets.length === 1 ? "set" : "sets")}`,
+                                ]}
+                            />
                         {:else if determineDocumentType(item) === "set"}
-                            <SetCard {...item as PublicSet} />
+                            <Card
+                                name={item.name}
+                                description={item.description}
+                                url={`/set/${item._id}`}
+                                meta={[
+                                    (item as PublicSet).subject,
+                                    `${(item as PublicSet).terms.length} ${determineWording((item as PublicSet).terms.length === 1 ? "term" : "terms")}`,
+                                ]}
+                            />
                         {/if}
                     </li>
                 {/each}
