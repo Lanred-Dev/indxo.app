@@ -57,7 +57,7 @@
                     out:fade={{ duration: 200 }}
                 >
                     <div class="x-center y-center">
-                        <svg class="size-20" id="loader" viewBox="25 25 50 50">
+                        <svg class="size-12" id="loader" viewBox="25 25 50 50">
                             <circle
                                 class="stroke-accent-light fill-none stroke-2"
                                 cx="50"
