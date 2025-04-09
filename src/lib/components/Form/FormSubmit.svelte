@@ -2,7 +2,7 @@
     import { onMount } from "svelte";
 
     let { text }: { text: string } = $props();
-    let submitting: boolean = $state(false);
+    let submitting: boolean = $state.raw(false);
     let button: HTMLButtonElement;
     let form: HTMLFormElement;
 
@@ -22,9 +22,7 @@
 
         observer.observe(form, { attributes: true, attributeFilter: ["data-submitting"] });
 
-        return () => {
-            observer.disconnect();
-        };
+        return () => observer.disconnect();
     });
 </script>
 

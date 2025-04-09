@@ -7,14 +7,14 @@
     import determineWording from "$lib/utils/determineWording";
 
     let type: string = $derived(page.params.slug);
-    let stage: "creation" | "setup" = $state("creation");
+    let stage: "creation" | "setup" = $state.raw("creation");
     let wording: [string, string] = $derived.by(() => {
         if (type === "folder") return FolderFormWording[stage];
         if (type === "set") return SetFormWording[stage];
 
         return ["", ""];
     }) as [string, string];
-    let documentID: string = $state("");
+    let documentID: string = $state.raw("");
     let endpoint: string = $derived(
         stage === "creation"
             ? `/api/documents/${type}/create`

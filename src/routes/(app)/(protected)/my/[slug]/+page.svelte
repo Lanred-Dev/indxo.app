@@ -23,9 +23,9 @@
     ];
 
     let type: "sets" | "folders" | "favorites" = $derived(page.params.slug as any);
-    let searchQuery: string = $state("");
+    let searchQuery: string = $state.raw("");
     // This filter is the one that the user has set, it is not always the one that is being used
-    let userSortFilter: sortFilter = $state("created");
+    let userSortFilter: sortFilter = $state.raw("created");
     let actualSortFilter: sortFilter = $derived.by(() => {
         if (searchQuery.length > 0) return "none";
 

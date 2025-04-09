@@ -45,8 +45,8 @@
 
     let actualItems: item[] = $state([]);
     // NOTE: -1 is used to indicate that no item is being dragged
-    let draggingID: number = $state(-1);
-    let draggingOverID: number = $state(-1);
+    let draggingID: number = $state.raw(-1);
+    let draggingOverID: number = $state.raw(-1);
 
     /**
      * Adds an item to the list.

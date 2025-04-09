@@ -19,12 +19,9 @@
 
     let { stage }: { stage: "creation" | "setup" } = $props();
 
-    let sets: PublicSet[] = $state([]);
+    let sets: PublicSet[] = $state.raw([]);
     let addedSets: string[] = $state([]);
-    let value: string = $derived.by(() => {
-        const sets = addedSets;
-        return JSON.stringify(sets);
-    });
+    let value: string = $derived(JSON.stringify(addedSets));
 
     /**
      * Adds or removes a set from the list of sets to be added to the folder.

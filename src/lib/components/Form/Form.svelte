@@ -12,7 +12,7 @@
     };
 
     let { action, method = "POST", afterSubmit = () => {}, classes, children }: props = $props();
-    let submitting: boolean = $state(false);
+    let submitting: boolean = $state.raw(false);
 
     /**
      * Handles the form submission. Gathers the data from all the form components. Prevents the default form submission and sends a fetch request to the action URL.

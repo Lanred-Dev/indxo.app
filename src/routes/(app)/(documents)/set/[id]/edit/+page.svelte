@@ -7,7 +7,7 @@
     let { data } = $props();
 
     let updated: number | null = null;
-    let updatedText: string = $state("");
+    let updatedText: string = $state.raw("");
 
     /**
      * This function is called after the form is submitted. It sets the last updated time so that the user knows when the set was last updated.

@@ -14,8 +14,8 @@
 
     let canCycle: boolean = true;
     let canFlip: boolean = true;
-    let cardFlipped: boolean = $state(false);
-    let currentTermIndex: number = $state(0);
+    let cardFlipped: boolean = $state.raw(false);
+    let currentTermIndex: number = $state.raw(0);
 
     let actualTerms: Term[] = $state(set.terms);
     let stillLearningTerms: string[] = $state(
