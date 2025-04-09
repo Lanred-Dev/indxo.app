@@ -28,6 +28,8 @@
         submitting = true;
 
         const form: HTMLFormElement = event.target as HTMLFormElement;
+        const formSubmit: HTMLButtonElement = form.querySelector("button[type='submit']")!;
+        formSubmit.setAttribute("disabled", "true");
         const formInputs: NodeListOf<HTMLElement> = form.querySelectorAll(".formInput")!;
         const data: { [key: string]: any } = {};
 
@@ -113,7 +115,9 @@
             response.status,
             response.ok && response.status !== 204 ? await response.json() : {}
         );
+
         submitting = false;
+        formSubmit.removeAttribute("disabled");
     }
 </script>
 
