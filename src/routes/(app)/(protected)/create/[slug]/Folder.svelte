@@ -103,7 +103,7 @@
         <div class="grid grid-cols-2 gap-4">
             {#each sets as { name, subject, terms, description, _id }}
                 <button
-                    class="button-primary relative w-full !items-start gap-6 px-8 py-6 !text-left [&>p]:leading-tight"
+                    class="button-primary relative !items-start !justify-start text-left [&>p]:leading-tight"
                     onclick={() => addSetToList(_id)}
                     type="button"
                 >
