@@ -29,13 +29,11 @@
      * @returns never
      */
     async function deleteSet() {
-        const { success }: { success: boolean } = await (
-            await fetch(`/api/documents/set/${set._id}/delete`, {
-                method: "DELETE",
-            })
-        ).json();
+        const response = await fetch(`/api/documents/set/${set._id}/delete`, {
+            method: "DELETE",
+        });
 
-        if (success) goto("/");
+        if (response.status === 204) goto("/");
     }
 </script>
 
