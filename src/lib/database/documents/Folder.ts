@@ -2,7 +2,7 @@
 
 import type { Document } from "mongodb";
 import type { SimpleUser } from "./User";
-import type { PublicSet, Set } from "./Set";
+import type { PublicSet } from "./Set";
 
 export interface Folder extends Document {
     _id: string;
