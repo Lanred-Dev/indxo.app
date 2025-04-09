@@ -3,8 +3,10 @@ import { loadCollection } from "$lib/database/mongo";
 import { type Collection } from "mongodb";
 import { updatableFields, type Folder } from "$lib/database/documents/Folder";
 import permissionCheck from "$lib/utils/permissionCheck";
+import type { Set } from "$lib/database/documents/Set";
 
 const folders: Collection<Folder> = loadCollection("documents", "folders");
+const sets: Collection<Set> = loadCollection("documents", "sets");
 
 export async function POST({ params, request, locals }) {
     if (!locals.session) error(401, "Unauthorized.");
@@ -29,6 +31,26 @@ export async function POST({ params, request, locals }) {
             continue;
 
         validFields[key] = newFields[key];
+    }
+
+    if (validFields.length === 0)
+        return new Response(null, {
+            status: 204,
+        });
+
+    if ("sets" in validFields) {
+        await sets.updateMany(
+            {
+                _id: { $in: validFields.sets },
+            },
+            {
+                // For some reason a type error is thrown here, but it works fine
+                // @ts-ignore
+                $push: {
+                    folder: params.id,
+                },
+            }
+        );
     }
 
     await folders.updateOne(
