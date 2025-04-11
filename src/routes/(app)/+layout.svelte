@@ -50,14 +50,14 @@
         <div class="relative h-full w-full">
             {#if isLoading}
                 <div
-                    class="x-center y-center z-[100] flex h-full w-full items-center justify-center bg-primary"
+                    class="x-center y-center z-[100] flex h-full w-full bg-primary"
                     in:fade={{ duration: 200 }}
                     out:fade={{ duration: 200 }}
                 >
                     <div class="x-center y-center">
-                        <svg class="size-12" id="loader" viewBox="25 25 50 50">
+                        <svg class="loader size-12" viewBox="25 25 50 50">
                             <circle
-                                class="stroke-accent-light fill-none stroke-2"
+                                class="fill-none stroke-accent-light stroke-2"
                                 cx="50"
                                 cy="50"
                                 r="20"
@@ -67,11 +67,11 @@
                 </div>
 
                 <style lang="postcss">
-                    #loader {
+                    .loader {
                         animation: rotate 2s linear infinite;
                     }
 
-                    #loader circle {
+                    .loader circle {
                         stroke-dasharray: 150, 200;
                         stroke-dashoffset: -10;
                         animation: dash 1.5s ease-in-out infinite;
@@ -89,10 +89,12 @@
                             stroke-dasharray: 1, 200;
                             stroke-dashoffset: 0;
                         }
+
                         50% {
                             stroke-dasharray: 89, 200;
                             stroke-dashoffset: -35;
                         }
+
                         100% {
                             stroke-dasharray: 89, 200;
                             stroke-dashoffset: -124;
@@ -102,9 +104,7 @@
             {/if}
 
             <main
-                class="md:px-18 relative flex h-full w-full flex-col items-start justify-start overflow-x-hidden px-7 pb-6 pt-12 md:pl-[10%] md:pr-[22.5%] md:pt-16 lg:pt-24 2xl:pr-[28%] {isLoading
-                    ? 'overflow-y-hidden'
-                    : 'overflow-y-auto'}"
+                class="relative flex h-full w-full flex-col items-start justify-start overflow-x-hidden px-7 pb-6 pt-12 md:px-16 md:pl-[10%] md:pr-[22.5%] md:pt-16 lg:pt-24 2xl:pr-[28%]"
                 bind:this={viewport}
             >
                 {@render children?.()}
