@@ -3,6 +3,7 @@
     import { getContext, onMount } from "svelte";
 
     const sidebarVisible: { visible: boolean } = getContext("sidebarVisible");
+    // NOTE: This is only used during the first load of the page to prevent the sidebar from flashing
     let isLoading: boolean = $state.raw(true);
 
     onMount(() => (isLoading = false));
