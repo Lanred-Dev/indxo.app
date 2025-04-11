@@ -4,8 +4,8 @@
 </script>
 
 <div class="page-message">
-    <p class="text-3xl font-bold">{title}</p>
-    <p class="text-light text-lg">{text}</p>
+    <p>{title}</p>
+    <p>{text}</p>
 </div>
 
 <a class="button-primary block w-fit" href={button[1]}>{button[0]}</a>

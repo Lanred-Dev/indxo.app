@@ -103,13 +103,13 @@
         <div class="grid grid-cols-2 gap-4">
             {#each sets as { name, subject, terms, description, _id }}
                 <button
-                    class="button-primary relative !items-start !justify-start text-left [&>p]:leading-tight"
+                    class="button-primary relative items-start! justify-start! text-left [&>p]:leading-tight"
                     onclick={() => addSetToList(_id)}
                     type="button"
                 >
                     <div class="space-y-2">
                         <div>
-                            <p class="w-full overflow-hidden overflow-ellipsis text-xl font-bold">
+                            <p class="w-full overflow-hidden text-ellipsis text-xl font-bold">
                                 {name}
                             </p>
 
@@ -127,11 +127,11 @@
                             </div>
                         </div>
 
-                        <p class="line-clamp-1 overflow-ellipsis">{description}</p>
+                        <p class="line-clamp-1 text-ellipsis">{description}</p>
                     </div>
 
                     <img
-                        class="absolute right-2 top-2 !size-6 flex-shrink-0"
+                        class="absolute right-2 top-2 size-6! shrink-0"
                         src={addedSets.includes(_id)
                             ? "/icons/general/X.svg"
                             : "/icons/general/Plus.svg"}

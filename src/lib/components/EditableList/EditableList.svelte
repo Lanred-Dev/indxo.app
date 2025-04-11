@@ -134,7 +134,7 @@
                 class="transition-all {isDraggable ? 'cursor-move' : ''} {draggingID === _listID
                     ? 'rotate-1 opacity-45'
                     : draggingID !== -1
-                      ? '[&>.editableListItem]:!border [&>.editableListItem]:!border-dashed [&>.editableListItem]:!border-focus'
+                      ? '[&>.editableListItem]:border! [&>.editableListItem]:border-dashed! [&>.editableListItem]:border-focus!'
                       : ''}"
                 draggable={isDraggable}
                 ondragstart={() => {

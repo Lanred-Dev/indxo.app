@@ -42,7 +42,7 @@
 <div class="flex h-screen max-h-screen w-full flex-col overflow-hidden">
     <Header />
 
-    <div class="flex max-h-full w-full flex-grow overflow-hidden">
+    <div class="flex max-h-full w-full grow overflow-hidden">
         {#if data.session}
             <Sidebar />
         {/if}
@@ -50,14 +50,14 @@
         <div class="relative h-full w-full">
             {#if isLoading}
                 <div
-                    class="x-center y-center z-[100] flex h-full w-full bg-primary"
+                    class="x-center y-center bg-primary z-100 flex h-full w-full"
                     in:fade={{ duration: 200 }}
                     out:fade={{ duration: 200 }}
                 >
                     <div class="x-center y-center">
                         <svg class="loader size-12" viewBox="25 25 50 50">
                             <circle
-                                class="fill-none stroke-accent-light stroke-2"
+                                class="stroke-accent-light fill-none stroke-2"
                                 cx="50"
                                 cy="50"
                                 r="20"
@@ -66,7 +66,7 @@
                     </div>
                 </div>
 
-                <style lang="postcss">
+                <style>
                     .loader {
                         animation: rotate 2s linear infinite;
                     }
@@ -104,7 +104,7 @@
             {/if}
 
             <main
-                class="relative flex h-full w-full flex-col items-start justify-start overflow-x-hidden px-7 pb-6 pt-12 md:px-16 md:pl-[10%] md:pr-[22.5%] md:pt-16 lg:pt-24 2xl:pr-[28%]"
+                class="relative flex h-full w-full flex-col items-start justify-start overflow-x-hidden px-7 pt-12 pb-6 md:px-16 md:pt-16 md:pr-[22.5%] md:pl-[10%] lg:pt-24 2xl:pr-[28%]"
                 bind:this={viewport}
             >
                 {@render children?.()}

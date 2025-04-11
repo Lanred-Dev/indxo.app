@@ -14,14 +14,14 @@
     } = $props();
 </script>
 
-<a class="button-primary !block w-full flex-col !items-start space-y-3 !px-6 !py-5" href={url}>
+<a class="button-primary block! w-full flex-col items-start! space-y-3 px-6! py-5!" href={url}>
     <div class="w-full space-y-1">
         <div class="flex items-center gap-1">
             {#if icon}
                 <img src={icon} alt="Folder" class="size-8" />
             {/if}
 
-            <p class="w-full overflow-hidden overflow-ellipsis text-2xl font-bold leading-none">
+            <p class="w-full overflow-hidden text-ellipsis text-2xl font-bold leading-none">
                 {name}
             </p>
         </div>
@@ -35,7 +35,7 @@
         </div>
     </div>
 
-    <p class="text-light line-clamp-1 overflow-hidden overflow-ellipsis leading-none">
+    <p class="text-light line-clamp-1 overflow-hidden text-ellipsis leading-none">
         {description}
     </p>
 </a>

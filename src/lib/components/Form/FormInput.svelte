@@ -48,7 +48,7 @@
 <div
     class="formInput space-y-0.5 {type === 'dropdown' || type === 'checkbox'
         ? 'min-w-fit'
-        : 'w-full flex-grow'}"
+        : 'w-full grow'}"
     data-type={type}
     data-id={id}
 >

@@ -43,9 +43,9 @@
 
     <ul class="list flex">
         {#each MODES as mode}
-            <li class="flex-grow">
+            <li class="grow">
                 <button
-                    class="button-primary flex-center h-full w-full gap-2 !px-6"
+                    class="button-primary flex-center h-full w-full gap-2 px-6!"
                     onclick={() => setMode(mode)}
                 >
                     <img class="size-7" src={mode.icon} alt={mode.name} />

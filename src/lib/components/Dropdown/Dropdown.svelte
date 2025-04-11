@@ -61,14 +61,14 @@
 
     {#if visible}
         <div
-            class="container-popup top-full mt-1 w-56 !p-1"
+            class="container-popup top-full mt-1 w-56 p-1!"
             transition:fly={{ y: 10, duration: 100 }}
         >
             <ul>
                 {#each items as item}
                     <li class="w-full">
                         <button
-                            class="button-navigation !py-1"
+                            class="button-navigation py-1!"
                             role="menuitem"
                             onclick={() => onItemClicked(item)}
                             type="button"

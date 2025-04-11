@@ -3,6 +3,6 @@
 </script>
 
 <div class="flex gap-0.5">
-    <img src={data.image} alt={data.name} class="size-7 flex-shrink-0" />
+    <img src={data.image} alt={data.name} class="size-7 shrink-0" />
     <p>{data.name}</p>
 </div>
