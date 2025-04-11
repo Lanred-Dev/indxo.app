@@ -5,6 +5,15 @@
     import { animate } from "motion";
     import { fade, fly } from "svelte/transition";
     import type { sortingTerm } from "$lib/database/documents/User";
+    import determineWording from "$lib/utils/determineWording";
+
+    const STRUGGLING_TERM_THRESHOLD: number = 3;
+
+    const SORTING_MESSAGES: [number, string[]][] = [
+        [0, ["Youre still learning.", "Youve got room to grow."]],
+        [0.5, ["You know this.", "Youre doing great."]],
+        [1, ["Awesome!", "Youre a genius."]],
+    ];
 
     let {
         set,
@@ -24,8 +33,20 @@
     let knowTerms: string[] = $state(
         savedSorting.map(([id, knows]) => (knows === 1 ? id : null)).filter((id) => id !== null)
     );
+    let timesMissedCounter: { [id: string]: number } = savedSorting.reduce(
+        (object, [id, _knows, timesMissed]) => {
+            object[id] = timesMissed;
+            return object;
+        },
+        {} as { [id: string]: number }
+    );
+    let strugglingTerms: string[] = $state(
+        savedSorting
+            .filter(([_id, _knows, timesMissed]) => timesMissed >= STRUGGLING_TERM_THRESHOLD)
+            .map(([id]) => id)
+    );
     let sortingTerms: string[] = set.terms.map(({ _id }) => _id);
-    let unsortedTerms: string[] = $state(
+    let unsortedTerms: string[] = $state.raw(
         sortingTerms.filter((id) => !knowTerms.includes(id) && !stillLearningTerms.includes(id))
     );
 
@@ -54,12 +75,6 @@
     // svelte-ignore non_reactive_update
     let cardBack: HTMLDivElement;
 
-    const SORTING_MESSAGES: [number, string[]][] = [
-        [0, ["Youre still learning.", "Youve got room to grow."]],
-        [0.5, ["You know this.", "Youre doing great."]],
-        [1, ["Awesome!", "Youre a genius."]],
-    ];
-
     /**
      * Shuffle the terms in the set. Resets the current term to the first one.
      *
@@ -71,141 +86,140 @@
         actualTerms.sort(() => Math.random() - 0.5);
     }
 
+    async function _sortCycle(direction: -1 | 1) {
+        canCycle = false;
+        canFlip = false;
+
+        const id: string = actualTerms[currentTermIndex]._id;
+
+        if (direction === 1) {
+            knowTerms.push(id);
+        } else if (direction === -1) {
+            stillLearningTerms.push(id);
+        }
+
+        unsortedTerms = unsortedTerms.filter((termID: string) => termID !== id);
+
+        // Update the amount of times the term has been missed.
+        // NOTE: It will go down if you get it right.
+        if (id in timesMissedCounter) {
+            if (timesMissedCounter[id] > 0 && direction === 1) {
+                timesMissedCounter[id]--;
+            } else if (direction === -1) {
+                timesMissedCounter[id]++;
+            }
+        } else {
+            timesMissedCounter[id] = 0;
+        }
+
+        // Determine if its a struggling term or not
+        if (timesMissedCounter[id] >= STRUGGLING_TERM_THRESHOLD && !strugglingTerms.includes(id)) {
+            strugglingTerms.push(id);
+        } else if (
+            timesMissedCounter[id] < STRUGGLING_TERM_THRESHOLD &&
+            strugglingTerms.includes(id)
+        ) {
+            strugglingTerms.splice(strugglingTerms.indexOf(id), 1);
+        }
+
+        // Apply a color overlay to the card to indicate the direction of the cycle and then animate it in
+        cardColorOverlay.style.backgroundColor = direction === 1 ? "#4caf50" : "#f26a63";
+        animate(
+            cardColorOverlay,
+            {
+                opacity: [0, 0.3],
+            },
+            {
+                duration: 0.2,
+                ease: "easeInOut",
+            }
+        );
+
+        await animate(
+            card,
+            {
+                opacity: [1, 0],
+                translate: ["0%", direction === 1 ? "8%" : "-8%"],
+            },
+            {
+                duration: 0.3,
+                ease: "easeInOut",
+            }
+        );
+
+        canCycle = unsortedTerms.length > 0;
+
+        if (canCycle) {
+            canFlip = true;
+            flipCard(false, false);
+
+            cardColorOverlay.style.opacity = "0";
+            animate(
+                card,
+                {
+                    opacity: [0, 1],
+                    rotateX: [0, 0],
+                    translate: ["0%", "0%"],
+                },
+                {
+                    duration: 0.3,
+                    ease: "easeInOut",
+                }
+            );
+        } else {
+            return; // `canCycle` will be false if there are no more unsorted terms
+        }
+
+        // If we are not at the end of the sorting then we need to show the next term
+        const alreadySortedNextTerm: boolean = !unsortedTerms.includes(
+            actualTerms[currentTermIndex + 1]?._id
+        );
+
+        if (currentTermIndex + 1 < actualTerms.length - 1 && !alreadySortedNextTerm) {
+            currentTermIndex++;
+        } else if (alreadySortedNextTerm || unsortedTerms.length > 0) {
+            currentTermIndex = actualTerms.findIndex(({ _id }) => _id === unsortedTerms[0]);
+        }
+    }
+
+    async function _cardsCycle(direction: -1 | 1) {
+        if (currentTermIndex + direction < 0 && currentTermIndex + direction > actualTerms.length)
+            return;
+
+        currentTermIndex += direction;
+        flipCard(false, false);
+        canFlip = false;
+
+        await animate(
+            card,
+            {
+                opacity: [0, 1],
+                rotateX: [0, 0],
+                rotateY: [direction === 1 ? -15 : 15, 0],
+                translate: [direction === 1 ? "8%" : "-8%", "0%"],
+            },
+            {
+                duration: 0.3,
+                ease: "easeInOut",
+            }
+        );
+
+        canFlip = true;
+    }
+
     /**
      * Cycle through the terms in the set.
      *
      * @param direction The direction to cycle in. -1 for previous and 1 for next or during sort mode, 1 for knows term and -1 for still learning term
      * @returns never
      */
-    async function cycle(direction: -1 | 1) {
+    function cycle(direction: -1 | 1) {
         if (!canCycle) return;
 
         if ($mode === "sort") {
-            canCycle = false;
-            canFlip = false;
-
-            if (direction === 1) {
-                knowTerms.push(actualTerms[currentTermIndex]._id);
-            } else if (direction === -1) {
-                stillLearningTerms.push(actualTerms[currentTermIndex]._id);
-            }
-
-            unsortedTerms = unsortedTerms.filter(
-                (termID: string) => termID !== actualTerms[currentTermIndex]._id
-            );
-
-            // Apply a color overlay to the card to indicate the direction of the cycle and then animate it in
-            cardColorOverlay.style.backgroundColor = direction === 1 ? "#4caf50" : "#f26a63";
-            animate(
-                cardColorOverlay,
-                {
-                    opacity: [0, 0.3],
-                },
-                {
-                    duration: 0.2,
-                    ease: "easeInOut",
-                }
-            );
-
-            await animate(
-                card,
-                {
-                    opacity: [1, 0],
-                    translate: ["0%", direction === 1 ? "8%" : "-8%"],
-                },
-                {
-                    duration: 0.3,
-                    ease: "easeInOut",
-                }
-            );
-
-            canCycle = unsortedTerms.length > 0;
-
-            if (canCycle) {
-                canFlip = true;
-                flipCard(false, false);
-
-                cardColorOverlay.style.opacity = "0";
-                animate(
-                    card,
-                    {
-                        opacity: [0, 1],
-                        rotateX: [0, 0],
-                        translate: ["0%", "0%"],
-                    },
-                    {
-                        duration: 0.3,
-                        ease: "easeInOut",
-                    }
-                );
-            } else {
-                return; // `canCycle` will be false if there are no more unsorted terms
-            }
-
-            // If we are not at the end of the sorting then we need to show the next term
-            const alreadySortedNextTerm: boolean = !unsortedTerms.includes(
-                actualTerms[currentTermIndex + 1]?._id
-            );
-
-            if (currentTermIndex + 1 < actualTerms.length - 1 && !alreadySortedNextTerm) {
-                currentTermIndex++;
-            } else if (alreadySortedNextTerm || unsortedTerms.length > 0) {
-                currentTermIndex = actualTerms.findIndex(({ _id }) => _id === unsortedTerms[0]);
-            }
-        } else if (
-            $mode === "cards" &&
-            currentTermIndex + direction >= 0 &&
-            currentTermIndex + direction < actualTerms.length
-        ) {
-            currentTermIndex += direction;
-            flipCard(false, false);
-            canFlip = false;
-
-            await animate(
-                card,
-                {
-                    opacity: [0, 1],
-                    rotateX: [0, 0],
-                    rotateY: [direction === 1 ? -15 : 15, 0],
-                    translate: [direction === 1 ? "8%" : "-8%", "0%"],
-                },
-                {
-                    duration: 0.3,
-                    ease: "easeInOut",
-                }
-            );
-
-            canFlip = true;
-        }
-    }
-
-    /**
-     * Handles the keyboard shortcuts for the study cards.
-     *
-     * @param event The keyboard event
-     * @returns never
-     */
-    function handleKeyboardShortcuts(event: KeyboardEvent) {
-        // Only register events if the user is not focused on anything or if they are focused on the study cards
-        if (
-            document.activeElement?.tagName !== "BODY" &&
-            !(event.target as HTMLElement | null)?.closest(".study")
-        )
-            return;
-
-        event.preventDefault();
-        (event.target as HTMLElement).blur();
-
-        switch (event.key) {
-            case " ":
-                flipCard();
-                break;
-            case "ArrowLeft":
-                cycle(-1);
-                break;
-            case "ArrowRight":
-                cycle(1);
-                break;
+            _sortCycle(direction);
+        } else if ($mode === "cards") {
+            _cardsCycle(direction);
         }
     }
 
@@ -231,6 +245,7 @@
 
         if (animateFlip) {
             canFlip = false;
+            canCycle = false;
 
             setTimeout(() => {
                 cardFront.style.display = cardFlipped ? "none" : "flex";
@@ -249,6 +264,7 @@
             );
 
             canFlip = true;
+            canCycle = true;
         } else {
             card.style.transform = `rotateX(${cardFlipped ? 180 : 0}deg)`;
             cardFront.style.display = cardFlipped ? "none" : "flex";
@@ -262,38 +278,28 @@
      * @param fullReset Whether to reset the knowTerms and stillLearningTerms arrays. Defaults to true.
      * @returns never
      */
-    function restart(fullReset: boolean = true) {
-        // Setting this first allows the card component to reload before `flipCard` is called
-        if ($mode === "sort") {
-            unsortedTerms = set.terms.map(({ _id }) => _id);
-            sortingTerms = unsortedTerms;
-        }
-
-        // Full reset also resets `knowTerms` and `stillLearningTerms`
-        if (fullReset) {
-            knowTerms = [];
-            stillLearningTerms = [];
-        }
-
+    function restart(
+        withTerms: string[] = set.terms.map(({ _id }) => _id),
+        fullReset: boolean = true
+    ) {
         currentTermIndex = 0;
+        actualTerms = set.terms.filter(({ _id }) => withTerms.includes(_id));
+
+        // Reset the unsorted terms and sorting terms if we are in sorting mode
+        if ($mode === "sort") {
+            unsortedTerms = actualTerms.map(({ _id }) => _id);
+            sortingTerms = unsortedTerms;
+
+            if (fullReset) {
+                knowTerms = [];
+                stillLearningTerms = [];
+            }
+        }
+
         canCycle = true;
         canFlip = true;
         flipCard(false, false);
         shuffle();
-    }
-
-    /**
-     * Studies the terms that the user is still learning.
-     *
-     * @returns never
-     */
-    function studyStillLearningTerms() {
-        actualTerms = actualTerms.filter(({ _id }) => {
-            return stillLearningTerms.includes(_id);
-        });
-        stillLearningTerms = [];
-
-        restart(false);
     }
 
     onMount(() => {
@@ -342,11 +348,11 @@
         savedSorting = [];
 
         knowTerms.forEach((id) => {
-            savedSorting.push([id, 1]);
+            savedSorting.push([id, 1, timesMissedCounter[id] ?? 0]);
         });
 
         stillLearningTerms.forEach((id) => {
-            savedSorting.push([id, -1]);
+            savedSorting.push([id, -1, timesMissedCounter[id] ?? 0]);
         });
 
         await fetch(`/api/documents/set/${setID}/sorting/update`, {
@@ -356,7 +362,31 @@
     });
 </script>
 
-<svelte:window onkeydown={handleKeyboardShortcuts} />
+<svelte:window
+    onkeydown={(event: KeyboardEvent) => {
+        // Only register events if the user is not focused on anything or if they are focused on the study cards
+        if (
+            document.activeElement?.tagName !== "BODY" &&
+            !(event.target as HTMLElement | null)?.closest(".study")
+        )
+            return;
+
+        event.preventDefault();
+        (event.target as HTMLElement).blur();
+
+        switch (event.key) {
+            case " ":
+                flipCard();
+                break;
+            case "ArrowLeft":
+                cycle(-1);
+                break;
+            case "ArrowRight":
+                cycle(1);
+                break;
+        }
+    }}
+/>
 
 {#snippet navigationButton(icon: string, text: string, disabled: boolean, direction: -1 | 1)}
     <button
@@ -387,12 +417,14 @@
                             <p>
                                 You are still learning <span class="font-bold text-alert"
                                     >{stillLearningTerms.length}</span
-                                > terms
+                                >
+                                {determineWording("terms")}
                             </p>
                             <p>
                                 You know <span class="font-bold text-green-500"
                                     >{set.terms.length - stillLearningTerms.length}</span
-                                > terms
+                                >
+                                {determineWording("terms")}
                             </p>
                         </div>
                     </div>
@@ -400,12 +432,42 @@
                     <div class="flex-center flex-grow flex-col gap-4 [&>button]:w-full">
                         <button
                             class="button-attention"
-                            onclick={studyStillLearningTerms}
+                            onclick={() => {
+                                restart(stillLearningTerms, false);
+                                stillLearningTerms = [];
+                            }}
                             disabled={stillLearningTerms.length === 0}
-                            >Study {stillLearningTerms.length} still learning</button
+                            >Study {stillLearningTerms.length > 0 ? stillLearningTerms.length : ""} still
+                            learning</button
                         >
-                        <button class="button-primary">Study struggling terms</button>
-                        <button class="text-lg" onclick={() => restart()}>Restart</button>
+
+                        <button
+                            class="button-primary"
+                            onclick={() => {
+                                restart(strugglingTerms, false);
+                            }}
+                            disabled={strugglingTerms.length === 0}
+                            >Study {strugglingTerms.length > 0 ? strugglingTerms.length : ""} struggling
+                            {determineWording("terms")}</button
+                        >
+
+                        <div class="flex w-full items-center justify-between px-[20%]">
+                            <button
+                                class="text-lg"
+                                onclick={() => {
+                                    knowTerms = knowTerms.filter(
+                                        (id) => !sortingTerms.includes(id)
+                                    );
+                                    stillLearningTerms = stillLearningTerms.filter(
+                                        (id) => !sortingTerms.includes(id)
+                                    );
+
+                                    restart(sortingTerms, false);
+                                }}>Restart</button
+                            >
+
+                            <button class="text-lg" onclick={() => restart()}>Start fresh</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -419,14 +481,14 @@
                     <div class="x-center y-center h-1 w-1/2 rounded-full bg-primary-400">
                         <div
                             class="relative h-full overflow-hidden rounded-full bg-green-500 transition-[width] duration-200"
-                            style:width="{((actualTerms.length - unsortedTerms.length) /
-                                actualTerms.length) *
+                            style:width="{((knowTerms.length + stillLearningTerms.length) /
+                                set.terms.length) *
                                 100}%"
                         >
                             <span
                                 class="y-center left-0 h-full bg-accent-alert transition-[width] duration-200"
                                 style:width="{(stillLearningTerms.length /
-                                    (actualTerms.length - unsortedTerms.length)) *
+                                    (knowTerms.length + stillLearningTerms.length)) *
                                     100}%"
                             ></span>
                         </div>
