@@ -446,6 +446,11 @@
                             class="button-primary"
                             onclick={() => {
                                 restart(strugglingTerms, false);
+
+                                stillLearningTerms = stillLearningTerms.filter(
+                                    (id) => !strugglingTerms.includes(id)
+                                );
+                                knowTerms = knowTerms.filter((id) => !strugglingTerms.includes(id));
                             }}
                             disabled={strugglingTerms.length === 0}
                             >Study {strugglingTerms.length > 0 ? strugglingTerms.length : ""} struggling
