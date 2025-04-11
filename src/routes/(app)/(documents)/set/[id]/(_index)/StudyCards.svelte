@@ -10,9 +10,9 @@
     const STRUGGLING_TERM_THRESHOLD: number = 3;
 
     const SORTING_MESSAGES: [number, string[]][] = [
-        [0, ["Youre still learning.", "Youve got room to grow."]],
-        [0.5, ["You know this.", "Youre doing great."]],
-        [1, ["Awesome!", "Youre a genius."]],
+        [0, ["You're still learning.", "You've got room to grow."]],
+        [0.5, ["You know this.", "You're doing great."]],
+        [1, ["Awesome!", "You're a genius."]],
     ];
 
     let {
