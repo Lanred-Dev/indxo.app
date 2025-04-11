@@ -50,22 +50,14 @@
         focusedOnSearch = false;
         focusedOnSearchResults = false;
     }
-
-    /**
-     * Navigates to the search page with the query.
-     *
-     * @param event The keyboard event
-     * @returns never
-     */
-    function gotoSearch(event: KeyboardEvent) {
-        if (event.key !== "Enter" || searchQuery.length === 0 || !focusedOnSearch) return;
-
-        goto(`/search?query=${searchQuery}`);
-    }
 </script>
 
 <svelte:window
-    onkeydown={gotoSearch}
+    onkeydown={(event: KeyboardEvent) => {
+        if (event.key !== "Enter" || searchQuery.length === 0 || !focusedOnSearch) return;
+
+        goto(`/search?query=${searchQuery}`);
+    }}
     onfocusout={() => {
         if (focusedOnAccountInfo) return;
 
