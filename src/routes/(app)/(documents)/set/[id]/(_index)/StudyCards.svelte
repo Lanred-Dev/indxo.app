@@ -6,6 +6,7 @@
     import { fade, fly } from "svelte/transition";
     import type { sortingTerm } from "$lib/database/documents/User";
     import determineWording from "$lib/utils/determineWording";
+    import { applyAction } from "$app/forms";
 
     const STRUGGLING_TERM_THRESHOLD: number = 3;
 
@@ -390,7 +391,7 @@
 
 {#snippet navigationButton(icon: string, text: string, disabled: boolean, direction: -1 | 1)}
     <button
-        class="button-primary !rounded-full !p-3.5"
+        class="button-primary rounded-full! p-3.5!"
         {disabled}
         onclick={() => cycle(direction)}
         in:fly={{ y: 5 }}
@@ -407,7 +408,7 @@
             <!--End of sorting results-->
             <div class="w-full space-y-6" in:fade={{ duration: 200 }}>
                 <div>
-                    <p class="text-4xl font-bold leading-none">{endOfSortingMessage}</p>
+                    <p class="text-4xl leading-none font-bold">{endOfSortingMessage}</p>
                     <p class="text-lg">Heres how you did.</p>
                 </div>
 
@@ -415,7 +416,7 @@
                     <div class="w-3/5">
                         <div class="text-lg">
                             <p>
-                                You are still learning <span class="font-bold text-alert"
+                                You are still learning <span class="text-alert font-bold"
                                     >{stillLearningTerms.length}</span
                                 >
                                 {determineWording("terms")}
@@ -429,7 +430,7 @@
                         </div>
                     </div>
 
-                    <div class="flex-center flex-grow flex-col gap-4 [&>button]:w-full">
+                    <div class="flex-center grow flex-col gap-4 [&>button]:w-full">
                         <button
                             class="button-attention"
                             onclick={() => {
@@ -475,10 +476,10 @@
             {#if $mode === "sort"}
                 <!--Sorting mode stats-->
                 <div class="relative mb-1 flex items-center justify-between px-3">
-                    <p class="text-lg text-alert">{stillLearningTerms.length}</p>
+                    <p class="text-alert text-lg">{stillLearningTerms.length}</p>
 
                     <!--Progress bar for sorting-->
-                    <div class="x-center y-center h-1 w-1/2 rounded-full bg-primary-400">
+                    <div class="x-center y-center bg-primary-400 h-1 w-1/2 rounded-full">
                         <div
                             class="relative h-full overflow-hidden rounded-full bg-green-500 transition-[width] duration-200"
                             style:width="{((knowTerms.length + stillLearningTerms.length) /
@@ -486,7 +487,7 @@
                                 100}%"
                         >
                             <span
-                                class="y-center left-0 h-full bg-accent-alert transition-[width] duration-200"
+                                class="y-center bg-accent-alert left-0 h-full transition-[width] duration-200"
                                 style:width="{(stillLearningTerms.length /
                                     (knowTerms.length + stillLearningTerms.length)) *
                                     100}%"
@@ -500,42 +501,39 @@
 
             <!--Term card-->
             <button
-                class="relative aspect-[1.6] max-h-96 w-full text-3xl sm:aspect-[2]"
+                class="sm:aspect-2 relative aspect-[1.6] max-h-96 w-full text-3xl"
                 style:perspective="1000px"
                 onclick={() => flipCard()}
                 in:fade={{ duration: 200 }}
             >
                 <div
-                    class="absolute left-0 top-0 h-full w-full"
+                    class="absolute top-0 left-0 h-full w-full"
                     style:transform-style="preserve-3d"
                     bind:this={card}
                 >
                     <div
-                        class="absolute left-0 top-0 z-10 h-full w-full rounded-primary opacity-0"
+                        class="rounded-primary absolute top-0 left-0 z-10 h-full w-full opacity-0"
                         bind:this={cardColorOverlay}
                     ></div>
 
-                    <div class="cardFace" bind:this={cardFront}>
-                        <p>{actualTerms[currentTermIndex].term}</p>
-                    </div>
-
                     <div
-                        class="cardFace"
-                        style:display="none"
-                        style:transform="rotateX(180deg)"
-                        bind:this={cardBack}
+                        class="[&>*]:rounded-primary [&>*]:border-primary [&>*]:bg-primary-200 [&>*]:absolute [&>*]:top-0 [&>*]:left-0 [&>*]:flex [&>*]:h-full [&>*]:w-full [&>*]:items-center [&>*]:justify-center [&>*]:overflow-y-auto [&>*]:border [&>*]:p-6 [&>*]:shadow-xl"
                     >
-                        <p class="text-light x-center top-6 text-base">
-                            {actualTerms[currentTermIndex].term}
-                        </p>
-                        <p>{actualTerms[currentTermIndex].definition}</p>
-                    </div>
+                        <div bind:this={cardFront}>
+                            <p>{actualTerms[currentTermIndex].term}</p>
+                        </div>
 
-                    <style lang="postcss">
-                        .cardFace {
-                            @apply absolute left-0 top-0 flex h-full w-full items-center justify-center overflow-y-auto rounded-primary border border-primary bg-primary-200 p-6 shadow-xl;
-                        }
-                    </style>
+                        <div
+                            style:display="none"
+                            style:transform="rotateX(180deg)"
+                            bind:this={cardBack}
+                        >
+                            <p class="text-light x-center top-6 text-base">
+                                {actualTerms[currentTermIndex].term}
+                            </p>
+                            <p>{actualTerms[currentTermIndex].definition}</p>
+                        </div>
+                    </div>
                 </div>
             </button>
 
@@ -574,10 +572,10 @@
                 <div class="flex-center y-center absolute right-8 gap-2">
                     {#if actualTerms.length > 1}
                         <button
-                            class="button-icon !transition-all hover:rotate-[28deg] active:rotate-180"
+                            class="button-icon transition-all! hover:rotate-[28deg] active:rotate-180"
                             onclick={shuffle}
                         >
-                            <img class="!size-6" src="/icons/general/Shuffle.svg" alt="Shuffle" />
+                            <img class="size-6!" src="/icons/general/Shuffle.svg" alt="Shuffle" />
                         </button>
                     {/if}
                 </div>

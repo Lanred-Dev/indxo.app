@@ -133,7 +133,7 @@
         <img class="size-5" src="/icons/general/Search.svg" alt="Search" />
 
         <input
-            class="w-full border-0 bg-transparent p-0 outline-none focus:ring-0"
+            class="w-full border-0 bg-transparent p-0 outline-hidden focus:ring-0"
             type="text"
             placeholder="Looking for something?"
             bind:value={searchQuery}
@@ -198,7 +198,7 @@
 
     {#if showAccountInfo && session !== null}
         <div
-            class="container-popup right-10 top-[90%] space-y-1 !px-1 !pb-1"
+            class="container-popup right-10 top-[90%] space-y-1 px-1! pb-1!"
             onmouseenter={() => (focusedOnAccountInfo = true)}
             onmouseleave={() => (focusedOnAccountInfo = false)}
             role="region"
@@ -226,7 +226,7 @@
                 </li>
             </ul>
 
-            <a class="button-navigation hover:!bg-accent-alert" href="/api/auth/logout">
+            <a class="button-navigation hover:bg-accent-alert!" href="/api/auth/logout">
                 <img src="/icons/navigation/LogOut.svg" alt="Log out" />
                 <span>Log out</span>
             </a>

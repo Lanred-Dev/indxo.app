@@ -6,15 +6,15 @@
 
 {#snippet card({ linkTo, name, description, owner }: itemProps)}
     <li class="h-full w-full">
-        <a class="button-primary inline-block h-full w-full space-y-2 !px-6 !py-4" href={linkTo}>
+        <a class="button-primary inline-block h-full w-full space-y-2 px-6! py-4!" href={linkTo}>
             <div class="w-full">
-                <p class="w-full overflow-hidden overflow-ellipsis text-nowrap text-2xl font-bold">
+                <p class="w-full overflow-hidden text-ellipsis text-nowrap text-2xl font-bold">
                     {name}
                 </p>
                 <p>{owner.name}</p>
             </div>
 
-            <p class="text-light line-clamp-1 overflow-hidden overflow-ellipsis">{description}</p>
+            <p class="text-light line-clamp-1 overflow-hidden text-ellipsis">{description}</p>
         </a>
     </li>
 {/snippet}

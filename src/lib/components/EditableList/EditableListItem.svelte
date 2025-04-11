@@ -76,11 +76,11 @@
         </div>
     </div>
 
-    <div class="flex-center w-full flex-grow flex-wrap gap-3">
+    <div class="flex-center w-full grow flex-wrap gap-3">
         {#each properties as { type, placeholder }, index}
             {#if type === "input"}
                 <input
-                    class="input-secondary flex-grow"
+                    class="input-secondary grow"
                     {placeholder}
                     bind:value={properties[index].value}
                 />
