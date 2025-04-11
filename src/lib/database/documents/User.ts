@@ -6,7 +6,7 @@ import type { Folder } from "./Folder";
 
 type favorite = [string, "set" | "folder"];
 
-export type sortingTerm = [string, -1 | 1 | null];
+export type sortingTerm = [string, -1 | 1 | null, number];
 
 export interface User extends Document {
     _id: string;
