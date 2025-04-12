@@ -53,7 +53,7 @@
         {/if}
 
         <img
-            class="ml-0.5 size-4"
+            class="size-4"
             src="/icons/general/{visible ? 'UpChevron' : 'DownChevron'}.svg"
             alt="Arrow {visible ? 'up' : 'down'}"
         />
