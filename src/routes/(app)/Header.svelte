@@ -119,9 +119,9 @@
 {/snippet}
 
 <header
-    class="relative top-0 flex w-full items-center justify-between bg-accent-light px-7 py-4 md:px-10"
+    class="bg-accent-light relative top-0 flex w-full items-center justify-between px-7 py-4 md:px-10"
 >
-    <div>
+    <div class="flex-center">
         {#if session !== null}
             <button onclick={() => (sidebarVisible.visible = !sidebarVisible.visible)}>
                 <img class="size-7" src="/icons/navigation/Hamburger.svg" alt="Sidebar toggle" />
@@ -157,7 +157,7 @@
             onmouseleave={() => (focusedOnAccountInfo = false)}
         >
             <img
-                class="size-10 rounded-full border border-primary"
+                class="border-primary size-10 rounded-full border"
                 src={user.image}
                 alt={user.name}
             />
@@ -198,7 +198,7 @@
 
     {#if showAccountInfo && session !== null}
         <div
-            class="container-popup right-10 top-[90%] space-y-1 px-1! pb-1!"
+            class="container-popup top-[90%] right-10 space-y-1 px-1! pb-1!"
             onmouseenter={() => (focusedOnAccountInfo = true)}
             onmouseleave={() => (focusedOnAccountInfo = false)}
             role="region"
@@ -206,7 +206,7 @@
         >
             <div class="flex-center w-full gap-2 px-3 pb-1">
                 <img
-                    class="size-10 rounded-full border border-primary"
+                    class="border-primary size-10 rounded-full border"
                     src={user.image}
                     alt={user.name}
                 />
