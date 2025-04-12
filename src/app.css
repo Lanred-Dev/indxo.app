@@ -275,12 +275,12 @@
     }
 
     div.list-primary p.list-title {
-        @apply text-light mb-3 text-xl font-bold;
+        @apply text-light text-xl font-bold;
     }
 
     div.list-primary,
     div.list-primary ul.list {
-        @apply w-full;
+        @apply mt-3 w-full;
     }
 
     div.list-primary ul.list.flex-col {
