@@ -46,7 +46,7 @@
 
 <div class={twMerge("dropdown relative min-w-fit text-lg", classes)} data-value={value}>
     <button class="input-primary" onclick={() => (visible = !visible)} type="button">
-        {#if currentText}
+        {#if currentImage}
             <img class="size-7" src={currentImage} alt={currentText} />
         {/if}
 
@@ -79,9 +79,7 @@
                                 <img src={image} alt={text} />
                             {/if}
 
-                            {#if text}
-                                <span>{text}</span>
-                            {/if}
+                            {text}
                         </button>
                     </li>
                 {/each}
