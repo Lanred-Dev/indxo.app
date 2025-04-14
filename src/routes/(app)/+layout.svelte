@@ -2,7 +2,7 @@
     import Header from "./Header.svelte";
     import Sidebar from "./Sidebar.svelte";
     import { afterNavigate, beforeNavigate } from "$app/navigation";
-    import { setContext } from "svelte";
+    import { onMount, setContext } from "svelte";
     import { fade } from "svelte/transition";
 
     let { data, children } = $props();
@@ -24,10 +24,13 @@
         isLoading = false;
         viewport.scrollTop = 0;
     });
-</script>
 
-<svelte:window
-    on:resize={() => {
+    /**
+     * Checks if the window is mobile or not.
+     *
+     * @returns never
+     */
+    function checkIfMobile() {
         if (window.innerWidth <= 786 && !isMobile) {
             isMobile = true;
             sidebarVisible.visible = false;
@@ -35,8 +38,12 @@
             isMobile = false;
             sidebarVisible.visible = true;
         }
-    }}
-/>
+    }
+
+    onMount(checkIfMobile);
+</script>
+
+<svelte:window on:resize={checkIfMobile} />
 
 <div class="flex h-screen max-h-screen w-full flex-col overflow-hidden">
     <Header />
