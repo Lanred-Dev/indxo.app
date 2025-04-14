@@ -8,7 +8,6 @@
     let { data, children } = $props();
 
     const sidebarVisible: { visible: boolean } = $state({ visible: true });
-    let windowWidth: number = $state.raw(Infinity);
     let isMobile: boolean = false;
     let isLoading: boolean = $state.raw(false);
     let viewport: HTMLElement;
@@ -25,19 +24,19 @@
         isLoading = false;
         viewport.scrollTop = 0;
     });
+</script>
 
-    $effect(() => {
-        if (windowWidth <= 786 && !isMobile) {
+<svelte:window
+    on:resize={() => {
+        if (window.innerWidth <= 786 && !isMobile) {
             isMobile = true;
             sidebarVisible.visible = false;
-        } else if (windowWidth > 786 && isMobile) {
+        } else if (window.innerWidth > 786 && isMobile) {
             isMobile = false;
             sidebarVisible.visible = true;
         }
-    });
-</script>
-
-<svelte:window bind:innerWidth={windowWidth} />
+    }}
+/>
 
 <div class="flex h-screen max-h-screen w-full flex-col overflow-hidden">
     <Header />
