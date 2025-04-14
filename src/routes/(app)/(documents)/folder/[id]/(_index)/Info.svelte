@@ -5,8 +5,8 @@
     let { description, owner, created }: PublicFolder = $props();
 </script>
 
-<div class="mb-12 space-y-6">
-    <Account {owner} {created} />
-
+<div class="mt-2 mb-10 space-y-8">
     <p class="text-lg">{description}</p>
+
+    <Account {owner} {created} />
 </div>

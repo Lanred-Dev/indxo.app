@@ -37,7 +37,7 @@
     }
 </script>
 
-<div class="mb-10 flex w-full items-center justify-between">
+<div class="flex w-full items-center justify-between">
     <div class="flex items-center gap-2">
         <img src={folder?.icon} alt="Folder" class="size-14" />
         <h1 class="page-title">{folder?.name}</h1>
