@@ -1,12 +1,12 @@
 <script lang="ts">
     import type { PublicSet, Term } from "$lib/database/documents/Set";
-    import { onDestroy, onMount } from "svelte";
+    import { getContext, onDestroy, onMount } from "svelte";
     import { type Writable } from "svelte/store";
     import { animate } from "motion";
     import { fade, fly } from "svelte/transition";
     import type { sortingTerm } from "$lib/database/documents/User";
     import determineWording from "$lib/utils/determineWording";
-    import { applyAction } from "$app/forms";
+    import type { Session } from "$lib/database/documents/Session";
 
     const STRUGGLING_TERM_THRESHOLD: number = 3;
 
@@ -21,6 +21,8 @@
         savedSorting,
         mode,
     }: { set: PublicSet; savedSorting: sortingTerm[]; mode: Writable<string> } = $props();
+
+    const session: Session | null = getContext("session");
 
     let canCycle: boolean = true;
     let canFlip: boolean = true;
@@ -356,7 +358,8 @@
             typeof window === "undefined" ||
             (unsortedTerms.length === 0 &&
                 knowTerms.length === 0 &&
-                stillLearningTerms.length === 0)
+                stillLearningTerms.length === 0) ||
+            session === null
         )
             return;
 
