@@ -61,7 +61,7 @@
         let messages: string[] = [];
 
         SORTING_MESSAGES.forEach(([threshold, potentialMessages]) => {
-            if (knowTerms.length / actualTerms.length < threshold) return;
+            if (knowTerms.length / set.terms.length < threshold) return;
 
             messages = potentialMessages;
         });
