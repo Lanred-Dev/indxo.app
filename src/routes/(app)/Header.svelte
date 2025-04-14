@@ -122,7 +122,7 @@
     class="bg-accent-light relative top-0 flex w-full items-center justify-between px-7 py-4 md:px-10"
 >
     <div class="flex-center">
-        {#if session !== null}
+        {#if session}
             <button onclick={() => (sidebarVisible.visible = !sidebarVisible.visible)}>
                 <img class="size-7" src="/icons/navigation/Hamburger.svg" alt="Sidebar toggle" />
             </button>
@@ -150,7 +150,7 @@
         />
     </div>
 
-    {#if session !== null}
+    {#if session}
         <button
             onclick={() => (showAccountInfo = !showAccountInfo)}
             onmouseenter={() => (focusedOnAccountInfo = true)}
@@ -196,7 +196,7 @@
         </div>
     {/if}
 
-    {#if showAccountInfo && session !== null}
+    {#if showAccountInfo && session}
         <div
             class="container-popup top-[90%] right-10 space-y-1 px-1! pb-1!"
             onmouseenter={() => (focusedOnAccountInfo = true)}
