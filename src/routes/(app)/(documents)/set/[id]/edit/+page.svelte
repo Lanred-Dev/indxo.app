@@ -69,7 +69,7 @@
                 label="Visiblity"
                 type="checkbox"
                 componentProps={{
-                    placeholder: data.isPublic,
+                    value: data.isPublic,
                     text: ["Public", "Private"],
                     icons: ["/icons/general/Web.svg", "/icons/general/Lock.svg"],
                 }}
