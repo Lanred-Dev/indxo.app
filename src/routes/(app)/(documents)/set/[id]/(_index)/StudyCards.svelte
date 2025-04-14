@@ -29,10 +29,10 @@
 
     let actualTerms: Term[] = $state(set.terms);
     let stillLearningTerms: string[] = $state(
-        savedSorting.map(([id, knows]) => (knows === -1 ? id : null)).filter((id) => id !== null)
+        savedSorting.filter(([_id, knows]) => knows === -1).map(([id]) => id)
     );
     let knowTerms: string[] = $state(
-        savedSorting.map(([id, knows]) => (knows === 1 ? id : null)).filter((id) => id !== null)
+        savedSorting.filter(([_id, knows]) => knows === 1).map(([id]) => id)
     );
     let timesMissedCounter: { [id: string]: number } = savedSorting.reduce(
         (object, [id, _knows, timesMissed]) => {
@@ -87,6 +87,12 @@
         actualTerms.sort(() => Math.random() - 0.5);
     }
 
+    /**
+     * Handles the sorting of the terms. It will sort the terms into the knowTerms and stillLearningTerms arrays.
+     *
+     * @param direction The direction to sort the term in. -1 for still learning and 1 for know.
+     * @returns never
+     */
     async function _sortCycle(direction: -1 | 1) {
         canCycle = false;
         canFlip = false;
@@ -183,8 +189,14 @@
         }
     }
 
+    /**
+     * Cycles through the terms in the set. This is used for the cards mode.
+     *
+     * @param direction The direction to cycle in. -1 for previous and 1 for next.
+     * @returns never
+     */
     async function _cardsCycle(direction: -1 | 1) {
-        if (currentTermIndex + direction < 0 && currentTermIndex + direction > actualTerms.length)
+        if (currentTermIndex + direction < 0 || currentTermIndex + direction > actualTerms.length)
             return;
 
         currentTermIndex += direction;
@@ -276,6 +288,7 @@
     /**
      * Restarts the study session by resetting all the state variables.
      *
+     * @param withTerms The terms to study. Defaults to all terms in the set.
      * @param fullReset Whether to reset the knowTerms and stillLearningTerms arrays. Defaults to true.
      * @returns never
      */
@@ -286,7 +299,8 @@
         currentTermIndex = 0;
         actualTerms = set.terms.filter(({ _id }) => withTerms.includes(_id));
 
-        // Reset the unsorted terms and sorting terms if we are in sorting mode
+        // NOTE: As of now the sort mode is the only mode that has reset functionality.
+        // Reset the unsorted terms so that the user can start over. And if its a full reset then reset the know and still learning terms as well.
         if ($mode === "sort") {
             unsortedTerms = actualTerms.map(({ _id }) => _id);
             sortingTerms = unsortedTerms;
@@ -525,7 +539,7 @@
                         class="[&>*]:rounded-primary [&>*]:border-primary [&>*]:bg-primary-200 [&>*]:absolute [&>*]:top-0 [&>*]:left-0 [&>*]:flex [&>*]:h-full [&>*]:w-full [&>*]:items-center [&>*]:justify-center [&>*]:overflow-y-auto [&>*]:border [&>*]:p-6 [&>*]:shadow-xl"
                     >
                         <div bind:this={cardFront}>
-                            <p>{actualTerms[currentTermIndex].term}</p>
+                            <p>{actualTerms[currentTermIndex]?.term}</p>
                         </div>
 
                         <div
@@ -534,9 +548,9 @@
                             bind:this={cardBack}
                         >
                             <p class="text-light x-center top-6 text-base">
-                                {actualTerms[currentTermIndex].term}
+                                {actualTerms[currentTermIndex]?.term}
                             </p>
-                            <p>{actualTerms[currentTermIndex].definition}</p>
+                            <p>{actualTerms[currentTermIndex]?.definition}</p>
                         </div>
                     </div>
                 </div>
