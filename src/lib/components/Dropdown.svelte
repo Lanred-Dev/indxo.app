@@ -1,26 +1,29 @@
 <script lang="ts">
     import { type Component } from "svelte";
     import { twMerge } from "tailwind-merge";
-    import type { props as DropdownItemProps } from "./DropdownItem.svelte";
-    import DropdownItem from "./DropdownItem.svelte";
     import { fly } from "svelte/transition";
     import { goto } from "$app/navigation";
+
+    type itemProps = {
+        value: string;
+        text?: string;
+        image?: string;
+        isLink?: boolean;
+    };
 
     let {
         classes,
         visible = $bindable(false),
         items = [],
         value = $bindable(items[0]?.value),
-        ItemComponent = DropdownItem,
     }: {
         classes?: string;
         visible?: boolean;
-        items?: DropdownItemProps[];
+        items?: itemProps[];
         value?: string;
-        ItemComponent?: Component<DropdownItemProps, {}, "">;
     } = $props();
 
-    let { text, image }: DropdownItemProps = $derived(
+    let { text: currentText, image: currentImage }: itemProps = $derived(
         items.find((item, index) => {
             if (typeof value === "string" && value.length > 0) return item.value === value;
 
@@ -31,10 +34,10 @@
     /**
      * Handles when a dropdown item is clicked and updates the current value.
      *
-     * @param value The value of the clicked item.
+     * @param newValue The new value
      * @returns never
      */
-    function onItemClicked({ isLink, value: newValue }: DropdownItemProps) {
+    function onItemClicked(newValue: string, isLink: boolean) {
         if (isLink) goto(newValue);
 
         value = newValue;
@@ -44,12 +47,12 @@
 
 <div class={twMerge("dropdown relative min-w-fit text-lg", classes)} data-value={value}>
     <button class="input-primary" onclick={() => (visible = !visible)} type="button">
-        {#if image}
-            <img class="size-7" src={image} alt={text} />
+        {#if currentText}
+            <img class="size-7" src={currentImage} alt={currentText} />
         {/if}
 
-        {#if text}
-            <span class="text-nowrap">{text}</span>
+        {#if currentText}
+            <span class="text-nowrap">{currentText}</span>
         {/if}
 
         <img
@@ -65,15 +68,21 @@
             transition:fly={{ y: 10, duration: 100 }}
         >
             <ul>
-                {#each items as item}
+                {#each items as { isLink, value, text, image }}
                     <li class="w-full">
                         <button
                             class="button-navigation py-1!"
                             role="menuitem"
-                            onclick={() => onItemClicked(item)}
+                            onclick={() => onItemClicked(value, isLink ?? false)}
                             type="button"
                         >
-                            <ItemComponent {...item} />
+                            {#if image}
+                                <img src={image} alt={text} />
+                            {/if}
+
+                            {#if text}
+                                <span>{text}</span>
+                            {/if}
                         </button>
                     </li>
                 {/each}
