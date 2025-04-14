@@ -1,6 +1,6 @@
 import { error, json } from "@sveltejs/kit";
 import idToDocument from "$lib/utils/idToDocument";
-import type { User } from "$lib/database/documents/User";
+import type { sortingTerm, User } from "$lib/database/documents/User";
 import type { Set } from "$lib/database/documents/Set";
 import permissionCheck from "$lib/utils/permissionCheck";
 import type { Collection } from "mongodb";
@@ -16,13 +16,23 @@ export async function POST({ params, request, locals, fetch }) {
     if (!permissionCheck(set, locals.user._id))
         error(403, "You do not have permission to view this set.");
 
+    const sorting: sortingTerm[] = await request.json();
+    const ids: string[] = [];
+
+    // Remove duplicates
+    sorting.forEach(([id], index) => {
+        if (!ids.includes(id)) return ids.push(id);
+
+        sorting.splice(index, 1);
+    });
+
     users.updateOne(
         {
             _id: locals.user._id,
         },
         {
             $set: {
-                [`sorting.${params.id}`]: await request.json(),
+                [`sorting.${params.id}`]: sorting,
             },
         }
     );
