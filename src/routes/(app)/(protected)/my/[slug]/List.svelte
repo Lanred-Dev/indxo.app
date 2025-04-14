@@ -5,11 +5,17 @@
     import Card from "$lib/components/Card.svelte";
     import determineWording from "$lib/utils/determineWording";
     import { slide } from "svelte/transition";
+    import { beforeNavigate } from "$app/navigation";
 
     export type group = [(PublicFolder | PublicSet)[], string | null];
 
     let groups: group[] = $props();
     let visible: boolean = $state.raw(true);
+
+    // Due to how svelte works, we must reset the visibility of the dropdown when navigating to a new page
+    beforeNavigate(() => {
+        visible = true;
+    });
 </script>
 
 <div class="w-full space-y-10">
