@@ -1,10 +1,9 @@
 <script lang="ts">
-    import { type Component } from "svelte";
     import { twMerge } from "tailwind-merge";
     import { fly } from "svelte/transition";
     import { goto } from "$app/navigation";
 
-    type itemProps = {
+    export type itemProps = {
         value: string;
         text?: string;
         image?: string;
