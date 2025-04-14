@@ -1,12 +1,11 @@
 <script lang="ts">
     import Search, { type sortFilter } from "./Search.svelte";
-    import List, { type group } from "./List.svelte";
     import { page } from "$app/state";
-    import type { PublicFolder } from "$lib/database/documents/Folder";
     import type { PublicSet } from "$lib/database/documents/Set";
     import { millisecondsToMinutes } from "date-fns";
     import determineWording from "$lib/utils/determineWording";
     import { afterNavigate } from "$app/navigation";
+    import Group, { type group } from "./Group.svelte";
 
     let { data } = $props();
 
@@ -24,15 +23,15 @@
 
     let type: "sets" | "folders" | "favorites" = $derived(page.params.slug as any);
     let searchQuery: string = $state.raw("");
-    // This filter is the one that the user has set, it is not always the one that is being used
+    // This filter is the one that the user has set, is not always the one that is being used
     let userSortFilter: sortFilter = $state.raw("created");
     let actualSortFilter: sortFilter = $derived.by(() => {
         if (searchQuery.length > 0) return "none";
 
         return userSortFilter;
     });
-    let groups: [(PublicFolder | PublicSet)[], string | null][] = $derived.by(() => {
-        let groups: { [key: string]: (PublicFolder | PublicSet)[] } = {};
+    let groups: group[] = $derived.by(() => {
+        let groups: group[] = [];
 
         data.documents.forEach((document) => {
             // Check if it matches the search query
@@ -70,17 +69,14 @@
                 group = document.name[0].toUpperCase();
             }
 
-            if (!groups[group]) {
-                groups[group] = [];
-            }
+            if (!groups[groups.findIndex(({ name }) => name === group)])
+                groups.push({ name: group, items: [] });
 
-            groups[group].push(document);
+            groups[groups.findIndex(({ name }) => name === group)].items.push(document);
         });
 
-        let groupsActual: group[] = Object.entries(groups).map(([name, items]) => [items, name]);
-
         if (actualSortFilter !== "none") {
-            groupsActual.forEach(([items]) => {
+            groups.forEach(({ items }) => {
                 items.sort((item1, item2) => {
                     const item1Relative: number = Date.now() - item1.created;
                     const item2Relative: number = Date.now() - item2.created;
@@ -89,7 +85,7 @@
             });
         }
 
-        groupsActual.sort(([_items1, group1], [_items2, group2]) => {
+        groups.sort(({ name: group1 }, { name: group2 }) => {
             if (actualSortFilter === "created") {
                 const group1Index: number = DISTANCE_WORDING.findIndex(
                     ([wording]) => wording === group1
@@ -107,7 +103,7 @@
             }
         });
 
-        return groupsActual;
+        return groups;
     });
 
     afterNavigate((navigation) => {
@@ -132,4 +128,8 @@
     hideSubjectFilter={type === "folders" ? true : false}
 />
 
-<List {...groups} />
+<div class="w-full space-y-10">
+    {#each groups as group}
+        <Group {...group} />
+    {/each}
+</div>
