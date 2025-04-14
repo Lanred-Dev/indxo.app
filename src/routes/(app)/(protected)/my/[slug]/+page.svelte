@@ -7,8 +7,6 @@
     import { afterNavigate } from "$app/navigation";
     import Group, { type group } from "./Group.svelte";
 
-    let { data } = $props();
-
     const DISTANCE_WORDING: [string, number][] = [
         ["Just now", 1],
         ["A few minutes ago", 5],
@@ -20,6 +18,8 @@
         ["This year", 525600],
         ["A long time ago", Infinity],
     ];
+
+    let { data } = $props();
 
     let type: "sets" | "folders" | "favorites" = $derived(page.params.slug as any);
     let searchQuery: string = $state.raw("");
@@ -75,6 +75,7 @@
             groups[groups.findIndex(({ name }) => name === group)].items.push(document);
         });
 
+        // Sort each groups items by the created date
         if (actualSortFilter !== "none") {
             groups.forEach(({ items }) => {
                 items.sort((item1, item2) => {
@@ -85,6 +86,7 @@
             });
         }
 
+        // Sort the groups based on the sort filter
         groups.sort(({ name: group1 }, { name: group2 }) => {
             if (actualSortFilter === "created") {
                 const group1Index: number = DISTANCE_WORDING.findIndex(
@@ -94,9 +96,11 @@
                     ([wording]) => wording === group2
                 );
                 return group1Index - group2Index;
-            } else if (actualSortFilter === "subject" && group1 && group2) {
-                return group1.localeCompare(group2);
-            } else if (actualSortFilter === "alphabetical" && group1 && group2) {
+            } else if (
+                (actualSortFilter === "subject" || actualSortFilter === "alphabetical") &&
+                group1 &&
+                group2
+            ) {
                 return group1.localeCompare(group2);
             } else {
                 return 0;
