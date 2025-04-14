@@ -46,7 +46,7 @@
 </script>
 
 <div
-    class="editableListItem container-primary flex flex-col gap-3 px-8 py-6"
+    class="editableListItem container-primary flex flex-col gap-3"
     data-listID={_listID}
     data-id={_id}
     data-value={value}
