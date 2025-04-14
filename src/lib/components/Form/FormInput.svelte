@@ -1,7 +1,7 @@
 <!--NOTE: This component combines a lot of individual components into one.-->
 
 <script lang="ts">
-    import Dropdown from "$lib/components/Dropdown";
+    import Dropdown from "$lib/components/Dropdown.svelte";
     import EditableList from "$lib/components/EditableList";
     import Checkbox from "$lib/components/Checkbox.svelte";
     import { twMerge } from "tailwind-merge";
@@ -53,7 +53,7 @@
     data-id={id}
 >
     {#if label}
-        <label class="text-light cursor-text select-none text-nowrap pl-3" for={id}>{label}</label>
+        <label class="text-light cursor-text pl-3 text-nowrap select-none" for={id}>{label}</label>
     {/if}
 
     {#if type === "dropdown"}

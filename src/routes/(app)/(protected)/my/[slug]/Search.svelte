@@ -1,6 +1,5 @@
 <script lang="ts">
-    import Dropdown from "$lib/components/Dropdown";
-    import type { props as DropdownItemProps } from "$lib/components/Dropdown/DropdownItem.svelte";
+    import Dropdown, { type itemProps } from "$lib/components/Dropdown.svelte";
 
     export type sortFilter = "none" | "created" | "subject" | "alphabetical";
 
@@ -14,8 +13,8 @@
         hideSubjectFilter?: boolean;
     } = $props();
 
-    let sortFilters: DropdownItemProps[] = $derived.by(() => {
-        const filters: DropdownItemProps[] = [
+    let sortFilters: itemProps[] = $derived.by(() => {
+        const filters: itemProps[] = [
             { value: "created", text: "Created" },
             { value: "alphabetical", text: "Alphabetical" },
             { value: "subject", text: "Subject" },
@@ -28,7 +27,7 @@
     });
 </script>
 
-<div class="flex w-full items-center gap-4 pb-16 pt-12">
+<div class="flex w-full items-center gap-4 pt-12 pb-16">
     <Dropdown bind:value={userSortFilter} items={sortFilters} />
 
     <div class="input-primary flex-center w-full gap-2">
