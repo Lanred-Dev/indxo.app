@@ -7,7 +7,7 @@
     import { twMerge } from "tailwind-merge";
     import { type Snippet } from "svelte";
 
-    export type inputType =
+    export type InputType =
         | "text"
         | "file"
         | "email"
@@ -31,7 +31,7 @@
     }: {
         id: string;
         label?: string;
-        type: inputType;
+        type: InputType;
         classes?: string;
         componentProps?: { [key: string]: any };
 

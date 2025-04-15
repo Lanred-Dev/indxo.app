@@ -1,5 +1,5 @@
 <script lang="ts">
-    export type actionButton = {
+    export type ItemActionButton = {
         isActualButton?: boolean;
         classes?: string;
         image?: [string, string];
@@ -8,21 +8,21 @@
         onMouseUp?: (event: MouseEvent) => void;
     };
 
-    export type property = {
+    export type ItemProperty = {
         id: string;
         type?: "input" | "textarea";
         placeholder?: string;
         value?: string;
     };
 
-    export type item = {
+    export type ListItem = {
         _listID: number;
         _id?: string;
-        properties?: property[];
-        actionButtons?: actionButton[];
+        properties?: ItemProperty[];
+        actionButtons?: ItemActionButton[];
     };
 
-    let { _listID, _id, properties = $bindable([]), actionButtons = [] }: item = $props();
+    let { _listID, _id, properties = $bindable([]), actionButtons = [] }: ListItem = $props();
 
     let value: string = $derived.by(() => {
         const actualProperties: { [id: string]: string } = {};

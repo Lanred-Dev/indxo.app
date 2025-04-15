@@ -1,8 +1,8 @@
 <script lang="ts">
     import EditableListItem, {
-        type actionButton,
-        type item,
-        type property,
+        type ItemActionButton,
+        type ItemProperty,
+        type ListItem,
     } from "./EditableListItem.svelte";
     import { onMount, type Component } from "svelte";
     import { twMerge } from "tailwind-merge";
@@ -35,15 +35,15 @@
     }: {
         classes?: string;
         startingItems?: number;
-        properties?: property[];
-        actionButtons?: actionButton[];
-        items?: { _id: string; properties: property[] }[];
+        properties?: ItemProperty[];
+        actionButtons?: ItemActionButton[];
+        items?: { _id: string; properties: ItemProperty[] }[];
         addText?: string;
         isDraggable?: boolean;
         ItemComponent?: Component<{ index: number } & any, {}, "properties">;
     } = $props();
 
-    let actualItems: item[] = $state([]);
+    let actualItems: ListItem[] = $state([]);
     // NOTE: -1 is used to indicate that no item is being dragged
     let draggingID: number = $state.raw(-1);
     let draggingOverID: number = $state.raw(-1);
@@ -53,8 +53,8 @@
      *
      * @returns never
      */
-    function addItem(_id: string | null = null, itemProperties: property[] = properties) {
-        let actionButtonsClone: actionButton[] | null = [...actionButtons];
+    function addItem(_id: string | null = null, itemProperties: ItemProperty[] = properties) {
+        let actionButtonsClone: ItemActionButton[] | null = [...actionButtons];
 
         if (isDraggable) {
             if (!Array.isArray(actionButtonsClone)) actionButtonsClone = [];
@@ -134,7 +134,7 @@
                 class="transition-all {isDraggable ? 'cursor-move' : ''} {draggingID === _listID
                     ? 'rotate-1 opacity-45'
                     : draggingID !== -1
-                      ? '[&>.editableListItem]:border! [&>.editableListItem]:border-dashed! [&>.editableListItem]:border-focus!'
+                      ? '[&>.editableListItem]:border-focus! [&>.editableListItem]:border! [&>.editableListItem]:border-dashed!'
                       : ''}"
                 draggable={isDraggable}
                 ondragstart={() => {

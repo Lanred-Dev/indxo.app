@@ -1,8 +1,7 @@
 <script lang="ts">
+    import Header from "./Header.svelte";
+
     let { data } = $props();
 </script>
 
-<div class="flex gap-0.5">
-    <img src={data.image} alt={data.name} class="size-7 shrink-0" />
-    <p>{data.name}</p>
-</div>
+<Header name={data.name} image={data.image} />

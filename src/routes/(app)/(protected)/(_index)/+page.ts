@@ -1,7 +1,7 @@
 import type { SimpleUser } from "$lib/database/documents/User.js";
 import determineDocumentType from "$lib/utils/determineDocumentType.js";
 
-export type itemProps = {
+export type ItemProperties = {
     name: string;
     description: string;
     isPublic: boolean;
@@ -10,24 +10,27 @@ export type itemProps = {
     [key: string]: any;
 };
 
-export type sectionTypes = "card";
+type SectionTypes = "card";
 
-export type sectionProps = {
+export type SectionProperties = {
     title: string;
-    type: sectionTypes;
-    items: itemProps[];
+    type: SectionTypes;
+    items: ItemProperties[];
     linkTo?: string;
 };
 
 export async function load({ fetch }) {
-    const preferences = await (await fetch("/api/home/preferences")).json();
-    const sections: sectionProps[] = [];
+    const preferences: string[] = await (await fetch("/api/home/preferences")).json();
+    const sections: SectionProperties[] = [];
 
     for (const section of preferences) {
-        const { type, linkTo, items }: { type: sectionTypes; linkTo?: string; items: itemProps[] } =
-            await (
-                await fetch(`/api/home/feed/${section.toLowerCase().replaceAll(" ", "-")}`)
-            ).json();
+        const {
+            type,
+            linkTo,
+            items,
+        }: { type: SectionTypes; linkTo?: string; items: ItemProperties[] } = await (
+            await fetch(`/api/home/feed/${section.toLowerCase().replaceAll(" ", "-")}`)
+        ).json();
 
         // Add the `linkTo` property to each item
         for (const item of items) {

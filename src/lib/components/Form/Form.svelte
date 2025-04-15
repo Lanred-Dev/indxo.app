@@ -1,17 +1,22 @@
 <script lang="ts">
     import { type Snippet } from "svelte";
     import { twMerge } from "tailwind-merge";
-    import { type inputType } from "./FormInput.svelte";
+    import { type InputType } from "./FormInput.svelte";
 
-    export type props = {
+    let {
+        action,
+        method = "POST",
+        afterSubmit = () => {},
+        classes,
+        children,
+    }: {
         action: string;
         method?: "POST" | "GET" | "PUT";
         afterSubmit?: (status: number, data?: any) => void;
         classes?: string;
         children?: Snippet<[]>;
-    };
+    } = $props();
 
-    let { action, method = "POST", afterSubmit = () => {}, classes, children }: props = $props();
     let submitting: boolean = $state.raw(false);
 
     /**
@@ -34,7 +39,7 @@
         const data: { [key: string]: any } = {};
 
         formInputs.forEach((input: HTMLElement) => {
-            const inputType: inputType = input.getAttribute("data-type") as inputType;
+            const inputType: InputType = input.getAttribute("data-type") as InputType;
             const id: string = input.getAttribute("data-id")!;
             let value: any;
 

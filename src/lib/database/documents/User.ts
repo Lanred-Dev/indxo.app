@@ -4,9 +4,9 @@ import type { Document } from "mongodb";
 import type { Set } from "./Set";
 import type { Folder } from "./Folder";
 
-type favorite = [string, "set" | "folder"];
+type Favorite = [string, "set" | "folder"];
 
-export type sortingTerm = [string, -1 | 1, number];
+export type SortingTerm = [string, -1 | 1, number];
 
 export interface User extends Document {
     _id: string;
@@ -19,11 +19,11 @@ export interface User extends Document {
     banned: boolean;
     sets: string[];
     folders: string[];
-    favorites: favorite[];
+    favorites: Favorite[];
     homeSectionPreferences: string[];
     openedSets: [string, number][];
     sorting: {
-        [id: string]: sortingTerm[];
+        [id: string]: SortingTerm[];
     };
 }
 
@@ -37,7 +37,7 @@ export interface PublicUser {
     // App specific fields
     sets: Set[];
     folders: Folder[];
-    favorites: favorite[];
+    favorites: Favorite[];
 }
 
 export interface SimpleUser {

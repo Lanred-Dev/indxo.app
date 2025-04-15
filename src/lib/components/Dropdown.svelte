@@ -3,7 +3,7 @@
     import { fly } from "svelte/transition";
     import { goto } from "$app/navigation";
 
-    export type itemProps = {
+    export type ItemProperties = {
         value: string;
         text?: string;
         image?: string;
@@ -18,11 +18,11 @@
     }: {
         classes?: string;
         visible?: boolean;
-        items?: itemProps[];
+        items?: ItemProperties[];
         value?: string;
     } = $props();
 
-    let { text: currentText, image: currentImage }: itemProps = $derived(
+    let { text: currentText, image: currentImage }: ItemProperties = $derived(
         items.find((item, index) => {
             if (typeof value === "string" && value.length > 0) return item.value === value;
 

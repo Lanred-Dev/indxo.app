@@ -4,7 +4,7 @@
     import { type Writable } from "svelte/store";
     import { animate } from "motion";
     import { fade, fly } from "svelte/transition";
-    import type { sortingTerm } from "$lib/database/documents/User";
+    import type { SortingTerm } from "$lib/database/documents/User";
     import determineWording from "$lib/utils/determineWording";
     import type { Session } from "$lib/database/documents/Session";
 
@@ -20,7 +20,7 @@
         set,
         savedSorting,
         mode,
-    }: { set: PublicSet; savedSorting: sortingTerm[]; mode: Writable<string> } = $props();
+    }: { set: PublicSet; savedSorting: SortingTerm[]; mode: Writable<string> } = $props();
 
     const session: Session | null = getContext("session");
 
