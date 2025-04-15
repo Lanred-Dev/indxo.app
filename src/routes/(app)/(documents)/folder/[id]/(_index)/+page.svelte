@@ -1,11 +1,10 @@
 <script lang="ts">
     import PageMessage from "$lib/components/PageMessage.svelte";
+    import SearchableList from "$lib/components/SearchableList";
     import type { PublicFolder } from "$lib/database/documents/Folder";
-    import type { PublicSet } from "$lib/database/documents/Set";
     import determineWording from "$lib/utils/determineWording";
     import Header from "./Header.svelte";
     import Info from "./Info.svelte";
-    import List from "./List.svelte";
 
     let { data } = $props();
 </script>
@@ -38,5 +37,14 @@
 
     <Info {...data.folder as PublicFolder} />
 
-    <List {...data.folder?.sets as PublicSet[]} />
+    <SearchableList
+        items={data.folder?.sets ?? []}
+        filter="alphabetical"
+        filters={[
+            { value: "created", text: "Created" },
+            { value: "subject", text: "Subject" },
+            { value: "alphabetical", text: "Alphabetical" },
+            { value: "none", text: "None" },
+        ]}
+    />
 {/if}
