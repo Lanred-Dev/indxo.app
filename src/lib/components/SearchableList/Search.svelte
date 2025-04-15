@@ -14,7 +14,7 @@
     } = $props();
 </script>
 
-<div class="flex w-full items-center gap-4 pt-12 pb-16">
+<div class="mb-10 flex w-full items-center gap-4">
     <Dropdown bind:value={filter} items={filters} />
 
     <div class="input-primary flex-center w-full gap-2">
