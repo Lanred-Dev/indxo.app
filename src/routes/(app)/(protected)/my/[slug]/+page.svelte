@@ -12,7 +12,7 @@
     <title>Your {determineWording(type)}</title>
 </svelte:head>
 
-<div class="page-title">
+<div class="page-title mb-12">
     <p>Browse your library</p>
     <h1>Your {determineWording(type)}</h1>
 </div>
