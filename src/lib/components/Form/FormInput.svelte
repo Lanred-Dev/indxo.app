@@ -48,7 +48,7 @@
 <div
     class="formInput space-y-0.5 {type === 'dropdown' || type === 'checkbox'
         ? 'min-w-fit'
-        : 'w-full grow'}"
+        : 'grow'}"
     data-type={type}
     data-id={id}
 >
@@ -67,6 +67,13 @@
     {:else if type === "custom"}
         {@render children?.()}
     {:else}
-        <input class={inputClasses} name={id} {id} {type} {...componentProps} />
+        <input
+            class={inputClasses}
+            style:filed-sizing="content"
+            name={id}
+            {id}
+            {type}
+            {...componentProps}
+        />
     {/if}
 </div>
