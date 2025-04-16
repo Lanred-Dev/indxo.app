@@ -1,9 +1,9 @@
 import { json } from "@sveltejs/kit";
 import { loadCollection } from "$lib/database/mongo";
 import { type Collection } from "mongodb";
-import type { Set } from "$lib/database/documents/Set";
-import type { User } from "$lib/database/documents/User";
-import type { Folder } from "$lib/database/documents/Folder";
+import type { Set, SimpleSet } from "$lib/database/documents/Set";
+import type { SimpleUser, User } from "$lib/database/documents/User";
+import type { Folder, SimpleFolder } from "$lib/database/documents/Folder";
 import determineDocumentType from "$lib/utils/determineDocumentType";
 
 const users: Collection<User> = loadCollection("accounts", "users");
@@ -62,7 +62,7 @@ export async function POST({ request }) {
         .limit(maxResults)
         .toArray();
 
-    let results = [];
+    let results: (User | Set | Folder)[] = [];
 
     switch (returnOnly) {
         case "user":
@@ -78,50 +78,48 @@ export async function POST({ request }) {
             results = [...usersResults, ...setsResults, ...foldersResults];
     }
 
-    const bestResults =
+    let bestResults =
         results.length > 1
-            ? results
-                  .sort((result1, result2) => {
-                      const result1Score: number =
-                          result1.name.match(query)?.length +
-                          result1.description?.match(query)?.length +
-                          result1.subject?.match(query)?.length;
-                      const result2Score: number =
-                          result2.name.match(query)?.length +
-                          result2.description?.match(query)?.length +
-                          result2.subject?.match(query)?.length;
+            ? results.sort((result1, result2) => {
+                  const result1Score: number =
+                      result1.name.match(query)?.length +
+                      result1.description?.match(query)?.length +
+                      result1.subject?.match(query)?.length;
+                  const result2Score: number =
+                      result2.name.match(query)?.length +
+                      result2.description?.match(query)?.length +
+                      result2.subject?.match(query)?.length;
 
-                      return result2Score - result1Score;
-                  })
-                  .splice(maxResults)
+                  return result2Score - result1Score;
+              })
             : results;
 
-    // Go through the results and remove the fields that are not needed return only the _id, name, image and description (and subject for sets)
-    for (const result of bestResults) {
-        const type = determineDocumentType(result);
+    bestResults.splice(maxResults);
 
-        switch (type) {
-            case "account":
-                delete result.email;
-                delete result.banned;
-                delete result.sets;
-                delete result.folders;
-                delete result.favorites;
-                delete result.homeSectionPreferences;
-                delete result.openedSets;
-                break;
-            case "set":
-                delete result.isPublic;
-                delete result.terms;
-                delete result.owner;
-                break;
-            case "folder":
-                delete result.isPublic;
-                break;
-        }
-
-        delete result.created;
-    }
-
-    return json(bestResults);
+    return json(
+        bestResults.map((result) => {
+            switch (determineDocumentType(result)) {
+                case "user":
+                    return {
+                        _id: result._id,
+                        name: result.name,
+                        image: result.image,
+                    };
+                case "set":
+                    return {
+                        _id: result._id,
+                        name: result.name,
+                        description: result.description,
+                        subject: result.subject,
+                    };
+                case "folder":
+                    return {
+                        _id: result._id,
+                        name: result.name,
+                        icon: result.icon,
+                        description: result.description,
+                    };
+            }
+        }) as (SimpleUser | SimpleSet | SimpleFolder)[]
+    );
 }
