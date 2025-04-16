@@ -17,17 +17,17 @@
 </script>
 
 <div class="list-primary">
-    <button class="flex-center gap-1" onclick={() => (visible = !visible)}>
-        {#if typeof name === "string" && name.length > 0}
+    {#if typeof name === "string" && name.length > 0}
+        <button class="flex-center gap-1" onclick={() => (visible = !visible)}>
             <p class="list-title">{name}</p>
-        {/if}
 
-        <img
-            class="size-4"
-            src="/icons/general/{visible ? 'UpChevron' : 'DownChevron'}.svg"
-            alt="Arrow {visible ? 'up' : 'down'}"
-        />
-    </button>
+            <img
+                class="size-4"
+                src="/icons/general/{visible ? 'UpChevron' : 'DownChevron'}.svg"
+                alt="Arrow {visible ? 'up' : 'down'}"
+            />
+        </button>
+    {/if}
 
     {#if visible}
         <ul class="list flex-col" in:slide out:slide>
