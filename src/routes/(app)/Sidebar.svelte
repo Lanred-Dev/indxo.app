@@ -1,18 +1,14 @@
 <script lang="ts">
     import determineWording from "$lib/utils/determineWording";
-    import { getContext, onMount } from "svelte";
+    import { fly } from "svelte/transition";
 
-    const sidebarVisible: { visible: boolean } = getContext("sidebarVisible");
-    // NOTE: This is only used during the first load of the page to prevent the sidebar from flashing
-    let isLoading: boolean = $state.raw(true);
-
-    onMount(() => (isLoading = false));
+    let { isInitialLoad }: { isInitialLoad: boolean } = $props();
 </script>
 
 {#snippet group(links: { url: string; text: string; icon: string }[], name?: string)}
     <div>
         {#if name}
-            <p class="text-light mb-2 text-nowrap pl-3">{name}</p>
+            <p class="text-light mb-2 pl-3 text-nowrap">{name}</p>
         {/if}
 
         <ul>
@@ -29,15 +25,16 @@
 {/snippet}
 
 <div
-    class="absolute left-0 top-0 z-50 h-full min-w-fit flex-col justify-between gap-10 overflow-y-auto overflow-x-hidden bg-primary py-7 pl-4 pr-16 md:static md:pl-7 md:pr-4 xl:w-[17.5%] 2xl:w-[15%] {isLoading
+    class="bg-primary absolute top-0 left-0 z-50 flex h-full min-w-fit flex-col justify-between gap-10 overflow-x-hidden overflow-y-auto py-7 pr-16 pl-4 md:static md:pr-4 md:pl-7 xl:w-[17.5%] 2xl:w-[15%] {isInitialLoad
         ? 'pointer-events-none opacity-0'
         : ''}"
-    style:display={sidebarVisible.visible ? "flex" : "none"}
+    in:fly={{ x: -10 }}
+    out:fly={{ x: -10 }}
 >
     <nav class="min-w-fit space-y-10">
         {@render group([
             { icon: "/icons/navigation/Home.svg", text: "Home", url: "/" },
-            { icon: "/icons/navigation/Account.svg", text: "Account", url: "/account" },
+            { icon: "/icons/navigation/Account.svg", text: "Account", url: "/user" },
         ])}
 
         {@render group(
