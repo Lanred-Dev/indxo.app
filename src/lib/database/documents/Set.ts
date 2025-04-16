@@ -36,7 +36,6 @@ export interface PublicSet {
 
 export interface SimpleSet {
     _id: string;
-    icon: string;
     name: string;
     description: string;
     subject: string;
