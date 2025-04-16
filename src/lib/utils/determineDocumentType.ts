@@ -10,7 +10,6 @@ export default function determineDocumentType(document: {
     subject?: string;
     [key: string]: any;
 }): "user" | "folder" | "set" {
-    console.log(document);
     if ("subject" in document && (document.subject ?? "").trim().length > 0) return "set";
     if ("image" in document && (document.image ?? "").trim().length > 0) return "user";
     if ("icon" in document && (document.icon ?? "").trim().length > 0) return "folder";
