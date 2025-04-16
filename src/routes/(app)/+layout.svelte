@@ -10,6 +10,8 @@
     const sidebarVisible: { visible: boolean } = $state({ visible: true });
     let isMobile: boolean = false;
     let isLoading: boolean = $state.raw(false);
+    // Used so that the sidebar isnt rendered until after checkIfMobile is called. Prevents a flash of the sidebar on mobile devices.
+    let isInitialLoad: boolean = $state.raw(true);
     let viewport: HTMLElement;
 
     setContext("session", data.session);
@@ -18,6 +20,8 @@
 
     beforeNavigate(() => {
         isLoading = true;
+
+        if (isMobile) sidebarVisible.visible = false;
     });
 
     afterNavigate(() => {
@@ -40,7 +44,10 @@
         }
     }
 
-    onMount(checkIfMobile);
+    onMount(() => {
+        isInitialLoad = false;
+        checkIfMobile();
+    });
 </script>
 
 <svelte:window on:resize={checkIfMobile} />
@@ -48,18 +55,14 @@
 <div class="flex h-screen max-h-screen w-full flex-col overflow-hidden">
     <Header />
 
-    <div class="flex max-h-full w-full grow overflow-hidden">
-        {#if data.session}
-            <Sidebar />
+    <div class="relative flex max-h-full w-full grow overflow-hidden">
+        {#if data.session && sidebarVisible.visible}
+            <Sidebar {isInitialLoad} />
         {/if}
 
         <div class="relative h-full w-full">
             {#if isLoading}
-                <div
-                    class="x-center y-center bg-primary z-100 flex h-full w-full"
-                    in:fade={{ duration: 200 }}
-                    out:fade={{ duration: 200 }}
-                >
+                <div class="x-center y-center bg-primary z-100 flex h-full w-full" in:fade out:fade>
                     <div class="x-center y-center">
                         <svg class="loader size-12" viewBox="25 25 50 50">
                             <circle
