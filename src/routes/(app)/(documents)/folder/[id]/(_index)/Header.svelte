@@ -37,13 +37,13 @@
     }
 </script>
 
-<div class="flex w-full items-center justify-between">
+<div class="flex w-full flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
     <div class="flex items-center gap-2">
         <img src={folder?.icon} alt="Folder" class="size-14" />
         <h1 class="page-title">{folder?.name}</h1>
     </div>
 
-    <div class="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
+    <div class="flex-center">
         {#if hasPermission === true}
             <a class="button-icon" href="/folder/{folder._id}/edit">
                 <img src="/icons/general/Pencil.svg" alt="Edit" />
