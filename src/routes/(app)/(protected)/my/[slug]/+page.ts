@@ -7,9 +7,9 @@ export async function load({ fetch, params }) {
     if (params.slug !== "folders" && params.slug !== "sets" && params.slug !== "favorites")
         redirect(308, `/my/sets`);
 
-    const userID: string = await (await fetch("/api/account")).json();
+    const userID: string = await (await fetch("/api/user")).json();
     const documents: (PublicFolder | PublicSet)[] = await (
-        await fetch(`/api/account/${userID}/${params.slug}`)
+        await fetch(`/api/user/${userID}/${params.slug}`)
     ).json();
 
     return {

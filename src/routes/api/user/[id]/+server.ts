@@ -9,8 +9,8 @@ export async function GET({ params, fetch }) {
 
     if (!user) error(404, "User not found.");
 
-    const sets: Set[] = await (await fetch(`/api/account/${params.id}/sets`)).json();
-    const folders: Folder[] = await (await fetch(`/api/account/${params.id}/folders`)).json();
+    const sets: Set[] = await (await fetch(`/api/user/${params.id}/sets`)).json();
+    const folders: Folder[] = await (await fetch(`/api/user/${params.id}/folders`)).json();
 
     return json({
         _id: user._id,

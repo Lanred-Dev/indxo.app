@@ -10,7 +10,7 @@ export async function GET({ params, locals, fetch }) {
     if (!permissionCheck(set, locals.user._id))
         error(403, "You do not have permission to view this set.");
 
-    const owner: SimpleUser = await (await fetch(`/api/account/${set.owner}/simple`)).json();
+    const owner: SimpleUser = await (await fetch(`/api/user/${set.owner}/simple`)).json();
     (set as unknown as PublicSet).owner = owner;
 
     return json(set);

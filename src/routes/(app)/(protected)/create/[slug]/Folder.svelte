@@ -38,8 +38,8 @@
     }
 
     onMount(async () => {
-        const userID: string = await (await fetch("/api/account")).json();
-        sets = await (await fetch(`/api/account/${userID}/sets`)).json();
+        const userID: string = await (await fetch("/api/user")).json();
+        sets = await (await fetch(`/api/user/${userID}/sets`)).json();
     });
 </script>
 
@@ -109,7 +109,7 @@
                 >
                     <div class="space-y-2">
                         <div>
-                            <p class="w-full overflow-hidden text-ellipsis text-xl font-bold">
+                            <p class="w-full overflow-hidden text-xl font-bold text-ellipsis">
                                 {name}
                             </p>
 
@@ -131,7 +131,7 @@
                     </div>
 
                     <img
-                        class="absolute right-2 top-2 size-6! shrink-0"
+                        class="absolute top-2 right-2 size-6! shrink-0"
                         src={addedSets.includes(_id)
                             ? "/icons/general/X.svg"
                             : "/icons/general/Plus.svg"}

@@ -20,7 +20,7 @@ export async function GET({ params, fetch, locals }) {
 
     (folder as unknown as PublicFolder).sets = sets;
 
-    const owner: SimpleUser = await (await fetch(`/api/account/${folder.owner}/simple`)).json();
+    const owner: SimpleUser = await (await fetch(`/api/user/${folder.owner}/simple`)).json();
     (folder as unknown as PublicFolder).owner = owner;
 
     return json(folder);

@@ -5,8 +5,8 @@
     let { owner, created }: { owner: SimpleUser; created: number } = $props();
 </script>
 
-<a class="flex gap-2" href="/account/{owner._id}">
-    <img src={owner.image} alt={owner.name} class="size-11 rounded-full border border-primary" />
+<a class="flex gap-2" href="/user/{owner._id}">
+    <img src={owner.image} alt={owner.name} class="border-primary size-11 rounded-full border" />
 
     <div class="[&>p]:leading-tight">
         <p class="text-dark text-sm leading-snug">Created by</p>
