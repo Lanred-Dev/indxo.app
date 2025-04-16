@@ -534,7 +534,7 @@
                     bind:this={card}
                 >
                     <div
-                        class="rounded-primary absolute top-0 left-0 z-10 h-full w-full opacity-0"
+                        class="rounded-primary absolute top-0 left-0 z-[5] h-full w-full opacity-0"
                         bind:this={cardColorOverlay}
                     ></div>
 

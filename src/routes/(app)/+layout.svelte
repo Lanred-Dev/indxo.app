@@ -62,7 +62,7 @@
 
         <div class="relative h-full w-full">
             {#if isLoading}
-                <div class="x-center y-center bg-primary z-100 flex h-full w-full" in:fade out:fade>
+                <div class="x-center y-center bg-primary z-40 flex h-full w-full" in:fade out:fade>
                     <div class="x-center y-center">
                         <svg class="loader size-12" viewBox="25 25 50 50">
                             <circle
