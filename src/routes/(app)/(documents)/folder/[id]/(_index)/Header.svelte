@@ -43,7 +43,7 @@
         <h1 class="page-title">{folder?.name}</h1>
     </div>
 
-    <div class="flex-center">
+    <div class="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
         {#if hasPermission === true}
             <a class="button-icon" href="/folder/{folder._id}/edit">
                 <img src="/icons/general/Pencil.svg" alt="Edit" />

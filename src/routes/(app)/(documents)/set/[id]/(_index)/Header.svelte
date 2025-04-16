@@ -45,10 +45,10 @@
         >
     {/if}
 
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
         <h1 class="page-title">{set?.name}</h1>
 
-        <div class="flex-center">
+        <div class="flex items-center">
             {#if hasPermission === true}
                 <a class="button-icon" href="/set/{set._id}/edit">
                     <img src="/icons/general/Pencil.svg" alt="Edit" />
