@@ -129,8 +129,8 @@
         @apply bg-primary font-Eirene-Sans text-primary;
     }
 
-    *::placeholder {
-        @apply text-primary-50 overflow-visible select-none;
+    * {
+        @apply placeholder:text-primary-50 touch-manipulation placeholder:overflow-visible placeholder:select-none;
     }
 
     img {
