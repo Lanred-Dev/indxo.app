@@ -1,16 +1,16 @@
 import { error, json } from "@sveltejs/kit";
 import idToDocument from "$lib/utils/idToDocument";
 import type { User } from "$lib/database/documents/User";
-import type { Set } from "$lib/database/documents/Set";
-import type { Folder } from "$lib/database/documents/Folder";
+import type { PublicSet } from "$lib/database/documents/Set";
+import type { PublicFolder } from "$lib/database/documents/Folder";
 
 export async function GET({ params, fetch }) {
     const user: User | null = await idToDocument("users", params.id);
 
     if (!user) error(404, "User not found.");
 
-    const sets: Set[] = await (await fetch(`/api/user/${params.id}/sets`)).json();
-    const folders: Folder[] = await (await fetch(`/api/user/${params.id}/folders`)).json();
+    const sets: PublicSet[] = await (await fetch(`/api/user/${params.id}/sets`)).json();
+    const folders: PublicFolder[] = await (await fetch(`/api/user/${params.id}/folders`)).json();
 
     return json({
         _id: user._id,
