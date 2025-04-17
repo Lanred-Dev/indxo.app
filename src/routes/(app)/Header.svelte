@@ -20,25 +20,6 @@
     let searchResults: (SimpleUser | SimpleSet | SimpleFolder)[] = $state.raw([]);
 
     /**
-     * Fetches the results to display on the quick search.
-     *
-     * @returns never
-     */
-    async function search() {
-        // 3 is the minimum search query
-        if (searchQuery.length < 3) return (searchResults = []);
-
-        searchResults = await (
-            await fetch("/api/search", {
-                method: "POST",
-                body: JSON.stringify({
-                    query: searchQuery,
-                }),
-            })
-        ).json();
-    }
-
-    /**
      * Removes focus from the search bar.
      *
      * NOTE: This is mainly used after a user clicks on a search result.
@@ -104,7 +85,6 @@
         class="flex items-center gap-1"
         href="/search?query={searchQuery}&returnOnly={id}"
         onclick={removeFocusFromSearch}
-        data-sveltekit-reload
     >
         <img class="size-6" src={icon} alt={name} />
         <p class="flex-center text-nowrap">
@@ -118,7 +98,7 @@
 {/snippet}
 
 <header
-    class="bg-accent-light relative top-0 flex w-full items-center justify-between px-7 py-4 md:px-10"
+    class="bg-accent-light relative z-30 flex w-full items-center justify-between px-7 py-4 md:px-10"
 >
     <div class="flex-center">
         {#if session}
@@ -136,7 +116,19 @@
             type="text"
             placeholder="Looking for something?"
             bind:value={searchQuery}
-            oninput={search}
+            oninput={async () => {
+                // 3 is the minimum search query
+                if (searchQuery.length < 3) return (searchResults = []);
+
+                searchResults = await (
+                    await fetch("/api/search", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            query: searchQuery,
+                        }),
+                    })
+                ).json();
+            }}
             onfocusin={() => {
                 isSearching = true;
                 focusedOnSearch = true;
