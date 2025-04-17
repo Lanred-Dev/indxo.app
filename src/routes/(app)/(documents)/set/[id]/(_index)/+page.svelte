@@ -46,12 +46,13 @@
     />
 
     <StudyCards
-        set={data.set as PublicSet}
+        setID={data.set?._id ?? ""}
+        terms={data.set?.terms ?? []}
         savedSorting={data.savedSorting as SortingTerm[]}
         {mode}
     />
 
     <Info {...data.set as PublicSet} />
 
-    <ModeSelector id={data.set?._id.toString() ?? ""} {mode} />
+    <ModeSelector id={data.set?._id ?? ""} {mode} />
 {/if}

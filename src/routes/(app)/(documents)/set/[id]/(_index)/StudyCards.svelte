@@ -7,6 +7,7 @@
     import type { SortingTerm } from "$lib/database/documents/User";
     import determineWording from "$lib/utils/determineWording";
     import type { Session } from "$lib/database/documents/Session";
+    import { afterNavigate } from "$app/navigation";
 
     const STRUGGLING_TERM_THRESHOLD: number = 3;
 
@@ -17,10 +18,12 @@
     ];
 
     let {
-        set,
+        setID,
+        terms,
         savedSorting,
         mode,
-    }: { set: PublicSet; savedSorting: SortingTerm[]; mode: Writable<string> } = $props();
+    }: { setID: string; terms: Term[]; savedSorting: SortingTerm[]; mode: Writable<string> } =
+        $props();
 
     const session: Session | null = getContext("session");
 
@@ -29,7 +32,7 @@
     let cardFlipped: boolean = $state.raw(false);
     let currentTermIndex: number = $state.raw(0);
 
-    let actualTerms: Term[] = $state(set.terms);
+    let actualTerms: Term[] = $state(terms);
     let stillLearningTerms: string[] = $state(
         savedSorting.filter(([_id, knows]) => knows === -1).map(([id]) => id)
     );
@@ -48,20 +51,18 @@
             .filter(([_id, _knows, timesMissed]) => timesMissed >= STRUGGLING_TERM_THRESHOLD)
             .map(([id]) => id)
     );
-    let sortingTerms: string[] = set.terms.map(({ _id }) => _id);
+    let sortingTerms: string[] = terms.map(({ _id }) => _id);
     let unsortedTerms: string[] = $state.raw(
         sortingTerms.filter((id) => !knowTerms.includes(id) && !stillLearningTerms.includes(id))
     );
 
-    // Save the ID for use during saving the sorting state
-    const setID: string = set._id;
     let endOfSortingMessage: string = $derived.by(() => {
         if (unsortedTerms.length > 0 || $mode !== "sort") return "";
 
         let messages: string[] = [];
 
         SORTING_MESSAGES.forEach(([threshold, potentialMessages]) => {
-            if (knowTerms.length / set.terms.length < threshold) return;
+            if (knowTerms.length / terms.length < threshold) return;
 
             messages = potentialMessages;
         });
@@ -294,12 +295,9 @@
      * @param fullReset Whether to reset the knowTerms and stillLearningTerms arrays. Defaults to true.
      * @returns never
      */
-    function restart(
-        withTerms: string[] = set.terms.map(({ _id }) => _id),
-        fullReset: boolean = true
-    ) {
+    function restart(withTerms: string[] = terms.map(({ _id }) => _id), fullReset: boolean = true) {
         currentTermIndex = 0;
-        actualTerms = set.terms.filter(({ _id }) => withTerms.includes(_id));
+        actualTerms = terms.filter(({ _id }) => withTerms.includes(_id));
 
         // NOTE: As of now the sort mode is the only mode that has reset functionality.
         // Reset the unsorted terms so that the user can start over. And if its a full reset then reset the know and still learning terms as well.
@@ -319,10 +317,18 @@
         shuffle();
     }
 
+    afterNavigate(() => {
+        mode.set("cards");
+        restart(
+            terms.map(({ _id }) => _id),
+            true
+        );
+    });
+
     onMount(() => {
         return mode.subscribe((mode: string) => {
             if (mode === "sort") {
-                actualTerms = set.terms.filter(({ _id }) => sortingTerms.includes(_id));
+                actualTerms = terms.filter(({ _id }) => sortingTerms.includes(_id));
 
                 // If the current term is not in the unsorted terms, find the next unsorted term
                 const currentTermID: string = unsortedTerms.includes(
@@ -340,12 +346,12 @@
 
                 // If the current index and the initial term are the same, then keep the same index otherwise reset to the first term
                 if (
-                    !set.terms[currentTermIndex] ||
-                    actualTerms[currentTermIndex]?._id !== set.terms[currentTermIndex]?._id
+                    !terms[currentTermIndex] ||
+                    actualTerms[currentTermIndex]?._id !== terms[currentTermIndex]?._id
                 )
                     currentTermIndex = 0;
 
-                actualTerms = set.terms;
+                actualTerms = terms;
             }
 
             flipCard(false, false);
@@ -440,7 +446,7 @@
                             </p>
                             <p>
                                 You know <span class="font-bold text-green-500"
-                                    >{set.terms.length - stillLearningTerms.length}</span
+                                    >{terms.length - stillLearningTerms.length}</span
                                 >
                                 {determineWording("terms")}
                             </p>
@@ -505,7 +511,7 @@
                         <div
                             class="relative h-full overflow-hidden rounded-full bg-green-500 transition-[width] duration-200"
                             style:width="{((knowTerms.length + stillLearningTerms.length) /
-                                set.terms.length) *
+                                terms.length) *
                                 100}%"
                         >
                             <span
