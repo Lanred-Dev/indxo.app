@@ -40,7 +40,7 @@
     } = $props();
 
     const inputClasses: string = twMerge(
-        `w-full ${type === "dropdown" || type === "checkbox" || type === "editableList" ? "" : "input-primary"}`,
+        `w-full field-sizing-content ${type === "dropdown" || type === "checkbox" || type === "editableList" ? "" : "input-primary"}`,
         classes
     );
 </script>
@@ -67,13 +67,6 @@
     {:else if type === "custom"}
         {@render children?.()}
     {:else}
-        <input
-            class={inputClasses}
-            style:filed-sizing="content"
-            name={id}
-            {id}
-            {type}
-            {...componentProps}
-        />
+        <input class={inputClasses} name={id} {id} {type} {...componentProps} />
     {/if}
 </div>
