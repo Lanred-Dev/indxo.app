@@ -40,6 +40,7 @@
                             url={`/folder/${item._id}`}
                             icon={(item as PublicFolder).icon}
                             meta={[
+                                `by ${item.owner.name}`,
                                 `${(item as PublicFolder).sets.length} ${determineWording((item as PublicFolder).sets.length === 1 ? "set" : "sets")}`,
                             ]}
                         />
@@ -49,6 +50,7 @@
                             description={item.description}
                             url={`/set/${item._id}`}
                             meta={[
+                                `by ${item.owner.name}`,
                                 (item as PublicSet).subject,
                                 `${(item as PublicSet).terms.length} ${determineWording((item as PublicSet).terms.length === 1 ? "term" : "terms")}`,
                             ]}
