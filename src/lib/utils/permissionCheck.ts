@@ -1,5 +1,5 @@
-import type { PublicSet, Set } from "$lib/database/documents/Set.ts";
 import type { Folder, PublicFolder } from "$lib/database/documents/Folder.ts";
+import type { PublicSet, Set } from "$lib/database/documents/Set.ts";
 
 /**
  * Checks if the user has permission to view/update the document.

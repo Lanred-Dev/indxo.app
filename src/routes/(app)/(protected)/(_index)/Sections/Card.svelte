@@ -8,7 +8,7 @@
     <li class="h-full w-full">
         <a class="button-primary inline-block h-full w-full space-y-2 px-6! py-4!" href={linkTo}>
             <div class="w-full">
-                <p class="w-full overflow-hidden text-ellipsis text-nowrap text-2xl font-bold">
+                <p class="w-full overflow-hidden text-2xl font-bold text-nowrap text-ellipsis">
                     {name}
                 </p>
                 <p>{owner.name}</p>

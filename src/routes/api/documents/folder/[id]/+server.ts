@@ -1,9 +1,9 @@
-import { error, json } from "@sveltejs/kit";
-import idToDocument from "$lib/utils/idToDocument";
 import type { Folder, PublicFolder } from "$lib/database/documents/Folder";
 import type { PublicSet } from "$lib/database/documents/Set";
-import permissionCheck from "$lib/utils/permissionCheck";
 import type { SimpleUser } from "$lib/database/documents/User";
+import idToDocument from "$lib/utils/idToDocument";
+import permissionCheck from "$lib/utils/permissionCheck";
+import { error, json } from "@sveltejs/kit";
 
 export async function GET({ params, fetch, locals }) {
     const folder: Folder = await idToDocument("folders", params.id);

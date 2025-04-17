@@ -1,6 +1,6 @@
+import { type Set } from "$lib/database/documents/Set";
 import permissionCheck from "$lib/utils/permissionCheck";
 import { error, json } from "@sveltejs/kit";
-import { type Set } from "$lib/database/documents/Set";
 
 export async function GET({ params, locals, fetch }) {
     if (!locals.session) error(401, "Unauthorized.");

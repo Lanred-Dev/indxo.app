@@ -1,8 +1,8 @@
 // This document is used to represent a user in the database.
 
 import type { Document } from "mongodb";
-import type { Set } from "./Set";
 import type { Folder } from "./Folder";
+import type { Set } from "./Set";
 
 type Favorite = [string, "set" | "folder"];
 

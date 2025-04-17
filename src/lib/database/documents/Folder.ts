@@ -1,8 +1,8 @@
 // This document is used to represent a folder in the database.
 
 import type { Document } from "mongodb";
-import type { SimpleUser } from "./User";
 import type { PublicSet } from "./Set";
+import type { SimpleUser } from "./User";
 
 export interface Folder extends Document {
     _id: string;

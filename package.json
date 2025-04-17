@@ -30,6 +30,7 @@
 		"globals": "^15.0.0",
 		"motion": "^12.6.3",
 		"prettier": "^3.3.2",
+		"prettier-plugin-organize-imports": "^4.1.0",
 		"prettier-plugin-svelte": "^3.2.6",
 		"prettier-plugin-tailwindcss": "^0.6.11",
 		"svelte": "^5.0.0",

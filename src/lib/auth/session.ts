@@ -1,11 +1,11 @@
-import { encodeBase32, encodeHexLowerCase } from "@oslojs/encoding";
-import { sha256 } from "@oslojs/crypto/sha2";
-import idToDocument from "$lib/utils/idToDocument";
 import type { Session } from "$lib/database/documents/Session";
 import type { User } from "$lib/database/documents/User";
-import { type Collection } from "mongodb";
 import { loadCollection } from "$lib/database/mongo";
+import idToDocument from "$lib/utils/idToDocument";
+import { sha256 } from "@oslojs/crypto/sha2";
+import { encodeBase32, encodeHexLowerCase } from "@oslojs/encoding";
 import { milliseconds } from "date-fns";
+import { type Collection } from "mongodb";
 import { checkUserForUpdates } from "./user";
 
 const sessions: Collection<Session> = loadCollection("accounts", "sessions");

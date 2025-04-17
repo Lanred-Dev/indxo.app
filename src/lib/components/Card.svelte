@@ -21,7 +21,7 @@
                 <img src={icon} alt="Folder" class="size-8" />
             {/if}
 
-            <p class="w-full overflow-hidden text-ellipsis text-2xl font-bold leading-none">
+            <p class="w-full overflow-hidden text-2xl leading-none font-bold text-ellipsis">
                 {name}
             </p>
         </div>
@@ -35,7 +35,7 @@
         </div>
     </div>
 
-    <p class="text-light line-clamp-1 overflow-hidden text-ellipsis leading-none">
+    <p class="text-light line-clamp-1 overflow-hidden leading-none text-ellipsis">
         {description}
     </p>
 </a>

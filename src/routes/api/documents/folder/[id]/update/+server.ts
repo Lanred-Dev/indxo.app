@@ -1,9 +1,9 @@
-import { error } from "@sveltejs/kit";
-import { loadCollection } from "$lib/database/mongo";
-import { type Collection } from "mongodb";
 import { updatableFields, type Folder } from "$lib/database/documents/Folder";
-import permissionCheck from "$lib/utils/permissionCheck";
 import type { Set } from "$lib/database/documents/Set";
+import { loadCollection } from "$lib/database/mongo";
+import permissionCheck from "$lib/utils/permissionCheck";
+import { error } from "@sveltejs/kit";
+import { type Collection } from "mongodb";
 
 const folders: Collection<Folder> = loadCollection("documents", "folders");
 const sets: Collection<Set> = loadCollection("documents", "sets");

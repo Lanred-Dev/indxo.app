@@ -1,9 +1,9 @@
-import type { Set } from "$lib/database/documents/Set";
 import type { Folder } from "$lib/database/documents/Folder";
-import permissionCheck from "$lib/utils/permissionCheck";
+import type { Set } from "$lib/database/documents/Set";
 import type { User } from "$lib/database/documents/User";
-import { Collection } from "mongodb";
 import { loadCollection } from "$lib/database/mongo";
+import permissionCheck from "$lib/utils/permissionCheck";
+import { Collection } from "mongodb";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 const sets: Collection<Set> = loadCollection("documents", "sets");

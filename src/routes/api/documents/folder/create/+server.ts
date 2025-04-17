@@ -1,10 +1,9 @@
-import { json } from "@sveltejs/kit";
-import { loadCollection } from "$lib/database/mongo";
-import { type Collection } from "mongodb";
-import type { User } from "$lib/database/documents/User";
 import type { Folder } from "$lib/database/documents/Folder";
-import { error } from "@sveltejs/kit";
+import type { User } from "$lib/database/documents/User";
+import { loadCollection } from "$lib/database/mongo";
 import generateRandomID from "$lib/utils/generateRandomID.js";
+import { error, json } from "@sveltejs/kit";
+import { type Collection } from "mongodb";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 const folders: Collection<Folder> = loadCollection("documents", "folders");

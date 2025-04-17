@@ -1,7 +1,7 @@
-import { generateState, generateCodeVerifier } from "arctic";
+import { dev } from "$app/environment";
 import { google } from "$lib/auth/oauth";
 import { redirect } from "@sveltejs/kit";
-import { dev } from "$app/environment";
+import { generateCodeVerifier, generateState } from "arctic";
 
 export async function GET({ cookies }) {
     const state: string = generateState();

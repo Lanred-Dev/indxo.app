@@ -1,9 +1,9 @@
-import { error } from "@sveltejs/kit";
-import { loadCollection } from "$lib/database/mongo";
-import { type Collection } from "mongodb";
 import type { Set } from "$lib/database/documents/Set";
 import type { User } from "$lib/database/documents/User";
+import { loadCollection } from "$lib/database/mongo";
 import permissionCheck from "$lib/utils/permissionCheck";
+import { error } from "@sveltejs/kit";
+import { type Collection } from "mongodb";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 const sets: Collection<Set> = loadCollection("documents", "sets");

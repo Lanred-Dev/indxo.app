@@ -1,6 +1,6 @@
 import { dev } from "$app/environment";
+import { deleteSession, validateToken } from "$lib/auth/session";
 import { error, redirect } from "@sveltejs/kit";
-import { validateToken, deleteSession } from "$lib/auth/session";
 
 export async function GET({ cookies }) {
     const token: string | null = cookies.get("session") ?? null;

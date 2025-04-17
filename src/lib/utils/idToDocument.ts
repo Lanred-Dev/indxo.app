@@ -1,9 +1,9 @@
-import { type Collection } from "mongodb";
-import { loadCollection } from "$lib/database/mongo";
-import type { User } from "$lib/database/documents/User.ts";
-import type { Set } from "$lib/database/documents/Set.ts";
 import type { Folder } from "$lib/database/documents/Folder.ts";
 import type { Session } from "$lib/database/documents/Session";
+import type { Set } from "$lib/database/documents/Set.ts";
+import type { User } from "$lib/database/documents/User.ts";
+import { loadCollection } from "$lib/database/mongo";
+import { type Collection } from "mongodb";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 const sessions: Collection<Session> = loadCollection("accounts", "sessions");

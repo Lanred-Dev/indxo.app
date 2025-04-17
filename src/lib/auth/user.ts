@@ -1,6 +1,6 @@
 import { fields, type User } from "$lib/database/documents/User";
-import type { Collection } from "mongodb";
 import { loadCollection } from "$lib/database/mongo";
+import type { Collection } from "mongodb";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 

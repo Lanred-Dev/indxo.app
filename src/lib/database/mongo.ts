@@ -1,5 +1,5 @@
-import { MongoClient, type Collection, type Db, type Document } from "mongodb";
 import { MONGO_URI } from "$env/static/private";
+import { MongoClient, type Collection, type Db, type Document } from "mongodb";
 
 if (!MONGO_URI) {
     throw new Error("`MONGO_URI` is not defined in the environment variables");

@@ -1,10 +1,10 @@
-import { json } from "@sveltejs/kit";
-import { loadCollection } from "$lib/database/mongo";
-import { type Collection } from "mongodb";
+import type { Folder, SimpleFolder } from "$lib/database/documents/Folder";
 import type { Set, SimpleSet } from "$lib/database/documents/Set";
 import type { SimpleUser, User } from "$lib/database/documents/User";
-import type { Folder, SimpleFolder } from "$lib/database/documents/Folder";
+import { loadCollection } from "$lib/database/mongo";
 import determineDocumentType from "$lib/utils/determineDocumentType";
+import { json } from "@sveltejs/kit";
+import { type Collection } from "mongodb";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 const sets: Collection<Set> = loadCollection("documents", "sets");

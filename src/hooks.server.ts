@@ -1,6 +1,6 @@
-import type { Handle } from "@sveltejs/kit";
 import { dev } from "$app/environment";
 import { validateToken } from "$lib/auth/session";
+import type { Handle } from "@sveltejs/kit";
 
 const BLANK_USER = {
     _id: "",
