@@ -14,14 +14,14 @@
     } = $props();
 </script>
 
-<div class="mb-10 flex w-full items-center gap-4">
+<div class="mb-10 flex w-full flex-wrap items-center gap-5">
     <Dropdown bind:value={filter} items={filters} />
 
-    <div class="input-primary flex-center w-full gap-2">
+    <div class="input-primary flex-center grow gap-2">
         <img class="size-6" src="/icons/general/Search.svg" alt="Search" />
 
         <input
-            class="w-full border-0 bg-transparent p-0 text-lg outline-hidden focus:ring-0"
+            class="field-sizing-content w-full border-0 bg-transparent p-0 text-lg outline-hidden focus:ring-0"
             type="text"
             placeholder="Cant find something?"
             bind:value={query}
