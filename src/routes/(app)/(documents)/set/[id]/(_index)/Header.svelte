@@ -62,9 +62,11 @@
                 />
             </button>
 
-            <button class="button-icon" onclick={deleteSet}>
-                <img src="/icons/general/TrashColored.svg" alt="Delete" />
-            </button>
+            {#if hasPermission === true}
+                <button class="button-icon" onclick={deleteSet}>
+                    <img src="/icons/general/TrashColored.svg" alt="Delete" />
+                </button>
+            {/if}
         </div>
     </div>
 </div>

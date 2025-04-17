@@ -16,7 +16,7 @@ export async function GET({ params, fetch, locals }) {
     const user: User = await idToDocument("users", locals.user._id);
     // Remove the set from the openedSets array if it exists
     const openedSets = user.openedSets.filter((set) => {
-        return set[0].toString() !== params.id;
+        return set[0] !== params.id;
     });
 
     openedSets.push([params.id, Date.now()]);

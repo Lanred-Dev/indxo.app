@@ -54,8 +54,14 @@ export async function POST({ request }) {
     const foldersResults: Folder[] = await folders
         .find({
             isPublic: true,
-            name: searchQuery,
-            description: searchQuery,
+            $or: [
+                {
+                    name: searchQuery,
+                },
+                {
+                    description: searchQuery,
+                },
+            ],
         })
         .limit(maxResults)
         .toArray();

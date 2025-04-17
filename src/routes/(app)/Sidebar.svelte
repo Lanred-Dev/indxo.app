@@ -25,7 +25,7 @@
 {/snippet}
 
 <div
-    class="bg-primary absolute top-0 left-0 z-30 flex h-full min-w-fit flex-col justify-between gap-10 overflow-x-hidden overflow-y-auto py-7 pr-16 pl-4 md:static md:pr-4 md:pl-7 xl:w-[17.5%] 2xl:w-[15%] {isInitialLoad
+    class="bg-primary absolute top-0 left-0 z-30 flex h-full min-w-fit flex-col justify-between gap-10 overflow-x-hidden overflow-y-auto py-7 pr-16 pl-4 shadow-2xl md:static md:pr-4 md:pl-7 xl:w-[17.5%] 2xl:w-[15%] {isInitialLoad
         ? 'pointer-events-none opacity-0'
         : ''}"
     in:fly={{ x: -10 }}

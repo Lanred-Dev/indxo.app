@@ -7,5 +7,5 @@ export async function GET({ params, locals }) {
 
     if (!user) error(404, "User not found.");
 
-    return json(user.favorites.map((favorite) => favorite[0].toString()).includes(params.id));
+    return json(user.favorites.map((favorite) => favorite[0]).includes(params.id));
 }

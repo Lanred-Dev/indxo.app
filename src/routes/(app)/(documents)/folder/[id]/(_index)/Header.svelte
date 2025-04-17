@@ -57,8 +57,10 @@
             />
         </button>
 
-        <button class="button-icon" onclick={deleteFolder}>
-            <img src="/icons/general/TrashColored.svg" alt="Delete" />
-        </button>
+        {#if hasPermission === true}
+            <button class="button-icon" onclick={deleteFolder}>
+                <img src="/icons/general/TrashColored.svg" alt="Delete" />
+            </button>
+        {/if}
     </div>
 </div>

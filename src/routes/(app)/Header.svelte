@@ -93,7 +93,7 @@
             <p>{name}</p>
 
             {#if description || subject}
-                <p class="text-light text-sm">{description || subject}</p>
+                <p class="text-light line-clamp-1 text-sm">{description || subject}</p>
             {/if}
         </div>
     </a>
