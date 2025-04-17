@@ -5,8 +5,11 @@
 
     let { isInitialLoad }: { isInitialLoad: boolean } = $props();
 
-    const sidebarVisible: { visible: boolean } = getContext("sidebarVisible");
+    const headerHeight: { size: number } = getContext("headerHeight");
+    let windowHeight: number = $state.raw(0);
 </script>
+
+<svelte:window bind:innerHeight={windowHeight} />
 
 {#snippet group(links: { url: string; text: string; icon: string }[], name?: string)}
     <div>
@@ -28,18 +31,14 @@
 {/snippet}
 
 <div
-    class="bg-primary fixed top-0 left-0 z-30 flex h-full min-w-fit flex-col gap-5 overflow-x-hidden overflow-y-auto py-5.5 pr-16 pl-4 shadow-2xl md:static md:justify-between md:py-7 md:pr-4 md:shadow-none xl:w-[17.5%] 2xl:w-[15%] {isInitialLoad
+    class="bg-primary fixed left-0 z-30 flex h-full min-w-fit flex-col justify-between gap-10 overflow-x-hidden overflow-y-auto py-5.5 pr-16 pl-4 shadow-2xl md:static md:py-7 md:pr-4 md:pl-7 md:shadow-none xl:w-[17.5%] 2xl:w-[15%] {isInitialLoad
         ? 'pointer-events-none opacity-0'
         : ''}"
+    style:height="{windowHeight - headerHeight.size}px"
+    style:top="{headerHeight.size}px"
     in:fly={{ x: -10 }}
     out:fly={{ x: -10 }}
 >
-    <div class="pl-3 md:hidden">
-        <button onclick={() => (sidebarVisible.visible = !sidebarVisible.visible)}>
-            <img class="size-7" src="/icons/navigation/Hamburger.svg" alt="Sidebar toggle" />
-        </button>
-    </div>
-
     <nav class="min-w-fit space-y-10">
         {@render group([
             { icon: "/icons/navigation/Home.svg", text: "Home", url: "/" },
