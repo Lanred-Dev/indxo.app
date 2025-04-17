@@ -1,10 +1,10 @@
 import { error, json } from "@sveltejs/kit";
 import idToDocument from "$lib/utils/idToDocument";
 import type { User } from "$lib/database/documents/User";
-import type { PublicSet, Set } from "$lib/database/documents/Set";
-import type { Folder, PublicFolder } from "$lib/database/documents/Folder";
+import type { PublicSet } from "$lib/database/documents/Set";
+import type { PublicFolder } from "$lib/database/documents/Folder";
 
-export async function GET({ params }) {
+export async function GET({ params, fetch }) {
     const user: User | null = await idToDocument("users", params.id);
 
     if (!user) error(404, "User not found.");
@@ -12,13 +12,12 @@ export async function GET({ params }) {
     const favorites: (PublicSet | PublicFolder)[] = [];
 
     for (const [id, type] of user.favorites) {
-        const document: Set | Folder = await idToDocument(`${type}s`, id);
+        const response = await fetch(`/api/documents/${type}/${id}`);
 
-        if (!document) {
-            continue;
-        }
+        if (response.status !== 200) continue;
 
-        favorites.push(document as unknown as PublicSet | PublicFolder);
+        const document: PublicSet | PublicFolder = await response.json();
+        favorites.push(document);
     }
 
     return json(favorites);
