@@ -35,7 +35,7 @@ export async function load({ fetch }) {
         // Add the `linkTo` property to each item
         for (const item of items) {
             const documentType = determineDocumentType(item);
-            item.linkTo = `/${documentType}/${item._id.toString()}`;
+            item.linkTo = `/${documentType}/${item._id}`;
         }
 
         // Limit the number of cards to 6

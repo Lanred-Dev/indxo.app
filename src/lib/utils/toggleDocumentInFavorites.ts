@@ -39,7 +39,7 @@ export default async function toggleDocumentInFavorites(
     if (!user) return [false, false];
 
     user.favorites = user.favorites.filter((favorite) => {
-        const matches: boolean = favorite[0].toString() === documentID.toString();
+        const matches: boolean = favorite[0] === documentID;
 
         if (matches) wasInFavorites = true;
 
