@@ -14,11 +14,13 @@
 <script lang="ts">
     import { FormRow, FormInput } from "$lib/components/Form";
     import type { PublicSet } from "$lib/database/documents/Set";
+    import type { SimpleUserWithEmail } from "$lib/database/documents/User";
     import determineWording from "$lib/utils/determineWording";
-    import { onMount } from "svelte";
+    import { getContext, onMount } from "svelte";
 
     let { stage }: { stage: "creation" | "setup" } = $props();
 
+    const user: SimpleUserWithEmail = getContext("user");
     let sets: PublicSet[] = $state.raw([]);
     let addedSets: string[] = $state([]);
     let value: string = $derived(JSON.stringify(addedSets));
@@ -38,8 +40,7 @@
     }
 
     onMount(async () => {
-        const userID: string = await (await fetch("/api/user")).json();
-        sets = await (await fetch(`/api/user/${userID}/sets`)).json();
+        sets = await (await fetch(`/api/user/${user._id}/sets`)).json();
     });
 </script>
 
