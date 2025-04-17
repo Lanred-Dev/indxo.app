@@ -317,6 +317,7 @@
         shuffle();
     }
 
+    // After navigating to a new set, reset the mode to cards and restart the study session
     afterNavigate(() => {
         mode.set("cards");
         restart(
