@@ -115,7 +115,7 @@
 
 <Search bind:query bind:filter {filters} />
 
-<div class="w-full space-y-10">
+<div class="flex w-full flex-col gap-10">
     {#each groups as group}
         <CardGroup {...group} />
     {/each}
