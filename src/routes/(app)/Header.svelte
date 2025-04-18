@@ -104,7 +104,10 @@
 >
     <div class="flex-center">
         {#if session}
-            <button onclick={() => (sidebarVisible.visible = !sidebarVisible.visible)}>
+            <button
+                id="sidebarToggle"
+                onclick={() => (sidebarVisible.visible = !sidebarVisible.visible)}
+            >
                 <img class="size-7" src="/icons/navigation/Hamburger.svg" alt="Sidebar toggle" />
             </button>
         {/if}

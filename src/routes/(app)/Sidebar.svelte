@@ -13,8 +13,14 @@
 
 <svelte:window
     bind:innerHeight={windowHeight}
-    on:mousedown={() => {
-        if (focusedOnSidebar || !sidebarVisible.visible || !isMobile) return;
+    onclick={(event: MouseEvent) => {
+        if (
+            (event.target as HTMLElement)?.id === "sidebarToggle" ||
+            focusedOnSidebar ||
+            !sidebarVisible.visible ||
+            !isMobile
+        )
+            return;
 
         focusedOnSidebar = false;
         sidebarVisible.visible = false;
