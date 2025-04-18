@@ -26,10 +26,10 @@
             </p>
         </div>
 
-        <div class="[&>p]:text-dark flex items-center gap-4 [&>p]:leading-none">
+        <div class="[&>p]:text-dark flex flex-wrap items-center gap-x-4 gap-y-1 [&>p]:leading-none">
             {#each meta as item}
                 {#if item.length > 0}
-                    <p class="leading-tight">{item}</p>
+                    <p class="leading-tight text-nowrap">{item}</p>
                 {/if}
             {/each}
         </div>
