@@ -598,7 +598,7 @@
                     {/if}
                 </div>
 
-                <div class="flex-center y-center absolute right-8 gap-2">
+                <div class="flex-center sm:y-center mt-4 gap-2 sm:right-8 sm:mt-0">
                     {#if actualTerms.length > 1}
                         <button
                             class="button-icon transition-all! hover:rotate-[28deg] active:rotate-180"
