@@ -392,7 +392,7 @@
         // Only register events if the user is not focused on anything or if they are focused on the study cards
         if (
             document.activeElement?.tagName !== "BODY" &&
-            !(event.target as HTMLElement | null)?.closest(".study")
+            !(event.target as HTMLElement | null)?.closest("#study")
         )
             return;
 
@@ -427,7 +427,7 @@
 {#if actualTerms.length === 0}
     <p class="my-20 text-center text-lg font-bold md:my-24">This set has no terms</p>
 {:else}
-    <div class="study w-full">
+    <div class="w-full" id="study">
         {#if $mode === "sort" && unsortedTerms.length === 0}
             <!--End of sorting results-->
             <div class="w-full space-y-6" in:fade={{ duration: 200 }}>
