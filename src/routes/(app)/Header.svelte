@@ -98,6 +98,7 @@
             id="searchBar"
             class="w-full border-0 bg-transparent py-2 pr-3 pl-10 outline-hidden focus:ring-0"
             placeholder="Looking for something?"
+            type="text"
             bind:value={searchQuery}
             oninput={async () => {
                 // 3 is the minimum search query
