@@ -99,7 +99,7 @@
 {/snippet}
 
 <header
-    class="bg-accent-light fixed top-0 left-0 z-30 flex w-full items-center justify-between px-7 py-4 md:px-10"
+    class="bg-accent-light fixed top-0 left-0 z-40 flex w-full items-center justify-between px-7 py-4 md:px-10"
     bind:clientHeight={headerHeight.size}
 >
     <div class="flex-center">
