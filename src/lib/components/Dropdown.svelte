@@ -22,6 +22,7 @@
         value?: string;
     } = $props();
 
+    let dropdown: HTMLElement;
     let { text: currentText, image: currentImage }: ItemProperties = $derived(
         items.find((item, index) => {
             if (typeof value === "string" && value.length > 0) return item.value === value;
@@ -44,7 +45,20 @@
     }
 </script>
 
-<div class={twMerge("dropdown relative min-w-fit text-lg", classes)} data-value={value}>
+<svelte:window
+    onclick={(event: MouseEvent) => {
+        if (!visible || event.target === dropdown || dropdown.contains(event.target as Node))
+            return;
+
+        visible = false;
+    }}
+/>
+
+<div
+    bind:this={dropdown}
+    class={twMerge("dropdown relative min-w-fit text-lg", classes)}
+    data-value={value}
+>
     <button class="input-primary" onclick={() => (visible = !visible)} type="button">
         {#if currentImage}
             <img class="size-7" src={currentImage} alt={currentText} />
