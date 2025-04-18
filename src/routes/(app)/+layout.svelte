@@ -120,7 +120,7 @@
             <main
                 class="relative flex h-full w-full flex-col items-start justify-start overflow-x-hidden px-7 pt-12 pb-6 transition-[filter] duration-500 md:px-16 md:pt-16 md:pr-[22.5%] md:pl-[10%] lg:pt-24 2xl:pr-[28%] {sidebarVisible.visible &&
                 isMobile
-                    ? 'blur-xs'
+                    ? 'pointer-events-none blur-xs'
                     : ''}"
                 bind:this={viewport}
             >
