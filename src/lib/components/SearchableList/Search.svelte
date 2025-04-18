@@ -14,7 +14,7 @@
     } = $props();
 </script>
 
-<div class="mb-10 flex w-full flex-wrap items-center gap-5">
+<div class="mb-10 flex w-full flex-wrap items-center gap-2 gap-x-5">
     <Dropdown bind:value={filter} items={filters} />
 
     <div class="input-primary flex-center grow gap-2">
