@@ -4,46 +4,29 @@
     import type { SimpleUser, SimpleUserWithEmail } from "$lib/database/documents/User";
     import determineDocumentType from "$lib/utils/determineDocumentType";
     import { goto } from "$app/navigation";
-    import { fly } from "svelte/transition";
     import { getContext } from "svelte";
     import type { Session } from "$lib/database/documents/Session";
+    import Popup from "$lib/components/Popup.svelte";
 
     const session: Session | null = getContext("session");
     const user: SimpleUserWithEmail = getContext("user");
     const sidebarVisible: { visible: boolean } = getContext("sidebarVisible");
     const headerHeight: { size: number } = getContext("headerHeight");
-    let showAccountInfo: boolean = $state.raw(false);
-    let focusedOnAccountInfo: boolean = $state.raw(false);
-    let isSearching: boolean = $state.raw(false);
-    let focusedOnSearch: boolean = $state.raw(false);
-    let focusedOnSearchResults: boolean = $state.raw(false);
     let searchQuery: string = $state.raw("");
     let searchResults: (SimpleUser | SimpleSet | SimpleFolder)[] = $state.raw([]);
-
-    /**
-     * Removes focus from the search bar.
-     *
-     * NOTE: This is mainly used after a user clicks on a search result.
-     *
-     * @returns never
-     */
-    function removeFocusFromSearch() {
-        isSearching = false;
-        focusedOnSearch = false;
-        focusedOnSearchResults = false;
-    }
 </script>
 
 <svelte:window
     onkeydown={(event: KeyboardEvent) => {
-        if (event.key !== "Enter" || searchQuery.length === 0 || !focusedOnSearch) return;
+        if (
+            event.key !== "Enter" ||
+            searchQuery.length === 0 ||
+            !(event.target as HTMLElement).closest("#searchBar")
+        )
+            return;
 
+        (event.target as HTMLElement).blur();
         goto(`/search?query=${searchQuery}`);
-    }}
-    onfocusout={() => {
-        if (focusedOnAccountInfo) return;
-
-        showAccountInfo = false;
     }}
 />
 
@@ -65,7 +48,6 @@
     <a
         class="flex items-center gap-1"
         href="/{determineDocumentType({ icon, image, subject })}/{_id}"
-        onclick={removeFocusFromSearch}
     >
         {#if icon || image}
             <img class="size-6 {image ? 'rounded-full' : ''}" src={icon || image} alt={name} />
@@ -82,11 +64,7 @@
 {/snippet}
 
 {#snippet searchCategory(id: string, name: string, icon: string)}
-    <a
-        class="flex items-center gap-1"
-        href="/search?query={searchQuery}&returnOnly={id}"
-        onclick={removeFocusFromSearch}
-    >
+    <a class="flex items-center gap-1" href="/search?query={searchQuery}&returnOnly={id}">
         <img class="size-6" src={icon} alt={name} />
         <p class="flex-center text-nowrap">
             <span>Search "</span>
@@ -113,12 +91,12 @@
         {/if}
     </div>
 
-    <div class="input-primary flex-center x-center y-center w-[40vw] gap-2">
-        <img class="size-5" src="/icons/general/Search.svg" alt="Search" />
+    <div class="input-primary x-center y-center w-[40vw] p-0!">
+        <img class="y-center left-3 size-5" src="/icons/general/Search.svg" alt="Search" />
 
         <input
-            class="w-full border-0 bg-transparent p-0 outline-hidden focus:ring-0"
-            type="text"
+            id="searchBar"
+            class="w-full border-0 bg-transparent py-2 pr-3 pl-10 outline-hidden focus:ring-0"
             placeholder="Looking for something?"
             bind:value={searchQuery}
             oninput={async () => {
@@ -134,72 +112,29 @@
                     })
                 ).json();
             }}
-            onfocusin={() => {
-                isSearching = true;
-                focusedOnSearch = true;
-            }}
-            onfocusout={() => {
-                focusedOnSearch = false;
-
-                if (!focusedOnSearchResults) isSearching = false;
-            }}
         />
     </div>
 
+    <Popup buttonID="searchBar" classes="w-[40vw] space-y-3" alignment="center">
+        {#each searchResults as result}
+            {@render searchResult(result as any)}
+        {/each}
+
+        {@render searchCategory("user", "Users", "/icons/navigation/Account.svg")}
+        {@render searchCategory("set", "Sets", "/icons/navigation/Document.svg")}
+        {@render searchCategory("folder", "Folders", "/icons/navigation/Folder.svg")}
+    </Popup>
+
     {#if session}
-        <button
-            onclick={() => (showAccountInfo = !showAccountInfo)}
-            onmouseenter={() => (focusedOnAccountInfo = true)}
-            onmouseleave={() => (focusedOnAccountInfo = false)}
-        >
+        <button id="accountInfoToggle">
             <img
                 class="border-primary size-10 rounded-full border"
                 src={user.image}
                 alt={user.name}
             />
         </button>
-    {:else}
-        <a class="button-primary" href="/login">
-            <img class="size-5" src="/icons/navigation/Account.svg" alt="Login" />
-            <span>Log in</span>
-        </a>
-    {/if}
 
-    {#if isSearching && searchQuery.length > 0}
-        <div
-            class="x-center container-popup top-[90%] w-[40vw]"
-            onmouseenter={() => {
-                isSearching = true;
-                focusedOnSearchResults = true;
-            }}
-            onmouseleave={() => {
-                focusedOnSearchResults = false;
-
-                if (!focusedOnSearch) isSearching = false;
-            }}
-            role="region"
-            transition:fly={{ y: 10, duration: 100 }}
-        >
-            <div class="space-y-3">
-                {#each searchResults as result}
-                    {@render searchResult(result as any)}
-                {/each}
-
-                {@render searchCategory("user", "Users", "/icons/navigation/Account.svg")}
-                {@render searchCategory("set", "Sets", "/icons/navigation/Document.svg")}
-                {@render searchCategory("folder", "Folders", "/icons/navigation/Folder.svg")}
-            </div>
-        </div>
-    {/if}
-
-    {#if showAccountInfo && session}
-        <div
-            class="container-popup top-[90%] right-10 space-y-1 px-1! pb-1!"
-            onmouseenter={() => (focusedOnAccountInfo = true)}
-            onmouseleave={() => (focusedOnAccountInfo = false)}
-            role="region"
-            transition:fly={{ y: 10, duration: 100 }}
-        >
+        <Popup buttonID="accountInfoToggle" classes="space-y-1 px-1! pb-1!" alignment="right">
             <div class="flex-center w-full gap-2 px-3 pb-1">
                 <img
                     class="border-primary size-10 rounded-full border"
@@ -226,6 +161,11 @@
                 <img src="/icons/navigation/LogOut.svg" alt="Log out" />
                 <span>Log out</span>
             </a>
-        </div>
+        </Popup>
+    {:else}
+        <a class="button-primary" href="/login">
+            <img class="size-5" src="/icons/navigation/Account.svg" alt="Login" />
+            <span>Log in</span>
+        </a>
     {/if}
 </header>
