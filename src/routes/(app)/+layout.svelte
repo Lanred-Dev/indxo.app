@@ -62,7 +62,7 @@
         style:padding-top="{headerHeight.size}px"
     >
         {#if data.session && sidebarVisible.visible}
-            <Sidebar {isInitialLoad} />
+            <Sidebar {isInitialLoad} {isMobile} />
         {/if}
 
         <div class="relative h-full w-full">

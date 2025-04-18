@@ -3,13 +3,23 @@
     import { getContext } from "svelte";
     import { fly } from "svelte/transition";
 
-    let { isInitialLoad }: { isInitialLoad: boolean } = $props();
+    let { isInitialLoad, isMobile }: { isInitialLoad: boolean; isMobile: boolean } = $props();
 
     const headerHeight: { size: number } = getContext("headerHeight");
+    const sidebarVisible: { visible: boolean } = getContext("sidebarVisible");
     let windowHeight: number = $state.raw(0);
+    let focusedOnSidebar: boolean = $state.raw(false);
 </script>
 
-<svelte:window bind:innerHeight={windowHeight} />
+<svelte:window
+    bind:innerHeight={windowHeight}
+    on:mousedown={() => {
+        if (focusedOnSidebar || !sidebarVisible.visible || !isMobile) return;
+
+        focusedOnSidebar = false;
+        sidebarVisible.visible = false;
+    }}
+/>
 
 {#snippet group(links: { url: string; text: string; icon: string }[], name?: string)}
     <div>
@@ -38,6 +48,9 @@
     style:top="{headerHeight.size}px"
     in:fly={{ x: -10 }}
     out:fly={{ x: -10 }}
+    onmouseenter={() => (focusedOnSidebar = true)}
+    onmouseleave={() => (focusedOnSidebar = false)}
+    role="navigation"
 >
     <nav class="min-w-fit space-y-10">
         {@render group([
