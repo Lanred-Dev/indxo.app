@@ -18,8 +18,8 @@
         classes?: string;
         children: Snippet<[]>;
     } = $props();
-    let button: HTMLButtonElement | HTMLInputElement | null = $state(null);
-    let popup: HTMLElement | null = $state(null);
+    let button: HTMLButtonElement | HTMLInputElement | null = $state.raw(null);
+    let popup: HTMLElement | null = $state.raw(null);
     let windowWidth: number = $state.raw(0);
     let position: { x: number; y: number } = $derived.by(() => {
         const position: { x: number; y: number } = {
@@ -70,14 +70,15 @@
             button.addEventListener("click", () => (visible = !visible));
         } else if (button?.tagName === "INPUT") {
             button.addEventListener("focusin", () => (visible = true));
-            button.addEventListener("focusout", () => {
-                if (popup?.contains(document.activeElement)) return;
-
-                visible = false;
-            });
         }
 
-        return button.removeEventListener("click", () => (visible = !visible));
+        return () => {
+            if (button?.tagName === "BUTTON") {
+                button.removeEventListener("click", () => (visible = !visible));
+            } else if (button?.tagName === "INPUT") {
+                button.removeEventListener("focusin", () => (visible = true));
+            }
+        };
     });
 </script>
 
