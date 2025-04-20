@@ -31,48 +31,36 @@
 />
 
 {#snippet searchResult({
-    _id,
     name,
-    icon,
     image,
-    description,
-    subject,
+    meta,
+    link,
+    nameIsHTML = false,
 }: {
-    _id: string;
     name: string;
-    icon?: string;
     image?: string;
-    description?: string;
-    subject?: string;
+    meta?: string;
+    link?: string;
+    nameIsHTML?: boolean;
 })}
-    <a
-        class="flex items-center gap-1"
-        href="/{determineDocumentType({ icon, image, subject })}/{_id}"
-    >
-        {#if icon || image}
-            <img class="size-6 {image ? 'rounded-full' : ''}" src={icon || image} alt={name} />
+    <a class="flex items-center gap-1" href={link}>
+        {#if image}
+            <img class="size-6 {image ? 'rounded-full' : ''}" src={image} alt={name} />
         {/if}
 
         <div class="[&>p]:leading-tight">
-            <p>{name}</p>
+            <p class="flex items-center justify-start text-nowrap">
+                {#if nameIsHTML}
+                    {@html name}
+                {:else}
+                    {name}
+                {/if}
+            </p>
 
-            {#if description || subject}
-                <p class="text-light line-clamp-1 text-sm">{description || subject}</p>
+            {#if meta}
+                <p class="text-light line-clamp-1 text-sm">{meta}</p>
             {/if}
         </div>
-    </a>
-{/snippet}
-
-{#snippet searchCategory(id: string, name: string, icon: string)}
-    <a class="flex items-center gap-1" href="/search?query={searchQuery}&returnOnly={id}">
-        <img class="size-6" src={icon} alt={name} />
-        <p class="flex-center text-nowrap">
-            <span>Search "</span>
-            <span class="block w-full max-w-20 overflow-hidden text-ellipsis"
-                >{searchQuery.trim()}</span
-            >
-            <span>" in {name}</span>
-        </p>
     </a>
 {/snippet}
 
@@ -98,7 +86,7 @@
             id="searchBar"
             class="w-full border-0 bg-transparent py-2 pr-3 pl-10 outline-hidden focus:ring-0"
             placeholder="Looking for something?"
-            type="text"
+            autocomplete="off"
             bind:value={searchQuery}
             oninput={async () => {
                 // 3 is the minimum search query
@@ -117,13 +105,45 @@
     </div>
 
     <Popup buttonID="searchBar" classes="w-[40vw] space-y-3" alignment="center">
-        {#each searchResults as result}
-            {@render searchResult(result as any)}
+        {#each searchResults as { name, ...properties }}
+            {@render searchResult({
+                name: name.toString(),
+                link: `/${determineDocumentType(properties)}/${properties._id}`,
+                image:
+                    "image" in properties
+                        ? properties.image
+                        : "icon" in properties
+                          ? properties.icon
+                          : undefined,
+                meta:
+                    "description" in properties
+                        ? (properties.description as string)
+                        : "subject" in properties
+                          ? (properties.subject as string)
+                          : undefined,
+            })}
         {/each}
 
-        {@render searchCategory("user", "Users", "/icons/navigation/Account.svg")}
-        {@render searchCategory("set", "Sets", "/icons/navigation/Document.svg")}
-        {@render searchCategory("folder", "Folders", "/icons/navigation/Folder.svg")}
+        {@render searchResult({
+            name: `Search "<span class="block w-full max-w-20 overflow-hidden text-ellipsis">${searchQuery.trim()}</span>" in Users`,
+            image: "/icons/navigation/Account.svg",
+            link: `/search?query=${searchQuery}&returnOnly=user`,
+            nameIsHTML: true,
+        })}
+
+        {@render searchResult({
+            name: `Search "<span class="block w-full max-w-20 overflow-hidden text-ellipsis">${searchQuery.trim()}</span>" in Sets`,
+            image: "/icons/navigation/Document.svg",
+            link: `/search?query=${searchQuery}&returnOnly=set`,
+            nameIsHTML: true,
+        })}
+
+        {@render searchResult({
+            name: `Search "<span class="block w-full max-w-20 overflow-hidden text-ellipsis">${searchQuery.trim()}</span>" in Folders`,
+            image: "/icons/navigation/Folder.svg",
+            link: `/search?query=${searchQuery}&returnOnly=folder`,
+            nameIsHTML: true,
+        })}
     </Popup>
 
     {#if session}
