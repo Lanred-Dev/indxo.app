@@ -107,7 +107,7 @@
     <Popup buttonID="searchBar" classes="w-[40vw] space-y-3" alignment="center">
         {#each searchResults as { name, ...properties }}
             {@render searchResult({
-                name: name.toString(),
+                name,
                 link: `/${determineDocumentType(properties)}/${properties._id}`,
                 image:
                     "image" in properties
