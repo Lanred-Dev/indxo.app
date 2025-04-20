@@ -21,7 +21,7 @@
     } = $props();
 
     let id: string = `dropdown-${Date.now().toString()}-${items.length}`;
-    let visible: boolean = $state(false);
+    let visible: boolean = $state.raw(false);
     let { text: currentText, image: currentImage }: ItemProperties = $derived(
         items.find((item, index) => {
             if (typeof value === "string" && value.length > 0) return item.value === value;
