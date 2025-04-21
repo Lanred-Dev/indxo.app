@@ -1,6 +1,9 @@
 <script lang="ts">
     import Card from "$lib/components/Card.svelte";
+    import type { PublicFolder } from "$lib/database/documents/Folder";
+    import type { PublicSet } from "$lib/database/documents/Set";
     import determineDocumentType from "$lib/utils/determineDocumentType";
+    import determineWording from "$lib/utils/determineWording";
     import type { SectionProperties } from "../+page";
 
     let { title, items, url }: SectionProperties = $props();
@@ -20,7 +23,6 @@
             {#if determineDocumentType(item) === "folder"}
                 <Card
                     name={item.name}
-                    description={item.description}
                     url={`/folder/${item._id}`}
                     icon={(item as PublicFolder).icon}
                     meta={[
@@ -31,7 +33,6 @@
             {:else if determineDocumentType(item) === "set"}
                 <Card
                     name={item.name}
-                    description={item.description}
                     url={`/set/${item._id}`}
                     meta={[
                         `by ${item.owner.name.split(" ")[0]}`,
