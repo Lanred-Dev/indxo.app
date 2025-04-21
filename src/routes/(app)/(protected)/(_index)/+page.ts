@@ -1,36 +1,31 @@
-import type { PublicFolder } from "$lib/database/documents/Folder.js";
-import type { PublicSet } from "$lib/database/documents/Set.js";
-import determineDocumentType from "$lib/utils/determineDocumentType.js";
-
-type ItemProperties = PublicSet | PublicFolder;
+import type { PublicFolder } from "$lib/database/documents/Folder";
+import type { PublicSet } from "$lib/database/documents/Set";
+import type { HomeSection } from "$lib/database/documents/User";
 
 type SectionTypes = "card";
 
 export type SectionProperties = {
     title: string;
     type: SectionTypes;
-    items: ItemProperties[];
+    items: (PublicSet | PublicFolder)[];
     url?: string;
 };
 
 export async function load({ fetch }) {
-    const preferences: string[] = await (await fetch("/api/home/preferences")).json();
+    const userSections: HomeSection[] = await (await fetch("/api/home/sections")).json();
     const sections: SectionProperties[] = [];
 
-    for (const section of preferences) {
+    for (const [endpoint, title] of userSections) {
         const {
             type,
             url,
             items,
-        }: { type: SectionTypes; url?: string; items: ItemProperties[] } = await (
-            await fetch(`/api/home/feed/${section.toLowerCase().replaceAll(" ", "-")}`)
+        }: { type: SectionTypes; url?: string; items: (PublicSet | PublicFolder)[] } = await (
+            await fetch(`/api/home/feed/${endpoint}`)
         ).json();
 
-        // Limit the number of cards to 6
-        items.splice(4);
-
         sections.push({
-            title: section,
+            title,
             type,
             url,
             items,
