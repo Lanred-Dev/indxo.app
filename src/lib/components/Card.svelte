@@ -7,14 +7,14 @@
         meta,
     }: {
         name: string;
-        description: string;
+        description?: string;
         icon?: string;
         url: string;
         meta: string[];
     } = $props();
 </script>
 
-<a class="button-primary block! w-full flex-col items-start! space-y-3 px-6! py-5!" href={url}>
+<a class="button-primary block! w-full flex-col items-start! px-6! py-5!" href={url}>
     <div class="w-full space-y-1">
         <div class="flex items-center gap-1">
             {#if icon}
@@ -35,7 +35,9 @@
         </div>
     </div>
 
-    <p class="text-light line-clamp-1 overflow-hidden leading-none text-ellipsis">
-        {description}
-    </p>
+    {#if description && description.length > 0}
+        <p class="text-light mt-3 line-clamp-1 overflow-hidden leading-none text-ellipsis">
+            {description}
+        </p>
+    {/if}
 </a>
