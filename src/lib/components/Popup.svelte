@@ -104,7 +104,7 @@
         style:left="{position.x}px"
         style:top="{position.y}px"
         in:fly={{ y: 10, duration: 100 }}
-        out:fade={{ duration: 50 }}
+        out:fade={{ duration: 100 }}
         bind:this={popup}
     >
         {@render children?.()}
