@@ -261,17 +261,8 @@
     }
 
     /* Containers */
-    div.container-primary,
-    div.container-popup {
-        @apply rounded-primary border-primary overflow-hidden border p-4;
-    }
-
     div.container-primary {
-        @apply bg-primary-200;
-    }
-
-    div.container-popup {
-        @apply bg-primary absolute z-50 shadow-lg;
+        @apply bg-primary-200 rounded-primary border-primary overflow-hidden border p-4;
     }
 
     div.list-primary p.list-title {
