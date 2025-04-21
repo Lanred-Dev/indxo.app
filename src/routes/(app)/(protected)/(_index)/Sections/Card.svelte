@@ -1,36 +1,45 @@
 <script lang="ts">
-    import { type itemProps, type sectionProps } from "../+page";
+    import Card from "$lib/components/Card.svelte";
+    import determineDocumentType from "$lib/utils/determineDocumentType";
+    import type { SectionProperties } from "../+page";
 
-    let { title, items, linkTo }: sectionProps = $props();
+    let { title, items, url }: SectionProperties = $props();
 </script>
 
-{#snippet card({ linkTo, name, description, owner }: itemProps)}
-    <li class="h-full w-full">
-        <a class="button-primary inline-block h-full w-full space-y-2 px-6! py-4!" href={linkTo}>
-            <div class="w-full">
-                <p class="w-full overflow-hidden text-2xl font-bold text-nowrap text-ellipsis">
-                    {name}
-                </p>
-                <p>{owner.name}</p>
-            </div>
-
-            <p class="text-light line-clamp-1 overflow-hidden text-ellipsis">{description}</p>
-        </a>
-    </li>
-{/snippet}
-
 <div class="list-primary">
-    <div class="{linkTo ? 'flex items-center justify-between' : ''} w-full px-3">
+    <div class="{url ? 'flex items-center justify-between' : ''} w-full px-3">
         <p class="list-title">{title}</p>
 
-        {#if linkTo}
-            <a class="text-light" href={linkTo}>View all</a>
+        {#if url}
+            <a class="text-light" href={url}>View all</a>
         {/if}
     </div>
 
     <ul class="list grid grid-cols-2 grid-rows-2">
         {#each items as item}
-            {@render card(item)}
+            {#if determineDocumentType(item) === "folder"}
+                <Card
+                    name={item.name}
+                    description={item.description}
+                    url={`/folder/${item._id}`}
+                    icon={(item as PublicFolder).icon}
+                    meta={[
+                        `by ${item.owner.name.split(" ")[0]}`,
+                        `${(item as PublicFolder).sets.length} ${determineWording((item as PublicFolder).sets.length === 1 ? "set" : "sets")}`,
+                    ]}
+                />
+            {:else if determineDocumentType(item) === "set"}
+                <Card
+                    name={item.name}
+                    description={item.description}
+                    url={`/set/${item._id}`}
+                    meta={[
+                        `by ${item.owner.name.split(" ")[0]}`,
+                        (item as PublicSet).subject,
+                        `${(item as PublicSet).terms.length} ${determineWording((item as PublicSet).terms.length === 1 ? "term" : "terms")}`,
+                    ]}
+                />
+            {/if}
         {/each}
     </ul>
 </div>

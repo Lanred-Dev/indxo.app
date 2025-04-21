@@ -1,14 +1,8 @@
-import type { SimpleUser } from "$lib/database/documents/User.js";
+import type { PublicFolder } from "$lib/database/documents/Folder.js";
+import type { PublicSet } from "$lib/database/documents/Set.js";
 import determineDocumentType from "$lib/utils/determineDocumentType.js";
 
-export type ItemProperties = {
-    name: string;
-    description: string;
-    isPublic: boolean;
-    linkTo: string;
-    owner: SimpleUser;
-    [key: string]: any;
-};
+type ItemProperties = PublicSet | PublicFolder;
 
 type SectionTypes = "card";
 
@@ -16,7 +10,7 @@ export type SectionProperties = {
     title: string;
     type: SectionTypes;
     items: ItemProperties[];
-    linkTo?: string;
+    url?: string;
 };
 
 export async function load({ fetch }) {
@@ -26,17 +20,11 @@ export async function load({ fetch }) {
     for (const section of preferences) {
         const {
             type,
-            linkTo,
+            url,
             items,
-        }: { type: SectionTypes; linkTo?: string; items: ItemProperties[] } = await (
+        }: { type: SectionTypes; url?: string; items: ItemProperties[] } = await (
             await fetch(`/api/home/feed/${section.toLowerCase().replaceAll(" ", "-")}`)
         ).json();
-
-        // Add the `linkTo` property to each item
-        for (const item of items) {
-            const documentType = determineDocumentType(item);
-            item.linkTo = `/${documentType}/${item._id}`;
-        }
 
         // Limit the number of cards to 6
         items.splice(4);
@@ -44,7 +32,7 @@ export async function load({ fetch }) {
         sections.push({
             title: section,
             type,
-            linkTo,
+            url,
             items,
         });
     }
