@@ -8,6 +8,8 @@ type Favorite = [string, "set" | "folder"];
 
 export type SortingTerm = [string, -1 | 1, number];
 
+export type HomeSection = [string, string];
+
 export interface User extends Document {
     _id: string;
     google: string;
@@ -20,7 +22,7 @@ export interface User extends Document {
     sets: string[];
     folders: string[];
     favorites: Favorite[];
-    homeSectionPreferences: string[];
+    homeSections: HomeSection[];
     openedSets: [string, number][];
     sorting: {
         [id: string]: SortingTerm[];
@@ -58,7 +60,7 @@ export const fields: [string, "string" | "boolean" | "array" | "dictionary"][] =
     ["sets", "array"],
     ["folders", "array"],
     ["favorites", "array"],
-    ["homeSectionPreferences", "array"],
+    ["homeSections", "array"],
     ["openedSets", "array"],
     ["sorting", "dictionary"],
 ];
