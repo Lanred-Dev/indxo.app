@@ -6,5 +6,5 @@ export async function GET({ locals }) {
     if (!locals.session) error(401, "Unauthorized.");
 
     const user: User = await idToDocument("users", locals.user._id);
-    return json(user.homeSectionPreferences);
+    return json(user.homeSections);
 }
