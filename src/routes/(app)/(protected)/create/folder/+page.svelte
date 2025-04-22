@@ -73,7 +73,7 @@
 
 <Form
     classes="w-full"
-    action={stage === "creation"
+    endpoint={stage === "creation"
         ? `/api/documents/folder/create`
         : `/api/documents/folder/${documentID}/update`}
     {afterSubmit}
