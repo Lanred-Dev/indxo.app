@@ -60,7 +60,7 @@ export async function GET({ cookies, url }) {
             sets: [],
             folders: [],
             favorites: [],
-            homeSectionPreferences: [],
+            homeSections: [],
             openedSets: [],
             sorting: {},
         };
