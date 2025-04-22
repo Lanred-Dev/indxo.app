@@ -8,13 +8,13 @@
     let {
         visible = $bindable(false),
         alignment = "left",
-        buttonID,
+        id,
         classes,
         children,
     }: {
         visible?: boolean;
         alignment?: "left" | "right" | "center";
-        buttonID: string;
+        id: string;
         classes?: string;
         children: Snippet<[]>;
     } = $props();
@@ -64,7 +64,7 @@
     });
 
     onMount(() => {
-        button = document.getElementById(buttonID) as HTMLButtonElement | HTMLInputElement;
+        button = document.getElementById(id) as HTMLButtonElement | HTMLInputElement;
 
         if (button?.tagName === "BUTTON") {
             button.addEventListener("click", () => (visible = !visible));
