@@ -69,7 +69,7 @@
                 label="Visiblity"
                 type="checkbox"
                 componentProps={{
-                    value: true,
+                    value: data.isPublic,
                     text: ["Public", "Private"],
                     icons: ["/icons/general/Web.svg", "/icons/general/Lock.svg"],
                 }}
@@ -80,6 +80,7 @@
                 label="Icon"
                 type="dropdown"
                 componentProps={{
+                    value: data.icon,
                     items: [
                         {
                             value: "/icons/folder/Folder.svg",
@@ -104,7 +105,7 @@
                 id="name"
                 label="Name"
                 type="text"
-                componentProps={{ placeholder: "AP Lit Exam" }}
+                componentProps={{ value: data.name, placeholder: "AP Lit Exam" }}
             />
         </FormRow>
 
@@ -113,7 +114,10 @@
             label="What is this folder for?"
             type="textarea"
             classes="h-40"
-            componentProps={{ placeholder: "This folder contains all my study sets for..." }}
+            componentProps={{
+                value: data.description,
+                placeholder: "This folder contains all my study sets for...",
+            }}
         />
     </div>
 </Form>
