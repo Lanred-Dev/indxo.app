@@ -1,8 +1,9 @@
 import { dev } from "$app/environment";
 import { validateToken } from "$lib/auth/session";
+import type { SimpleUserWithEmail } from "$lib/database/documents/User";
 import type { Handle } from "@sveltejs/kit";
 
-const BLANK_USER = {
+const BLANK_USER: SimpleUserWithEmail = {
     _id: "",
     name: "",
     image: "",
