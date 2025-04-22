@@ -104,7 +104,7 @@
         />
     </div>
 
-    <Popup buttonID="searchBar" classes="w-[40vw] space-y-3" alignment="center">
+    <Popup id="searchBar" classes="w-[40vw] space-y-3" alignment="center">
         {#each searchResults as { name, ...properties }}
             {@render searchResult({
                 name,
@@ -155,7 +155,7 @@
             />
         </button>
 
-        <Popup buttonID="accountInfoToggle" classes="space-y-1 px-1! pb-1!" alignment="right">
+        <Popup id="accountInfoToggle" classes="space-y-1 px-1! pb-1!" alignment="right">
             <div class="flex-center w-full gap-2 px-3 pb-1">
                 <img
                     class="border-primary size-10 rounded-full border"
