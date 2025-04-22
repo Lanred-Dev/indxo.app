@@ -4,13 +4,13 @@
     import { type InputType } from "./FormInput.svelte";
 
     let {
-        action,
+        endpoint,
         method = "POST",
         afterSubmit = () => {},
         classes,
         children,
     }: {
-        action: string;
+        endpoint: string;
         method?: "POST" | "GET" | "PUT";
         afterSubmit?: (status: number, data?: any) => void;
         classes?: string;
@@ -20,7 +20,7 @@
     let submitting: boolean = $state.raw(false);
 
     /**
-     * Handles the form submission. Gathers the data from all the form components. Prevents the default form submission and sends a fetch request to the action URL.
+     * Handles the form submission. Gathers the data from all the form components. Prevents the default form submission and sends a fetch request to the endpoint.
      *
      * @param event
      * @returns never
@@ -110,7 +110,7 @@
             data[id] = value;
         });
 
-        const response = await fetch(action, {
+        const response = await fetch(endpoint, {
             method,
             body: JSON.stringify(data),
         });
@@ -128,7 +128,7 @@
 
 <form
     class={twMerge("space-y-5", classes)}
-    {action}
+    action={endpoint}
     onsubmit={onSubmit}
     autocomplete="off"
     data-submitting={submitting}
