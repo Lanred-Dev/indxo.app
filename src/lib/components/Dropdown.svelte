@@ -19,8 +19,8 @@
         items?: ItemProperties[];
         value?: string;
     } = $props();
+    const id: string = $props.id();
 
-    let id: string = `dropdown-${Date.now().toString()}-${items.length}`;
     let visible: boolean = $state.raw(false);
     let { text: currentText, image: currentImage }: ItemProperties = $derived(
         items.find((item, index) => {
@@ -61,7 +61,7 @@
         />
     </button>
 
-    <Popup bind:visible buttonID={id} classes="w-56 p-1!" alignment="left">
+    <Popup bind:visible {id} classes="w-56 p-1!" alignment="left">
         <ul>
             {#each items as { isLink, value, text, image }}
                 <li class="w-full">
