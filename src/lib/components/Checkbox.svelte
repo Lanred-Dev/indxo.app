@@ -15,7 +15,13 @@
 </script>
 
 <div class={twMerge("checkbox relative", classes)} data-value={checkboxValue}>
-    <button class="input-primary" onclick={() => (checkboxValue = !checkboxValue)} type="button">
+    <button
+        class="input-primary"
+        onclick={() => (checkboxValue = !checkboxValue)}
+        type="button"
+        role="checkbox"
+        aria-checked={checkboxValue}
+    >
         <img
             class="size-7"
             src={checkboxValue ? icons[0] : icons[1]}
