@@ -22,7 +22,7 @@
     /**
      * Handles the form submission. Gathers the data from all the form components. Prevents the default form submission and sends a fetch request to the endpoint.
      *
-     * @param event
+     * @param event The form submission event.
      * @returns never
      */
     async function onSubmit(event: Event) {
