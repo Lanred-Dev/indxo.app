@@ -38,8 +38,8 @@
         // This is used for custom inputs
         children?: Snippet<[]>;
     } = $props();
-    let labelID: string = `${id}-label`;
 
+    const labelID: string = `${id}-label`;
     const inputClasses: string = twMerge(
         `w-full field-sizing-content ${type === "dropdown" || type === "checkbox" || type === "editableList" ? "" : "input-primary"}`,
         classes
