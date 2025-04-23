@@ -59,7 +59,9 @@
         >
     {/if}
 
-    {#if type === "dropdown"}
+    {#if type === "custom"}
+        {@render children?.()}
+    {:else if type === "dropdown"}
         <Dropdown classes={inputClasses} {labelID} {...componentProps} />
     {:else if type === "editableList"}
         <EditableList classes={inputClasses} {labelID} {...componentProps} />
@@ -72,8 +74,6 @@
             aria-labelledby={labelID}
             {...componentProps}
         ></textarea>
-    {:else if type === "custom"}
-        {@render children?.()}
     {:else}
         <input class={inputClasses} {id} {type} {...componentProps} aria-labelledby={labelID} />
     {/if}
