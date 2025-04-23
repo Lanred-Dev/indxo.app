@@ -33,7 +33,14 @@
 </script>
 
 <div class={twMerge("dropdown relative min-w-fit text-lg", classes)} data-value={dropdownValue}>
-    <button class="input-primary" type="button" id={uid}>
+    <button
+        class="input-primary"
+        type="button"
+        id={uid}
+        aria-controls="{uid}-dropdown"
+        aria-haspopup="listbox"
+        aria-expanded={visible}
+    >
         {#if currentImage}
             <img class="size-7" src={currentImage} alt={currentText} />
         {/if}
@@ -50,19 +57,20 @@
     </button>
 
     <Popup bind:visible id={uid} classes="w-56 p-1!" alignment="left">
-        <ul>
+        <ul role="listbox" id="{uid}-dropdown">
             {#each items as { isLink, value, text, image }}
                 <li class="w-full">
                     <button
                         class="button-navigation py-1!"
-                        role="menuitem"
-                        onclick={() => () => {
+                        role="option"
+                        type="button"
+                        aria-selected={dropdownValue === value}
+                        onclick={() => {
                             if (isLink) return goto(value);
 
                             dropdownValue = value;
                             visible = false;
                         }}
-                        type="button"
                     >
                         {#if image}
                             <img src={image} alt={text} />
