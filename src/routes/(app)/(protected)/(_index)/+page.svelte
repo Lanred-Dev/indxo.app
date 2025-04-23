@@ -1,5 +1,4 @@
 <script lang="ts">
-    import PageMessage from "$lib/components/PageMessage.svelte";
     import CardSection from "./Sections/Card.svelte";
 
     let { data } = $props();
@@ -10,11 +9,12 @@
 </svelte:head>
 
 {#if data.sections.length === 0}
-    <PageMessage
-        title="Make this your home!"
-        text="You currently dont have any sections visible on your home page."
-        button={["Edit preferences", "/settings?edit=homeSectionPreferences"]}
-    />
+    <div class="page-message">
+        <p>Make this your home!</p>
+        <p>You currently dont have any sections visible on your home page.</p>
+    </div>
+
+    <a class="button-primary" href="/settings?edit=homeSections">Edit preferences</a>
 {:else}
     <div class="w-full space-y-20">
         {#each data.sections as section}

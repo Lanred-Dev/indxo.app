@@ -1,5 +1,4 @@
 <script lang="ts">
-    import PageMessage from "$lib/components/PageMessage.svelte";
     import SearchableList from "$lib/components/SearchableList";
     import type { PublicFolder } from "$lib/database/documents/Folder";
     import determineWording from "$lib/utils/determineWording";
@@ -21,13 +20,15 @@
 </svelte:head>
 
 {#if data.canView === false}
-    <PageMessage
-        title="Sorry, couldn't find that {determineWording('folder')}."
-        text="The {determineWording(
-            'folder'
-        )} you're looking for doesn't exist or you don't have permission to view it."
-        button={["Go back", "/"]}
-    />
+    <div class="page-message">
+        <p>Sorry, couldn't find that {determineWording("folder")}.</p>
+        <p>
+            The {determineWording("folder")} you're looking for doesn't exist or you don't have permission
+            to view it.
+        </p>
+    </div>
+
+    <a class="button-primary" href="/">Go back</a>
 {:else}
     <Header
         folder={data.folder as PublicFolder}

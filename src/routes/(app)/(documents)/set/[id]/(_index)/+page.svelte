@@ -1,5 +1,4 @@
 <script lang="ts">
-    import PageMessage from "$lib/components/PageMessage.svelte";
     import Info from "./Info.svelte";
     import StudyCards from "./StudyCards.svelte";
     import type { PublicSet } from "$lib/database/documents/Set";
@@ -31,13 +30,15 @@
 </svelte:head>
 
 {#if data.canView === false}
-    <PageMessage
-        title="Sorry, couldn't find that {determineWording('set')}."
-        text="The {determineWording(
-            'set'
-        )} you're looking for doesn't exist or you don't have permission to view it."
-        button={["Go back", "/"]}
-    />
+    <div class="page-message">
+        <p>Sorry, couldn't find that {determineWording("set")}.</p>
+        <p>
+            The {determineWording("set")} you're looking for doesn't exist or you don't have permission
+            to view it.
+        </p>
+    </div>
+
+    <a class="button-primary" href="/">Go back</a>
 {:else}
     <Header
         set={data.set as PublicSet}
