@@ -4,6 +4,7 @@
     import { afterNavigate, beforeNavigate } from "$app/navigation";
     import { onMount, setContext } from "svelte";
     import { fade } from "svelte/transition";
+    import Loader from "$lib/components/Loader.svelte";
 
     let { data, children } = $props();
 
@@ -69,52 +70,9 @@
             {#if isLoading}
                 <div class="x-center y-center bg-primary z-40 flex h-full w-full" in:fade out:fade>
                     <div class="x-center y-center">
-                        <svg class="loader size-12" viewBox="25 25 50 50">
-                            <circle
-                                class="stroke-accent-light fill-none stroke-2"
-                                cx="50"
-                                cy="50"
-                                r="20"
-                            />
-                        </svg>
+                        <Loader />
                     </div>
                 </div>
-
-                <style>
-                    .loader {
-                        animation: rotate 2s linear infinite;
-                    }
-
-                    .loader circle {
-                        stroke-dasharray: 150, 200;
-                        stroke-dashoffset: -10;
-                        animation: dash 1.5s ease-in-out infinite;
-                        stroke-linecap: round;
-                    }
-
-                    @keyframes rotate {
-                        100% {
-                            transform: rotate(360deg);
-                        }
-                    }
-
-                    @keyframes dash {
-                        0% {
-                            stroke-dasharray: 1, 200;
-                            stroke-dashoffset: 0;
-                        }
-
-                        50% {
-                            stroke-dasharray: 89, 200;
-                            stroke-dashoffset: -35;
-                        }
-
-                        100% {
-                            stroke-dasharray: 89, 200;
-                            stroke-dashoffset: -124;
-                        }
-                    }
-                </style>
             {/if}
 
             <main
