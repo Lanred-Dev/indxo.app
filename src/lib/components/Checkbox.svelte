@@ -2,11 +2,13 @@
     import { twMerge } from "tailwind-merge";
 
     let {
+        labelID,
         classes,
         text,
         icons = ["/icons/general/Check.svg", "/icons/general/X.svg"],
         value: checkboxValue = $bindable(false),
     }: {
+        labelID?: string;
         classes?: string;
         icons?: [string, string];
         text?: [string, string];
@@ -21,6 +23,7 @@
         type="button"
         role="checkbox"
         aria-checked={checkboxValue}
+        aria-labelledby={labelID}
     >
         <img
             class="size-7"

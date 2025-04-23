@@ -8,6 +8,7 @@
     import { twMerge } from "tailwind-merge";
 
     let {
+        labelID,
         classes,
         startingItems = 1,
         properties = [
@@ -33,6 +34,7 @@
         addText = "Add item",
         ItemComponent = EditableListItem,
     }: {
+        labelID?: string;
         classes?: string;
         startingItems?: number;
         properties?: ItemProperty[];
@@ -126,7 +128,7 @@
     });
 </script>
 
-<div class={twMerge("editableList space-y-5", classes)}>
+<div class={twMerge("editableList space-y-5", classes)} aria-labelledby={labelID}>
     <ol class="relative space-y-5">
         {#each actualItems as { _listID, _id, actionButtons }}
             <!--The `li` element is used for the dragging features.-->

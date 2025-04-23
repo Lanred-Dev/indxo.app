@@ -38,6 +38,7 @@
         // This is used for custom inputs
         children?: Snippet<[]>;
     } = $props();
+    let labelID: string = `${id}-label`;
 
     const inputClasses: string = twMerge(
         `w-full field-sizing-content ${type === "dropdown" || type === "checkbox" || type === "editableList" ? "" : "input-primary"}`,
@@ -53,20 +54,27 @@
     data-id={id}
 >
     {#if label}
-        <label class="text-light cursor-text pl-3 text-nowrap select-none" for={id}>{label}</label>
+        <label class="text-light cursor-text pl-3 text-nowrap select-none" for={id} id={labelID}
+            >{label}</label
+        >
     {/if}
 
     {#if type === "dropdown"}
-        <Dropdown classes={inputClasses} {...componentProps} />
+        <Dropdown classes={inputClasses} {labelID} {...componentProps} />
     {:else if type === "editableList"}
-        <EditableList classes={inputClasses} {...componentProps} />
+        <EditableList classes={inputClasses} {labelID} {...componentProps} />
     {:else if type === "checkbox"}
-        <Checkbox classes={inputClasses} {...componentProps} />
+        <Checkbox classes={inputClasses} {labelID} {...componentProps} />
     {:else if type === "textarea"}
-        <textarea class="resize-none {inputClasses}" name={id} {id} {...componentProps}></textarea>
+        <textarea
+            class={twMerge("resize-none", inputClasses)}
+            {id}
+            aria-labelledby={labelID}
+            {...componentProps}
+        ></textarea>
     {:else if type === "custom"}
         {@render children?.()}
     {:else}
-        <input class={inputClasses} name={id} {id} {type} {...componentProps} />
+        <input class={inputClasses} {id} {type} {...componentProps} aria-labelledby={labelID} />
     {/if}
 </div>

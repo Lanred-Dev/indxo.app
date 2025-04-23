@@ -11,10 +11,12 @@
     };
 
     let {
+        labelID,
         classes,
         items = [],
         value: dropdownValue = $bindable(items[0]?.value),
     }: {
+        labelID?: string;
         classes?: string;
         items?: ItemProperties[];
         value?: string;
@@ -40,6 +42,7 @@
         aria-controls="{uid}-dropdown"
         aria-haspopup="listbox"
         aria-expanded={visible}
+        aria-labelledby={labelID}
     >
         {#if currentImage}
             <img class="size-7" src={currentImage} alt={currentText} />
