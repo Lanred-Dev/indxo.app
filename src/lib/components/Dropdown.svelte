@@ -13,39 +13,27 @@
     let {
         classes,
         items = [],
-        value = $bindable(items[0]?.value),
+        value: dropdownValue = $bindable(items[0]?.value),
     }: {
         classes?: string;
         items?: ItemProperties[];
         value?: string;
     } = $props();
-    const id: string = $props.id();
+    const uid: string = $props.id();
 
     let visible: boolean = $state.raw(false);
     let { text: currentText, image: currentImage }: ItemProperties = $derived(
-        items.find((item, index) => {
-            if (typeof value === "string" && value.length > 0) return item.value === value;
+        items.find(({ value }, index) => {
+            if (typeof dropdownValue === "string" && dropdownValue.length > 0)
+                return value === dropdownValue;
 
             return index === 0;
         }) ?? { value: "" }
     );
-
-    /**
-     * Handles when a dropdown item is clicked and updates the current value.
-     *
-     * @param newValue The new value
-     * @returns never
-     */
-    function onItemClicked(newValue: string, isLink: boolean) {
-        if (isLink) goto(newValue);
-
-        value = newValue;
-        visible = false;
-    }
 </script>
 
-<div class={twMerge("dropdown relative min-w-fit text-lg", classes)} data-value={value}>
-    <button class="input-primary" type="button" {id}>
+<div class={twMerge("dropdown relative min-w-fit text-lg", classes)} data-value={dropdownValue}>
+    <button class="input-primary" type="button" id={uid}>
         {#if currentImage}
             <img class="size-7" src={currentImage} alt={currentText} />
         {/if}
@@ -61,14 +49,19 @@
         />
     </button>
 
-    <Popup bind:visible {id} classes="w-56 p-1!" alignment="left">
+    <Popup bind:visible id={uid} classes="w-56 p-1!" alignment="left">
         <ul>
             {#each items as { isLink, value, text, image }}
                 <li class="w-full">
                     <button
                         class="button-navigation py-1!"
                         role="menuitem"
-                        onclick={() => onItemClicked(value, isLink ?? false)}
+                        onclick={() => () => {
+                            if (isLink) return goto(value);
+
+                            dropdownValue = value;
+                            visible = false;
+                        }}
                         type="button"
                     >
                         {#if image}
