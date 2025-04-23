@@ -8,7 +8,7 @@ import { type Collection } from "mongodb";
 const folders: Collection<Folder> = loadCollection("documents", "folders");
 const sets: Collection<Set> = loadCollection("documents", "sets");
 
-export async function POST({ params, request, locals }) {
+export async function PUT({ params, request, locals }) {
     if (!locals.session) error(401, "Unauthorized.");
 
     const folder: Folder | null = await folders.findOne({

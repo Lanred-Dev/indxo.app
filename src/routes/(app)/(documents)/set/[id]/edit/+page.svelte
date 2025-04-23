@@ -49,7 +49,7 @@
     <title>Edit {data.name}</title>
 </svelte:head>
 
-<Form classes="w-full" endpoint="/api/documents/set/{data._id}/update" {afterSubmit}>
+<Form classes="w-full" method="PUT" endpoint="/api/documents/set/{data._id}/update" {afterSubmit}>
     <div class="flex items-center justify-between">
         <a class="button-primary" href="/set/{data._id}">Back to {determineWording("set")}</a>
 

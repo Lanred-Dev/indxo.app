@@ -49,7 +49,12 @@
     <title>Edit {data.name}</title>
 </svelte:head>
 
-<Form classes="w-full" endpoint="/api/documents/folder/{data._id}/update" {afterSubmit}>
+<Form
+    classes="w-full"
+    method="PUT"
+    endpoint="/api/documents/folder/{data._id}/update"
+    {afterSubmit}
+>
     <div class="flex items-center justify-between">
         <a class="button-primary" href="/folder/{data._id}">Back to {determineWording("folder")}</a>
 
