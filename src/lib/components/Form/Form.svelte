@@ -18,6 +18,7 @@
     } = $props();
 
     let submitting: boolean = $state.raw(false);
+    let form: HTMLFormElement;
 
     /**
      * Handles the form submission. Gathers the data from all the form components. Prevents the default form submission and sends a fetch request to the endpoint.
@@ -32,9 +33,6 @@
 
         submitting = true;
 
-        const form: HTMLFormElement = event.target as HTMLFormElement;
-        const formSubmit: HTMLButtonElement = form.querySelector("button[type='submit']")!;
-        formSubmit.setAttribute("disabled", "true");
         const formInputs: NodeListOf<HTMLElement> = form.querySelectorAll(".formInput")!;
         const data: { [key: string]: any } = {};
 
@@ -122,16 +120,16 @@
         );
 
         submitting = false;
-        formSubmit.removeAttribute("disabled");
     }
 </script>
 
 <form
     class={twMerge("space-y-5", classes)}
-    action={endpoint}
+    style:pointer-events={submitting ? "none" : "auto"}
     onsubmit={onSubmit}
     autocomplete="off"
     data-submitting={submitting}
+    bind:this={form}
 >
     {@render children?.()}
 </form>
