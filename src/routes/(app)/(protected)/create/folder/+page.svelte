@@ -9,12 +9,12 @@
 
     export const WORDING = {
         creation: [
-            `Lets create a new ${determineWording("set")}!`,
+            `Lets create a new ${determineWording("folder")}!`,
             "Get started by entering the basics below.",
         ],
         setup: [
-            `Now its time to create some ${determineWording("cards")}.`,
-            "Get started by entering some terms and definitions below.",
+            `Now lets add some ${determineWording("sets")} to your ${determineWording("folder")}.`,
+            `Select the ${determineWording("sets")}, from below, that you'd like to add to this ${determineWording("folder")}.`,
         ],
     };
 
