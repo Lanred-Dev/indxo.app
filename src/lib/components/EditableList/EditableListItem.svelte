@@ -4,8 +4,6 @@
         classes?: string;
         image?: [string, string];
         onClick?: (event: MouseEvent) => void;
-        onMouseDown?: (event: MouseEvent) => void;
-        onMouseUp?: (event: MouseEvent) => void;
     };
 
     export type ItemProperty = {
@@ -56,15 +54,9 @@
         <p class="text-lg font-bold">#{_listID + 1}</p>
 
         <div class="flex-center gap-3">
-            {#each actionButtons as { isActualButton = true, classes, image, onClick, onMouseDown, onMouseUp }}
+            {#each actionButtons as { isActualButton = true, classes, image, onClick }}
                 {#if isActualButton}
-                    <button
-                        class={classes}
-                        type="button"
-                        onclick={onClick}
-                        onmousedown={onMouseDown}
-                        onmouseup={onMouseUp}
-                    >
+                    <button class={classes} type="button" onclick={onClick}>
                         {#if image}
                             <img class="size-6" src={image[0]} alt={image[1]} />
                         {/if}
