@@ -2,12 +2,12 @@
     import type { Term } from "$lib/database/documents/Set";
     import { animate } from "motion";
     import { getContext, onDestroy, onMount } from "svelte";
-    import TermCard from "../TermCard.svelte";
+    import TermCard from "../../TermCard.svelte";
     import { fade } from "svelte/transition";
     import determineWording from "$lib/utils/determineWording";
     import Stats from "./Stats.svelte";
     import type { Session } from "$lib/database/documents/Session";
-    import Controls from "../Controls.svelte";
+    import Controls from "../../Controls.svelte";
 
     const STRUGGLING_TERM_THRESHOLD: number = 3;
 
@@ -19,7 +19,6 @@
 
     let { data } = $props();
 
-    const sidebarVisible: { visible: boolean } = getContext("sidebarVisible");
     const session: Session = getContext("session");
 
     // svelte-ignore non_reactive_update
@@ -210,10 +209,6 @@
             currentTermIndex = actualTerms.findIndex(({ _id }) => _id === unsortedTerms[0]);
         }
     }
-
-    onMount(() => {
-        sidebarVisible.visible = false;
-    });
 
     onDestroy(async () => {
         // Dont run if its SRR.
