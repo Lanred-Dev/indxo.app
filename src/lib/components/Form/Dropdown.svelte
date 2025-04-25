@@ -1,7 +1,7 @@
 <script lang="ts">
     import { twMerge } from "tailwind-merge";
     import { goto } from "$app/navigation";
-    import Popup from "./Popup.svelte";
+    import Popup from "../Popup.svelte";
 
     export type ItemProperties = {
         value: string;

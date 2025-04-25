@@ -1,9 +1,9 @@
 <!--NOTE: This component combines a lot of individual components into one.-->
 
 <script lang="ts">
-    import Dropdown from "$lib/components/Dropdown.svelte";
-    import EditableList from "$lib/components/EditableList";
-    import Checkbox from "$lib/components/Checkbox.svelte";
+    import Dropdown from "./Dropdown.svelte";
+    import EditableList from "./EditableList";
+    import Checkbox from "./Checkbox.svelte";
     import { twMerge } from "tailwind-merge";
     import { type Snippet } from "svelte";
 
