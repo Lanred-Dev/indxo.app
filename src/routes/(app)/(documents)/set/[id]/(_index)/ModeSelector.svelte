@@ -28,15 +28,10 @@
     <ul class="list flex">
         {#each MODES as { icon, text, endpoint }}
             <li class="grow">
-                <button
-                    class="button-primary flex-center h-full w-full gap-2 px-6!"
-                    onclick={() => {
-                        goto(`/set/${id}/${endpoint}`);
-                    }}
-                >
+                <a class="button-primary" href="/set/{id}/{endpoint}">
                     <img class="size-7" src={icon} alt={text} />
                     <p>{text}</p>
-                </button>
+                </a>
             </li>
         {/each}
     </ul>
