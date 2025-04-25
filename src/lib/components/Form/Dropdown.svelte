@@ -8,7 +8,6 @@
 </script>
 
 <script lang="ts">
-    import { twMerge } from "tailwind-merge";
     import { goto } from "$app/navigation";
     import Popup from "../Popup.svelte";
 
@@ -21,12 +20,10 @@
 
     let {
         labelID,
-        classes,
         items = [],
         value: dropdownValue = $bindable(items[0]?.value),
     }: {
         labelID?: string;
-        classes?: string;
         items?: ItemProperties[];
         value?: string;
     } = $props();
@@ -46,7 +43,7 @@
 </script>
 
 <button
-    class={twMerge("input-primary", classes)}
+    class="input-primary"
     data-value={dropdownValue}
     type="button"
     id={uid}

@@ -8,17 +8,13 @@
 </script>
 
 <script lang="ts">
-    import { twMerge } from "tailwind-merge";
-
     let {
         labelID,
-        classes,
         text,
         icons = ["/icons/general/Check.svg", "/icons/general/X.svg"],
         value: checkboxValue = $bindable(false),
     }: {
         labelID?: string;
-        classes?: string;
         icons?: [string, string];
         text?: [string, string];
         value?: boolean;
@@ -26,7 +22,7 @@
 </script>
 
 <button
-    class={twMerge("input-primary relative", classes)}
+    class="input-primary relative"
     onclick={() => (checkboxValue = !checkboxValue)}
     type="button"
     role="checkbox"
