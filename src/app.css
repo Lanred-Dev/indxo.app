@@ -228,7 +228,7 @@
 
     a.button-icon,
     button.button-icon {
-        @apply hover:bg-primary-400 rounded-full bg-transparent p-2 transition-colors duration-200;
+        @apply hover:bg-primary-400 rounded-full bg-transparent p-2 transition-[colors,transform] duration-200 active:scale-75;
     }
 
     input.input-primary,
