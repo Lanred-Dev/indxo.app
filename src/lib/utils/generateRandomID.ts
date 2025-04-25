@@ -15,5 +15,5 @@ export default function generateRandomID(length: number = 12): string {
         id += CHARACTERS[bytes[i] % CHARACTERS.length];
     }
 
-    return id.toLowerCase();
+    return id;
 }
