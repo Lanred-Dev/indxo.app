@@ -12,12 +12,12 @@
         {
             text: determineWording("sort"),
             icon: "/icons/general/Star.svg",
-            endpoint: `/set/${id}/study`,
+            endpoint: "sort",
         },
         {
             text: determineWording("test"),
             icon: "/icons/general/Star.svg",
-            endpoint: `/set/${id}/quiz`,
+            endpoint: "quiz",
         },
     ];
 </script>
