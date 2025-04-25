@@ -7,7 +7,6 @@
     import ModeSelector from "./ModeSelector.svelte";
     import { writable, type Writable } from "svelte/store";
     import determineWording from "$lib/utils/determineWording";
-    import type { SortingTerm } from "$lib/database/documents/User";
 
     let { data } = $props();
 
@@ -46,12 +45,7 @@
         hasPermission={data.hasPermission ?? false}
     />
 
-    <StudyCards
-        setID={data.set?._id ?? ""}
-        terms={data.set?.terms ?? []}
-        savedSorting={data.savedSorting as SortingTerm[]}
-        {mode}
-    />
+    <StudyCards {...data.set?.terms ?? []} />
 
     <Info {...data.set as PublicSet} />
 
