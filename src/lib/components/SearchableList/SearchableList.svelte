@@ -3,7 +3,7 @@
     import { millisecondsToMinutes } from "date-fns";
     import CardGroup, { type Group } from "./CardGroup.svelte";
     import type { PublicFolder } from "$lib/database/documents/Folder";
-    import type { ItemProperties } from "../Dropdown.svelte";
+    import type { ItemProperties as DropdownItemProperties } from "../Form/Dropdown.svelte";
     import Search, { type SortFilters } from "./Search.svelte";
 
     const DISTANCE_WORDING: [string, number][] = [
@@ -24,7 +24,7 @@
         filter = $bindable("created"),
     }: {
         items: (PublicSet | PublicFolder)[];
-        filters: ItemProperties[];
+        filters: DropdownItemProperties[];
         filter?: SortFilters;
     } = $props();
 

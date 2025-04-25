@@ -1,5 +1,7 @@
 <script lang="ts">
-    import Dropdown, { type ItemProperties } from "$lib/components/Dropdown.svelte";
+    import Dropdown, {
+        type ItemProperties as DropdownItemProperties,
+    } from "$lib/components/Form/Dropdown.svelte";
 
     export type SortFilters = "none" | "created" | "subject" | "alphabetical";
 
@@ -10,7 +12,7 @@
     }: {
         query: string;
         filter: SortFilters;
-        filters: ItemProperties[];
+        filters: DropdownItemProperties[];
     } = $props();
 </script>
 
