@@ -4,7 +4,6 @@
     import Dropdown from "./Dropdown.svelte";
     import EditableList from "./EditableList/EditableList.svelte";
     import Checkbox from "./Checkbox.svelte";
-    import { twMerge } from "tailwind-merge";
     import { type Snippet } from "svelte";
 
     export type InputType =
@@ -25,15 +24,13 @@
         id,
         label,
         type,
-        classes,
-        componentProps,
+        properties,
         children,
     }: {
         id: string;
         label?: string;
         type: InputType;
-        classes?: string;
-        componentProps?: { [key: string]: any };
+        properties?: { [key: string]: any };
 
         // This is used for custom inputs
         children?: Snippet<[]>;
@@ -41,10 +38,8 @@
 
     const uid: string = $props.id();
     const labelID: string = `${uid}-label`;
-    const inputClasses: string = twMerge(
-        `w-full field-sizing-content ${type === "dropdown" || type === "checkbox" || type === "editableList" ? "" : "input-primary"}`,
-        classes
-    );
+    // This is only used for textareas and inputs
+    let value: string = $state.raw("");
 </script>
 
 <div
@@ -55,36 +50,50 @@
     data-id={id}
     data-formInput
 >
-    {#if label}
-        <label class="text-light cursor-text pl-3 text-nowrap select-none" for={uid} id={labelID}
-            >{label}</label
-        >
+    {#if label || "maxlength" in (properties ?? {})}
+        <div class="flex items-center space-x-1.5 pl-3 select-none">
+            {#if label}
+                <label class="text-light text-nowrap" for={uid} id={labelID}>{label}</label>
+            {/if}
+
+            {#if "maxlength" in (properties ?? {})}
+                <p
+                    class="text-xs {value.length === properties?.maxlength
+                        ? 'text-alert'
+                        : 'text-light'}"
+                >
+                    ({value.length}/{properties?.maxlength})
+                </p>
+            {/if}
+        </div>
     {/if}
 
     {#if type === "custom"}
         {@render children?.()}
     {:else if type === "dropdown"}
-        <Dropdown classes={inputClasses} {labelID} {...componentProps} />
+        <Dropdown {labelID} {...properties} />
     {:else if type === "editableList"}
-        <EditableList classes={inputClasses} {labelID} {...componentProps} />
+        <EditableList {labelID} {...properties} />
     {:else if type === "checkbox"}
-        <Checkbox classes={inputClasses} {labelID} {...componentProps} />
+        <Checkbox {labelID} {...properties} />
     {:else if type === "textarea"}
         <textarea
-            class={twMerge("resize-none", inputClasses)}
+            class="input-primary field-sizing-content h-40 resize-none"
             id={uid}
             aria-labelledby={labelID}
             data-input
-            {...componentProps}
+            {...properties}
+            bind:value
         ></textarea>
     {:else}
         <input
-            class={inputClasses}
-            id={uid}
+            class="input-primary"
             {type}
+            id={uid}
             aria-labelledby={labelID}
             data-input
-            {...componentProps}
+            {...properties}
+            bind:value
         />
     {/if}
 </div>
