@@ -12,7 +12,7 @@
     const headerHeight: { size: 0 } = $state({ size: 0 });
     let isMobile: boolean = $state.raw(false);
     let isLoading: boolean = $state.raw(false);
-    // Used so that the sidebar isnt rendered until after checkIfMobile is called. Prevents a flash of the sidebar on mobile devices.
+    // `isInitialLoad` is used so that the sidebar isnt rendered until after checkIfMobile is called. Prevents a flash of the sidebar on mobile devices.
     let isInitialLoad: boolean = $state.raw(true);
     let viewport: HTMLElement;
 
