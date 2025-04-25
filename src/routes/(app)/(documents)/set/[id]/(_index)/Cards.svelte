@@ -3,29 +3,19 @@
     import { animate } from "motion";
     import Controls from "../Controls.svelte";
     import TermCard from "../TermCard.svelte";
+    import { afterNavigate } from "$app/navigation";
 
     let terms: Term[] = $props();
 
     // svelte-ignore non_reactive_update
     let card: HTMLDivElement;
     // svelte-ignore non_reactive_update
-    let cardOverlay: HTMLDivElement;
-    // svelte-ignore non_reactive_update
     let termCardComponent: TermCard;
     let canCycle: boolean = $state.raw(true);
     let canFlip: boolean = $state.raw(true);
     let currentTermIndex: number = $state.raw(0);
-
-    /**
-     * Shuffle the terms in the set. Resets the current term to the first one.
-     *
-     * @returns never
-     */
-    function shuffle() {
-        termCardComponent.flipCard(false, false);
-        currentTermIndex = 0;
-        terms.sort(() => Math.random() - 0.5);
-    }
+    // NOTE: This has to be its own state because if not svelte will not reactively update the terms when they are shuffled and the currentTermIndex is already 0.
+    let actualTerms: Term[] = $state.raw(terms);
 
     /**
      * Cycle through the terms in the set.
@@ -68,16 +58,29 @@
         canFlip = true;
         currentTermIndex = 0;
         termCardComponent.flipCard(false, false);
-        shuffle();
     }
+
+    /**
+     * Shuffle the terms in the set.
+     *
+     * @returns never
+     */
+    function shuffle() {
+        canCycle = true;
+        canFlip = true;
+        currentTermIndex = 0;
+        actualTerms = [...actualTerms].sort(() => Math.random() - 0.5);
+    }
+
+    afterNavigate(restart);
 </script>
 
-{#if terms.length === 0}
+{#if actualTerms.length === 0}
     <p class="my-20 text-center text-lg font-bold md:my-24">This set has no terms</p>
 {:else}
     <TermCard
-        term={terms[currentTermIndex].term}
-        definition={terms[currentTermIndex].definition}
+        term={actualTerms[currentTermIndex].term}
+        definition={actualTerms[currentTermIndex].definition}
         bind:card
         bind:canCycle
         bind:canFlip
@@ -86,7 +89,7 @@
 
     <Controls
         {cycle}
-        progress={[terms.length, currentTermIndex + 1]}
+        progress={[actualTerms.length, currentTermIndex + 1]}
         cycleButtons={{
             "-1": {
                 icon: "/icons/general/LeftArrow.svg",
@@ -96,7 +99,7 @@
             "1": {
                 icon: "/icons/general/RightArrow.svg",
                 label: "Next",
-                disabled: currentTermIndex >= terms.length - 1,
+                disabled: currentTermIndex >= actualTerms.length - 1,
             },
         }}
         actionButtons={[
