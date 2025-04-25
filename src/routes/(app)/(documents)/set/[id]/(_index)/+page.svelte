@@ -1,16 +1,13 @@
 <script lang="ts">
     import Info from "./Info.svelte";
-    import StudyCards from "./StudyCards.svelte";
+    import Cards from "./Cards.svelte";
     import type { PublicSet } from "$lib/database/documents/Set";
     import { onMount } from "svelte";
     import Header from "./Header.svelte";
     import ModeSelector from "./ModeSelector.svelte";
-    import { writable, type Writable } from "svelte/store";
     import determineWording from "$lib/utils/determineWording";
 
     let { data } = $props();
-
-    let mode: Writable<string> = writable("cards");
 
     onMount(async () => {
         await fetch(`/api/documents/set/${data.set?._id}/open`);
@@ -45,9 +42,9 @@
         hasPermission={data.hasPermission ?? false}
     />
 
-    <StudyCards {...data.set?.terms ?? []} />
+    <Cards {...data.set?.terms ?? []} />
 
     <Info {...data.set as PublicSet} />
 
-    <ModeSelector id={data.set?._id ?? ""} {mode} />
+    <ModeSelector id={data.set?._id ?? ""} />
 {/if}
