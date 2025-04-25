@@ -3,7 +3,7 @@
 
     type CycleButton = {
         icon: string;
-        text: string;
+        label: string;
         disabled: boolean;
     };
 
@@ -20,8 +20,8 @@
             "1": CycleButton;
         };
         actionButtons?: {
-            image: string;
-            text: string;
+            icon: string;
+            label: string;
             onClick?: (event: MouseEvent) => void;
         }[];
     } = $props();
@@ -50,9 +50,15 @@
     }}
 />
 
-{#snippet navigationButton(icon: string, text: string, disabled: boolean, direction: -1 | 1)}
-    <button class="button-primary rounded-full! p-3.5!" {disabled} onclick={() => cycle(direction)}>
-        <img class="size-9" src={icon} alt={text} />
+{#snippet navigationButton(icon: string, label: string, disabled: boolean, direction: -1 | 1)}
+    <button
+        class="button-primary rounded-full! p-3.5!"
+        type="button"
+        aria-label={label}
+        {disabled}
+        onclick={() => cycle(direction)}
+    >
+        <img class="size-9" src={icon} alt={label} />
     </button>
 {/snippet}
 
@@ -60,18 +66,18 @@
     <div class="flex-center gap-1">
         {@render navigationButton(
             cycleButtons["-1"].icon,
-            cycleButtons["-1"].text,
+            cycleButtons["-1"].label,
             cycleButtons["-1"].disabled,
             -1
         )}
 
         <p class="w-20 text-center text-lg font-bold">
-            {Math.min(progress[0], progress[1])}<span class="font-normal">/</span>{progress[1]}
+            {Math.min(progress[0], progress[1])}<span class="font-normal">/</span>{progress[0]}
         </p>
 
         {@render navigationButton(
             cycleButtons["1"].icon,
-            cycleButtons["1"].text,
+            cycleButtons["1"].label,
             cycleButtons["1"].disabled,
             1
         )}
@@ -79,9 +85,9 @@
 
     <div class="flex-center sm:y-center mt-4 gap-2 sm:right-8 sm:mt-0">
         {#if actionButtons.length > 1}
-            {#each actionButtons as { image, text, onClick }}
-                <button class="button-icon" type="button" onclick={onClick} aria-label={text}>
-                    <img class="size-6!" src={image} alt={text} />
+            {#each actionButtons as { icon, label, onClick }}
+                <button class="button-icon" type="button" aria-label={label} onclick={onClick}>
+                    <img class="size-6!" src={icon} alt={label} />
                 </button>
             {/each}
         {/if}
