@@ -34,9 +34,12 @@
      * @returns never
      */
     async function cycle(direction: -1 | 1) {
-        if (currentTermIndex + direction < 0 || currentTermIndex + direction > terms.length) return;
+        if (currentTermIndex + direction < 0 || currentTermIndex + direction > terms.length - 1)
+            return;
 
         currentTermIndex += direction;
+        termCardComponent.flipCard(false, false);
+        canFlip = false;
 
         await animate(
             card,
@@ -51,6 +54,8 @@
                 ease: "easeInOut",
             }
         );
+
+        canFlip = true;
     }
 
     /**
@@ -84,15 +89,27 @@
         progress={[terms.length, currentTermIndex + 1]}
         cycleButtons={{
             "-1": {
-                icon: "/assets/icons/arrow-left.svg",
-                text: "Still learning",
+                icon: "/icons/general/LeftArrow.svg",
+                label: "Previous",
                 disabled: currentTermIndex === 0,
             },
             "1": {
-                icon: "/assets/icons/arrow-right.svg",
-                text: "Know",
+                icon: "/icons/general/RightArrow.svg",
+                label: "Next",
                 disabled: currentTermIndex >= terms.length - 1,
             },
         }}
+        actionButtons={[
+            {
+                icon: "/icons/general/Restart.svg",
+                label: "Restart",
+                onClick: restart,
+            },
+            {
+                icon: "/icons/general/Shuffle.svg",
+                label: "Shuffle",
+                onClick: shuffle,
+            },
+        ]}
     />
 {/if}
