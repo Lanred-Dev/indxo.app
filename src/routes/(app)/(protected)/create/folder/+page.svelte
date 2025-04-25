@@ -85,7 +85,7 @@
                 id="isPublic"
                 label="Visiblity"
                 type="checkbox"
-                componentProps={{
+                properties={{
                     value: true,
                     text: ["Public", "Private"],
                     icons: ["/icons/general/Web.svg", "/icons/general/Lock.svg"],
@@ -96,7 +96,7 @@
                 id="icon"
                 label="Icon"
                 type="dropdown"
-                componentProps={{
+                properties={{
                     items: [
                         {
                             value: "/icons/folder/Folder.svg",
@@ -121,7 +121,7 @@
                 id="name"
                 label="Name"
                 type="text"
-                componentProps={{ placeholder: "AP Lit Exam" }}
+                properties={{ placeholder: "AP Lit Exam" }}
             />
         </FormRow>
 
@@ -129,8 +129,7 @@
             id="description"
             label="What is this folder for?"
             type="textarea"
-            classes="h-40"
-            componentProps={{ placeholder: "This folder contains all my study sets for..." }}
+            properties={{ placeholder: "This folder contains all my study sets for..." }}
         />
     {:else}
         <FormInput id="sets" type="custom">

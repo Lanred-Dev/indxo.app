@@ -60,7 +60,7 @@
                 id="isPublic"
                 label="Visiblity"
                 type="checkbox"
-                componentProps={{
+                properties={{
                     value: true,
                     text: ["Public", "Private"],
                     icons: ["/icons/general/Web.svg", "/icons/general/Lock.svg"],
@@ -71,14 +71,14 @@
                 id="name"
                 label="Name"
                 type="text"
-                componentProps={{ placeholder: "Yapping 101 final exam..." }}
+                properties={{ placeholder: "Yapping 101 final exam...", maxlength: 50 }}
             />
 
             <FormInput
                 id="subject"
                 label="Subject"
                 type="text"
-                componentProps={{ placeholder: "Math, English, ..." }}
+                properties={{ placeholder: "Math, English, ...", maxlength: 50 }}
             />
         </FormRow>
 
@@ -86,14 +86,13 @@
             id="description"
             label="What is this study set for?"
             type="textarea"
-            classes="h-40"
-            componentProps={{ placeholder: "This study set is for my final exam..." }}
+            properties={{ placeholder: "This study set is for my final exam..." }}
         />
     {:else}
         <FormInput
             id="terms"
             type="editableList"
-            componentProps={{
+            properties={{
                 addText: `Add ${determineWording("card")}`,
                 startingItems: 3,
                 isDraggable: true,
