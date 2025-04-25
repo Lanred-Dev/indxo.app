@@ -2,6 +2,9 @@
     import { type Snippet } from "svelte";
     import { twMerge } from "tailwind-merge";
     import { type InputType } from "./FormInput.svelte";
+    import { GetFormInputValue as GetCheckboxFormInputValue } from "./Checkbox.svelte";
+    import { GetFormInputValue as GetDropdownFormInputValue } from "./Dropdown.svelte";
+    import { GetFormInputValue as GetEditableListFormInputValue } from "./EditableList/EditableList.svelte";
 
     let {
         endpoint,
@@ -33,79 +36,61 @@
 
         submitting = true;
 
-        const formInputs: NodeListOf<HTMLElement> = form.querySelectorAll(".formInput")!;
+        const inputs: NodeListOf<HTMLElement> = form.querySelectorAll(
+            "[data-formInput]"
+        ) as NodeListOf<HTMLElement>;
         const data: { [key: string]: any } = {};
 
-        formInputs.forEach((input: HTMLElement) => {
-            const inputType: InputType = input.getAttribute("data-type") as InputType;
-            const id: string = input.getAttribute("data-id")!;
+        inputs.forEach((inputContainer: HTMLElement) => {
+            const type: InputType = inputContainer.getAttribute("data-type") as InputType;
+            const id: string = inputContainer.getAttribute("data-id")!;
             let value: any;
 
-            switch (inputType) {
+            switch (type) {
                 case "editableList":
-                    const editableList: HTMLElement = input.querySelector(".editableList")!;
-                    const listItems: NodeListOf<HTMLElement> =
-                        editableList.querySelectorAll(".editableListItem")!;
-                    const listData: { [key: number]: any }[] = [];
-
-                    // Note: `1` is a placeholder value for items that don't have data.
-                    for (const item of listItems) {
-                        const listID: number = parseInt(item.getAttribute("data-listID")!);
-                        const hasData: boolean = item.getAttribute("data-hasValue") === "true";
-                        let itemValue: any = "1";
-
-                        if (hasData) {
-                            itemValue = JSON.parse(item.getAttribute("data-value")!);
-
-                            const _id: string | null = item.getAttribute("data-id");
-                            itemValue._id = _id ?? undefined;
-                        }
-
-                        listData[listID] = itemValue;
-                    }
-
-                    value = listData.filter((item) => item !== "1");
+                    value = GetEditableListFormInputValue(inputContainer);
                     break;
                 case "dropdown": {
-                    const dropdown: HTMLElement = input.querySelector(".dropdown")!;
-                    value = dropdown.getAttribute("data-value")!;
+                    value = GetDropdownFormInputValue(inputContainer);
                     break;
                 }
                 case "checkbox": {
-                    const checkbox: HTMLElement = input.querySelector(".checkbox")!;
-                    value = checkbox.getAttribute("data-value") === "true";
-                    break;
-                }
-                case "textarea": {
-                    const textarea: HTMLTextAreaElement = input.querySelector("textarea")!;
-                    value = textarea.value;
+                    value = GetCheckboxFormInputValue(inputContainer);
                     break;
                 }
                 case "custom": {
-                    const dataElement: HTMLElement = input.querySelector(".data")!;
-                    const dataType = (dataElement.getAttribute("data-type") ?? "string") as
+                    const input: HTMLElement = inputContainer.querySelector(".data")!;
+                    const inputType = (input.getAttribute("data-type") ?? "string") as
                         | "json"
                         | "string"
                         | "number";
-                    const dataValue: string = dataElement.getAttribute("data-value") ?? "";
-                    value =
-                        dataType === "json"
-                            ? JSON.parse(dataValue)
-                            : dataType === "number"
-                              ? parseInt(dataValue)
-                              : dataValue;
+                    const inputValue: string = input.getAttribute("data-value") ?? "";
+
+                    switch (inputType) {
+                        case "json":
+                            value = JSON.parse(inputValue);
+                            break;
+                        case "number":
+                            value = parseInt(inputValue);
+                            break;
+                        default:
+                            value = inputValue;
+                            break;
+                    }
+
                     break;
                 }
                 default: {
-                    const inputElement: HTMLInputElement = input.querySelector("input")!;
-                    value = inputElement.value;
+                    const element: HTMLInputElement | HTMLTextAreaElement =
+                        inputContainer.querySelector("[data-input]") as
+                            | HTMLInputElement
+                            | HTMLTextAreaElement;
+                    value = element.value;
                     break;
                 }
             }
 
-            if (typeof value === "string") value = value.trim();
-
-            data[id] = value;
+            data[id] = typeof value === "string" ? value.trim() : value;
         });
 
         const response = await fetch(endpoint, {

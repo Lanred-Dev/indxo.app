@@ -1,3 +1,39 @@
+<script module lang="ts">
+    export function GetFormInputValue(inputContainer: HTMLElement): ({
+        [key: string]: any;
+        _id?: string;
+    } | null)[] {
+        const editableList: HTMLElement = inputContainer.querySelector(
+            "[data-input]"
+        ) as HTMLElement;
+        const listItems: NodeListOf<HTMLElement> =
+            editableList.querySelectorAll(".EditableListItem")!;
+        const listData: ({
+            [key: string]: any;
+            _id?: string;
+        } | null)[] = [];
+
+        for (const item of listItems) {
+            const listID: number = parseInt(item.getAttribute("data-listID")!);
+            let value: {
+                [key: string]: any;
+                _id?: string;
+            } | null = null;
+
+            // Only parse the value if it has data
+            if (item.getAttribute("data-hasValue") === "true") {
+                value = JSON.parse(item.getAttribute("data-value") ?? "{}");
+                value!._id = item.getAttribute("data-id") ?? undefined;
+            }
+
+            listData[listID] = value;
+        }
+
+        // Remove any null or undefined items from the list
+        return listData.filter((item) => item);
+    }
+</script>
+
 <script lang="ts">
     import EditableListItem, {
         type ItemActionButton,
@@ -128,7 +164,7 @@
     });
 </script>
 
-<div class={twMerge("editableList space-y-5", classes)} aria-labelledby={labelID}>
+<div class={twMerge("space-y-5", classes)} aria-labelledby={labelID} data-input>
     <ol class="relative space-y-5">
         {#each actualItems as { _listID, _id, actionButtons }}
             <!--The `li` element is used for the dragging features.-->
