@@ -1,5 +1,6 @@
 <script lang="ts">
-    import { onMount, type Snippet } from "svelte";
+    import { beforeNavigate } from "$app/navigation";
+    import { getContext, onMount, type Snippet } from "svelte";
     import { fade, fly } from "svelte/transition";
     import { twMerge } from "tailwind-merge";
 
@@ -18,9 +19,14 @@
         classes?: string;
         children: Snippet<[]>;
     } = $props();
+
+    const headerHeight: { size: number } = getContext("headerHeight");
     let button: HTMLButtonElement | HTMLInputElement | null = $state.raw(null);
     let popup: HTMLElement | null = $state.raw(null);
+    let buttonIsInDocument: boolean = true;
     let windowWidth: number = $state.raw(0);
+    // `scrollY` is used to keep track of the scroll position of the main content area
+    let scrollY: number = $state.raw(0);
     let position: { x: number; y: number } = $derived.by(() => {
         const position: { x: number; y: number } = {
             x: 0,
@@ -34,6 +40,8 @@
             x: buttonBounding.left + window.scrollX,
             y: buttonBounding.bottom + window.scrollY,
         };
+
+        position.y = buttonPosition.y - scrollY;
 
         switch (alignment) {
             case "left":
@@ -60,24 +68,52 @@
             position.y = buttonPosition.y + OFFSET;
         }
 
+        if (position.y < headerHeight.size && buttonIsInDocument) {
+            position.y = headerHeight.size + OFFSET;
+        }
+
         return position;
     });
 
+    beforeNavigate(() => (visible = false));
+
     onMount(() => {
         button = document.getElementById(id) as HTMLButtonElement | HTMLInputElement;
+        const buttonTag: string = button?.tagName.toLowerCase() ?? "";
 
-        if (button?.tagName === "BUTTON") {
-            button.addEventListener("click", () => (visible = !visible));
-        } else if (button?.tagName === "INPUT") {
-            button.addEventListener("focusin", () => (visible = true));
+        switch (buttonTag) {
+            case "button":
+                button.addEventListener("click", () => (visible = !visible));
+                break;
+            case "input":
+                button.addEventListener("focusin", () => (visible = true));
+                break;
+            default:
+                return;
+        }
+
+        const main: HTMLElement = document.querySelector("main")!;
+        buttonIsInDocument = main.contains(button);
+
+        if (buttonIsInDocument) {
+            scrollY = main.scrollTop;
+            main.addEventListener("scroll", () => (scrollY = main.scrollTop));
         }
 
         return () => {
-            if (button?.tagName === "BUTTON") {
-                button.removeEventListener("click", () => (visible = !visible));
-            } else if (button?.tagName === "INPUT") {
-                button.removeEventListener("focusin", () => (visible = true));
+            switch (buttonTag) {
+                case "button":
+                    button?.removeEventListener("click", () => (visible = !visible));
+                    break;
+                case "input":
+                    button?.removeEventListener("focusin", () => (visible = true));
+                    break;
+                default:
+                    return;
             }
+
+            if (buttonIsInDocument)
+                main.removeEventListener("scroll", () => (scrollY = main.scrollTop));
         };
     });
 </script>
