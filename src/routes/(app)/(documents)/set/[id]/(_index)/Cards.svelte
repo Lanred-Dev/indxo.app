@@ -72,7 +72,10 @@
         actualTerms = [...actualTerms].sort(() => Math.random() - 0.5);
     }
 
-    afterNavigate(restart);
+    afterNavigate(() => {
+        actualTerms = terms;
+        restart();
+    });
 </script>
 
 {#if actualTerms.length === 0}
