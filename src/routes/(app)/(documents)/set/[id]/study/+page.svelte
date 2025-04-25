@@ -340,13 +340,13 @@
         progress={[knowTerms.length, knowTerms.length + unsortedTerms.length]}
         cycleButtons={{
             "-1": {
-                icon: "/assets/icons/arrow-left.svg",
-                text: "Still learning",
+                icon: "/icons/general/X.svg",
+                label: "Still learning",
                 disabled: knowTerms.length === 0,
             },
             "1": {
-                icon: "/assets/icons/arrow-right.svg",
-                text: "Know",
+                icon: "/icons/general/Check.svg",
+                label: "Know",
                 disabled: unsortedTerms.length === 0,
             },
         }}
