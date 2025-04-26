@@ -103,7 +103,12 @@
         />
     </div>
 
-    <Popup id="searchBar" classes="w-[40vw] space-y-3" alignment="center">
+    <Popup
+        id="searchBar"
+        classes="w-[40vw] space-y-3"
+        alignment="center"
+        canShow={searchQuery.length >= 1}
+    >
         {#each searchResults as { name, ...properties }}
             {@render searchResult({
                 name,
