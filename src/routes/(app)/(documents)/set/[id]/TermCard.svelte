@@ -104,9 +104,7 @@
         style:transform-style="preserve-3d"
         bind:this={card}
     >
-        {#if overlay}
-            {@render overlay()}
-        {/if}
+        {@render overlay?.()}
 
         <div
             class="[&>*]:rounded-primary [&>*]:border-primary [&>*]:bg-primary-200 [&>*]:absolute [&>*]:top-0 [&>*]:left-0 [&>*]:flex [&>*]:h-full [&>*]:w-full [&>*]:items-center [&>*]:justify-center [&>*]:overflow-y-auto [&>*]:border [&>*]:p-6 [&>*]:shadow-xl"
