@@ -1,9 +1,14 @@
 <script lang="ts">
-    let { size = 3 }: { size?: number } = $props();
+    let { size = 3, color = "#adc2d4" }: { size?: number; color?: string } = $props();
 </script>
 
-<svg class="aspect-1" viewBox="25 25 50 50" style:width="{size}rem">
-    <circle class="stroke-accent-light fill-none stroke-2" cx="50" cy="50" r="20" />
+<svg
+    class="aspect-1 fill-none stroke-2"
+    viewBox="25 25 50 50"
+    style:width="{size}rem"
+    stroke={color}
+>
+    <circle cx="50" cy="50" r="20" />
 </svg>
 
 <style>
