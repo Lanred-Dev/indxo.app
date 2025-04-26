@@ -44,11 +44,12 @@
 </script>
 
 <div
-    class="EditableListItem container-primary flex flex-col gap-3"
+    class="container-primary flex flex-col gap-3"
     data-listID={_listID}
     data-id={_id}
     data-value={value}
     data-hasValue={hasValue}
+    data-editableListItem
 >
     <div class="flex items-center justify-between px-3">
         <p class="text-lg font-bold">#{_listID + 1}</p>

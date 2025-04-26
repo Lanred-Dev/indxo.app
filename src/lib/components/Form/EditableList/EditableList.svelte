@@ -62,7 +62,7 @@
         actionButtons = [
             {
                 image: ["/icons/general/Trash.svg", "Delete"],
-                onClick: onItemDeleteClicked,
+                onClick: onDeleteClicked,
             },
         ],
         items = [],
@@ -119,16 +119,15 @@
      * @param event The click event.
      * @returns never
      */
-    function onItemDeleteClicked(event: MouseEvent) {
-        const editableListItem: HTMLElement = (event.target as HTMLElement).closest(
-            ".editableListItem"
-        )!;
+    function onDeleteClicked(event: MouseEvent) {
+        const editableListItem: HTMLDivElement = (event.target as HTMLElement).closest(
+            "[data-editableListItem]"
+        ) as HTMLDivElement;
 
         if (!editableListItem) return;
 
         const listID: number = parseInt(editableListItem.getAttribute("data-listID")!);
         actualItems.splice(listID, 1);
-
         actualItems.forEach((item, index) => {
             item._listID = index;
         });
@@ -172,7 +171,7 @@
                 class="transition-all {isDraggable ? 'cursor-move' : ''} {draggingID === _listID
                     ? 'rotate-1 opacity-45'
                     : draggingID !== -1
-                      ? '[&>.editableListItem]:border-focus! [&>.editableListItem]:border! [&>.editableListItem]:border-dashed!'
+                      ? '[&>[data-editableListItem]]:border-focus! [&>[data-editableListItem]]:border! [&>[data-editableListItem]]:border-dashed!'
                       : ''}"
                 draggable={isDraggable}
                 ondragstart={() => {
