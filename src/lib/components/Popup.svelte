@@ -9,12 +9,14 @@
 
     let {
         visible = $bindable(false),
+        canShow = $bindable(true),
         alignment = "left",
         id,
         classes,
         children,
     }: {
         visible?: boolean;
+        canShow?: boolean;
         alignment?: "left" | "right" | "center";
         id: string;
         classes?: string;
@@ -133,7 +135,7 @@
     }}
 />
 
-{#if visible}
+{#if visible && canShow}
     <div
         class={twMerge("container-primary bg-primary! fixed z-50 shadow-lg", classes)}
         style:pointer-events={visible ? "auto" : "none"}
