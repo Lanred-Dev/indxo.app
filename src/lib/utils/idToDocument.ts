@@ -22,7 +22,11 @@ export default async function idToDocument(
     id: string
 ): Promise<any | null> {
     try {
-        let collection: Collection<any>;
+        let collection:
+            | Collection<User>
+            | Collection<Session>
+            | Collection<Set>
+            | Collection<Folder>;
 
         switch (collectionName) {
             case "users":
