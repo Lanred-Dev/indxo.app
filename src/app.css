@@ -58,6 +58,7 @@
     --border-color-primary: #b4b4b4;
 
     --border-color-focus: #5685d6;
+    --border-color-alert: #f26a63;
 
     --radius-primary: 15px;
     --radius-button: 12.5px;
@@ -167,96 +168,61 @@
 }
 
 @layer components {
-    button.button-attention,
-    a.button-attention,
-    button.button-primary,
-    a.button-primary,
-    input.input-primary,
-    textarea.input-primary,
-    select.input-primary,
-    button.input-primary,
-    div.input-primary,
-    input.input-secondary,
-    textarea.input-secondary,
-    select.input-secondary,
-    button.input-secondary,
-    div.input-secondary,
-    a.button-navigation,
-    button.button-navigation {
+    .button-attention,
+    .button-primary,
+    .input-primary,
+    .input-secondary,
+    .button-navigation {
         @apply rounded-button border-primary text-primary border px-3 py-2 text-lg transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 disabled:select-none;
     }
 
-    a.button-navigation img,
-    button.button-navigation img,
-    button.button-primary img,
-    a.button-primary img,
-    button.button-attention img,
-    a.button-attention img,
-    a.button-icon img,
-    button.button-icon img {
+    .button-navigation img,
+    .button-primary img,
+    .button-attention img,
+    .button-icon img {
         @apply size-7;
     }
 
-    button.button-attention,
-    a.button-attention,
-    button.button-primary,
-    a.button-primary {
+    .button-attention,
+    .button-primary {
         @apply shadow-md hover:shadow-sm;
     }
 
-    button.button-attention,
-    a.button-attention {
+    .button-attention {
         @apply bg-button-primary;
     }
 
-    button.button-attention:has(img),
-    a.button-attention:has(img),
-    button.button-primary:has(img),
-    a.button-primary:has(img) {
+    .button-attention:has(img),
+    .button-primary:has(img) {
         @apply flex-center gap-2;
     }
 
-    button.button-primary,
-    a.button-primary {
+    .button-primary {
         @apply bg-primary-300 hover:bg-primary-400 !border-none;
     }
 
-    a.button-navigation,
-    button.button-navigation {
+    .button-navigation {
         @apply hover:bg-primary-400 flex w-full items-center gap-2 !border-none text-nowrap;
     }
 
-    a.button-icon,
-    button.button-icon {
+    .button-icon {
         @apply hover:bg-primary-400 rounded-full bg-transparent p-2 transition-[background-color,scale] duration-200 active:scale-75;
     }
 
-    input.input-primary,
-    textarea.input-primary,
-    select.input-primary,
-    button.input-primary,
-    div.input-primary,
-    input.input-secondary,
-    textarea.input-secondary,
-    select.input-secondary,
-    button.input-secondary,
-    div.input-secondary {
+    .input-primary,
+    .input-secondary {
         @apply focus:border-focus flex items-center gap-1 outline-none focus:border focus:ring-0;
     }
 
-    input.input-primary,
-    textarea.input-primary,
-    select.input-primary,
-    button.input-primary,
-    div.input-primary {
+    .input-primary[data-max="true"] {
+        @apply focus:border-alert;
+    }
+
+    .input-primary {
         @apply bg-primary-200;
     }
 
-    input.input-secondary,
-    textarea.input-secondary,
-    select.input-secondary,
-    button.input-secondary,
-    div.input-secondary {
+    .input-secondary {
         @apply bg-primary-400;
     }
 
