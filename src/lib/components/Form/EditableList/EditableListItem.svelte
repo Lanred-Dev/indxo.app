@@ -31,7 +31,7 @@
 
         return JSON.stringify({ ...actualProperties });
     });
-    // NOTE: `hasValue` is mainly used to determine if the list item is valid during form submission.
+    // `hasValue` is mainly used to determine if the list item is valid during form submission.
     let hasValue: boolean = $derived.by(() => {
         let onePropertyHasValue: boolean = false;
 

@@ -14,7 +14,7 @@
     let canCycle: boolean = $state.raw(true);
     let canFlip: boolean = $state.raw(true);
     let currentTermIndex: number = $state.raw(0);
-    // NOTE: This has to be its own state because if not svelte will not reactively update the terms when they are shuffled and the currentTermIndex is already 0.
+    // `actualTerms` has to be its own state because if not svelte will not reactively update the terms when they are shuffled and the currentTermIndex is already 0.
     let actualTerms: Term[] = $state.raw(terms);
 
     /**
