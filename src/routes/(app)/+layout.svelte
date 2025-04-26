@@ -1,3 +1,18 @@
+<script module lang="ts">
+    export type SizesContext = {
+        header: number;
+        sidebar: number;
+        window: {
+            width: number;
+            height: number;
+        };
+    };
+
+    export type SidebarContext = {
+        visible: boolean;
+    };
+</script>
+
 <script lang="ts">
     import Header from "./Header.svelte";
     import Sidebar from "./Sidebar.svelte";
@@ -8,23 +23,24 @@
 
     let { data, children } = $props();
 
-    const sidebarVisible: { visible: boolean } = $state({ visible: true });
-    const headerHeight: { size: 0 } = $state({ size: 0 });
+    setContext("session", data.session);
+    setContext("user", data.user);
+
+    const sizes: SizesContext = $state({ header: 0, sidebar: 0, window: { width: 0, height: 0 } });
+    setContext("sizes", sizes);
+    const sidebar: SidebarContext = $state({ visible: true });
+    setContext("sidebar", sidebar);
+
     let isMobile: boolean = $state.raw(false);
     let isLoading: boolean = $state.raw(false);
     // `isInitialLoad` is used so that the sidebar isnt rendered until after checkIfMobile is called. Prevents a flash of the sidebar on mobile devices.
     let isInitialLoad: boolean = $state.raw(true);
     let viewport: HTMLElement;
 
-    setContext("session", data.session);
-    setContext("user", data.user);
-    setContext("sidebarVisible", sidebarVisible);
-    setContext("headerHeight", headerHeight);
-
     beforeNavigate(() => {
         isLoading = true;
 
-        if (isMobile) sidebarVisible.visible = false;
+        if (isMobile) sidebar.visible = false;
     });
 
     afterNavigate(() => {
@@ -40,10 +56,10 @@
     function checkIfMobile() {
         if (window.innerWidth <= 786 && !isMobile) {
             isMobile = true;
-            sidebarVisible.visible = false;
+            sidebar.visible = false;
         } else if (window.innerWidth > 786 && isMobile) {
             isMobile = false;
-            sidebarVisible.visible = true;
+            sidebar.visible = true;
         }
     }
 
@@ -53,22 +69,26 @@
     });
 </script>
 
-<svelte:window on:resize={checkIfMobile} />
+<svelte:window
+    bind:innerHeight={sizes.window.height}
+    bind:innerWidth={sizes.window.width}
+    onresize={checkIfMobile}
+/>
 
 <div class="flex h-screen max-h-screen w-full flex-col overflow-hidden">
     <Header />
 
-    <div
-        class="relative flex w-full grow overflow-hidden"
-        style:padding-top="{headerHeight.size}px"
-    >
-        {#if data.session && sidebarVisible.visible}
+    <div class="relative flex w-full grow overflow-hidden" style:padding-top="{sizes.header}px">
+        {#if data.session && sidebar.visible}
             <Sidebar {isInitialLoad} {isMobile} />
         {/if}
 
-        <div class="relative h-full w-full">
+        <div
+            class="relative h-full w-full transition-[padding-left] duration-400"
+            style:padding-left="{isMobile || !sidebar.visible ? 0 : sizes.sidebar}px"
+        >
             {#if isLoading}
-                <div class="x-center y-center bg-primary z-40 flex h-full w-full" in:fade out:fade>
+                <div class="x-center y-center bg-primary z-40 flex h-full w-full" transition:fade>
                     <div class="x-center y-center">
                         <Loader />
                     </div>
@@ -76,7 +96,7 @@
             {/if}
 
             <main
-                class="relative flex h-full w-full flex-col items-start justify-start overflow-x-hidden px-7 pt-12 pb-6 transition-[filter] duration-500 md:px-16 md:pt-16 md:pr-[22.5%] md:pl-[10%] lg:pt-24 2xl:pr-[28%] {sidebarVisible.visible &&
+                class="relative flex h-full w-full flex-col items-start justify-start overflow-x-hidden px-7 pt-12 pb-6 transition-[filter] duration-500 md:px-16 md:pt-16 md:pr-[22.5%] md:pl-[10%] lg:pt-24 2xl:pr-[28%] {sidebar.visible &&
                 isMobile
                     ? 'pointer-events-none blur-xs'
                     : ''}"

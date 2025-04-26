@@ -7,11 +7,13 @@
     import { getContext } from "svelte";
     import type { Session } from "$lib/database/documents/Session";
     import Popup from "$lib/components/Popup.svelte";
+    import type { SidebarContext, SizesContext } from "./+layout.svelte";
 
     const session: Session | null = getContext("session");
     const user: SimpleUserWithEmail = getContext("user");
-    const sidebarVisible: { visible: boolean } = getContext("sidebarVisible");
-    const headerHeight: { size: number } = getContext("headerHeight");
+    const sidebar: SidebarContext = getContext("sidebar");
+    const sizes: SizesContext = getContext("sizes");
+
     let searchQuery: string = $state.raw("");
     let searchResults: (SimpleUser | SimpleSet | SimpleFolder)[] = $state.raw([]);
 </script>
@@ -66,14 +68,11 @@
 
 <header
     class="bg-accent-light fixed top-0 left-0 z-40 flex w-full items-center justify-between px-7 py-4 md:px-10"
-    bind:clientHeight={headerHeight.size}
+    bind:clientHeight={sizes.header}
 >
     <div class="flex-center">
         {#if session}
-            <button
-                id="sidebarToggle"
-                onclick={() => (sidebarVisible.visible = !sidebarVisible.visible)}
-            >
+            <button id="sidebarToggle" onclick={() => (sidebar.visible = !sidebar.visible)}>
                 <img class="size-7" src="/icons/navigation/Hamburger.svg" alt="Sidebar toggle" />
             </button>
         {/if}

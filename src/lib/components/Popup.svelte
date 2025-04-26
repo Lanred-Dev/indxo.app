@@ -3,6 +3,7 @@
     import { getContext, onMount, type Snippet } from "svelte";
     import { fade, fly } from "svelte/transition";
     import { twMerge } from "tailwind-merge";
+    import type { SizesContext } from "../../routes/(app)/+layout.svelte";
 
     const OFFSET: number = 2.5;
 
@@ -20,11 +21,11 @@
         children: Snippet<[]>;
     } = $props();
 
-    const headerHeight: { size: number } = getContext("headerHeight");
+    const sizes: SizesContext = getContext("sizes");
+
     let button: HTMLButtonElement | HTMLInputElement | null = $state.raw(null);
     let popup: HTMLElement | null = $state.raw(null);
     let buttonIsInDocument: boolean = true;
-    let windowWidth: number = $state.raw(0);
     // `scrollY` is used to keep track of the scroll position of the main content area
     let scrollY: number = $state.raw(0);
     let position: { x: number; y: number } = $derived.by(() => {
@@ -56,20 +57,20 @@
         }
 
         // Make sure the popup is within the window bounds
-        if (buttonPosition.x + popup.clientWidth > window.innerWidth) {
+        if (buttonPosition.x + popup.clientWidth > sizes.window.width) {
             position.x = buttonPosition.x - popup.clientWidth + buttonBounding.width;
         } else if (buttonPosition.x < 0) {
             position.x = buttonPosition.x + buttonBounding.width;
         }
 
-        if (buttonPosition.y + OFFSET > window.innerHeight) {
+        if (buttonPosition.y + OFFSET > sizes.window.height) {
             position.y = buttonPosition.y - popup.clientHeight - OFFSET;
         } else {
             position.y = buttonPosition.y + OFFSET;
         }
 
-        if (position.y < headerHeight.size && buttonIsInDocument) {
-            position.y = headerHeight.size + OFFSET;
+        if (position.y < sizes.header && buttonIsInDocument) {
+            position.y = sizes.header + OFFSET;
         }
 
         return position;
@@ -130,7 +131,6 @@
 
         visible = false;
     }}
-    bind:innerWidth={windowWidth}
 />
 
 {#if visible}

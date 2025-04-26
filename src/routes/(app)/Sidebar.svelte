@@ -2,28 +2,28 @@
     import determineWording from "$lib/utils/determineWording";
     import { getContext } from "svelte";
     import { fly } from "svelte/transition";
+    import type { SidebarContext, SizesContext } from "./+layout.svelte";
 
     let { isInitialLoad, isMobile }: { isInitialLoad: boolean; isMobile: boolean } = $props();
 
-    const headerHeight: { size: number } = getContext("headerHeight");
-    const sidebarVisible: { visible: boolean } = getContext("sidebarVisible");
-    let windowHeight: number = $state.raw(0);
+    const sizes: SizesContext = getContext("sizes");
+    const sidebar: SidebarContext = getContext("sidebar");
+
     let focusedOnSidebar: boolean = $state.raw(false);
 </script>
 
 <svelte:window
-    bind:innerHeight={windowHeight}
     onclick={(event: MouseEvent) => {
         if (
             (event.target as HTMLElement)?.id === "sidebarToggle" ||
             focusedOnSidebar ||
-            !sidebarVisible.visible ||
+            !sidebar.visible ||
             !isMobile
         )
             return;
 
         focusedOnSidebar = false;
-        sidebarVisible.visible = false;
+        sidebar.visible = false;
     }}
 />
 
@@ -47,16 +47,16 @@
 {/snippet}
 
 <div
-    class="bg-primary fixed left-0 z-30 flex h-full min-w-fit flex-col justify-between gap-10 overflow-x-hidden overflow-y-auto py-5.5 pr-16 pl-4 shadow-2xl md:static md:py-7 md:pr-4 md:pl-7 md:shadow-none xl:w-[17.5%] 2xl:w-[15%] {isInitialLoad
+    class="bg-primary fixed left-0 z-30 flex h-full min-w-fit flex-col justify-between gap-10 overflow-x-hidden overflow-y-auto py-5.5 pr-16 pl-4 shadow-2xl md:bg-transparent md:py-7 md:pr-4 md:pl-7 md:shadow-none xl:w-[17.5%] 2xl:w-[15%] {isInitialLoad
         ? 'pointer-events-none opacity-0'
         : ''}"
-    style:height="{windowHeight - headerHeight.size}px"
-    style:top="{headerHeight.size}px"
-    in:fly={{ x: -10 }}
-    out:fly={{ x: -10 }}
+    style:height="{sizes.window.height - sizes.header}px"
+    style:top="{sizes.header}px"
+    role="navigation"
+    bind:clientWidth={sizes.sidebar}
     onmouseenter={() => (focusedOnSidebar = true)}
     onmouseleave={() => (focusedOnSidebar = false)}
-    role="navigation"
+    transition:fly={{ x: -10, duration: 300 }}
 >
     <nav class="min-w-fit space-y-10">
         {@render group([
