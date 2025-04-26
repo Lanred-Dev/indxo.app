@@ -82,6 +82,7 @@
             id={uid}
             aria-labelledby={labelID}
             data-input
+            data-max={value.length === properties?.maxlength}
             {...properties}
             bind:value
         ></textarea>
@@ -92,6 +93,7 @@
             id={uid}
             aria-labelledby={labelID}
             data-input
+            data-max={value.length === properties?.maxlength}
             {...properties}
             bind:value
         />
