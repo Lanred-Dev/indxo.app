@@ -78,15 +78,16 @@
 <div class="flex h-screen max-h-screen w-full flex-col overflow-hidden">
     <Header />
 
-    <div class="relative flex w-full grow overflow-hidden" style:padding-top="{sizes.header}px">
-        {#if data.session && sidebar.visible}
-            <Sidebar {isInitialLoad} {isMobile} />
-        {/if}
+    {#if data.session && sidebar.visible}
+        <Sidebar {isInitialLoad} {isMobile} />
+    {/if}
 
-        <div
-            class="relative h-full w-full transition-[padding-left] duration-400"
-            style:padding-left="{isMobile || !sidebar.visible ? 0 : sizes.sidebar}px"
-        >
+    <div
+        class="relative flex w-full grow overflow-hidden transition-[padding-left] duration-400"
+        style:padding-top="{sizes.header}px"
+        style:padding-left="{isMobile || !sidebar.visible ? 0 : sizes.sidebar}px"
+    >
+        <div class="relative h-full w-full">
             {#if isLoading}
                 <div class="x-center y-center bg-primary z-40 flex h-full w-full" transition:fade>
                     <div class="x-center y-center">
