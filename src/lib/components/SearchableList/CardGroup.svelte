@@ -30,7 +30,7 @@
     {/if}
 
     {#if visible}
-        <ul class="list flex-col" in:slide out:slide>
+        <ul class="list flex-col" transition:slide>
             {#each items as item}
                 <li>
                     {#if determineDocumentType(item) === "folder"}
