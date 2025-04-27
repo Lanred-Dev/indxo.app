@@ -4,7 +4,7 @@
         _id?: string;
     } | null)[] {
         const editableList: HTMLElement = inputContainer.querySelector(
-            "[data-input]"
+            ".EditableList"
         ) as HTMLElement;
         const listItems: NodeListOf<HTMLElement> =
             editableList.querySelectorAll(".EditableListItem")!;
@@ -121,11 +121,8 @@
      */
     function onDeleteClicked(event: MouseEvent) {
         const editableListItem: HTMLDivElement = (event.target as HTMLElement).closest(
-            "[data-editableListItem]"
+            ".EditableListItem"
         ) as HTMLDivElement;
-
-        if (!editableListItem) return;
-
         const listID: number = parseInt(editableListItem.getAttribute("data-listID")!);
         actualItems.splice(listID, 1);
         actualItems.forEach((item, index) => {
@@ -163,7 +160,7 @@
     });
 </script>
 
-<div class={twMerge("space-y-5", classes)} aria-labelledby={labelID} data-input>
+<div class="EditableList {twMerge('space-y-5', classes)}" aria-labelledby={labelID}>
     <ol class="relative space-y-5">
         {#each actualItems as { _listID, _id, actionButtons }}
             <!--The `li` element is used for the dragging features.-->
@@ -171,7 +168,7 @@
                 class="transition-all {isDraggable ? 'cursor-move' : ''} {draggingID === _listID
                     ? 'rotate-1 opacity-45'
                     : draggingID !== -1
-                      ? '[&>[data-editableListItem]]:border-focus! [&>[data-editableListItem]]:border! [&>[data-editableListItem]]:border-dashed!'
+                      ? '[&>.EditableListItem]:border-focus! [&>.EditableListItem]:border! [&>.EditableListItem]:border-dashed!'
                       : ''}"
                 draggable={isDraggable}
                 ondragstart={() => {

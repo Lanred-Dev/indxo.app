@@ -1,7 +1,7 @@
 <script module lang="ts">
     export function GetFormInputValue(inputContainer: HTMLElement): string {
         const dropdown: HTMLButtonElement = inputContainer.querySelector(
-            "[data-input]"
+            ".DropdownInput"
         ) as HTMLButtonElement;
         return dropdown.getAttribute("data-value") ?? "";
     }
@@ -43,7 +43,7 @@
 </script>
 
 <button
-    class="input-primary"
+    class="DropdownInput input-primary"
     data-value={dropdownValue}
     type="button"
     id={uid}
@@ -51,7 +51,6 @@
     aria-haspopup="listbox"
     aria-expanded={visible}
     aria-labelledby={labelID}
-    data-input
 >
     {#if currentImage}
         <img class="size-7" src={currentImage} alt={currentText} />

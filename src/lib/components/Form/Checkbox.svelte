@@ -1,7 +1,7 @@
 <script module lang="ts">
     export function GetFormInputValue(inputContainer: HTMLElement): boolean {
         const checkbox: HTMLButtonElement = inputContainer.querySelector(
-            "[data-input]"
+            ".CheckboxInput"
         ) as HTMLButtonElement;
         return checkbox.getAttribute("aria-checked") === "true";
     }
@@ -22,13 +22,12 @@
 </script>
 
 <button
-    class="input-primary relative"
+    class="CheckboxInput input-primary relative"
     onclick={() => (checkboxValue = !checkboxValue)}
     type="button"
     role="checkbox"
     aria-checked={checkboxValue}
     aria-labelledby={labelID}
-    data-input
 >
     <img
         class="size-7"

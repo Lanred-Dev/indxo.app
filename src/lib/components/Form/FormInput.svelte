@@ -43,12 +43,11 @@
 </script>
 
 <div
-    class="flex flex-col gap-y-0.5 {type === 'dropdown' || type === 'checkbox'
+    class="FormInput flex flex-col gap-y-0.5 {type === 'dropdown' || type === 'checkbox'
         ? 'min-w-fit'
         : 'grow'}"
     data-type={type}
     data-id={id}
-    data-formInput
 >
     {#if label || "maxlength" in (properties ?? {})}
         <div class="flex items-center space-x-1.5 pl-3 select-none">
@@ -78,21 +77,19 @@
         <Checkbox {labelID} {...properties} />
     {:else if type === "textarea"}
         <textarea
-            class="input-primary field-sizing-content h-40 resize-none"
+            class="Input input-primary field-sizing-content h-40 resize-none"
             id={uid}
             aria-labelledby={labelID}
-            data-input
             data-max={value.length === properties?.maxlength}
             {...properties}
             bind:value
         ></textarea>
     {:else}
         <input
-            class="input-primary"
+            class="Input input-primary"
             {type}
             id={uid}
             aria-labelledby={labelID}
-            data-input
             data-max={value.length === properties?.maxlength}
             {...properties}
             bind:value

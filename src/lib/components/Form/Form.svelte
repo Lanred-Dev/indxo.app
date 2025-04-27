@@ -37,7 +37,7 @@
         submitting = true;
 
         const inputs: NodeListOf<HTMLElement> = form.querySelectorAll(
-            "[data-formInput]"
+            ".FormInput"
         ) as NodeListOf<HTMLElement>;
         const data: { [key: string]: any } = {};
 
@@ -59,14 +59,13 @@
                     break;
                 }
                 case "custom": {
-                    const input: HTMLElement = inputContainer.querySelector(".data")!;
-                    const inputType = (input.getAttribute("data-type") ?? "string") as
+                    const format = (inputContainer.getAttribute("data-type") ?? "string") as
                         | "json"
                         | "string"
                         | "number";
-                    const inputValue: string = input.getAttribute("data-value") ?? "";
+                    const inputValue: string = inputContainer.getAttribute("data-value") ?? "";
 
-                    switch (inputType) {
+                    switch (format) {
                         case "json":
                             value = JSON.parse(inputValue);
                             break;
@@ -82,7 +81,7 @@
                 }
                 default: {
                     const element: HTMLInputElement | HTMLTextAreaElement =
-                        inputContainer.querySelector("[data-input]") as
+                        inputContainer.querySelector(".Input") as
                             | HTMLInputElement
                             | HTMLTextAreaElement;
                     value = element.value;
