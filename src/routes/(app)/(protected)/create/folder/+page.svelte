@@ -1,11 +1,9 @@
 <script lang="ts">
     import { Form, FormInput, FormSubmit, FormRow } from "$lib/components/Form";
-    import { page } from "$app/state";
     import { goto } from "$app/navigation";
     import determineWording from "$lib/utils/determineWording";
-    import { getContext, onMount } from "svelte";
-    import type { SimpleUserWithEmail } from "$lib/database/documents/User";
     import type { PublicSet } from "$lib/database/documents/Set";
+    import { SvelteSet } from "svelte/reactivity";
 
     export const WORDING = {
         creation: [
@@ -18,12 +16,12 @@
         ],
     };
 
-    const user: SimpleUserWithEmail = getContext("user");
+    let { data } = $props();
+
     let stage: "creation" | "setup" = $state.raw("creation");
     let documentID: string = $state.raw("");
-    let sets: PublicSet[] = $state.raw([]);
-    let addedSets: string[] = $state([]);
-    let value: string = $derived(JSON.stringify(addedSets));
+    let addedSets: SvelteSet<string> = new SvelteSet();
+    let value: string = $derived(JSON.stringify(Array.from(addedSets)));
 
     /**
      * Adds or removes a set from the list of sets to be added to the folder.
@@ -32,10 +30,10 @@
      * @returns never
      */
     function addSetToList(id: string) {
-        if (addedSets.includes(id)) {
-            addedSets.splice(addedSets.indexOf(id), 1);
+        if (addedSets.has(id)) {
+            addedSets.delete(id);
         } else {
-            addedSets.push(id);
+            addedSets.add(id);
         }
     }
 
@@ -56,10 +54,6 @@
             documentID = data;
         }
     }
-
-    onMount(async () => {
-        sets = await (await fetch(`/api/user/${user._id}/sets`)).json();
-    });
 </script>
 
 <svelte:head>
@@ -132,11 +126,13 @@
             properties={{ placeholder: "This folder contains all my study sets for..." }}
         />
     {:else}
-        <FormInput id="sets" type="custom">
-            <div class="data" data-type="json" data-value={value}></div>
-
+        <FormInput
+            id="sets"
+            type="custom"
+            properties={{ "data-type": "json", "data-value": value }}
+        >
             <div class="grid grid-cols-2 gap-4">
-                {#each sets as { name, subject, terms, description, _id }}
+                {#each data.userSets as { name, subject, terms, description, _id }}
                     <button
                         class="button-primary relative items-start! justify-start! text-left [&>p]:leading-tight"
                         onclick={() => addSetToList(_id)}
@@ -167,10 +163,10 @@
 
                         <img
                             class="absolute top-2 right-2 size-6! shrink-0"
-                            src={addedSets.includes(_id)
+                            src={addedSets.has(_id)
                                 ? "/icons/general/X.svg"
                                 : "/icons/general/Plus.svg"}
-                            alt={addedSets.includes(_id) ? "Remove" : "Add"}
+                            alt={addedSets.has(_id) ? "Remove" : "Add"}
                         />
                     </button>
                 {/each}
