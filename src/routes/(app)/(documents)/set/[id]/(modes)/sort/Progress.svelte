@@ -8,7 +8,7 @@
         knows: number;
         terms: number;
     } = $props();
-    let termsSorted: number = $state(stillLearning + knows);
+    let sorted: number = $derived(stillLearning + knows);
 </script>
 
 <div class="relative mb-1 flex w-full items-center justify-between px-3">
@@ -18,11 +18,11 @@
     <div class="x-center y-center bg-primary-400 h-1 w-1/2 rounded-full">
         <div
             class="relative h-full overflow-hidden rounded-full bg-green-500 transition-[width] duration-200"
-            style:width="{(termsSorted / terms) * 100}%"
+            style:width="{(sorted / terms) * 100}%"
         >
             <span
                 class="y-center bg-accent-alert left-0 h-full transition-[width] duration-200"
-                style:width="{(stillLearning / termsSorted) * 100}%"
+                style:width="{(stillLearning / sorted) * 100}%"
             ></span>
         </div>
     </div>

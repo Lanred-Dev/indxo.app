@@ -11,12 +11,20 @@ export async function load({ fetch, params }) {
 
     if (set.terms.length === 0) redirect(302, `/set/${params.id}`);
 
-    const savedSorting: SortingTerm[] = await (
+    let saved: SortingTerm[] = await (
         await fetch(`/api/documents/set/${params.id}/sorting`)
     ).json();
 
+    if (saved.length === 0)
+        saved = set.terms.map(({ _id }) => ({
+            _id,
+            knows: false,
+            missed: 0,
+            sorted: false,
+        }));
+
     return {
         set,
-        savedSorting,
+        saved,
     };
 }
