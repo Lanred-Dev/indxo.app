@@ -6,7 +6,12 @@ import type { Set } from "./Set";
 
 type Favorite = [string, "set" | "folder"];
 
-export type SortingTerm = [string, -1 | 1, number];
+export type SortingTerm = {
+    _id: string;
+    knows: boolean;
+    wrong: number;
+    sorted: boolean;
+};
 
 export type HomeSection = [string, string];
 
