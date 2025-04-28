@@ -7,5 +7,5 @@ export async function load({ fetch, params }) {
     if (response.status === 403) redirect(307, `/set/${params.id}`);
 
     const set: PublicSet = await response.json();
-    return set;
+    return { set };
 }

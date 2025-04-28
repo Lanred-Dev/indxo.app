@@ -46,12 +46,17 @@
 </script>
 
 <svelte:head>
-    <title>Edit {data.name}</title>
+    <title>Edit {data.set.name}</title>
 </svelte:head>
 
-<Form classes="w-full" method="PUT" endpoint="/api/documents/set/{data._id}/update" {afterSubmit}>
+<Form
+    classes="w-full"
+    method="PUT"
+    endpoint="/api/documents/set/{data.set._id}/update"
+    {afterSubmit}
+>
     <div class="flex items-center justify-between">
-        <a class="button-primary" href="/set/{data._id}">Back to {determineWording("set")}</a>
+        <a class="button-primary" href="/set/{data.set._id}">Back to {determineWording("set")}</a>
 
         <div class="flex-center gap-3">
             {#if updatedText.length > 0}
@@ -69,7 +74,7 @@
                 label="Visiblity"
                 type="checkbox"
                 properties={{
-                    value: data.isPublic,
+                    value: data.set.isPublic,
                     text: ["Public", "Private"],
                     icons: ["/icons/general/Web.svg", "/icons/general/Lock.svg"],
                 }}
@@ -79,14 +84,14 @@
                 id="name"
                 label="Name"
                 type="text"
-                properties={{ value: data.name, placeholder: "Yapping 101 final exam..." }}
+                properties={{ value: data.set.name, placeholder: "Yapping 101 final exam..." }}
             />
 
             <FormInput
                 id="subject"
                 label="Subject"
                 type="text"
-                properties={{ value: data.subject, placeholder: "Math, English, ..." }}
+                properties={{ value: data.set.subject, placeholder: "Math, English, ..." }}
             />
         </FormRow>
 
@@ -95,7 +100,7 @@
             label="What is this study set for?"
             type="textarea"
             properties={{
-                value: data.description,
+                value: data.set.description,
                 placeholder: "This study set is for my final exam...",
             }}
         />
@@ -108,7 +113,7 @@
             addText: `Add ${determineWording("card")}`,
             startingItems: 3,
             isDraggable: true,
-            items: data.terms.map(({ _id, term, definition }) => ({
+            items: data.set.terms.map(({ _id, term, definition }) => ({
                 _id,
                 properties: [
                     {
