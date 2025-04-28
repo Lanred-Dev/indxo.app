@@ -9,7 +9,7 @@ type Favorite = [string, "set" | "folder"];
 export type SortingTerm = {
     _id: string;
     knows: boolean;
-    wrong: number;
+    missed: number;
     sorted: boolean;
 };
 
