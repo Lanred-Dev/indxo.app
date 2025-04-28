@@ -13,5 +13,5 @@ export async function GET({ params, locals, fetch }) {
         error(403, "You do not have permission to view this set.");
 
     const user: User = await idToDocument("users", locals.user._id);
-    return json(user.sorting[params.id] || []);
+    return json(user.sorting[params.id] ?? []);
 }
