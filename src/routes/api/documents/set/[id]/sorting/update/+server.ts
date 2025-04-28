@@ -16,14 +16,6 @@ export async function POST({ params, request, locals, fetch }) {
         error(403, "You do not have permission to view this set.");
 
     const sorting: SortingTerm[] = await request.json();
-    const ids: string[] = [];
-
-    // Remove duplicates
-    sorting.forEach(([id], index) => {
-        if (!ids.includes(id)) return ids.push(id);
-
-        sorting.splice(index, 1);
-    });
 
     users.updateOne(
         {
