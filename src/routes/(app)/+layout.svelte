@@ -74,7 +74,7 @@
 
 {#if isInitialLoad}
     <style>
-        body * {
+        * {
             transition: none !important;
         }
     </style>
@@ -94,13 +94,16 @@
     {/if}
 
     <div
-        class="relative flex w-full grow overflow-hidden {!isInitialLoad
-            ? 'transition-[padding-left] duration-400'
-            : ''}"
+        class="relative flex w-full grow overflow-hidden transition-[padding-left] duration-400"
         style:padding-top="{sizes.header}px"
         style:padding-left="{isMobile || !sidebar.visible ? 0 : sizes.sidebar}px"
     >
-        <div class="relative h-full w-full">
+        <div
+            class="relative h-full w-full transition-[padding-left] duration-400 {!isMobile &&
+            !sidebar.visible
+                ? 'pl-[5%] lg:pl-[10%]'
+                : ''}"
+        >
             {#if isLoading}
                 <div class="x-center y-center bg-primary z-40 flex h-full w-full" transition:fade>
                     <div class="x-center y-center">
