@@ -13,6 +13,7 @@ const WORDING: { [key: string]: string } = {
     modes: "Study Modes",
     test: "Quiz",
     sort: "Sort",
+    matching: "Matching",
 };
 
 /**
