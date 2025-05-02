@@ -46,5 +46,24 @@
 
     <Info {...data.set as PublicSet} />
 
-    <ModeSelector id={data.set?._id ?? ""} />
+    <ModeSelector
+        id={data.set?._id ?? ""}
+        modes={[
+            {
+                text: determineWording("sort"),
+                icon: "/icons/general/Star.svg",
+                endpoint: "sort",
+            },
+            {
+                text: determineWording("matching"),
+                icon: "/icons/general/Star.svg",
+                endpoint: "matching",
+            },
+            {
+                text: determineWording("test"),
+                icon: "/icons/general/Star.svg",
+                endpoint: "quiz",
+            },
+        ]}
+    />
 {/if}
