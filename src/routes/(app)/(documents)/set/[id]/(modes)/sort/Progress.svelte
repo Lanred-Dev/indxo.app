@@ -9,6 +9,8 @@
         terms: number;
     } = $props();
     let sorted: number = $derived(stillLearning + knows);
+
+    $inspect(stillLearning, knows, terms, sorted);
 </script>
 
 <div class="relative mb-1 flex w-full items-center justify-between px-3">
