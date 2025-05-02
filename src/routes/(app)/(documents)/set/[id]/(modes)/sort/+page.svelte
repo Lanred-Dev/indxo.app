@@ -10,6 +10,7 @@
     import { SvelteMap, SvelteSet } from "svelte/reactivity";
     import determineWording from "$lib/utils/determineWording";
     import { fade } from "svelte/transition";
+    import type { SortingTerm } from "$lib/database/documents/User";
 
     const STRUGGLING_TERM_THRESHOLD: number = 3;
 
@@ -33,19 +34,35 @@
     let canFlip: boolean = $state.raw(true);
 
     let actualTerms: Term[] = $state.raw(
-        data.set.terms.filter(
-            (term) => data.saved.findIndex(({ _id, sorted }) => _id === term._id && !sorted) !== -1
-        )
+        data.set.terms.filter((term) => {
+            const matchedTerm: SortingTerm | undefined = data.saved.find(
+                ({ _id }) => _id === term._id
+            );
+
+            if (matchedTerm) {
+                return !matchedTerm.sorted;
+            } else {
+                // If the term is not in the saved array, it means it is not sorted yet
+                return true;
+            }
+        })
     );
-    let currentTermIndex: number = $state.raw(
-        // svelte-ignore state_referenced_locally
-        actualTerms.findIndex(
-            ({ _id }) =>
-                _id === (data.saved.filter(({ sorted }) => !sorted)[0]?._id ?? actualTerms[0]._id)
-        )
-    );
+    let currentTermIndex: number = $state.raw(0);
     let unsortedTerms: SvelteSet<string> = new SvelteSet(
-        data.saved.filter(({ sorted }) => !sorted).map(({ _id }) => _id)
+        data.set.terms
+            .filter((term) => {
+                const matchedTerm: SortingTerm | undefined = data.saved.find(
+                    ({ _id }) => _id === term._id
+                );
+
+                if (matchedTerm) {
+                    return !matchedTerm.sorted;
+                } else {
+                    // If the term is not in the saved array, it means it is not sorted yet
+                    return true;
+                }
+            })
+            .map(({ _id }) => _id)
     );
     let stillLearningTerms: SvelteSet<string> = new SvelteSet(
         data.saved.filter(({ knows, sorted }) => !knows && sorted).map(({ _id }) => _id)
@@ -143,8 +160,10 @@
 
         if (knows === 1) {
             knowTerms.add(id);
+            struggling.set(id, 0);
         } else if (knows === -1) {
             stillLearningTerms.add(id);
+            struggling.set(id, (struggling.get(id) ?? 0) + 1);
         }
 
         unsortedTerms.delete(id);
