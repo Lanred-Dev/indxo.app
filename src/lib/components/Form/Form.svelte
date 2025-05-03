@@ -92,7 +92,7 @@
             data[id] = typeof value === "string" ? value.trim() : value;
         });
 
-        const response = await fetch(endpoint, {
+        const response: Response = await fetch(endpoint, {
             method,
             body: JSON.stringify(data),
         });

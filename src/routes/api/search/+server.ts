@@ -10,6 +10,8 @@ const users: Collection<User> = loadCollection("accounts", "users");
 const sets: Collection<Set> = loadCollection("documents", "sets");
 const folders: Collection<Folder> = loadCollection("documents", "folders");
 
+export type ReturnOnly = "user" | "set" | "folder";
+
 export async function POST({ request }) {
     const {
         query,
@@ -17,7 +19,7 @@ export async function POST({ request }) {
         maxResults = 5,
     }: {
         query: string;
-        returnOnly?: "user" | "set" | "folder";
+        returnOnly?: ReturnOnly;
         maxResults?: number;
     } = await request.json();
 

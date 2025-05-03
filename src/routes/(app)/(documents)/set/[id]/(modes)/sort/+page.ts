@@ -3,7 +3,7 @@ import type { SortingTerm } from "$lib/database/documents/User";
 import { redirect } from "@sveltejs/kit";
 
 export async function load({ fetch, params }) {
-    const response = await fetch(`/api/documents/set/${params.id}`);
+    const response: Response = await fetch(`/api/documents/set/${params.id}`);
 
     if (response.status === 403) redirect(403, `/set/${params.id}`);
 

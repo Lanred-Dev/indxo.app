@@ -2,7 +2,7 @@ import type { PublicFolder } from "$lib/database/documents/Folder.js";
 import type { PublicSet } from "$lib/database/documents/Set.js";
 import type { PublicUser } from "$lib/database/documents/User.js";
 import determineWording from "$lib/utils/determineWording.js";
-import type { returnOnly } from "../../(protected)/api/search/+server.js";
+import type { ReturnOnly } from "../../api/search/+server.js";
 
 export async function load({ fetch, url }) {
     const searchParams = new URLSearchParams(url.search);
@@ -14,7 +14,7 @@ export async function load({ fetch, url }) {
         };
     }
 
-    const returnOnly: returnOnly | null = searchParams.get("returnOnly") as returnOnly;
+    const returnOnly: ReturnOnly | null = searchParams.get("returnOnly") as ReturnOnly;
     const results: PublicUser | PublicSet | PublicFolder = await (
         await fetch("/api/search", {
             method: "POST",

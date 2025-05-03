@@ -1,7 +1,7 @@
 import type { PublicSet } from "$lib/database/documents/Set";
 
 export async function load({ fetch, params }) {
-    const response = await fetch(`/api/documents/set/${params.id}`);
+    const response: Response = await fetch(`/api/documents/set/${params.id}`);
 
     if (response.status === 403)
         return {

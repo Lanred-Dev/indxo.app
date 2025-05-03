@@ -2,7 +2,7 @@ import type { PublicFolder } from "$lib/database/documents/Folder.js";
 import { redirect } from "@sveltejs/kit";
 
 export async function load({ fetch, params }) {
-    const response = await fetch(`/api/documents/folder/${params.id}`);
+    const response: Response = await fetch(`/api/documents/folder/${params.id}`);
 
     if (response.status === 403) redirect(307, `/folder/${params.id}`);
 

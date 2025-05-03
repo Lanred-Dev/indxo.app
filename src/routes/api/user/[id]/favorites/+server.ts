@@ -12,7 +12,7 @@ export async function GET({ params, fetch }) {
     const favorites: (PublicSet | PublicFolder)[] = [];
 
     for (const [id, type] of user.favorites) {
-        const response = await fetch(`/api/documents/${type}/${id}`);
+        const response: Response = await fetch(`/api/documents/${type}/${id}`);
 
         if (response.status !== 200) continue;
 
