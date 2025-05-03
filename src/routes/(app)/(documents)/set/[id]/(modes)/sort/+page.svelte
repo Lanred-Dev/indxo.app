@@ -8,8 +8,17 @@
     import Controls from "../../Controls.svelte";
     import { beforeNavigate } from "$app/navigation";
     import { SvelteMap, SvelteSet } from "svelte/reactivity";
+    import determineWording from "$lib/utils/determineWording";
+    import { fade } from "svelte/transition";
+    import type { SortingTerm } from "$lib/database/documents/User";
 
     const STRUGGLING_TERM_THRESHOLD: number = 3;
+
+    const SORTING_MESSAGES: [number, string[]][] = [
+        [0, ["You're still learning.", "You've got room to grow."]],
+        [0.5, ["You know this.", "You're doing great."]],
+        [1, ["Awesome!", "You're a genius."]],
+    ];
 
     let { data } = $props();
 
@@ -23,17 +32,37 @@
     let termCardComponent: TermCard;
     let canCycle: boolean = $state.raw(true);
     let canFlip: boolean = $state.raw(true);
-    let currentTermIndex: number = $state.raw(
-        data.set.terms.findIndex(
-            ({ _id }) =>
-                _id ===
-                (data.saved.filter(({ sorted }) => !sorted)[0]?._id ?? data.set.terms[0]._id)
-        )
-    );
 
-    let actualTerms: Term[] = $state.raw(data.set.terms);
+    let actualTerms: Term[] = $state.raw(
+        data.set.terms.filter((term) => {
+            const matchedTerm: SortingTerm | undefined = data.saved.find(
+                ({ _id }) => _id === term._id
+            );
+
+            if (matchedTerm) {
+                return !matchedTerm.sorted;
+            } else {
+                // If the term is not in the saved array, it means it is not sorted yet
+                return true;
+            }
+        })
+    );
+    let currentTermIndex: number = $state.raw(0);
     let unsortedTerms: SvelteSet<string> = new SvelteSet(
-        data.saved.filter(({ sorted }) => !sorted).map(({ _id }) => _id)
+        data.set.terms
+            .filter((term) => {
+                const matchedTerm: SortingTerm | undefined = data.saved.find(
+                    ({ _id }) => _id === term._id
+                );
+
+                if (matchedTerm) {
+                    return !matchedTerm.sorted;
+                } else {
+                    // If the term is not in the saved array, it means it is not sorted yet
+                    return true;
+                }
+            })
+            .map(({ _id }) => _id)
     );
     let stillLearningTerms: SvelteSet<string> = new SvelteSet(
         data.saved.filter(({ knows, sorted }) => !knows && sorted).map(({ _id }) => _id)
@@ -49,13 +78,39 @@
         return object;
     }, new SvelteMap<string, number>());
 
+    let actualStrugglingTerms: string[] = $derived.by(() => {
+        const actual: string[] = [];
+
+        struggling.forEach((missed, id) => {
+            if (missed < STRUGGLING_TERM_THRESHOLD) return;
+
+            actual.push(id);
+        });
+
+        return actual;
+    });
+    let resultsMessage: string = $derived.by(() => {
+        if (unsortedTerms.size > 0) return "";
+
+        let messages: string[] = [];
+
+        SORTING_MESSAGES.forEach(([threshold, potentialMessages]) => {
+            if (knowTerms.size / actualTerms.length < threshold) return;
+
+            messages = potentialMessages;
+        });
+
+        return messages[(Math.random() * messages.length) | 0];
+    });
+
     /**
      * Shuffle the terms in the set. Resets the current term to the first one.
      *
      * @returns never
      */
     function shuffle() {
-        termCardComponent.flipCard(false, false);
+        if (termCardComponent) termCardComponent.flipCard(false, false);
+
         currentTermIndex = 0;
         actualTerms.sort(() => Math.random() - 0.5);
     }
@@ -75,8 +130,13 @@
         canFlip = true;
         currentTermIndex = 0;
         actualTerms = data.set.terms.filter(({ _id }) => withTerms.includes(_id));
-        termCardComponent.flipCard(false, false);
         shuffle();
+
+        unsortedTerms.clear();
+
+        actualTerms.forEach(({ _id }) => {
+            unsortedTerms.add(_id);
+        });
 
         if (fullReset) {
             knowTerms.clear();
@@ -100,8 +160,10 @@
 
         if (knows === 1) {
             knowTerms.add(id);
+            struggling.set(id, 0);
         } else if (knows === -1) {
             stillLearningTerms.add(id);
+            struggling.set(id, (struggling.get(id) ?? 0) + 1);
         }
 
         unsortedTerms.delete(id);
@@ -208,17 +270,87 @@
 </script>
 
 {#if unsortedTerms.size === 0}
-    <p>PLACEHOLDER</p>
+    <div class="w-full space-y-6" in:fade={{ duration: 200 }}>
+        <div>
+            <p class="text-4xl leading-none font-bold">{resultsMessage}</p>
+            <p class="text-lg">Heres how you did.</p>
+        </div>
+
+        <div class="flex-center w-full gap-4">
+            <div class="w-3/5">
+                <div class="text-lg">
+                    <p>
+                        You are still learning <span class="text-alert font-bold"
+                            >{stillLearningTerms.size}</span
+                        >
+                        {determineWording("terms")}
+                    </p>
+
+                    <p>
+                        You know <span class="font-bold text-green-500">{knowTerms.size}</span>
+                        {determineWording("terms")}
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex-center grow flex-col gap-4 [&>button]:w-full">
+                <button
+                    class="button-attention"
+                    onclick={() => {
+                        restart(Array.from(stillLearningTerms.values()), false);
+
+                        stillLearningTerms.clear();
+                    }}
+                    disabled={stillLearningTerms.size === 0}
+                    >Study {stillLearningTerms.size > 0 ? stillLearningTerms.size : ""} still learning</button
+                >
+
+                <button
+                    class="button-primary"
+                    onclick={() => {
+                        actualStrugglingTerms.forEach((id) => {
+                            stillLearningTerms.delete(id);
+                            knowTerms.delete(id);
+                        });
+
+                        restart(actualStrugglingTerms, false);
+                    }}
+                    disabled={actualStrugglingTerms.length === 0}
+                    >Study {actualStrugglingTerms.length > 0 ? actualStrugglingTerms.length : ""} struggling
+                    {determineWording("terms")}</button
+                >
+
+                <div class="flex w-full items-center justify-between px-[20%]">
+                    <button
+                        class="text-lg"
+                        onclick={() => {
+                            actualTerms.forEach(({ _id }) => {
+                                stillLearningTerms.delete(_id);
+                                knowTerms.delete(_id);
+                            });
+
+                            restart(
+                                actualTerms.map(({ _id }) => _id),
+                                false
+                            );
+                        }}>Restart</button
+                    >
+
+                    <button class="text-lg" onclick={() => restart()}>Start fresh</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {:else}
     <Progress
         stillLearning={stillLearningTerms.size}
         knows={knowTerms.size}
-        terms={actualTerms.length}
+        terms={data.set.terms.length}
     />
 
     <TermCard
-        term={actualTerms[currentTermIndex].term}
-        definition={actualTerms[currentTermIndex].definition}
+        term={actualTerms[currentTermIndex]?.term}
+        definition={actualTerms[currentTermIndex]?.definition}
         bind:card
         bind:canCycle
         bind:canFlip
