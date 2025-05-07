@@ -17,7 +17,7 @@
     import Header from "./Header.svelte";
     import Sidebar from "./Sidebar.svelte";
     import { afterNavigate, beforeNavigate } from "$app/navigation";
-    import { onMount, setContext } from "svelte";
+    import { onMount, setContext, tick } from "svelte";
     import { fade } from "svelte/transition";
     import Loader from "$lib/components/Loader.svelte";
 
@@ -33,7 +33,7 @@
 
     let isMobile: boolean = $state.raw(false);
     let isLoading: boolean = $state.raw(false);
-    // `isInitialLoad` is used so that the sidebar isnt rendered until after checkIfMobile is called. Prevents a flash of the sidebar on mobile devices.
+    // `isInitialLoad` is used to prevent transitions during the initial load of the page.
     let isInitialLoad: boolean = $state.raw(true);
     let viewport: HTMLElement;
 
@@ -63,11 +63,22 @@
         }
     }
 
-    onMount(() => {
-        isInitialLoad = false;
+    onMount(async () => {
         checkIfMobile();
+
+        // tick is used to wait for the DOM to be updated before setting the initial load to false.
+        await tick();
+        isInitialLoad = false;
     });
 </script>
+
+{#if isInitialLoad}
+    <style>
+        * {
+            transition: none !important;
+        }
+    </style>
+{/if}
 
 <svelte:window
     bind:innerHeight={sizes.window.height}
@@ -87,7 +98,12 @@
         style:padding-top="{sizes.header}px"
         style:padding-left="{isMobile || !sidebar.visible ? 0 : sizes.sidebar}px"
     >
-        <div class="relative h-full w-full">
+        <div
+            class="relative h-full w-full transition-[padding-left] duration-400 {!isMobile &&
+            !sidebar.visible
+                ? 'pl-[5%] lg:pl-[10%]'
+                : ''}"
+        >
             {#if isLoading}
                 <div class="x-center y-center bg-primary z-40 flex h-full w-full" transition:fade>
                     <div class="x-center y-center">

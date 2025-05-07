@@ -18,7 +18,7 @@
      * @returns never
      */
     async function toggleFolderInFavorites() {
-        const response = await fetch(`/api/documents/folder/${folder._id}/favorite`);
+        const response: Response = await fetch(`/api/documents/folder/${folder._id}/favorite`);
 
         if (response.status === 200) isFavorite = await response.json();
     }
@@ -29,7 +29,7 @@
      * @returns never
      */
     async function deleteFolder() {
-        const response = await fetch(`/api/documents/folder/${folder._id}/delete`, {
+        const response: Response = await fetch(`/api/documents/folder/${folder._id}/delete`, {
             method: "DELETE",
         });
 

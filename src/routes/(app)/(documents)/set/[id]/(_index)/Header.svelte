@@ -18,7 +18,7 @@
      * @returns never
      */
     async function toggleSetInFavorites() {
-        const response = await fetch(`/api/documents/set/${set._id}/favorite`);
+        const response: Response = await fetch(`/api/documents/set/${set._id}/favorite`);
 
         if (response.status === 200) isFavorite = await response.json();
     }
@@ -29,7 +29,7 @@
      * @returns never
      */
     async function deleteSet() {
-        const response = await fetch(`/api/documents/set/${set._id}/delete`, {
+        const response: Response = await fetch(`/api/documents/set/${set._id}/delete`, {
             method: "DELETE",
         });
 

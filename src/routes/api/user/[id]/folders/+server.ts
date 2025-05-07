@@ -11,7 +11,7 @@ export async function GET({ params, fetch }) {
     const folders: PublicFolder[] = [];
 
     for (const id of user.folders) {
-        const response = await fetch(`/api/documents/folder/${id}`);
+        const response: Response = await fetch(`/api/documents/folder/${id}`);
 
         if (response.status !== 200) continue;
 

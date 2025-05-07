@@ -11,7 +11,7 @@ export async function GET({ params, fetch }) {
     const sets: PublicSet[] = [];
 
     for (const id of user.sets) {
-        const response = await fetch(`/api/documents/set/${id}`);
+        const response: Response = await fetch(`/api/documents/set/${id}`);
 
         if (response.status !== 200) continue;
 
