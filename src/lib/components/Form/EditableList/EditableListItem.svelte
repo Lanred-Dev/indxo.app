@@ -1,9 +1,8 @@
 <script lang="ts">
-    export type ItemActionButton = {
-        isActualButton?: boolean;
-        classes?: string;
-        image?: [string, string];
-        onClick?: (event: MouseEvent) => void;
+    export type ActionButton = {
+        icon: string;
+        text: string;
+        onClick: (event: MouseEvent) => void;
     };
 
     export type ItemProperty = {
@@ -17,7 +16,7 @@
         _listID: number;
         _id?: string;
         properties?: ItemProperty[];
-        actionButtons?: ItemActionButton[];
+        actionButtons?: ActionButton[];
     };
 
     let { _listID, _id, properties = $bindable([]), actionButtons = [] }: ListItem = $props();
@@ -54,16 +53,10 @@
         <p class="text-lg font-bold">#{_listID + 1}</p>
 
         <div class="flex-center gap-3">
-            {#each actionButtons as { isActualButton = true, classes, image, onClick }}
-                {#if isActualButton}
-                    <button class={classes} type="button" onclick={onClick}>
-                        {#if image}
-                            <img class="size-6" src={image[0]} alt={image[1]} />
-                        {/if}
-                    </button>
-                {:else if image}
-                    <img class="size-6" src={image[0]} alt={image[1]} />
-                {/if}
+            {#each actionButtons as { icon, text, onClick }}
+                <button type="button" onclick={onClick} aria-labelledby={text}>
+                    <img class="size-6" src={icon} alt={text} />
+                </button>
             {/each}
         </div>
     </div>

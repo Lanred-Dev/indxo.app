@@ -36,11 +36,12 @@
 
 <script lang="ts">
     import EditableListItem, {
-        type ItemActionButton,
+        type ActionButton,
         type ItemProperty,
         type ListItem,
     } from "./EditableListItem.svelte";
-    import { onMount, type Component } from "svelte";
+    import { onMount } from "svelte";
+    import { slide } from "svelte/transition";
     import { twMerge } from "tailwind-merge";
 
     let {
@@ -61,24 +62,23 @@
         ],
         actionButtons = [
             {
-                image: ["/icons/general/Trash.svg", "Delete"],
+                icon: "/icons/general/Trash.svg",
+                text: "Delete",
                 onClick: onDeleteClicked,
             },
         ],
         items = [],
         isDraggable = false,
         addText = "Add item",
-        ItemComponent = EditableListItem,
     }: {
         labelID?: string;
         classes?: string;
         startingItems?: number;
         properties?: ItemProperty[];
-        actionButtons?: ItemActionButton[];
+        actionButtons?: ActionButton[];
         items?: { _id: string; properties: ItemProperty[] }[];
         addText?: string;
         isDraggable?: boolean;
-        ItemComponent?: Component<{ index: number } & any, {}, "properties">;
     } = $props();
 
     let actualItems: ListItem[] = $state([]);
@@ -92,16 +92,32 @@
      * @returns never
      */
     function addItem(_id: string | null = null, itemProperties: ItemProperty[] = properties) {
-        let actionButtonsClone: ItemActionButton[] | null = [...actionButtons];
+        let actionButtonsClone: ActionButton[] = [...actionButtons];
 
         if (isDraggable) {
-            if (!Array.isArray(actionButtonsClone)) actionButtonsClone = [];
-
             // Adding it at the start of the array ensures the order of the buttons stays correct
             actionButtonsClone.unshift({
-                isActualButton: false,
-                classes: "cursor-move",
-                image: ["/icons/general/Drag.svg", "Drag"],
+                icon: "/icons/general/UpChevron.svg",
+                text: "Move up",
+                onClick: (event: MouseEvent) => {
+                    const editableListItem: HTMLDivElement = (event.target as HTMLElement).closest(
+                        ".EditableListItem"
+                    ) as HTMLDivElement;
+                    const listID: number = parseInt(editableListItem.getAttribute("data-listID")!);
+                    moveItem(listID, Math.max(listID - 1, 0));
+                },
+            });
+
+            actionButtonsClone.unshift({
+                icon: "/icons/general/DownChevron.svg",
+                text: "Move down",
+                onClick: (event: MouseEvent) => {
+                    const editableListItem: HTMLDivElement = (event.target as HTMLElement).closest(
+                        ".EditableListItem"
+                    ) as HTMLDivElement;
+                    const listID: number = parseInt(editableListItem.getAttribute("data-listID")!);
+                    moveItem(listID, Math.min(listID + 1, actualItems.length - 1));
+                },
             });
         }
 
@@ -128,6 +144,21 @@
         actualItems.forEach((item, index) => {
             item._listID = index;
         });
+    }
+
+    /**
+     * Moves an item in the list from one position to another.
+     *
+     * @param from The index of the item to move.
+     * @param to The index to move the item to.
+     * @returns never
+     */
+    function moveItem(from: number, to: number) {
+        if (from === to) return;
+
+        [actualItems[from], actualItems[to]] = [actualItems[to], actualItems[from]];
+        actualItems[from]._listID = from;
+        actualItems[to]._listID = to;
     }
 
     $effect(() => {
@@ -163,7 +194,6 @@
 <div class="EditableList {twMerge('space-y-5', classes)}" aria-labelledby={labelID}>
     <ol class="relative space-y-5">
         {#each actualItems as { _listID, _id, actionButtons }}
-            <!--The `li` element is used for the dragging features.-->
             <li
                 class="transition-all {isDraggable ? 'cursor-move' : ''} {draggingID === _listID
                     ? 'rotate-1 opacity-45'
@@ -179,13 +209,14 @@
                     draggingOverID = -1;
                 }}
                 ondragover={(event: MouseEvent) => {
-                    // Preventing the default hides the not allowed cursor when dragging
+                    // Calling `preventDefault` hides the not allowed cursor when dragging
                     event.preventDefault();
 
                     draggingOverID = _listID;
                 }}
+                in:slide={{ axis: "y" }}
             >
-                <ItemComponent
+                <EditableListItem
                     {_listID}
                     {_id}
                     bind:properties={actualItems[_listID].properties}
@@ -197,6 +228,6 @@
 
     <button class="button-attention w-full" onclick={() => addItem()} type="button">
         <img src="/icons/general/Plus.svg" alt="Plus" />
-        <span>{addText}</span>
+        {addText}
     </button>
 </div>
