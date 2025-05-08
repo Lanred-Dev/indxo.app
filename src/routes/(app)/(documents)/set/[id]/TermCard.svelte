@@ -75,15 +75,18 @@
 
 <svelte:window
     onkeydown={(event: KeyboardEvent) => {
-        // Only register events if the user is not focused on anything or if they are focused on the study cards
+        const target = event.target as HTMLElement | null;
+
         if (
-            document.activeElement?.tagName !== "BODY" &&
-            !(event.target as HTMLElement | null)?.closest("main")
+            target !== null &&
+            target !== document.body &&
+            !target.closest("controls") &&
+            !target.closest("termCard")
         )
             return;
 
         event.preventDefault();
-        (event.target as HTMLElement).blur();
+        target?.blur();
 
         switch (event.key) {
             case " ":
@@ -94,6 +97,7 @@
 />
 
 <button
+    id="termCard"
     class="sm:aspect-2 relative aspect-[1.6] max-h-96 w-full text-3xl"
     style:perspective="1000px"
     onclick={() => flipCard()}

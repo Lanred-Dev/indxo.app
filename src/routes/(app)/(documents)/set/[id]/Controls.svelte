@@ -29,15 +29,18 @@
 
 <svelte:window
     onkeydown={(event: KeyboardEvent) => {
-        // Only register events if the user is not focused on anything or if they are focused on the study cards
+        const target = event.target as HTMLElement | null;
+
         if (
-            document.activeElement?.tagName !== "BODY" &&
-            !(event.target as HTMLElement | null)?.closest("main")
+            target !== null &&
+            target !== document.body &&
+            !target.closest("controls") &&
+            !target.closest("termCard")
         )
             return;
 
         event.preventDefault();
-        (event.target as HTMLElement).blur();
+        target?.blur();
 
         switch (event.key) {
             case "ArrowLeft":
@@ -62,7 +65,7 @@
     </button>
 {/snippet}
 
-<div class="relative mt-4 w-full" in:fade={{ duration: 200 }}>
+<div id="controls" class="relative mt-4 w-full" in:fade={{ duration: 200 }}>
     <div class="flex-center gap-1">
         {@render navigationButton(
             cycleButtons["-1"].icon,
