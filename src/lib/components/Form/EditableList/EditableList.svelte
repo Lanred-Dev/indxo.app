@@ -42,29 +42,16 @@
     } from "./EditableListItem.svelte";
     import { onMount } from "svelte";
     import { slide } from "svelte/transition";
-    import { twMerge } from "tailwind-merge";
 
     let {
         labelID,
-        classes,
         startingItems = 1,
-        properties = [
-            {
-                id: "name",
-                type: "input",
-                placeholder: "Name",
-            },
-            {
-                id: "description",
-                type: "textarea",
-                placeholder: "Description",
-            },
-        ],
+        properties,
         actionButtons = [
             {
                 icon: "/icons/general/Trash.svg",
                 text: "Delete",
-                onClick: onDeleteClicked,
+                onClick: deleteItem,
             },
         ],
         items = [],
@@ -72,11 +59,10 @@
         addText = "Add item",
     }: {
         labelID?: string;
-        classes?: string;
         startingItems?: number;
-        properties?: ItemProperty[];
+        properties: ItemProperty[];
         actionButtons?: ActionButton[];
-        items?: { _id: string; properties: ItemProperty[] }[];
+        items?: { _id: string; properties: { [id: string]: string } }[];
         addText?: string;
         isDraggable?: boolean;
     } = $props();
@@ -91,41 +77,12 @@
      *
      * @returns never
      */
-    function addItem(_id: string | null = null, itemProperties: ItemProperty[] = properties) {
-        let actionButtonsClone: ActionButton[] = [...actionButtons];
-
-        if (isDraggable) {
-            // Adding it at the start of the array ensures the order of the buttons stays correct
-            actionButtonsClone.unshift({
-                icon: "/icons/general/UpChevron.svg",
-                text: "Move up",
-                onClick: (event: MouseEvent) => {
-                    const editableListItem: HTMLDivElement = (event.target as HTMLElement).closest(
-                        ".EditableListItem"
-                    ) as HTMLDivElement;
-                    const listID: number = parseInt(editableListItem.getAttribute("data-listID")!);
-                    moveItem(listID, Math.max(listID - 1, 0));
-                },
-            });
-
-            actionButtonsClone.unshift({
-                icon: "/icons/general/DownChevron.svg",
-                text: "Move down",
-                onClick: (event: MouseEvent) => {
-                    const editableListItem: HTMLDivElement = (event.target as HTMLElement).closest(
-                        ".EditableListItem"
-                    ) as HTMLDivElement;
-                    const listID: number = parseInt(editableListItem.getAttribute("data-listID")!);
-                    moveItem(listID, Math.min(listID + 1, actualItems.length - 1));
-                },
-            });
-        }
-
+    function addItem(id?: string, itemProperties: ItemProperty[] = properties) {
         actualItems.push({
             _listID: actualItems.length,
-            _id: _id ?? undefined,
+            _id: id,
             properties: itemProperties,
-            actionButtons: actionButtonsClone,
+            actionButtons,
         });
     }
 
@@ -135,7 +92,7 @@
      * @param event The click event.
      * @returns never
      */
-    function onDeleteClicked(event: MouseEvent) {
+    function deleteItem(event: MouseEvent) {
         const editableListItem: HTMLDivElement = (event.target as HTMLElement).closest(
             ".EditableListItem"
         ) as HTMLDivElement;
@@ -170,19 +127,54 @@
         )
             return;
 
-        [actualItems[draggingID], actualItems[draggingOverID]] = [
-            actualItems[draggingOverID],
-            actualItems[draggingID],
-        ];
-        actualItems[draggingID]._listID = draggingID;
-        actualItems[draggingOverID]._listID = draggingOverID;
+        moveItem(draggingID, draggingOverID);
         draggingID = draggingOverID;
     });
 
     onMount(() => {
+        if (isDraggable) {
+            actionButtons.unshift({
+                icon: "/icons/general/UpChevron.svg",
+                text: "Move up",
+                onClick: (event: MouseEvent) => {
+                    const editableListItem: HTMLDivElement = (event.target as HTMLElement).closest(
+                        ".EditableListItem"
+                    ) as HTMLDivElement;
+                    const listID: number = parseInt(editableListItem.getAttribute("data-listID")!);
+                    moveItem(listID, Math.max(listID - 1, 0));
+                },
+            });
+
+            actionButtons.unshift({
+                icon: "/icons/general/DownChevron.svg",
+                text: "Move down",
+                onClick: (event: MouseEvent) => {
+                    const editableListItem: HTMLDivElement = (event.target as HTMLElement).closest(
+                        ".EditableListItem"
+                    ) as HTMLDivElement;
+                    const listID: number = parseInt(editableListItem.getAttribute("data-listID")!);
+                    moveItem(listID, Math.min(listID + 1, actualItems.length - 1));
+                },
+            });
+        }
+
         if (items.length > 0) {
-            items.forEach(({ _id, properties }) => {
-                addItem(_id, properties);
+            items.forEach(({ _id, properties: itemProperties }) => {
+                addItem(
+                    _id,
+                    Object.entries(itemProperties).map(([_id, value]) => {
+                        const { placeholder, type }: ItemProperty = properties.find(
+                            (property) => property._id === _id
+                        )!;
+
+                        return {
+                            _id,
+                            value,
+                            placeholder,
+                            type,
+                        };
+                    })
+                );
             });
         } else {
             // Add the requested number of items to start with
@@ -191,7 +183,7 @@
     });
 </script>
 
-<div class="EditableList {twMerge('space-y-5', classes)}" aria-labelledby={labelID}>
+<div class="EditableList space-y-5" aria-labelledby={labelID}>
     <ol class="relative space-y-5">
         {#each actualItems as { _listID, _id, actionButtons }}
             <li

@@ -6,7 +6,7 @@
     };
 
     export type ItemProperty = {
-        id: string;
+        _id: string;
         type?: "input" | "textarea";
         placeholder?: string;
         value?: string;
@@ -24,8 +24,8 @@
     let value: string = $derived.by(() => {
         const actualProperties: { [id: string]: string } = {};
 
-        for (const { id, value = "" } of properties) {
-            actualProperties[id] = value.trim();
+        for (const { _id, value = "" } of properties) {
+            actualProperties[_id] = value.trim();
         }
 
         return JSON.stringify({ ...actualProperties });
