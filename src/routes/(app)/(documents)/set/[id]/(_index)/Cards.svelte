@@ -57,7 +57,8 @@
         canCycle = true;
         canFlip = true;
         currentTermIndex = 0;
-        termCardComponent.flipCard(false, false);
+
+        if (termCardComponent) termCardComponent.flipCard(false, false);
     }
 
     /**
@@ -82,8 +83,8 @@
     <p class="my-20 text-center text-lg font-bold md:my-24">This set has no terms</p>
 {:else}
     <TermCard
-        term={actualTerms[currentTermIndex].term}
-        definition={actualTerms[currentTermIndex].definition}
+        term={actualTerms[currentTermIndex]?.term}
+        definition={actualTerms[currentTermIndex]?.definition}
         bind:card
         bind:canCycle
         bind:canFlip
