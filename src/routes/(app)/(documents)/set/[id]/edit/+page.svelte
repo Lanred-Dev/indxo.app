@@ -115,29 +115,19 @@
             isDraggable: true,
             items: data.set.terms.map(({ _id, term, definition }) => ({
                 _id,
-                properties: [
-                    {
-                        id: "term",
-                        type: "input",
-                        value: term,
-                        placeholder: "Term",
-                    },
-                    {
-                        id: "definition",
-                        type: "textarea",
-                        value: definition,
-                        placeholder: "Definition",
-                    },
-                ],
+                properties: {
+                    term,
+                    definition,
+                },
             })),
             properties: [
                 {
-                    id: "term",
+                    _id: "term",
                     type: "input",
                     placeholder: "Term",
                 },
                 {
-                    id: "definition",
+                    _id: "definition",
                     type: "textarea",
                     placeholder: "Definition",
                 },

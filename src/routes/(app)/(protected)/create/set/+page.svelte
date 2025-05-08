@@ -98,12 +98,12 @@
                 isDraggable: true,
                 properties: [
                     {
-                        id: "term",
+                        _id: "term",
                         type: "input",
                         placeholder: "Term",
                     },
                     {
-                        id: "definition",
+                        _id: "definition",
                         type: "textarea",
                         placeholder: "Definition",
                     },
