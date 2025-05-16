@@ -1,5 +1,5 @@
 <script module lang="ts">
-    export function GetFormInputValue(inputContainer: HTMLElement): boolean {
+    export function getCheckboxFormInputValue(inputContainer: HTMLElement): boolean {
         const checkbox: HTMLButtonElement = inputContainer.querySelector(
             ".CheckboxInput"
         ) as HTMLButtonElement;
@@ -8,17 +8,36 @@
 </script>
 
 <script lang="ts">
+    import determineTextWidth from "$lib/utils/determineTextWidth";
+    import { onMount } from "svelte";
+
     let {
         labelID,
-        text,
-        icons = ["/icons/general/Check.svg", "/icons/general/X.svg"],
+        states = {
+            true: {
+                icon: "/icons/general/Check.svg",
+            },
+            false: {
+                icon: "/icons/general/X.svg",
+            },
+        },
         value: checkboxValue = $bindable(false),
     }: {
         labelID?: string;
-        icons?: [string, string];
-        text?: [string, string];
+        states?: {
+            true: { text?: string; icon: string };
+            false: { text?: string; icon: string };
+        };
         value?: boolean;
     } = $props();
+
+    let falseStateLength: number = $state(0);
+    let trueStateLength: number = $state(0);
+
+    onMount(() => {
+        falseStateLength = determineTextWidth(states.false.text ?? "", "text-lg");
+        trueStateLength = determineTextWidth(states.true.text ?? "", "text-lg");
+    });
 </script>
 
 <button
@@ -31,11 +50,15 @@
 >
     <img
         class="size-7"
-        src={checkboxValue ? icons[0] : icons[1]}
-        alt={checkboxValue ? "True" : "False"}
+        src={checkboxValue ? states.true.icon : states.false.icon}
+        alt={checkboxValue ? states.true.text : states.false.text}
     />
 
-    {#if text}
-        <span class="select-none">{checkboxValue ? text[0] : text[1]}</span>
+    {#if states.true.text || states.false.text}
+        <span
+            class="text-left select-none"
+            style:width="{Math.max(falseStateLength, trueStateLength)}px"
+            >{checkboxValue ? states.true.text : states.false.text}</span
+        >
     {/if}
 </button>

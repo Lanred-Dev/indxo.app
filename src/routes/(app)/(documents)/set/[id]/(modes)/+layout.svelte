@@ -25,8 +25,13 @@
     });
 </script>
 
-<div class="mb-10">
-    <a href="/set/{data.id}">Back to {determineWording("set")}</a>
+<div class="relative mb-10 w-full">
+    <p class="md:x-center md:y-center mb-3 text-2xl">{data.name}</p>
+
+    <a class="button-basic w-fit" href="/set/{data._id}">
+        <img src="/icons/general/LeftChevron.svg" alt="Back" />
+        Back to {determineWording("set")}
+    </a>
 </div>
 
 {@render children?.()}

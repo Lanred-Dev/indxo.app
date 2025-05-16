@@ -65,13 +65,13 @@
         {#each properties as { type, placeholder }, index}
             {#if type === "input"}
                 <input
-                    class="input-secondary grow"
+                    class="input-primary grow"
                     {placeholder}
                     bind:value={properties[index].value}
                 />
             {:else if type === "textarea"}
                 <textarea
-                    class="input-secondary min-h-28 w-full resize-none"
+                    class="input-primary min-h-28 w-full resize-none"
                     {placeholder}
                     bind:value={properties[index].value}
                 ></textarea>

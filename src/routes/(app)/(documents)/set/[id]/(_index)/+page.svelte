@@ -2,16 +2,12 @@
     import Info from "./Info.svelte";
     import Cards from "./Cards.svelte";
     import type { PublicSet } from "$lib/database/documents/Set";
-    import { onMount } from "svelte";
     import Header from "./Header.svelte";
     import ModeSelector from "./ModeSelector.svelte";
     import determineWording from "$lib/utils/determineWording";
+    import Terms from "./Terms.svelte";
 
     let { data } = $props();
-
-    onMount(async () => {
-        await fetch(`/api/documents/set/${data.set?._id}/open`);
-    });
 </script>
 
 <svelte:head>
@@ -66,4 +62,6 @@
             },
         ]}
     />
+
+    <Terms saved={data.saved ?? []} terms={data.set?.terms ?? []}></Terms>
 {/if}

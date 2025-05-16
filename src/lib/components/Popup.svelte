@@ -137,7 +137,7 @@
 
 {#if visible && canShow}
     <div
-        class={twMerge("container-primary bg-primary! fixed z-50 shadow-lg", classes)}
+        class={twMerge("container-primary fixed z-50 shadow-lg!", classes)}
         style:pointer-events={visible ? "auto" : "none"}
         style:left="{position.x}px"
         style:top="{position.y}px"

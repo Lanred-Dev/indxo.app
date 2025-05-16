@@ -46,25 +46,32 @@
 </script>
 
 <svelte:head>
-    <title>Edit {data.name}</title>
+    <title>Edit {data.folder.name}</title>
 </svelte:head>
 
 <Form
     classes="w-full"
     method="PUT"
-    endpoint="/api/documents/folder/{data._id}/update"
+    endpoint="/api/documents/folder/{data.folder._id}/update"
     {afterSubmit}
 >
-    <div class="flex items-center justify-between">
-        <a class="button-primary" href="/folder/{data._id}">Back to {determineWording("folder")}</a>
+    <div class="relative w-full">
+        <p class="md:x-center md:y-center mb-3 text-2xl md:mb-0">{data.folder.name}</p>
 
-        <div class="flex-center gap-3">
-            {#if updatedText.length > 0}
-                <p class="text-light text-nowrap">Last updated {updatedText}</p>
-            {/if}
+        <div class="flex w-full flex-wrap items-center justify-between gap-5">
+            <a class="button-basic" href="/folder/{data.folder._id}">
+                <img src="/icons/general/LeftChevron.svg" alt="Back" />
+                Back to {determineWording("folder")}
+            </a>
 
-            <FormSubmit text="Update" />
+            <div class="flex-center gap-3">
+                <FormSubmit text="Update" />
+            </div>
         </div>
+
+        {#if updatedText.length > 0}
+            <p class="text-light mt-1 w-full text-right text-nowrap">Last updated {updatedText}</p>
+        {/if}
     </div>
 
     <div class="space-y-5 py-12">
@@ -74,9 +81,17 @@
                 label="Visiblity"
                 type="checkbox"
                 properties={{
-                    value: data.isPublic,
-                    text: ["Public", "Private"],
-                    icons: ["/icons/general/Web.svg", "/icons/general/Lock.svg"],
+                    value: data.folder.isPublic,
+                    states: {
+                        true: {
+                            text: "Public",
+                            icon: "/icons/general/Web.svg",
+                        },
+                        false: {
+                            text: "Private",
+                            icon: "/icons/general/Lock.svg",
+                        },
+                    },
                 }}
             />
 
@@ -85,7 +100,7 @@
                 label="Icon"
                 type="dropdown"
                 properties={{
-                    value: data.icon,
+                    value: data.folder.icon,
                     items: [
                         {
                             value: "/icons/folder/Folder.svg",
@@ -110,7 +125,7 @@
                 id="name"
                 label="Name"
                 type="text"
-                properties={{ value: data.name, placeholder: "AP Lit Exam" }}
+                properties={{ value: data.folder.name, placeholder: "AP Lit Exam" }}
             />
         </FormRow>
 
@@ -119,7 +134,7 @@
             label="What is this folder for?"
             type="textarea"
             properties={{
-                value: data.description,
+                value: data.folder.description,
                 placeholder: "This folder contains all my study sets for...",
             }}
         />

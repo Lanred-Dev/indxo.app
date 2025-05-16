@@ -1,5 +1,5 @@
 <script lang="ts">
-    let { size = 3, color = "#adc2d4" }: { size?: number; color?: string } = $props();
+    let { size = 3, color = "#6088d3" }: { size?: number; color?: string } = $props();
 </script>
 
 <svg

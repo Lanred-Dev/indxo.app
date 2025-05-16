@@ -28,6 +28,8 @@ export async function load({ fetch, params }) {
             sorted: false,
         }));
 
+    await fetch(`/api/documents/set/${set._id}/open`);
+
     return {
         canView: true,
         set,

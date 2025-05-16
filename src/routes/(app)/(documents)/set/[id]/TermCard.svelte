@@ -80,8 +80,8 @@
         if (
             target !== null &&
             target !== document.body &&
-            !target.closest("controls") &&
-            !target.closest("termCard")
+            !target.closest("#controls") &&
+            !target.closest("#termCard")
         )
             return;
 
@@ -98,7 +98,7 @@
 
 <button
     id="termCard"
-    class="sm:aspect-2 relative aspect-[1.6] max-h-96 w-full text-3xl"
+    class="sm:aspect-2 relative aspect-[1.6] max-h-96 w-full text-3xl outline-none"
     style:perspective="1000px"
     onclick={() => flipCard()}
     in:fade={{ duration: 200 }}
@@ -111,7 +111,7 @@
         {@render overlay?.()}
 
         <div
-            class="[&>*]:rounded-primary [&>*]:border-primary [&>*]:bg-primary-200 [&>*]:absolute [&>*]:top-0 [&>*]:left-0 [&>*]:flex [&>*]:h-full [&>*]:w-full [&>*]:items-center [&>*]:justify-center [&>*]:overflow-y-auto [&>*]:border [&>*]:p-6 [&>*]:shadow-xl"
+            class="[&>div]:rounded-container [&>div]:border-primary [&>div]:flex-center [&>div]:absolute [&>div]:top-0 [&>div]:left-0 [&>div]:h-full [&>div]:w-full [&>div]:overflow-y-auto [&>div]:border [&>div]:bg-[#f6f9fb] [&>div]:p-6 [&>div]:shadow-xl [&>div]:inset-shadow-sm"
         >
             <div bind:this={cardFront}>
                 <p>{term}</p>

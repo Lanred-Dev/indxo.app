@@ -7,5 +7,5 @@ export async function load({ fetch, params }) {
     if (response.status === 403) redirect(307, `/folder/${params.id}`);
 
     const folder: PublicFolder = await response.json();
-    return folder;
+    return { folder };
 }

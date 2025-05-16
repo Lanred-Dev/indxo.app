@@ -105,7 +105,7 @@
                 : ''}"
         >
             {#if isLoading}
-                <div class="x-center y-center bg-primary z-40 flex h-full w-full" transition:fade>
+                <div class="x-center y-center bg-page z-40 flex h-full w-full" transition:fade>
                     <div class="x-center y-center">
                         <Loader />
                     </div>

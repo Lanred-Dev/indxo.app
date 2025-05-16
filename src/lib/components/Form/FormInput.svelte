@@ -50,7 +50,7 @@
     data-id={id}
 >
     {#if label || "maxlength" in properties}
-        <div class="flex items-center space-x-1.5 pl-3 select-none">
+        <div class="flex items-center space-x-1.5 pl-4 select-none">
             {#if label}
                 <label class="text-light text-nowrap" for={uid} id={labelID}>{label}</label>
             {/if}

@@ -97,24 +97,24 @@
         cycleButtons={{
             "-1": {
                 icon: "/icons/general/LeftArrow.svg",
-                label: "Previous",
+                text: "Previous",
                 disabled: currentTermIndex === 0,
             },
             "1": {
                 icon: "/icons/general/RightArrow.svg",
-                label: "Next",
+                text: "Next",
                 disabled: currentTermIndex >= actualTerms.length - 1,
             },
         }}
         actionButtons={[
             {
                 icon: "/icons/general/Restart.svg",
-                label: "Restart",
+                text: "Restart",
                 onClick: restart,
             },
             {
                 icon: "/icons/general/Shuffle.svg",
-                label: "Shuffle",
+                text: "Shuffle",
                 onClick: shuffle,
             },
         ]}

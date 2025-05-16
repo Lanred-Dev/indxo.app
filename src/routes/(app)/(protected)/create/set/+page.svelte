@@ -62,8 +62,16 @@
                 type="checkbox"
                 properties={{
                     value: true,
-                    text: ["Public", "Private"],
-                    icons: ["/icons/general/Web.svg", "/icons/general/Lock.svg"],
+                    states: {
+                        true: {
+                            text: "Public",
+                            icon: "/icons/general/Web.svg",
+                        },
+                        false: {
+                            text: "Private",
+                            icon: "/icons/general/Lock.svg",
+                        },
+                    },
                 }}
             />
 

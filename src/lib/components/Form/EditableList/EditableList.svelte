@@ -1,5 +1,5 @@
 <script module lang="ts">
-    export function GetFormInputValue(inputContainer: HTMLElement): ({
+    export function getEditableListFormInputValue(inputContainer: HTMLElement): ({
         [key: string]: any;
         _id?: string;
     } | null)[] {
@@ -46,7 +46,7 @@
     let {
         labelID,
         startingItems = 1,
-        properties,
+        properties = [],
         actionButtons = [
             {
                 icon: "/icons/general/Trash.svg",
@@ -60,7 +60,7 @@
     }: {
         labelID?: string;
         startingItems?: number;
-        properties: ItemProperty[];
+        properties?: ItemProperty[];
         actionButtons?: ActionButton[];
         items?: { _id: string; properties: { [id: string]: string } }[];
         addText?: string;

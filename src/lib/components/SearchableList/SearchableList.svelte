@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { PublicSet } from "$lib/database/documents/Set";
     import { millisecondsToMinutes } from "date-fns";
-    import CardGroup, { type Group } from "./CardGroup.svelte";
+    import CardGroup, { type CardGroupInfo } from "./CardGroup.svelte";
     import type { PublicFolder } from "$lib/database/documents/Folder";
     import type { ItemProperties as DropdownItemProperties } from "../Form/Dropdown.svelte";
     import Search, { type SortFilters } from "./Search.svelte";
@@ -35,8 +35,8 @@
 
         return filter;
     });
-    let groups: Group[] = $derived.by(() => {
-        let groups: Group[] = [];
+    let groups: CardGroupInfo[] = $derived.by(() => {
+        let groups: CardGroupInfo[] = [];
 
         items.forEach((item) => {
             // Check if it matches the search query
@@ -72,18 +72,18 @@
             }
 
             if (!groups[groups.findIndex(({ name }) => name === group)])
-                groups.push({ name: group, items: [] });
+                groups.push({ name: group, documents: [] });
 
-            groups[groups.findIndex(({ name }) => name === group)].items.push(item);
+            groups[groups.findIndex(({ name }) => name === group)].documents.push(item);
         });
 
         // Sort each groups items by the created date
         if (actualFilter !== "none") {
-            groups.forEach(({ items }) => {
-                items.sort((item1, item2) => {
-                    const item1Relative: number = Date.now() - item1.created;
-                    const item2Relative: number = Date.now() - item2.created;
-                    return item1Relative - item2Relative;
+            groups.forEach(({ documents }) => {
+                documents.sort((document1, document2) => {
+                    const relative1: number = Date.now() - document1.created;
+                    const relative2: number = Date.now() - document2.created;
+                    return relative1 - relative2;
                 });
             });
         }

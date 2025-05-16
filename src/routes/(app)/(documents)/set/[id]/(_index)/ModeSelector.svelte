@@ -14,7 +14,7 @@
     } = $props();
 </script>
 
-<div class="list-primary">
+<div class="list-primary mt-16">
     <p class="list-title">{determineWording("modes")}</p>
 
     <ul class="list flex">

@@ -1,47 +1,69 @@
 <script lang="ts">
+    export type CardInfoItem = { text: string; image?: string };
+
     let {
         name,
         url,
         description,
         icon,
-        meta = [],
+        info = [],
     }: {
         name: string;
         url: string;
         description?: string;
         icon?: string;
-        meta?: string[];
+        info?: CardInfoItem[];
     } = $props();
 </script>
 
-<a class="button-primary block! w-full overflow-hidden px-6 py-5" href={url}>
-    <div class="w-full space-y-1">
-        <div class="flex items-center gap-1">
+<!--NOTE: For some reason not having the block class can cause some weird issues-->
+<a
+    class="container-primary container-clay relative block w-full px-6 py-5"
+    style:--clay-color="color-mix(in srgb, var(--color-attention) 13%, #ffffff)"
+    style:--clay-color-dark-percentage="95%"
+    href={url}
+>
+    <div class="relative z-[1] w-full">
+        {#if info.length > 0}
+            <ol class="mb-3 flex flex-wrap items-center gap-x-4 gap-y-1">
+                {#each info as { text, image }}
+                    <li
+                        class="flex-center container-primary bg-attention-light gap-1 rounded-full border-0 shadow-xs {image
+                            ? 'pr-2 pl-1'
+                            : 'px-2'} py-1"
+                    >
+                        {#if image}
+                            <img class="size-5 rounded-full" src={image} alt={text} />
+                        {/if}
+
+                        <p
+                            class="max-w-28 overflow-x-hidden overflow-y-visible leading-tight text-nowrap text-ellipsis"
+                        >
+                            {text}
+                        </p>
+                    </li>
+                {/each}
+            </ol>
+        {/if}
+
+        <div class="flex-center gap-1">
             {#if icon}
                 <img src={icon} alt="Folder" class="size-8" />
             {/if}
 
-            <p class="w-full overflow-hidden text-2xl leading-none font-bold text-ellipsis">
+            <p
+                class="w-full max-w-full overflow-x-hidden text-2xl leading-none font-bold text-wrap text-ellipsis"
+            >
                 {name}
             </p>
         </div>
 
-        {#if meta.length > 0}
-            <div
-                class="[&>p]:text-dark flex flex-wrap items-center gap-x-4 gap-y-1 [&>p]:leading-none"
+        {#if description && description.length > 0}
+            <p
+                class="text-light mt-0.5 w-full overflow-x-hidden overflow-y-visible text-lg leading-none text-ellipsis"
             >
-                {#each meta as item}
-                    {#if item.length > 0}
-                        <p class="leading-tight text-nowrap">{item}</p>
-                    {/if}
-                {/each}
-            </div>
+                {description}
+            </p>
         {/if}
     </div>
-
-    {#if description && description.length > 0}
-        <p class="text-light mt-3 w-full overflow-hidden leading-none text-ellipsis">
-            {description}
-        </p>
-    {/if}
 </a>

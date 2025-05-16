@@ -3,7 +3,7 @@
 
     type CycleButton = {
         icon: string;
-        label: string;
+        text: string;
         disabled: boolean;
     };
 
@@ -21,7 +21,7 @@
         };
         actionButtons?: {
             icon: string;
-            label: string;
+            text: string;
             onClick?: (event: MouseEvent) => void;
         }[];
     } = $props();
@@ -34,8 +34,8 @@
         if (
             target !== null &&
             target !== document.body &&
-            !target.closest("controls") &&
-            !target.closest("termCard")
+            !target.closest("#controls") &&
+            !target.closest("#termCard")
         )
             return;
 
@@ -55,7 +55,7 @@
 
 {#snippet navigationButton(icon: string, label: string, disabled: boolean, direction: -1 | 1)}
     <button
-        class="button-primary rounded-full! p-3.5!"
+        class="button-primary rounded-full p-3.5"
         type="button"
         aria-label={label}
         {disabled}
@@ -69,7 +69,7 @@
     <div class="flex-center gap-1">
         {@render navigationButton(
             cycleButtons["-1"].icon,
-            cycleButtons["-1"].label,
+            cycleButtons["-1"].text,
             cycleButtons["-1"].disabled,
             -1
         )}
@@ -80,7 +80,7 @@
 
         {@render navigationButton(
             cycleButtons["1"].icon,
-            cycleButtons["1"].label,
+            cycleButtons["1"].text,
             cycleButtons["1"].disabled,
             1
         )}
@@ -88,9 +88,9 @@
 
     <div class="flex-center sm:y-center mt-4 gap-2 sm:right-8 sm:mt-0">
         {#if actionButtons.length > 1}
-            {#each actionButtons as { icon, label, onClick }}
-                <button class="button-icon" type="button" aria-label={label} onclick={onClick}>
-                    <img class="size-6!" src={icon} alt={label} />
+            {#each actionButtons as { icon, text, onClick }}
+                <button class="button-icon" type="button" aria-label={text} onclick={onClick}>
+                    <img src={icon} alt={text} />
                 </button>
             {/each}
         {/if}

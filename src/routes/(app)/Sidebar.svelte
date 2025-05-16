@@ -47,7 +47,7 @@
 {/snippet}
 
 <div
-    class="bg-primary fixed left-0 z-30 flex h-full min-w-fit flex-col justify-between gap-10 overflow-x-hidden overflow-y-auto py-5.5 pr-16 pl-4 shadow-2xl md:bg-transparent md:py-7 md:pr-4 md:pl-7 md:shadow-none xl:w-[17.5%] 2xl:w-[15%] {isInitialLoad
+    class="bg-primary fixed left-0 z-30 flex h-full min-w-fit flex-col justify-between gap-10 overflow-x-hidden overflow-y-auto pt-2 pr-16 pb-5.5 pl-4 shadow-2xl md:bg-transparent md:pt-5 md:pr-4 md:pb-7 md:pl-7 md:shadow-none xl:w-[17.5%] 2xl:w-[15%] {isInitialLoad
         ? 'pointer-events-none opacity-0'
         : ''}"
     style:height="{sizes.window.height - sizes.header}px"

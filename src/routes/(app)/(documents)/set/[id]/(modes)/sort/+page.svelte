@@ -358,7 +358,7 @@
     >
         {#snippet overlay()}
             <div
-                class="rounded-primary absolute top-0 left-0 z-[5] h-full w-full opacity-0"
+                class="rounded-container absolute top-0 left-0 z-[5] h-full w-full opacity-0"
                 bind:this={cardOverlay}
             ></div>
         {/snippet}
@@ -370,12 +370,12 @@
         cycleButtons={{
             "-1": {
                 icon: "/icons/general/X.svg",
-                label: "Still learning",
+                text: "Still learning",
                 disabled: unsortedTerms.size === 0,
             },
             "1": {
                 icon: "/icons/general/Check.svg",
-                label: "Know",
+                text: "Know",
                 disabled: unsortedTerms.size === 0,
             },
         }}

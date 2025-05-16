@@ -2,9 +2,9 @@
     import { type Snippet } from "svelte";
     import { twMerge } from "tailwind-merge";
     import { type InputType } from "./FormInput.svelte";
-    import { GetFormInputValue as GetCheckboxFormInputValue } from "./Checkbox.svelte";
-    import { GetFormInputValue as GetDropdownFormInputValue } from "./Dropdown.svelte";
-    import { GetFormInputValue as GetEditableListFormInputValue } from "./EditableList/EditableList.svelte";
+    import { getCheckboxFormInputValue } from "./Checkbox.svelte";
+    import { getDropdownFormInputValue } from "./Dropdown.svelte";
+    import { getEditableListFormInputValue } from "./EditableList/EditableList.svelte";
 
     let {
         endpoint,
@@ -48,14 +48,14 @@
 
             switch (type) {
                 case "editableList":
-                    value = GetEditableListFormInputValue(inputContainer);
+                    value = getEditableListFormInputValue(inputContainer);
                     break;
                 case "dropdown": {
-                    value = GetDropdownFormInputValue(inputContainer);
+                    value = getDropdownFormInputValue(inputContainer);
                     break;
                 }
                 case "checkbox": {
-                    value = GetCheckboxFormInputValue(inputContainer);
+                    value = getCheckboxFormInputValue(inputContainer);
                     break;
                 }
                 case "custom": {

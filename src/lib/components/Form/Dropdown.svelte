@@ -1,5 +1,5 @@
 <script module lang="ts">
-    export function GetFormInputValue(inputContainer: HTMLElement): string {
+    export function getDropdownFormInputValue(inputContainer: HTMLElement): string {
         const dropdown: HTMLButtonElement = inputContainer.querySelector(
             ".DropdownInput"
         ) as HTMLButtonElement;
@@ -9,6 +9,8 @@
 
 <script lang="ts">
     import { goto } from "$app/navigation";
+    import determineTextWidth from "$lib/utils/determineTextWidth";
+    import { onMount } from "svelte";
     import Popup from "../Popup.svelte";
 
     export type ItemProperties = {
@@ -31,6 +33,7 @@
     const uid: string = $props.id();
     const dropdownID: string = `${uid}-dropdown`;
 
+    let longestValueLength: number = $state(0);
     let visible: boolean = $state.raw(false);
     let { text: currentText, image: currentImage }: ItemProperties = $derived(
         items.find(({ value }, index) => {
@@ -40,6 +43,16 @@
             return index === 0;
         }) ?? { value: "" }
     );
+
+    onMount(() => {
+        longestValueLength = determineTextWidth(
+            items.reduce(
+                (longest, { text = "" }) => (text.length > longest.length ? text : longest),
+                ""
+            ),
+            "text-lg"
+        );
+    });
 </script>
 
 <button
@@ -57,7 +70,8 @@
     {/if}
 
     {#if currentText}
-        <span class="text-nowrap">{currentText}</span>
+        <span class="text-left text-nowrap" style:width="{longestValueLength}px">{currentText}</span
+        >
     {/if}
 
     <img

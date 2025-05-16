@@ -23,7 +23,7 @@
         <img class="size-6" src="/icons/general/Search.svg" alt="Search" />
 
         <input
-            class="field-sizing-content w-full border-0 bg-transparent p-0 text-lg outline-hidden focus:ring-0"
+            class="field-sizing-content w-full border-0 bg-transparent p-0 text-lg outline-none focus:ring-0"
             type="text"
             placeholder="Cant find something?"
             bind:value={query}
