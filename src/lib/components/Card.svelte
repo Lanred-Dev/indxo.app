@@ -25,7 +25,7 @@
 >
     <div class="relative z-[1] w-full">
         {#if info.length > 0}
-            <ol class="mb-3 flex flex-wrap items-center gap-x-4 gap-y-1">
+            <ol class="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1.5">
                 {#each info as { text, image }}
                     <li
                         class="flex-center container-primary bg-attention-light gap-1 rounded-full border-0 shadow-xs {image
