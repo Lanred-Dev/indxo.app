@@ -253,7 +253,7 @@
     }
 
     .list-primary .list-title {
-        @apply text-dark mb-5 text-2xl leading-none font-bold;
+        @apply text-dark mb-3 text-2xl leading-none font-bold;
     }
 
     .list-primary,
