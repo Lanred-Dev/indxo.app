@@ -77,7 +77,11 @@
         <div class="flex-center pl-3">
             {#if session}
                 <button id="sidebarToggle" onclick={() => (sidebar.visible = !sidebar.visible)}>
-                    <img class="size-7" src="/icons/navigation/Hamburger.svg" alt="Sidebar" />
+                    <img
+                        class="size-7"
+                        src="/icons/navigation/Hamburger.svg"
+                        alt="Sidebar toggle"
+                    />
                 </button>
             {/if}
         </div>
