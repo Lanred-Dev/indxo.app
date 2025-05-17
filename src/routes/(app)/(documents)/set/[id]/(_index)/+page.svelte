@@ -2,10 +2,10 @@
     import Info from "./Info.svelte";
     import Cards from "./Cards.svelte";
     import type { PublicSet } from "$lib/database/documents/Set";
-    import Header from "./Header.svelte";
     import ModeSelector from "./ModeSelector.svelte";
     import determineWording from "$lib/utils/determineWording";
     import Terms from "./Terms.svelte";
+    import DocumentHeader from "../../../DocumentHeader.svelte";
 
     let { data } = $props();
 </script>
@@ -32,8 +32,9 @@
 
     <a class="button-primary" href="/">Go back</a>
 {:else}
-    <Header
-        set={data.set as PublicSet}
+    <DocumentHeader
+        type="set"
+        document={data.set as PublicSet}
         isFavorite={data.isFavorite ?? false}
         hasPermission={data.hasPermission ?? false}
     />

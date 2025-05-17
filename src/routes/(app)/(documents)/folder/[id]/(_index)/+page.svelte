@@ -2,7 +2,7 @@
     import SearchableList from "$lib/components/SearchableList";
     import type { PublicFolder } from "$lib/database/documents/Folder";
     import determineWording from "$lib/utils/determineWording";
-    import Header from "./Header.svelte";
+    import DocumentHeader from "../../../DocumentHeader.svelte";
     import Info from "./Info.svelte";
 
     let { data } = $props();
@@ -30,8 +30,9 @@
 
     <a class="button-primary" href="/">Go back</a>
 {:else}
-    <Header
-        folder={data.folder as PublicFolder}
+    <DocumentHeader
+        type="folder"
+        document={data.folder as PublicFolder}
         isFavorite={data.isFavorite ?? false}
         hasPermission={data.hasPermission ?? false}
     />
