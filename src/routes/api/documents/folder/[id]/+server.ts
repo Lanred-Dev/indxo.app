@@ -14,8 +14,11 @@ export async function GET({ params, fetch, locals }) {
     const sets: PublicSet[] = [];
 
     for (const id of folder.sets) {
-        const set: PublicSet = await (await fetch(`/api/documents/set/${id}`)).json();
-        sets.push(set);
+        const set = await fetch(`/api/documents/set/${id}`);
+
+        if (set.status !== 200) continue;
+
+        sets.push((await set.json()) as PublicSet);
     }
 
     (folder as unknown as PublicFolder).sets = sets;
