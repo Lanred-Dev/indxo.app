@@ -33,7 +33,7 @@
     const uid: string = $props.id();
     const dropdownID: string = `${uid}-dropdown`;
 
-    let longestValueLength: number = $state(0);
+    let longestValueLength: number = $state.raw(0);
     let visible: boolean = $state.raw(false);
     let { text: currentText, image: currentImage }: ItemProperties = $derived(
         items.find(({ value }, index) => {
@@ -44,13 +44,13 @@
         }) ?? { value: "" }
     );
 
-    onMount(() => {
-        longestValueLength = determineTextWidth(
+    onMount(async () => {
+        longestValueLength = await determineTextWidth(
             items.reduce(
                 (longest, { text = "" }) => (text.length > longest.length ? text : longest),
                 ""
             ),
-            "text-lg"
+            "var(--text-lg)"
         );
     });
 </script>

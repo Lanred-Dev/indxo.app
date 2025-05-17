@@ -34,9 +34,9 @@
     let falseStateLength: number = $state(0);
     let trueStateLength: number = $state(0);
 
-    onMount(() => {
-        falseStateLength = determineTextWidth(states.false.text ?? "", "text-lg");
-        trueStateLength = determineTextWidth(states.true.text ?? "", "text-lg");
+    onMount(async () => {
+        falseStateLength = await determineTextWidth(states.false.text ?? "", "var(--text-lg)");
+        trueStateLength = await determineTextWidth(states.true.text ?? "", "var(--text-lg)");
     });
 </script>
 
