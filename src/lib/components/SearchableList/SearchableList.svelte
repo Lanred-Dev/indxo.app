@@ -38,6 +38,8 @@
     let groups: CardGroupInfo[] = $derived.by(() => {
         let groups: CardGroupInfo[] = [];
 
+        if (items.length <= 0) return groups;
+
         items.forEach((item) => {
             // Check if it matches the search query
             if (query.length > 0) {
