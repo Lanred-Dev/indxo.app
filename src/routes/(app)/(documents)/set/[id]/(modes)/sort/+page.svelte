@@ -2,7 +2,7 @@
     import type { Term } from "$lib/database/documents/Set";
     import { animate } from "motion";
     import { getContext } from "svelte";
-    import TermCard from "../../TermCard.svelte";
+    import StudyCard from "../../StudyCard.svelte";
     import Progress from "./Progress.svelte";
     import type { Session } from "$lib/database/documents/Session";
     import Controls from "../../Controls.svelte";
@@ -28,7 +28,7 @@
     // svelte-ignore non_reactive_update
     let cardOverlay: HTMLDivElement;
     // svelte-ignore non_reactive_update
-    let termCardComponent: TermCard;
+    let termCardComponent: StudyCard;
     let canCycle: boolean = $state.raw(true);
     let canFlip: boolean = $state.raw(true);
 
@@ -347,7 +347,7 @@
         terms={data.set.terms.length}
     />
 
-    <TermCard
+    <StudyCard
         term={actualTerms[currentTermIndex]?.term}
         definition={actualTerms[currentTermIndex]?.definition}
         bind:card
@@ -361,7 +361,7 @@
                 bind:this={cardOverlay}
             ></div>
         {/snippet}
-    </TermCard>
+    </StudyCard>
 
     <Controls
         {cycle}

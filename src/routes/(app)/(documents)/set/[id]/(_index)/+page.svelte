@@ -1,6 +1,6 @@
 <script lang="ts">
     import Info from "./Info.svelte";
-    import Cards from "./Cards.svelte";
+    import Study from "./Study.svelte";
     import type { PublicSet } from "$lib/database/documents/Set";
     import ModeSelector from "./ModeSelector.svelte";
     import determineWording from "$lib/utils/determineWording";
@@ -40,7 +40,7 @@
         hasPermission={data.hasPermission ?? false}
     />
 
-    <Cards {...data.set?.terms ?? []} />
+    <Study {...data.set?.terms ?? []} />
 
     <Info {...data.set as PublicSet} />
 
