@@ -1,45 +1,37 @@
 <script lang="ts">
-    import EditableList from "$lib/components/Form/EditableList/EditableList.svelte";
     import type { Term } from "$lib/database/documents/Set";
     import type { SimplePrivateuser, SortingTerm } from "$lib/database/documents/User";
     import determineWording from "$lib/utils/determineWording";
     import { getContext } from "svelte";
+    import TermCard from "./TermCard.svelte";
 
     const { preferences }: SimplePrivateuser = getContext("user");
 
     let { saved, terms }: { saved: SortingTerm[]; terms: Term[] } = $props();
-    let strugglingTerms: Term[] = $derived.by(() => {
-        const terms: Term[] = [];
 
-        saved.forEach(({ _id, missed }) => {
-            if (missed < preferences.strugglingTermThreshold) return;
-
-            terms.push(
-                terms.find(({ _id: id }) => {
-                    id === _id;
-                })!
-            );
-        });
-
-        return terms;
-    });
+    let strugglingTerms: Term[] = $derived(
+        terms.filter(
+            ({ _id }) =>
+                (saved.find(({ _id: id }) => id === _id)?.missed ?? 0) >=
+                preferences.strugglingTermThreshold
+        )
+    );
 </script>
 
-<div class="list-primary mt-16">
-    <p class="list-title">Struggling {determineWording("terms")}</p>
+{#if strugglingTerms.length > 0}
+    <div class="list-primary mt-16">
+        <p class="list-title">Struggling {determineWording("terms")}</p>
 
-    <div class="list-primary">
-        <ol class="flex flex-col gap-4">
-            {#each strugglingTerms as term}
-                <li class="container-primary flex">
-                    <p class="mr-3 text-lg font-bold">#{terms.indexOf(term) + 1}</p>
-
-                    <div>
-                        <p class="text-lg font-bold">{term.term}</p>
-                        <p class="mt-0.5 text-lg leading-none">{term.definition}</p>
-                    </div>
-                </li>
-            {/each}
-        </ol>
+        <div class="list-primary">
+            <ol class="flex flex-col gap-4">
+                {#each strugglingTerms as term}
+                    <TermCard
+                        {term}
+                        missed={saved.find(({ _id }) => _id === term._id)?.missed}
+                        listID={terms.indexOf(term) + 1}
+                    />
+                {/each}
+            </ol>
+        </div>
     </div>
-</div>
+{/if}
