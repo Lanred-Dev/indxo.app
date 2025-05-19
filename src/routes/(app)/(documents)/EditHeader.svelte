@@ -3,7 +3,6 @@
     import type { PublicFolder } from "$lib/database/documents/Folder";
     import type { PublicSet } from "$lib/database/documents/Set";
     import determineWording from "$lib/utils/determineWording";
-    import { onMount } from "svelte";
     import { formatDistanceToNow } from "date-fns";
 
     let {
