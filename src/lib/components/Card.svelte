@@ -18,16 +18,15 @@
 
 <!--NOTE: For some reason not having the block class can cause some weird issues-->
 <a
-    class="container-primary container-clay block w-full px-6 py-5"
-    style:--clay-color="color-mix(in srgb, var(--color-attention) 13%, #ffffff)"
-    style:--clay-color-dark-percentage="95%"
+    class="container-primary clay-attention-bright block w-full px-6 py-5"
+    style:--clay-color-dark-percentage="90%"
     href={url}
 >
     {#if info.length > 0}
         <ol class="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1.5">
             {#each info as { text, image }}
                 <li
-                    class="flex-center container-primary bg-attention-light gap-1 rounded-full border-0 shadow-xs {image
+                    class="flex-center container-primary bg-attention-dark gap-1 rounded-full border-0 shadow-xs {image
                         ? 'pr-2 pl-1'
                         : 'px-2'} py-1"
                 >
