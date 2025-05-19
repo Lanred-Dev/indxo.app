@@ -6,7 +6,7 @@
 </script>
 
 <div class="mt-5 mb-12 space-y-8">
-    <p class="text-lg">{description}</p>
+    <p class="break-word text-lg">{description}</p>
 
     <User {owner} {created} />
 </div>

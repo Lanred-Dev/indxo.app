@@ -8,5 +8,5 @@
 <div class="mt-20 space-y-6">
     <User {owner} {created} />
 
-    <p class="text-lg break-all hyphens-auto">{description}</p>
+    <p class="break-word text-lg">{description}</p>
 </div>

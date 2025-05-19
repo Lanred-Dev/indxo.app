@@ -50,23 +50,17 @@
     {/if}
 
     <div
-        class="flex flex-col items-start justify-between gap-x-12 gap-y-3 sm:flex-row sm:items-center"
+        class="flex flex-col items-start justify-between gap-x-12 gap-y-3 lg:flex-row lg:items-center"
     >
-        <div class="flex grow items-center gap-2">
+        <div class="flex max-w-full grow basis-full items-center gap-2">
             {#if "icon" in document}
                 <img src={document?.icon} alt="Folder" class="size-14" />
             {/if}
 
-            <h1 class="page-title w-full break-all hyphens-auto">{document?.name}</h1>
+            <h1 class="page-title break-word w-full">{document?.name}</h1>
         </div>
 
-        <div class="flex-center min-w-fit -translate-x-2 gap-2 sm:translate-x-0">
-            {#if hasPermission === true}
-                <a class="button-icon" href="/{type}/{document._id}/edit">
-                    <img src="/icons/general/Pencil.svg" alt="Edit" />
-                </a>
-            {/if}
-
+        <div class="flex-center min-w-fit -translate-x-2 gap-2 sm:translate-x-2">
             <button class="button-icon" onclick={toggleDocumentInFavorites}>
                 <img
                     src={isFavorite ? "/icons/general/StarColored.svg" : "/icons/general/Star.svg"}
@@ -74,7 +68,11 @@
                 />
             </button>
 
-            {#if hasPermission === true}
+            {#if hasPermission}
+                <a class="button-icon" href="/{type}/{document._id}/edit">
+                    <img src="/icons/general/Pencil.svg" alt="Edit" />
+                </a>
+
                 <button class="button-icon" onclick={deleteDocument}>
                     <img src="/icons/general/TrashColored.svg" alt="Delete" />
                 </button>
