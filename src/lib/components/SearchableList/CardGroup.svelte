@@ -6,7 +6,7 @@
     import determineWording from "$lib/utils/determineWording";
     import { slide } from "svelte/transition";
     import { getContext } from "svelte";
-    import type { SimpleUserWithEmail } from "$lib/database/documents/User";
+    import type { SimplePrivateuser } from "$lib/database/documents/User";
 
     export interface CardGroupInfo {
         name: string;
@@ -15,7 +15,7 @@
 
     let { name, documents }: CardGroupInfo = $props();
 
-    const user: SimpleUserWithEmail = getContext("user");
+    const user: SimplePrivateuser = getContext("user");
     let visible: boolean = $state.raw(true);
 
     function getDocumentInfo(document: PublicFolder | PublicSet): {

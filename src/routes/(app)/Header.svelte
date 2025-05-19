@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { SimpleFolder } from "$lib/database/documents/Folder";
     import type { SimpleSet } from "$lib/database/documents/Set";
-    import type { SimpleUser, SimpleUserWithEmail } from "$lib/database/documents/User";
+    import type { SimpleUser, SimplePrivateuser } from "$lib/database/documents/User";
     import determineDocumentType from "$lib/utils/determineDocumentType";
     import { goto } from "$app/navigation";
     import { getContext } from "svelte";
@@ -10,7 +10,7 @@
     import type { SidebarContext, SizesContext } from "./+layout.svelte";
 
     const session: Session | null = getContext("session");
-    const user: SimpleUserWithEmail = getContext("user");
+    const user: SimplePrivateuser = getContext("user");
     const sidebar: SidebarContext = getContext("sidebar");
     const sizes: SizesContext = getContext("sizes");
 
@@ -115,7 +115,7 @@
             id="searchBar"
             classes="w-[40vw] space-y-3"
             alignment="center"
-            canShow={searchQuery.length >= 1}
+            canShow={searchQuery.length >= 3}
         >
             {#each searchResults as { name, ...properties }}
                 {@render searchResult({

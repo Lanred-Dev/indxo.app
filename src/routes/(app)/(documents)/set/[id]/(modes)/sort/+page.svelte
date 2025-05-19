@@ -10,9 +10,7 @@
     import { SvelteMap, SvelteSet } from "svelte/reactivity";
     import determineWording from "$lib/utils/determineWording";
     import { fade } from "svelte/transition";
-    import type { SortingTerm } from "$lib/database/documents/User";
-
-    const STRUGGLING_TERM_THRESHOLD: number = 3;
+    import type { SimplePrivateuser, SortingTerm } from "$lib/database/documents/User";
 
     const SORTING_MESSAGES: [number, string[]][] = [
         [0, ["You're still learning.", "You've got room to grow."]],
@@ -23,6 +21,7 @@
     let { data } = $props();
 
     const session: Session = getContext("session");
+    const { preferences }: SimplePrivateuser = getContext("user");
 
     // svelte-ignore non_reactive_update
     let card: HTMLDivElement;
@@ -71,7 +70,7 @@
         data.saved.filter(({ knows, sorted }) => knows && sorted).map(({ _id }) => _id)
     );
     let struggling: SvelteMap<string, number> = data.saved.reduce((object, { _id, missed }) => {
-        if (missed >= STRUGGLING_TERM_THRESHOLD) {
+        if (missed >= preferences.strugglingTermThreshold) {
             object.set(_id, missed);
         }
 
@@ -82,7 +81,7 @@
         const actual: string[] = [];
 
         struggling.forEach((missed, id) => {
-            if (missed < STRUGGLING_TERM_THRESHOLD) return;
+            if (missed < preferences.strugglingTermThreshold) return;
 
             actual.push(id);
         });
