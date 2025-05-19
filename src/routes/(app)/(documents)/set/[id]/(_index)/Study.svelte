@@ -2,7 +2,7 @@
     import type { Term } from "$lib/database/documents/Set";
     import { animate } from "motion";
     import Controls from "../Controls.svelte";
-    import TermCard from "../TermCard.svelte";
+    import StudyCard from "../StudyCard.svelte";
     import { afterNavigate } from "$app/navigation";
 
     let terms: Term[] = $props();
@@ -10,7 +10,7 @@
     // svelte-ignore non_reactive_update
     let card: HTMLDivElement;
     // svelte-ignore non_reactive_update
-    let termCardComponent: TermCard;
+    let termCardComponent: StudyCard;
     let canCycle: boolean = $state.raw(true);
     let canFlip: boolean = $state.raw(true);
     let currentTermIndex: number = $state.raw(0);
@@ -80,14 +80,12 @@
 </script>
 
 {#if actualTerms.length === 0}
-    <div
-        class="flex-center sm:aspect-2 my-20 aspect-[1.1] max-h-68 w-full flex-col gap-1 outline-none md:my-24"
-    >
+    <div class="flex-center sm:aspect-2 aspect-[1.1] max-h-68 w-full flex-col gap-1 outline-none">
         <p class="text-3xl font-bold">Houston, we have a problem.</p>
         <p class="text-xl">This set has no terms!</p>
     </div>
 {:else}
-    <TermCard
+    <StudyCard
         term={actualTerms[currentTermIndex]?.term}
         definition={actualTerms[currentTermIndex]?.definition}
         bind:card
