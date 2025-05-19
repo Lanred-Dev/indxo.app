@@ -71,8 +71,7 @@
     bind:clientHeight={sizes.header}
 >
     <div
-        class="bg-attention-light relative flex w-full items-center justify-between rounded-full px-2 py-2"
-        style:background-color="color-mix(in srgb, var(--color-attention-light) 45%, #ffffff)"
+        class="bg-attention-bright relative flex w-full items-center justify-between rounded-full px-2 py-2"
     >
         <div class="flex-center pl-3">
             {#if session}
