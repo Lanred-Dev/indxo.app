@@ -52,12 +52,12 @@
     <div
         class="flex flex-col items-start justify-between gap-x-12 gap-y-3 sm:flex-row sm:items-center"
     >
-        <div class="flex items-center gap-2">
+        <div class="flex grow items-center gap-2">
             {#if "icon" in document}
                 <img src={document?.icon} alt="Folder" class="size-14" />
             {/if}
 
-            <h1 class="page-title">{document?.name}</h1>
+            <h1 class="page-title w-full break-all hyphens-auto">{document?.name}</h1>
         </div>
 
         <div class="flex-center min-w-fit -translate-x-2 gap-2 sm:translate-x-0">
