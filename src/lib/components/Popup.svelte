@@ -90,6 +90,7 @@
                 break;
             case "input":
                 button.addEventListener("focusin", () => (visible = true));
+                button.addEventListener("keydown", () => (visible = true));
                 break;
             default:
                 return;
@@ -110,6 +111,7 @@
                     break;
                 case "input":
                     button?.removeEventListener("focusin", () => (visible = true));
+                    button?.removeEventListener("keydown", () => (visible = true));
                     break;
                 default:
                     return;
