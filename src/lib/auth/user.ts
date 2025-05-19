@@ -11,7 +11,7 @@ const users: Collection<User> = loadCollection("accounts", "users");
  * @returns never
  */
 export async function checkUserForUpdates(user: User) {
-    const missingFields = fields.filter(([key, type]) => {
+    const missingFields = fields.filter(({ key, type }) => {
         if (!(key in user)) return true;
 
         const value: any = user[key];
@@ -37,26 +37,7 @@ export async function checkUserForUpdates(user: User) {
         {
             $set: {
                 ...Object.fromEntries(
-                    missingFields.map(([key, type]) => {
-                        let value: any;
-
-                        switch (type) {
-                            case "array":
-                                value = [];
-                                break;
-                            case "dictionary":
-                                value = {};
-                                break;
-                            case "string":
-                                value = "";
-                                break;
-                            case "boolean":
-                                value = "";
-                                break;
-                        }
-
-                        return [key, value];
-                    })
+                    missingFields.map(({ key, defaultValue }) => [key, defaultValue])
                 ),
             },
         }
