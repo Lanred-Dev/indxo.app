@@ -6,6 +6,7 @@
     import determineWording from "$lib/utils/determineWording";
     import Terms from "./Terms.svelte";
     import DocumentHeader from "../../../DocumentHeader.svelte";
+    import Struggling from "./Struggling.svelte";
 
     let { data } = $props();
 </script>
@@ -43,26 +44,30 @@
 
     <Info {...data.set as PublicSet} />
 
-    <ModeSelector
-        id={data.set?._id ?? ""}
-        modes={[
-            {
-                text: determineWording("sort"),
-                icon: "/icons/general/Star.svg",
-                endpoint: "sort",
-            },
-            {
-                text: determineWording("matching"),
-                icon: "/icons/general/Star.svg",
-                endpoint: "matching",
-            },
-            {
-                text: determineWording("test"),
-                icon: "/icons/general/Star.svg",
-                endpoint: "quiz",
-            },
-        ]}
-    />
+    {#if data.set?.terms.length ?? 0 > 0}
+        <ModeSelector
+            id={data.set?._id ?? ""}
+            modes={[
+                {
+                    text: determineWording("sort"),
+                    icon: "/icons/general/Star.svg",
+                    endpoint: "sort",
+                },
+                {
+                    text: determineWording("matching"),
+                    icon: "/icons/general/Star.svg",
+                    endpoint: "matching",
+                },
+                {
+                    text: determineWording("test"),
+                    icon: "/icons/general/Star.svg",
+                    endpoint: "quiz",
+                },
+            ]}
+        />
 
-    <Terms saved={data.saved ?? []} terms={data.set?.terms ?? []}></Terms>
+        <Struggling saved={data.saved ?? []} terms={data.set?.terms ?? []} />
+
+        <Terms terms={data.set?.terms ?? []} hasPermission={data.hasPermission ?? false} />
+    {/if}
 {/if}
