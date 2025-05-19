@@ -183,8 +183,8 @@
     });
 </script>
 
-<div class="EditableList space-y-5" aria-labelledby={labelID}>
-    <ol class="relative space-y-5">
+<div class="EditableList" aria-labelledby={labelID}>
+    <ol class="relative flex flex-col gap-4">
         {#each actualItems as { _listID, _id, actionButtons }}
             <li
                 class="transition-all {isDraggable ? 'cursor-move' : ''} {draggingID === _listID
@@ -218,7 +218,7 @@
         {/each}
     </ol>
 
-    <button class="button-attention w-full" onclick={() => addItem()} type="button">
+    <button class="button-attention mt-4 w-full" onclick={() => addItem()} type="button">
         <img src="/icons/general/Plus.svg" alt="Plus" />
         {addText}
     </button>
