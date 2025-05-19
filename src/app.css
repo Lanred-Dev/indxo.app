@@ -11,8 +11,9 @@
     --background-color-page: #f9fafe;
     --color-scrollbar: #d4d7d8;
 
-    --color-attention: #6088d3;
-    --color-attention-light: #d1ddf1;
+    --color-attention: #7c9edd;
+    --color-attention-bright: #d9e2f0;
+    --color-attention-dark: #bccbe4;
     --color-alert: #f26a63;
     --color-input: #e5eaef;
     --color-container: #ffffff;
@@ -143,6 +144,11 @@
 
 @utility flex-center {
     @apply flex items-center justify-center;
+}
+
+@utility break-word {
+    word-break: break-word;
+    @apply hyphens-auto;
 }
 
 @utility container-clay {
