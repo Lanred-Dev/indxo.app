@@ -1,13 +1,17 @@
 import { dev } from "$app/environment";
 import { validateToken } from "$lib/auth/session";
-import type { SimpleUserWithEmail } from "$lib/database/documents/User";
+import type { SimplePrivateuser } from "$lib/database/documents/User";
 import type { Handle } from "@sveltejs/kit";
 
-const BLANK_USER: SimpleUserWithEmail = {
+const BLANK_USER: SimplePrivateuser = {
     _id: "",
     name: "",
     image: "",
     email: "",
+    preferences: {
+        home: [],
+        strugglingTermThreshold: 0,
+    },
 };
 
 export const handle: Handle = async ({ event, resolve }) => {
@@ -30,6 +34,7 @@ export const handle: Handle = async ({ event, resolve }) => {
             name: validation.user.name,
             image: validation.user.image,
             email: validation.user.email,
+            preferences: validation.user.preferences,
         };
 
         event.cookies.set("session", token, {
