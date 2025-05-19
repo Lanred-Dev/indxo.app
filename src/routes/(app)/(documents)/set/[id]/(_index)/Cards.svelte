@@ -80,7 +80,12 @@
 </script>
 
 {#if actualTerms.length === 0}
-    <p class="my-20 text-center text-lg font-bold md:my-24">This set has no terms</p>
+    <div
+        class="flex-center sm:aspect-2 my-20 aspect-[1.1] max-h-68 w-full flex-col gap-1 outline-none md:my-24"
+    >
+        <p class="text-3xl font-bold">Houston, we have a problem.</p>
+        <p class="text-xl">This set has no terms!</p>
+    </div>
 {:else}
     <TermCard
         term={actualTerms[currentTermIndex]?.term}
