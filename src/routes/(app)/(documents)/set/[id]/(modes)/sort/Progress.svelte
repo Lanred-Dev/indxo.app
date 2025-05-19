@@ -11,7 +11,7 @@
     let sorted: number = $derived(stillLearning + knows);
 </script>
 
-<div class="relative mb-1 flex w-full items-center justify-between px-3">
+<div class="relative mb-1 flex w-full items-center justify-between px-6">
     <p class="text-alert text-lg">{stillLearning}</p>
 
     <!--Progress bar-->
