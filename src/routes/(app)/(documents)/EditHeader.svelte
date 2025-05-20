@@ -35,7 +35,7 @@
 </script>
 
 <svelte:head>
-    <title>Edit {document.name}</title>
+    <title>Make changes to {document.name}</title>
 </svelte:head>
 
 <div class="w-full">
