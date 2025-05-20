@@ -23,7 +23,7 @@
     href={url}
 >
     {#if info.length > 0}
-        <ol class="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+        <ol class="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
             {#each info as { text, image }}
                 <li
                     class="flex-center container-primary bg-attention-dark gap-1 rounded-full border-0 shadow-xs {image
@@ -35,7 +35,7 @@
                     {/if}
 
                     <p
-                        class="max-w-28 overflow-x-hidden overflow-y-visible leading-tight text-nowrap text-ellipsis"
+                        class="max-w-28 overflow-hidden leading-tight font-medium text-nowrap text-ellipsis"
                     >
                         {text}
                     </p>
@@ -49,15 +49,13 @@
             <img src={icon} alt="Folder" class="size-8" />
         {/if}
 
-        <p
-            class="w-full max-w-full overflow-hidden text-2xl leading-none font-bold text-wrap text-ellipsis"
-        >
+        <p class="w-full max-w-full text-2xl font-bold text-wrap text-ellipsis">
             {name}
         </p>
     </div>
 
     {#if description && description.length > 0}
-        <p class="text-light mt-0.5 w-full overflow-hidden text-lg leading-none text-ellipsis">
+        <p class="text-light w-full text-lg leading-none text-ellipsis">
             {description}
         </p>
     {/if}

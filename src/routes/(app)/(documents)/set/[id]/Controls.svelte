@@ -74,9 +74,8 @@
             -1
         )}
 
-        <p class="w-20 text-center text-lg font-bold">
-            {Math.min(progress[0] ?? 0, progress[1] ?? 0)}<span class="font-normal">/</span
-            >{progress[0] ?? 0}
+        <p class="w-20 text-center text-lg font-semibold">
+            {Math.min(progress[0] ?? 0, progress[1] ?? 0)}/{progress[0] ?? 0}
         </p>
 
         {@render navigationButton(

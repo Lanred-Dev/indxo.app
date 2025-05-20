@@ -6,7 +6,6 @@
 
 @theme {
     --font-*: initial;
-    --font-Eirene-Sans: EireneSans, sans-serif;
 
     --background-color-page: #f9fafe;
     --color-scrollbar: #d4d7d8;
@@ -36,78 +35,46 @@
 
 @layer base {
     @font-face {
-        font-family: "EireneSans";
-        src:
-            local("Eirene Sans Bold"),
-            local("EireneSans-Bold"),
-            url("/fonts/EireneSans/EireneSans-Bold.woff2") format("woff2"),
-            url("/fonts/EireneSans/EireneSans-Bold.woff") format("woff");
-        font-weight: bold;
-        font-style: normal;
-        font-display: swap;
-    }
-
-    @font-face {
-        font-family: "EireneSans";
-        src:
-            local("Eirene Sans Italic"),
-            local("EireneSans-Italic"),
-            url("/fonts/EireneSans/EireneSans-Italic.woff2") format("woff2"),
-            url("/fonts/EireneSans/EireneSans-Italic.woff") format("woff");
-        font-weight: normal;
-        font-style: italic;
-        font-display: swap;
-    }
-
-    @font-face {
-        font-family: "EireneSans";
-        src:
-            local("Eirene Sans Bold Italic"),
-            local("EireneSans-BoldItalic"),
-            url("/fonts/EireneSans/EireneSans-BoldItalic.woff2") format("woff2"),
-            url("/fonts/EireneSans/EireneSans-BoldItalic.woff") format("woff");
-        font-weight: bold;
-        font-style: italic;
-        font-display: swap;
-    }
-
-    @font-face {
-        font-family: "EireneSans";
-        src:
-            local("Eirene Sans Regular"),
-            local("EireneSans-Regular"),
-            url("/fonts/EireneSans/EireneSans-Regular.woff2") format("woff2"),
-            url("/fonts/EireneSans/EireneSans-Regular.woff") format("woff");
-        font-weight: normal;
-        font-style: normal;
-        font-display: swap;
-    }
-
-    @font-face {
-        font-family: "Quetine";
-        src:
-            local("Quetine"),
-            url("/fonts/Quetine/Quetine.woff2") format("woff2"),
-            url("/fonts/Quetine/Quetine.woff") format("woff");
-        font-weight: normal;
+        font-family: "PlusJakartaSans";
+        src: url("/fonts/PlusJakartaSans.ttf") format("truetype");
         font-style: normal;
         font-display: swap;
     }
 
     body {
-        @apply bg-page font-Eirene-Sans text-primary;
+        font-family: PlusJakartaSans, sans-serif;
+        @apply bg-page text-primary;
     }
 
     * {
-        @apply placeholder:text-placeholder touch-manipulation placeholder:overflow-visible placeholder:select-none focus:outline-none;
+        @apply touch-manipulation focus:outline-none;
     }
 
     img {
         @apply pointer-events-none select-none;
     }
 
-    button {
-        @apply cursor-pointer;
+    button,
+    a {
+        @apply cursor-pointer select-none;
+    }
+
+    text-area,
+    input {
+        @apply placeholder:text-placeholder placeholder:overflow-y-visible placeholder:select-none;
+    }
+
+    button,
+    a,
+    p,
+    span,
+    h1,
+    h2,
+    h3,
+    h5,
+    text-area,
+    input {
+        @apply overflow-y-visible;
     }
 
     *::-webkit-scrollbar {
@@ -187,7 +154,7 @@
     .input-primary,
     .input-secondary,
     .button-navigation {
-        @apply text-primary px-4 py-2 text-lg transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 disabled:select-none;
+        @apply text-primary px-4 py-2 text-lg transition-all duration-200 disabled:pointer-events-none disabled:opacity-50;
     }
 
     .button-navigation,
@@ -259,7 +226,7 @@
     }
 
     .list-primary .list-title {
-        @apply text-dark mb-3 text-2xl leading-none font-bold;
+        @apply text-dark mb-3 text-2xl font-semibold;
     }
 
     .list-primary,
@@ -278,7 +245,7 @@
 
     /* Text */
     div.page-title p {
-        @apply text-light text-xl leading-tight;
+        @apply text-light text-xl leading-tight font-semibold;
     }
 
     h1.page-title,

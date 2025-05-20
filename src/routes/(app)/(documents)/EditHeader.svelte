@@ -40,7 +40,9 @@
 
 <div class="w-full">
     <div class="relative w-full">
-        <p class="md:x-center md:y-center mb-5 text-center text-2xl md:mb-0">{document.name}</p>
+        <p class="md:x-center md:y-center mb-5 text-center text-2xl font-medium md:mb-0">
+            {document.name}
+        </p>
 
         <div class="flex w-full flex-wrap items-center justify-between gap-x-12 gap-y-5">
             <a class="button-basic" href="/{type}/{document._id}">

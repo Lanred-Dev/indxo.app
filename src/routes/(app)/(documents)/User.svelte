@@ -8,10 +8,10 @@
 <a class="flex gap-2" href="/user/{owner._id}">
     <img src={owner.image} alt={owner.name} class="border-primary size-11 rounded-full border" />
 
-    <div class="[&>p]:leading-tight">
-        <p class="text-dark text-sm leading-snug">Created by</p>
-        <p class="text-lg font-bold">{owner.name}</p>
-        <p class="text-light text-sm">
+    <div class="text-sm">
+        <p class="text-dark leading-snug">Created by</p>
+        <p class="text-lg leading-tight font-semibold">{owner.name}</p>
+        <p class="text-light leading-none font-medium">
             {formatDistanceToNow(created ?? Date.now(), {
                 includeSeconds: true,
                 addSuffix: true,

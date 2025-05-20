@@ -52,7 +52,7 @@
             {name}
 
             <img
-                class="size-4"
+                class="size-5"
                 src="/icons/general/{visible ? 'UpChevron' : 'DownChevron'}.svg"
                 alt="Arrow {visible ? 'up' : 'down'}"
             />

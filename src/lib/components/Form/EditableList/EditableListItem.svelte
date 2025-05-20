@@ -50,7 +50,7 @@
     data-hasValue={hasValue}
 >
     <div class="flex items-center justify-between px-3">
-        <p class="text-lg font-bold">#{_listID + 1}</p>
+        <p class="text-lg font-semibold">#{_listID + 1}</p>
 
         <div class="flex-center gap-3">
             {#each actionButtons as { icon, text, onClick }}

@@ -26,7 +26,7 @@
 </script>
 
 <div class="relative mb-10 w-full">
-    <p class="md:x-center md:y-center mb-3 text-2xl">{data.name}</p>
+    <p class="md:x-center md:y-center mb-3 text-2xl font-medium">{data.name}</p>
 
     <a class="button-basic w-fit" href="/set/{data._id}">
         <img src="/icons/general/LeftChevron.svg" alt="Back" />

@@ -43,7 +43,7 @@
 <div class="mb-10 w-full">
     {#if "subject" in document && document.subject.length > 0}
         <a
-            class="text-light text-xl leading-tight"
+            class="text-light text-xl leading-none font-semibold"
             href="/search?query={(document as PublicSet).subject}&returnOnly=set"
             >{(document as PublicSet).subject}</a
         >

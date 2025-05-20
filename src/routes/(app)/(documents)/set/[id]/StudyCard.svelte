@@ -110,19 +110,31 @@
     >
         {@render overlay?.()}
 
-        <div
-            class="[&>div]:rounded-container [&>div]:border-primary [&>div]:flex-center [&>div]:absolute [&>div]:top-0 [&>div]:left-0 [&>div]:h-full [&>div]:w-full [&>div]:overflow-y-auto [&>div]:border [&>div]:bg-[#f6f9fb] [&>div]:p-6 [&>div]:shadow-xl [&>div]:inset-shadow-sm"
-        >
-            <div bind:this={cardFront}>
-                <p>{term}</p>
+        <div>
+            <div class="CardFace" bind:this={cardFront}>
+                <p class="font-semibold">{term}</p>
             </div>
 
-            <div style:display="none" style:transform="rotateX(180deg)" bind:this={cardBack}>
-                <p class="text-light x-center top-6 text-base">
+            <div
+                class="CardFace"
+                style:display="none"
+                style:transform="rotateX(180deg)"
+                bind:this={cardBack}
+            >
+                <p class="text-light x-center top-6 text-base font-semibold">
                     {term}
                 </p>
+
                 <p>{definition}</p>
             </div>
+
+            <style lang="postcss">
+                @reference "../../../../../app.css";
+
+                .CardFace {
+                    @apply rounded-container border-primary flex-center absolute top-0 left-0 h-full w-full overflow-y-auto border bg-[#f6f9fb] p-6 shadow-xl inset-shadow-sm;
+                }
+            </style>
         </div>
     </div>
 </button>

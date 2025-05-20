@@ -5,11 +5,11 @@
 </script>
 
 <li class="container-primary flex gap-3 {missed > 0 ? 'border-alert shadow-alert shadow/40' : ''}">
-    <p class="text-lg font-bold">#{listID}</p>
+    <p class="text-lg font-semibold">#{listID}</p>
 
     <div class="w-full">
         <div class="flex w-full justify-between gap-3">
-            <p class="break-word text-lg font-bold">{term.term}</p>
+            <p class="break-word text-lg font-black">{term.term}</p>
 
             {#if missed > 0}
                 <p>missed {missed} times</p>
