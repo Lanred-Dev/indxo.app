@@ -183,6 +183,8 @@
     });
 </script>
 
+<svelte:window onfocusin={() => (isDraggable = false)} onfocusout={() => (isDraggable = true)} />
+
 <div class="EditableList" aria-labelledby={labelID}>
     <ol class="relative flex flex-col gap-4">
         {#each actualItems as { _listID, _id, actionButtons }}
