@@ -35,17 +35,19 @@
 </script>
 
 <script lang="ts">
+    import generateRandomID from "$lib/utils/generateRandomID";
+
     import EditableListItem, {
         type ActionButton,
         type ItemProperty,
         type ListItem,
     } from "./EditableListItem.svelte";
-    import { onMount } from "svelte";
+    import { onMount, type Snippet } from "svelte";
     import { slide } from "svelte/transition";
 
     let {
         labelID,
-        startingItems = 1,
+        startingItems = 3,
         properties = [],
         actionButtons = [
             {
@@ -56,15 +58,15 @@
         ],
         items = [],
         isDraggable = false,
-        addText = "Add item",
+        controls,
     }: {
         labelID?: string;
         startingItems?: number;
         properties?: ItemProperty[];
         actionButtons?: ActionButton[];
         items?: { _id: string; properties: { [id: string]: string } }[];
-        addText?: string;
         isDraggable?: boolean;
+        controls?: Snippet<[addItem: (id: string, itemProperties: ItemProperty[]) => void]>;
     } = $props();
 
     let actualItems: ListItem[] = $state([]);
@@ -77,7 +79,7 @@
      *
      * @returns never
      */
-    function addItem(id?: string, itemProperties: ItemProperty[] = properties) {
+    function addItem(id: string, itemProperties: ItemProperty[] = properties) {
         actualItems.push({
             _listID: actualItems.length,
             _id: id,
@@ -178,14 +180,15 @@
             });
         } else {
             // Add the requested number of items to start with
-            for (let index: number = 0; index < startingItems; index++) addItem();
+            for (let index: number = 0; index < startingItems; index++)
+                addItem(generateRandomID(5));
         }
     });
 </script>
 
 <svelte:window onfocusin={() => (isDraggable = false)} onfocusout={() => (isDraggable = true)} />
 
-<div class="EditableList" aria-labelledby={labelID}>
+<div class="EditableList relative" aria-labelledby={labelID}>
     <ol class="relative flex flex-col gap-4">
         {#each actualItems as { _listID, _id, actionButtons }}
             <li
@@ -220,8 +223,16 @@
         {/each}
     </ol>
 
-    <button class="button-attention mt-4 w-full" onclick={() => addItem()} type="button">
-        <img src="/icons/general/Plus.svg" alt="Plus" />
-        {addText}
-    </button>
+    {#if controls}
+        {@render controls(addItem)}
+    {:else}
+        <button
+            class="button-attention mt-4 w-full"
+            onclick={() => addItem(generateRandomID(5))}
+            type="button"
+        >
+            <img src="/icons/general/Plus.svg" alt="Plus" />
+            New
+        </button>
+    {/if}
 </div>
