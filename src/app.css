@@ -244,13 +244,12 @@
     }
 
     /* Text */
-    div.page-title p {
-        @apply text-light text-xl leading-tight font-semibold;
+    .page-subtitle {
+        @apply text-light break-word text-xl leading-none font-semibold;
     }
 
-    h1.page-title,
-    div.page-title h1 {
-        @apply text-3xl leading-none font-bold md:text-5xl;
+    .page-title {
+        @apply break-word text-3xl leading-none font-bold md:text-5xl;
     }
 
     div.page-message {

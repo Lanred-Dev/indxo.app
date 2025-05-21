@@ -43,7 +43,7 @@
 <div class="mb-10 w-full">
     {#if "subject" in document && document.subject.length > 0}
         <a
-            class="text-light text-xl leading-none font-semibold"
+            class="page-subtitle"
             href="/search?query={(document as PublicSet).subject}&returnOnly=set"
             >{(document as PublicSet).subject}</a
         >
@@ -57,7 +57,7 @@
                 <img src={document?.icon} alt="Folder" class="size-14" />
             {/if}
 
-            <h1 class="page-title break-word w-full">{document?.name}</h1>
+            <h1 class="page-title w-full">{document?.name}</h1>
         </div>
 
         <div class="flex-center min-w-fit -translate-x-2 gap-2 sm:translate-x-2">

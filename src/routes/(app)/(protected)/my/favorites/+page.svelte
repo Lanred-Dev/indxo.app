@@ -9,9 +9,9 @@
     <title>Your {determineWording("favorites")}</title>
 </svelte:head>
 
-<div class="page-title mb-12">
-    <p>Browse your library</p>
-    <h1>Your {determineWording("favorites")}</h1>
+<div class="mb-12">
+    <p class="page-subtitle">Browse your library</p>
+    <h1 class="page-title">Your {determineWording("favorites")}</h1>
 </div>
 
 <SearchableList
