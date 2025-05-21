@@ -3,8 +3,8 @@
     import { millisecondsToMinutes } from "date-fns";
     import CardGroup, { type CardGroupProperties } from "./CardGroup.svelte";
     import type { PublicFolder } from "$lib/database/documents/Folder";
-    import type { ItemProperties as DropdownItemProperties } from "../Form/Dropdown.svelte";
-    import Search, { type SortFilters } from "./Search.svelte";
+    import type { ItemProperties as DropdownItemProperties } from "./Form/Dropdown.svelte";
+    import Dropdown from "./Form/Dropdown.svelte";
 
     const DISTANCE_WORDING: [string, number][] = [
         ["Just now", 1],
@@ -17,6 +17,8 @@
         ["This year", 525600],
         ["A long time ago", Infinity],
     ];
+
+    type SortFilters = "none" | "created" | "subject" | "alphabetical";
 
     let {
         items = [],
@@ -115,7 +117,20 @@
     });
 </script>
 
-<Search bind:query bind:filter {filters} />
+<div class="mb-10 flex w-full flex-wrap items-center gap-2 gap-x-5">
+    <Dropdown bind:value={filter} items={filters} />
+
+    <div class="input-primary flex-center grow gap-2">
+        <img class="size-6" src="/icons/general/Search.svg" alt="Search" />
+
+        <input
+            class="field-sizing-content w-full border-0 bg-transparent p-0 text-lg outline-none focus:ring-0"
+            type="text"
+            placeholder="Cant find something?"
+            bind:value={query}
+        />
+    </div>
+</div>
 
 <div class="flex w-full flex-col gap-10">
     {#each groups as group}

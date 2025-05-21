@@ -1,6 +1,6 @@
 <script lang="ts">
-    import SearchableList from "$lib/components/SearchableList/SearchableList.svelte";
-    import determineWording from "$lib/utils/determineWording.js";
+    import SearchableList from "$lib/components/SearchableList.svelte";
+    import determineWording from "$lib/utils/determineWording";
 
     let { data } = $props();
 </script>
