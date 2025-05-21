@@ -112,7 +112,7 @@
 
         <div>
             <div class="CardFace" bind:this={cardFront}>
-                <p class="font-semibold">{term}</p>
+                <p class="font-medium">{term}</p>
             </div>
 
             <div
@@ -121,7 +121,7 @@
                 style:transform="rotateX(180deg)"
                 bind:this={cardBack}
             >
-                <p class="text-light x-center top-6 text-base font-semibold">
+                <p class="text-light x-center top-6 text-base font-medium">
                     {term}
                 </p>
 

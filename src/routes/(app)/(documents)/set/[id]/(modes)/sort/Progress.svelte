@@ -8,13 +8,13 @@
         knows: number;
         terms: number;
     } = $props();
+
     let sorted: number = $derived(stillLearning + knows);
 </script>
 
 <div class="relative mb-1 flex w-full items-center justify-between px-6">
-    <p class="text-alert text-lg">{stillLearning}</p>
+    <p class="text-alert text-2xl">{stillLearning}</p>
 
-    <!--Progress bar-->
     <div class="x-center y-center bg-light h-1 w-1/2 rounded-full">
         <div
             class="relative h-full overflow-hidden rounded-full bg-green-500 transition-[width] duration-200"
@@ -27,5 +27,5 @@
         </div>
     </div>
 
-    <p class="text-lg text-green-500">{knows}</p>
+    <p class="text-2xl text-green-500">{knows}</p>
 </div>

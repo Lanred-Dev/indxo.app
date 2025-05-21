@@ -8,12 +8,13 @@
     import { getContext } from "svelte";
     import type { SimplePrivateuser } from "$lib/database/documents/User";
 
-    export interface CardGroupInfo {
+    export interface CardGroupProperties {
+        isCollapsible?: boolean;
         name: string;
         documents: (PublicFolder | PublicSet)[];
     }
 
-    let { name, documents }: CardGroupInfo = $props();
+    let { isCollapsible = true, name, documents }: CardGroupProperties = $props();
 
     const user: SimplePrivateuser = getContext("user");
     let visible: boolean = $state.raw(true);
@@ -48,14 +49,19 @@
 
 <div class="list-primary">
     {#if typeof name === "string" && name.length > 0}
-        <button class="flex-center list-title gap-1" onclick={() => (visible = !visible)}>
+        <button
+            class="flex-center list-title gap-1 {!isCollapsible ? 'pointer-events-none' : ''}"
+            onclick={() => (visible = !visible)}
+        >
             {name}
 
-            <img
-                class="size-5"
-                src="/icons/general/{visible ? 'UpChevron' : 'DownChevron'}.svg"
-                alt="Arrow {visible ? 'up' : 'down'}"
-            />
+            {#if isCollapsible}
+                <img
+                    class="size-5"
+                    src="/icons/general/{visible ? 'UpChevron' : 'DownChevron'}.svg"
+                    alt="Arrow {visible ? 'up' : 'down'}"
+                />
+            {/if}
         </button>
     {/if}
 

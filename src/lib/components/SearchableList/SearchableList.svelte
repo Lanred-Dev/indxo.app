@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { PublicSet } from "$lib/database/documents/Set";
     import { millisecondsToMinutes } from "date-fns";
-    import CardGroup, { type CardGroupInfo } from "./CardGroup.svelte";
+    import CardGroup, { type CardGroupProperties } from "./CardGroup.svelte";
     import type { PublicFolder } from "$lib/database/documents/Folder";
     import type { ItemProperties as DropdownItemProperties } from "../Form/Dropdown.svelte";
     import Search, { type SortFilters } from "./Search.svelte";
@@ -35,8 +35,8 @@
 
         return filter;
     });
-    let groups: CardGroupInfo[] = $derived.by(() => {
-        let groups: CardGroupInfo[] = [];
+    let groups: CardGroupProperties[] = $derived.by(() => {
+        let groups: CardGroupProperties[] = [];
 
         if (items.length <= 0) return groups;
 

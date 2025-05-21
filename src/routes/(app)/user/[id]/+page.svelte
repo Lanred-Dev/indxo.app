@@ -9,4 +9,4 @@
     <meta property="og:title" content={data.name} />
 </svelte:head>
 
-<Header name={data.name} image={data.image} />
+<Header {...data} />

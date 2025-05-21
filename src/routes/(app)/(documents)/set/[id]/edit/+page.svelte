@@ -79,8 +79,6 @@
         id="terms"
         type="editableList"
         properties={{
-            addText: `Add ${determineWording("card")}`,
-            startingItems: 3,
             isDraggable: true,
             items: data.set.terms.map(({ _id, term, definition }) => ({
                 _id,

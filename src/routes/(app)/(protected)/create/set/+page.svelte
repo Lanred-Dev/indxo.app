@@ -101,8 +101,6 @@
             id="terms"
             type="editableList"
             properties={{
-                addText: `Add ${determineWording("card")}`,
-                startingItems: 3,
                 isDraggable: true,
                 properties: [
                     {

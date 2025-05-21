@@ -3,26 +3,26 @@
 
     // svelte-ignore non_reactive_update
     let startingTime: number = 10;
-    let active: boolean = $state(false);
+    let isPlaying: boolean = $state(false);
     let timeRemaining: number = $state(0);
 
     function start() {
-        active = true;
+        isPlaying = true;
         timeRemaining = startingTime;
 
-        const timerUpdaterInterval = setInterval(() => {
-            timeRemaining -= 0.05;
-
-            if (timeRemaining <= 0) {
+        const timerInterval = setInterval(() => {
+            if (timeRemaining - 0.05 <= 0) {
                 timeRemaining = 0;
-                active = false;
-                clearInterval(timerUpdaterInterval);
+                isPlaying = false;
+                clearInterval(timerInterval);
+            } else {
+                timeRemaining -= 0.05;
             }
         }, 50);
     }
 </script>
 
-{#if active}
+{#if isPlaying}
     <div class="w-full">
         <p class="text-center text-3xl font-bold">
             {timeRemaining.toFixed(2)}

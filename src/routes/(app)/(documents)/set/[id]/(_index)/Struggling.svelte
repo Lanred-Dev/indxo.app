@@ -5,10 +5,9 @@
     import { getContext } from "svelte";
     import TermCard from "./TermCard.svelte";
 
-    const { preferences }: SimplePrivateuser = getContext("user");
-
     let { saved, terms }: { saved: SortingTerm[]; terms: Term[] } = $props();
 
+    const { preferences }: SimplePrivateuser = getContext("user");
     let strugglingTerms: Term[] = $derived(
         terms.filter(
             ({ _id }) =>
