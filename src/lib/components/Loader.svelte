@@ -1,12 +1,17 @@
 <script lang="ts">
-    let { size = 3, color = "#6088d3" }: { size?: number; color?: string } = $props();
+    let { size = 3, color = "attention" }: { size?: number; color?: string } = $props();
+
+    const COLORS: { [color: string]: string } = {
+        attention: "var(--color-attention)",
+        black: "#000000",
+    };
 </script>
 
 <svg
     class="aspect-1 fill-none stroke-2"
     viewBox="25 25 50 50"
     style:width="{size}rem"
-    stroke={color}
+    style:stroke={COLORS[color]}
 >
     <circle cx="50" cy="50" r="20" />
 </svg>

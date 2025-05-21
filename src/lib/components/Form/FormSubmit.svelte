@@ -34,7 +34,7 @@
     bind:this={button}
 >
     {#if submitting}
-        <Loader size={1.75} color="#000000" />
+        <Loader size={1.75} color="black" />
     {:else}
         {@html text}
     {/if}
