@@ -9,7 +9,7 @@
     <title>Your {determineWording("favorites")}</title>
 </svelte:head>
 
-<div class="mb-12">
+<div class="page-title">
     <p class="page-subtitle">Browse your library</p>
     <h1 class="page-title">Your {determineWording("favorites")}</h1>
 </div>

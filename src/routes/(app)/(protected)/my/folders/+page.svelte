@@ -6,12 +6,12 @@
 </script>
 
 <svelte:head>
-    <title>Your {determineWording("sets")}</title>
+    <title>Your {determineWording("folders")}</title>
 </svelte:head>
 
-<div class="mb-12">
+<div class="page-title">
     <p class="page-subtitle">Browse your library</p>
-    <h1 class="page-title">Your {determineWording("sets")}</h1>
+    <h1 class="page-title">Your {determineWording("folders")}</h1>
 </div>
 
 <SearchableList

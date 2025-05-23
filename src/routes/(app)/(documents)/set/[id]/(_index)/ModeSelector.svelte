@@ -17,7 +17,7 @@
 <div class="list-primary mt-16">
     <p class="list-title">{determineWording("modes")}</p>
 
-    <ul class="list flex">
+    <ul class="list-container">
         {#each modes as { icon, text, endpoint }}
             <li class="grow">
                 <a class="button-primary" href="/set/{id}/{endpoint}">

@@ -18,7 +18,7 @@ export async function POST({ request, locals }) {
         isPublic,
     }: { name: string; icon: string; description: string; isPublic: boolean } =
         await request.json();
-    const id: string = generateRandomID();
+    const id: string = generateRandomID(15, "f");
 
     await folders.insertOne({
         _id: id,

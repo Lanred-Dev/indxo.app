@@ -6,7 +6,7 @@ const CHARACTERS: string = "abcdefghijklmnopqrstuvwxyz0123456789";
  * @param length The length of the random ID to generate. Default is 12 characters.
  * @returns The generated random ID as a string.
  */
-export default function generateRandomID(length: number = 12): string {
+export default function generateRandomID(length: number = 12, prefix: string = ""): string {
     let id: string = "";
     let bytes = new Uint8Array(length);
     crypto.getRandomValues(bytes);
@@ -15,5 +15,5 @@ export default function generateRandomID(length: number = 12): string {
         id += CHARACTERS[bytes[i] % CHARACTERS.length];
     }
 
-    return id;
+    return `${prefix}${id}`;
 }

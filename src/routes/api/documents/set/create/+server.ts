@@ -18,7 +18,7 @@ export async function POST({ request, locals }) {
         isPublic,
     }: { name: string; subject: string; description: string; isPublic: boolean } =
         await request.json();
-    const id: string = generateRandomID();
+    const id: string = generateRandomID(15, "s");
 
     await sets.insertOne({
         _id: id,

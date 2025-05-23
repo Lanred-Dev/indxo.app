@@ -27,12 +27,7 @@
     });
 </script>
 
-<button
-    type="submit"
-    class="button-attention flex-center w-full"
-    disabled={submitting}
-    bind:this={button}
->
+<button type="submit" class="button-attention w-full" disabled={submitting} bind:this={button}>
     {#if submitting}
         <Loader size={1.75} color="black" />
     {:else}

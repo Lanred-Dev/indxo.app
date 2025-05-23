@@ -51,7 +51,7 @@ export async function GET({ cookies, url }) {
     // If the user doesn't exist, create a new user because they are logging in for the first time
     if (!user) {
         user = {
-            _id: generateRandomID(),
+            _id: generateRandomID(15, "u"),
             google: claims.sub,
             name: claims.name,
             email: claims.email,
@@ -63,6 +63,10 @@ export async function GET({ cookies, url }) {
             homeSections: [],
             openedSets: [],
             sorting: {},
+            preferences: {
+                strugglingTermThreshold: 0,
+                home: [],
+            },
         };
 
         await users.insertOne(user);

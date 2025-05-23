@@ -9,7 +9,7 @@
     <title>Your {determineWording("sets")}</title>
 </svelte:head>
 
-<div class="mb-12">
+<div class="page-title">
     <p class="page-subtitle">Browse your library</p>
     <h1 class="page-title">Your {determineWording("sets")}</h1>
 </div>

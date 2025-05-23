@@ -3,6 +3,8 @@
 import type { Document } from "mongodb";
 import type { SimpleUser } from "./User";
 
+export const setIDPrefix: string = "s";
+
 export type Term = {
     _id: string;
     term: string;

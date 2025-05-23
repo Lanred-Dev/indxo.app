@@ -4,6 +4,8 @@ import type { Document } from "mongodb";
 import type { PublicSet } from "./Set";
 import type { SimpleUser } from "./User";
 
+export const folderIDPrefix: string = "f";
+
 export interface Folder extends Document {
     _id: string;
     icon: string;

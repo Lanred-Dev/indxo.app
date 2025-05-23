@@ -82,7 +82,7 @@
             class="Input input-primary field-sizing-content h-40 resize-none"
             id={uid}
             aria-labelledby={labelID}
-            data-max={value.length === properties.maxlength}
+            data-max={value.length === properties.maxlength ? true : undefined}
             bind:value
             {...properties}
         ></textarea>
@@ -92,7 +92,7 @@
             {type}
             id={uid}
             aria-labelledby={labelID}
-            data-max={value.length === properties.maxlength}
+            data-max={value.length === properties.maxlength ? true : undefined}
             bind:value
             {...properties}
         />

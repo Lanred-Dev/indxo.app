@@ -4,6 +4,8 @@ import type { Document } from "mongodb";
 import type { Folder } from "./Folder";
 import type { Set } from "./Set";
 
+export const userIDPrefix: string = "u";
+
 type Favorite = [string, "set" | "folder"];
 
 type Preferences = {

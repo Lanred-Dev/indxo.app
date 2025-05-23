@@ -23,9 +23,9 @@
 </svelte:head>
 
 {#if data.canView === false}
-    <div class="page-message">
-        <p>Sorry, couldn't find that {determineWording("set")}.</p>
-        <p>
+    <div class="page-title">
+        <p class="page-title">Sorry, couldn't find that {determineWording("set")}.</p>
+        <p class="page-subtitle">
             The {determineWording("set")} you're looking for doesn't exist or you don't have permission
             to view it.
         </p>

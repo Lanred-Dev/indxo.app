@@ -21,16 +21,14 @@
     <div class="list-primary mt-16">
         <p class="list-title">Struggling {determineWording("terms")}</p>
 
-        <div class="list-primary">
-            <ol class="flex flex-col gap-4">
-                {#each strugglingTerms as term}
-                    <TermCard
-                        {term}
-                        missed={saved.find(({ _id }) => _id === term._id)?.missed}
-                        listID={terms.indexOf(term) + 1}
-                    />
-                {/each}
-            </ol>
-        </div>
+        <ol class="list-container flex-col">
+            {#each strugglingTerms as term}
+                <TermCard
+                    {term}
+                    missed={saved.find(({ _id }) => _id === term._id)?.missed}
+                    listID={terms.indexOf(term) + 1}
+                />
+            {/each}
+        </ol>
     </div>
 {/if}

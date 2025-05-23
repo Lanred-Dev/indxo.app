@@ -41,9 +41,9 @@
     <title>Create a {determineWording("set")}</title>
 </svelte:head>
 
-<div class="page-message">
-    <p>{WORDING[stage][0]}</p>
-    <p>{WORDING[stage][1]}</p>
+<div class="page-title">
+    <h1 class="page-title">{WORDING[stage][0]}</h1>
+    <p class="page-subtitle">{WORDING[stage][1]}</p>
 </div>
 
 <Form

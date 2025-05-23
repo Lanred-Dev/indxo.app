@@ -85,8 +85,8 @@
         if (actualFilter !== "none") {
             groups.forEach(({ documents }) => {
                 documents.sort((document1, document2) => {
-                    const relative1: number = Date.now() - document1.created;
-                    const relative2: number = Date.now() - document2.created;
+                    const relative1: number = Date.now() - (document1 as any).created;
+                    const relative2: number = Date.now() - (document2 as any).created;
                     return relative1 - relative2;
                 });
             });

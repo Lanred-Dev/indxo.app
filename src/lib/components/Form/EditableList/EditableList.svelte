@@ -59,6 +59,7 @@
         items = [],
         isDraggable = false,
         controls,
+        generateID = generateRandomID,
     }: {
         labelID?: string;
         startingItems?: number;
@@ -66,7 +67,8 @@
         actionButtons?: ActionButton[];
         items?: { _id: string; properties: { [id: string]: string } }[];
         isDraggable?: boolean;
-        controls?: Snippet<[addItem: (id: string, itemProperties: ItemProperty[]) => void]>;
+        controls?: Snippet<[addItem: (id?: string, itemProperties?: ItemProperty[]) => void]>;
+        generateID?: () => string;
     } = $props();
 
     let actualItems: ListItem[] = $state([]);
@@ -79,10 +81,10 @@
      *
      * @returns never
      */
-    function addItem(id: string, itemProperties: ItemProperty[] = properties) {
+    function addItem(id?: string, itemProperties: ItemProperty[] = properties) {
         actualItems.push({
             _listID: actualItems.length,
-            _id: id,
+            _id: id ?? generateID(),
             properties: itemProperties,
             actionButtons,
         });
@@ -180,8 +182,7 @@
             });
         } else {
             // Add the requested number of items to start with
-            for (let index: number = 0; index < startingItems; index++)
-                addItem(generateRandomID(5));
+            for (let index: number = 0; index < startingItems; index++) addItem();
         }
     });
 </script>
@@ -189,7 +190,7 @@
 <svelte:window onfocusin={() => (isDraggable = false)} onfocusout={() => (isDraggable = true)} />
 
 <div class="EditableList relative" aria-labelledby={labelID}>
-    <ol class="relative flex flex-col gap-4">
+    <ol class="list-container relative flex-col">
         {#each actualItems as { _listID, _id, actionButtons }}
             <li
                 class="transition-all {isDraggable ? 'cursor-move' : ''} {draggingID === _listID
@@ -226,11 +227,7 @@
     {#if controls}
         {@render controls(addItem)}
     {:else}
-        <button
-            class="button-attention mt-4 w-full"
-            onclick={() => addItem(generateRandomID(5))}
-            type="button"
-        >
+        <button class="button-attention mt-4 w-full" onclick={() => addItem()} type="button">
             <img src="/icons/general/Plus.svg" alt="Plus" />
             New
         </button>

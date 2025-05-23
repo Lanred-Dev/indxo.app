@@ -20,9 +20,9 @@
 </svelte:head>
 
 {#if data.canView === false}
-    <div class="page-message">
-        <p>Sorry, couldn't find that {determineWording("folder")}.</p>
-        <p>
+    <div class="page-title">
+        <h1 class="page-title">Sorry, couldn't find that {determineWording("folder")}.</h1>
+        <p class="page-subtitle">
             The {determineWording("folder")} you're looking for doesn't exist or you don't have permission
             to view it.
         </p>

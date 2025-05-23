@@ -40,7 +40,7 @@
     }
 </script>
 
-<div class="mb-10 w-full">
+<div class="page-title">
     {#if "subject" in document && document.subject.length > 0}
         <a
             class="page-subtitle"
@@ -57,10 +57,10 @@
                 <img src={document?.icon} alt="Folder" class="size-14" />
             {/if}
 
-            <h1 class="page-title w-full">{document?.name}</h1>
+            <h1 class="page-title">{document?.name}</h1>
         </div>
 
-        <div class="flex-center min-w-fit -translate-x-2 gap-2 sm:translate-x-2">
+        <div class="flex-center min-w-fit -translate-x-2 gap-2 lg:translate-x-2">
             <button class="button-icon" onclick={toggleDocumentInFavorites}>
                 <img
                     src={isFavorite ? "/icons/general/StarColored.svg" : "/icons/general/Star.svg"}
