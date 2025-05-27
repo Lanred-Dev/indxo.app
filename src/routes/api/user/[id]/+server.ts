@@ -1,11 +1,9 @@
-import type { PublicFolder } from "$lib/database/documents/Folder";
-import type { PublicSet } from "$lib/database/documents/Set";
-import type { User } from "$lib/database/documents/User";
-import idToDocument from "$lib/utils/idToDocument";
+import type { PublicFolder, PublicSet, PublicUser, User } from "$lib/documents";
+import { findDocumentByID } from "$lib/utils/document";
 import { error, json } from "@sveltejs/kit";
 
 export async function GET({ params, fetch }) {
-    const user: User | null = await idToDocument("users", params.id);
+    const user: User | null = await findDocumentByID(params.id);
 
     if (!user) error(404, "User not found.");
 
@@ -15,9 +13,10 @@ export async function GET({ params, fetch }) {
     return json({
         _id: user._id,
         name: user.name,
-        image: user.image,
+        picture: user.picture,
         sets: sets,
         folders: folders,
         favorites: user.favorites,
-    });
+        created: user.created,
+    } satisfies PublicUser);
 }
