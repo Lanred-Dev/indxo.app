@@ -30,6 +30,7 @@
         "eslint-plugin-svelte": "^2.36.0",
         "globals": "^15.0.0",
         "motion": "^12.6.3",
+        "node-cron": "^4.0.7",
         "prettier": "^3.3.2",
         "prettier-plugin-organize-imports": "^4.1.0",
         "prettier-plugin-svelte": "^3.2.6",
