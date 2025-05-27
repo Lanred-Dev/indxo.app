@@ -5,8 +5,6 @@
 @plugin '@tailwindcss/aspect-ratio';
 
 @theme {
-    --font-*: initial;
-
     --background-color-page: #f9fafe;
     --color-scrollbar: #d4d7d8;
 
@@ -82,6 +80,7 @@
         @apply cursor-pointer select-none;
     }
 
+    /* NOTE: Prevents characters like y and g from being cut off */
     button,
     a,
     p,
