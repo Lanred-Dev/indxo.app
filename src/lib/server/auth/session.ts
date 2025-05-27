@@ -1,20 +1,19 @@
-import type { Session } from "$lib/database/documents/Session";
-import type { User } from "$lib/database/documents/User";
-import { loadCollection } from "$lib/database/mongo";
-import idToDocument from "$lib/utils/idToDocument";
+import { userFields, type Session, type User } from "$lib/documents";
+import { loadCollection } from "$lib/server/mongo";
+import { findDocumentByID, resolveMissingDocumentFields } from "$lib/utils/document";
 import { sha256 } from "@oslojs/crypto/sha2";
 import { encodeBase32LowerCase, encodeHexLowerCase } from "@oslojs/encoding";
 import { milliseconds } from "date-fns";
 import { type Collection } from "mongodb";
-import { checkUserForUpdates } from "./user";
 
 const sessions: Collection<Session> = loadCollection("accounts", "sessions");
+const users: Collection<User> = loadCollection("accounts", "users");
 
 /**
  * Encodes a token using SHA-256.
  *
- * @param token The token to encode
- * @returns  The encoded token as a string
+ * @param token
+ * @returns The encoded token
  */
 function encodeToken(token: string): string {
     return encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
@@ -23,14 +22,14 @@ function encodeToken(token: string): string {
 /**
  * Creates a new session for a user.
  *
- * @param token The token to use
- * @param userID The user ID to associate with the session
- * @returns A promise that resolves to the created session
+ * @param token
+ * @param user
+ * @returns The created session
  */
-export async function createSession(token: string, userID: string): Promise<Session> {
+export async function createSession(token: string, user: string): Promise<Session> {
     const session: Session = {
         _id: encodeToken(token),
-        user: userID,
+        user,
         expires: Date.now() + milliseconds({ days: 30 }),
     };
 
@@ -42,13 +41,13 @@ export async function createSession(token: string, userID: string): Promise<Sess
 /**
  * Validates a session token and retrieves the associated user and session data.
  *
- * @param token The token to validate
- * @returns A promise that resolves to an object containing the user and session if valid, or null if invalid or expired.
+ * @param token
+ * @returns An object containing the user and session if valid, or null if invalid or expired.
  */
 export async function validateToken(
     token: string
 ): Promise<{ user: User; session: Session } | null> {
-    const session: Session = await idToDocument("sessions", encodeToken(token));
+    const session: Session = await findDocumentByID(encodeToken(token));
 
     if (!session) return null;
 
@@ -64,21 +63,25 @@ export async function validateToken(
         await sessions.updateOne({ _id: session._id }, { $set: { expires: session.expires } });
     }
 
-    const user: User = await idToDocument("users", session.user);
-    checkUserForUpdates(user);
+    // Check and ensure the user document has all required fields
+    const [user, changesMade] = resolveMissingDocumentFields(
+        await findDocumentByID(session.user),
+        userFields
+    );
 
-    return { user, session };
+    if (changesMade) await users.updateOne({ _id: session.user }, { $set: user });
+
+    return { user: user as User, session };
 }
 
 /**
  * Deletes a session by its token.
  *
- * @param token The token to delete
- * @returns never
+ * @param token
  */
 export async function deleteSession(token: string) {
     await sessions.deleteOne({
-        _id: encodeHexLowerCase(sha256(new TextEncoder().encode(token))),
+        _id: encodeToken(token),
     });
 }
 
