@@ -10,6 +10,6 @@ export function determineDocumentType(
     document: { _id: string; [key: string]: any } | string
 ): DocumentType | null {
     // NOTE: `id` will not always have the type of `DocumentType`
-    const id = (typeof document === "string" ? document : document._id) as DocumentType;
+    const id = (typeof document === "string" ? document[0] : document._id[0]) as DocumentType;
     return Object.values(DocumentType).includes(id) ? id : null;
 }
