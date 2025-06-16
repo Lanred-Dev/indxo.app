@@ -9,7 +9,7 @@
     --color-scrollbar: #d4d7d8;
 
     --color-attention: #7c9edd;
-    --color-attention-bright: #d9e2f0;
+    --color-attention-bright: #dde4f0;
     --color-attention-dark: #bccbe4;
     --color-alert: #f26a63;
     --color-input: #e5eaef;
@@ -146,6 +146,34 @@
     @apply container-clay;
 }
 
+@utility row {
+    @apply flex w-full flex-wrap items-center gap-5;
+}
+
+@utility list-primary {
+    @apply w-full;
+
+    & .list-title {
+        @apply text-dark mb-3 text-2xl font-semibold;
+    }
+
+    & .list-container {
+        @apply flex flex-wrap gap-x-4 gap-y-2.5;
+    }
+}
+
+@utility page-title {
+    @apply mb-12 w-full;
+
+    & .page-subtitle {
+        @apply text-light break-word text-lg leading-none font-semibold md:text-xl;
+    }
+
+    & .page-title {
+        @apply break-word text-3xl leading-snug font-bold md:text-4xl;
+    }
+}
+
 @layer components {
     .button-attention,
     .button-primary,
@@ -202,29 +230,5 @@
 
     .container-primary {
         @apply rounded-container border-primary bg-container overflow-hidden border p-4 shadow;
-    }
-
-    .list-primary {
-        @apply w-full;
-
-        & .list-title {
-            @apply text-dark mb-3 text-2xl font-semibold;
-        }
-
-        & .list-container {
-            @apply flex flex-wrap gap-x-4 gap-y-2.5;
-        }
-    }
-
-    div.page-title {
-        @apply mb-12 w-full;
-
-        & .page-subtitle {
-            @apply text-light break-word text-lg leading-none font-semibold md:text-xl;
-        }
-
-        & .page-title {
-            @apply break-word text-3xl leading-snug font-bold md:text-4xl;
-        }
     }
 }
