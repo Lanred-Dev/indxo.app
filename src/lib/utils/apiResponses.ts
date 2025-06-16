@@ -7,6 +7,8 @@ export enum ResponseCodes {
     UserUnauthorized = 403,
     NotFound = 404,
     SuccessNoResponse = 204,
+    Success = 200,
+    Redirect = 307,
 }
 
 // NOTE: These are generic responses and dont always have to be used.
