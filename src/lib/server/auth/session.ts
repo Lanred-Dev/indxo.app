@@ -47,7 +47,7 @@ export async function createSession(token: string, user: string): Promise<Sessio
 export async function validateToken(
     token: string
 ): Promise<{ user: User; session: Session } | null> {
-    const session: Session = await findDocumentByID(encodeToken(token));
+    const session: Session | null = await sessions.findOne({ _id: encodeToken(token) });
 
     if (!session) return null;
 

@@ -3,14 +3,13 @@ import { emptySessionUser } from "$lib/documents";
 import type { Handle } from "@sveltejs/kit";
 import { validateToken } from "./session";
 
-export const authHandle: Handle = async ({ event, resolve }) => {
-    const token: string | null = event.cookies.get("session") ?? null;
+export const handle: Handle = async ({ event, resolve }) => {
+    const token = event.cookies.get("session");
 
     // If the token is not set, set the user and session to null and return.
     if (!token) {
         event.locals.session = null;
         event.locals.user = emptySessionUser;
-
         return resolve(event);
     }
 
@@ -24,6 +23,7 @@ export const authHandle: Handle = async ({ event, resolve }) => {
             picture: sessionInformation.user.picture,
             email: sessionInformation.user.email,
             preferences: sessionInformation.user.preferences,
+            favorites: sessionInformation.user.favorites,
         };
 
         event.cookies.set("session", token, {
@@ -38,10 +38,8 @@ export const authHandle: Handle = async ({ event, resolve }) => {
         event.locals.user = emptySessionUser;
 
         event.cookies.set("session", "", {
-            httpOnly: true,
             path: "/",
             secure: !dev,
-            sameSite: "lax",
             maxAge: 0,
         });
     }
