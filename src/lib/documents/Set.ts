@@ -1,5 +1,10 @@
-import type { DocumentField } from "$lib/utils/document";
-import { ownedDocumentFields, type OwnedDocument, type PublicOwnedDocument } from "./Document";
+import {
+    DocumentFieldType,
+    ownedDocumentFields,
+    type DocumentField,
+    type OwnedDocument,
+    type PublicOwnedDocument,
+} from "./Document";
 import type { Term } from "./Term";
 
 export interface Set extends OwnedDocument {
@@ -17,18 +22,21 @@ export interface PublicSet extends PublicOwnedDocument {
 export const setFields: DocumentField[] = [
     ...ownedDocumentFields,
     {
-        key: "subject",
-        type: "string",
         defaultValue: "",
+        updateable: true,
+        id: "subject",
+        type: DocumentFieldType.string,
     },
     {
-        key: "terms",
-        type: "array",
         defaultValue: [],
+        updateable: true,
+        id: "terms",
+        type: DocumentFieldType.array,
     },
     {
-        key: "folders",
-        type: "array",
         defaultValue: [],
+        updateable: true,
+        id: "folders",
+        type: DocumentFieldType.array,
     },
 ];

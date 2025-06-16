@@ -1,4 +1,3 @@
-import type { DocumentField } from "$lib/utils/document";
 import type { BaseUser } from "./User";
 
 export enum DocumentType {
@@ -10,17 +9,34 @@ export enum DocumentType {
 }
 
 export enum DocumentPermission {
-    view = "view",
-    edit = "edit",
-    owner = "owner",
-    none = "none",
+    view,
+    edit,
+    owner,
+    none,
 }
 
 export enum DocumentVisiblity {
-    linkOnly = "linkOnly",
-    private = "private",
-    public = "public",
+    link,
+    private,
+    public,
 }
+
+export enum DocumentFieldType {
+    string = "string",
+    number = "number",
+    boolean = "boolean",
+    array = "a",
+    dictionary = "d",
+}
+
+export type DocumentField = {
+    placeholder?: string;
+    optional?: boolean;
+    defaultValue?: unknown;
+    updateable?: boolean;
+    id: string;
+    type: DocumentFieldType | Record<string, DocumentFieldType> | (string | number)[];
+};
 
 export interface BaseDocument {
     _id: string;
@@ -32,7 +48,7 @@ export interface OwnedDocument extends BaseDocument {
     description: string;
     owner: string;
     visiblity: DocumentVisiblity;
-    permissions: { [id: string]: DocumentPermission };
+    permissions: Record<string, DocumentPermission>;
 }
 
 export interface PublicOwnedDocument extends BaseDocument {
@@ -48,42 +64,43 @@ export interface SimpleOwnedDocument extends PublicOwnedDocument {
 
 export const documentFields: DocumentField[] = [
     {
-        key: "_id",
-        type: "string",
-        defaultValue: "",
+        updateable: false,
+        id: "_id",
+        type: DocumentFieldType.string,
     },
     {
-        key: "created",
-        type: "number",
-        defaultValue: "0",
+        updateable: false,
+        id: "created",
+        type: DocumentFieldType.number,
     },
 ];
 
 export const ownedDocumentFields: DocumentField[] = [
     ...documentFields,
     {
-        key: "name",
-        type: "string",
-        defaultValue: "",
+        updateable: true,
+        id: "name",
+        type: DocumentFieldType.string,
     },
     {
-        key: "desciption",
-        type: "string",
-        defaultValue: "",
+        updateable: true,
+        id: "desciption",
+        type: DocumentFieldType.string,
     },
     {
-        key: "owner",
-        type: "string",
-        defaultValue: "",
+        id: "owner",
+        type: DocumentFieldType.string,
     },
     {
-        key: "visiblity",
-        type: "string",
-        defaultValue: "",
+        defaultValue: DocumentVisiblity.private,
+        updateable: true,
+        id: "visiblity",
+        type: Object.values(DocumentVisiblity),
     },
     {
-        key: "permissions",
-        type: "dictionary",
         defaultValue: {},
+        updateable: true,
+        id: "permissions",
+        type: DocumentFieldType.dictionary,
     },
 ];

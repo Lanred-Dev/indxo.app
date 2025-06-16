@@ -1,5 +1,9 @@
-import type { DocumentField } from "$lib/utils/document";
-import { documentFields, type BaseDocument } from "./Document";
+import {
+    documentFields,
+    DocumentFieldType,
+    type BaseDocument,
+    type DocumentField,
+} from "./Document";
 import type { PublicFolder } from "./Folder";
 import type { PublicSet } from "./Set";
 
@@ -21,14 +25,13 @@ export interface User extends BaseUser {
     favorites: string[];
     preferences: UserPreferences;
     metadata: {
-        documentsOpenedAt: {
-            [id: string]: number;
-        };
-        sets: {
-            [id: string]: {
+        documentsOpenedAt: Record<string, number>;
+        sets: Record<
+            string,
+            {
                 sorting: any;
-            };
-        };
+            }
+        >;
     };
 }
 
@@ -44,6 +47,7 @@ export interface SessionUser {
     picture: string;
     email: string;
     preferences: UserPreferences;
+    favorites: string[];
 }
 
 export const emptySessionUser: SessionUser = {
@@ -53,58 +57,64 @@ export const emptySessionUser: SessionUser = {
     email: "",
     preferences: {
         home: [],
-        strugglingTermThreshold: 0,
+        strugglingTermThreshold: 3,
     },
+    favorites: [],
 };
 
 export const userFields: DocumentField[] = [
     ...documentFields,
     {
-        key: "googleID",
-        type: "string",
-        defaultValue: "",
+        id: "googleID",
+        type: DocumentFieldType.string,
     },
     {
-        key: "email",
-        type: "string",
-        defaultValue: "",
+        id: "email",
+        type: DocumentFieldType.string,
     },
     {
-        key: "name",
-        type: "string",
-        defaultValue: "",
+        id: "name",
+        type: DocumentFieldType.string,
     },
     {
-        key: "picture",
-        type: "string",
-        defaultValue: "",
+        id: "picture",
+        type: DocumentFieldType.string,
     },
     {
-        key: "sets",
-        type: "array",
         defaultValue: [],
+        id: "sets",
+        type: DocumentFieldType.array,
     },
     {
-        key: "folders",
-        type: "array",
         defaultValue: [],
+        id: "folders",
+        type: DocumentFieldType.array,
     },
     {
-        key: "favorites",
-        type: "array",
         defaultValue: [],
+        id: "favorites",
+        type: DocumentFieldType.array,
     },
     {
-        key: "preferences",
-        type: "dictionary",
-        defaultValue: {},
+        defaultValue: {
+            home: [],
+            strugglingTermThreshold: 3,
+        },
+        id: "preferences",
+        type: {
+            home: DocumentFieldType.array,
+            strugglingTermThreshold: DocumentFieldType.number,
+        },
     },
     {
-        key: "metadata",
-        type: "dictionary",
         defaultValue: {
             documentsOpenedAt: {},
             sets: {},
+        },
+        id: "metadata",
+        type: {
+            documentsOpenedAt: DocumentFieldType.dictionary,
+            sets: DocumentFieldType.dictionary,
         },
     },
 ];
