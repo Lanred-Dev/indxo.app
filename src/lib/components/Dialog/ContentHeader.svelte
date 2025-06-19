@@ -10,8 +10,8 @@
     } = $props();
 </script>
 
-<div class="flex-center relative mb-5 px-11">
-    <p class="text-3xl font-bold">{title}</p>
+<div class="flex-center relative mb-2 px-2 sm:px-5 md:px-11">
+    <p class="text-center text-3xl font-bold">{title}</p>
 
     {#if includeClose}
         <DialogClose class="button-icon y-center right-0">
