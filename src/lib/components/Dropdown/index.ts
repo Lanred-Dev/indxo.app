@@ -3,7 +3,7 @@ export { default as Dropdown } from "./Dropdown.svelte";
 export { default as DropdownTrigger } from "./Trigger.svelte";
 
 export interface DropdownItemProperties {
-    value: string;
+    value: string | number;
     text?: string;
     image?: string;
     href?: string;
@@ -12,7 +12,7 @@ export interface DropdownItemProperties {
 export type DropdownContext = () => {
     uid: string;
     isVisible: boolean;
-    value: string;
+    value: string | number;
     currentItem: DropdownItemProperties;
     longestTextWidth: number;
     setValue: (item: DropdownItemProperties) => void;
