@@ -8,7 +8,7 @@
         value = $bindable(""),
         children,
     }: {
-        value?: string;
+        value?: string | number;
         children: Snippet<[]>;
     } = $props();
 
