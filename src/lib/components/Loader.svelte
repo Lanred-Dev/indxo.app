@@ -1,4 +1,6 @@
 <script lang="ts">
+    import type { ClassValue } from "svelte/elements";
+
     type LoaderColor = "attention" | "black";
 
     const colors: Record<LoaderColor, string> = {
@@ -9,15 +11,22 @@
     let {
         size = 2.5,
         color = "attention",
+        class: className,
         ...properties
-    }: { size?: number; color?: LoaderColor; [key: string]: unknown } = $props();
+    }: {
+        size?: number;
+        color?: LoaderColor;
+        class?: ClassValue;
+        [key: string]: unknown;
+    } = $props();
 </script>
 
 <svg
-    class={["aspect-1 fill-none stroke-3", properties.class]}
+    class={["aspect-1 fill-none stroke-3", className]}
     viewBox="25 25 50 50"
     style:width="{size}rem"
     style:stroke={colors[color]}
+    {...properties}
 >
     <circle cx="50" cy="50" r="20" />
 </svg>
