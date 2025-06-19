@@ -12,7 +12,7 @@
     } = $props();
 
     let attributes = $derived({
-        class: ["input-primary field-sizing-content resize-none", multiline && "h-40"],
+        class: ["input-primary field-sizing-content resize-none w-full", multiline && "h-40"],
         maxlength,
         "data-max": value.length === maxlength ? true : undefined,
         ...properties,
