@@ -10,7 +10,8 @@ export enum FormSubmitMethods {
 
 export type FormContext = () => {
     submitting: boolean;
-    fields: Record<string, unknown>;
+    fieldValues: Map<string, { value: unknown; label?: string }>;
+    registerValue: (id: string, value: unknown, optional: boolean, label?: string) => void;
 };
 
 export let formContextKey: Symbol = Symbol("formContextKey");
