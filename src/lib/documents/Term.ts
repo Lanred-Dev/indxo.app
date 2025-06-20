@@ -1,4 +1,5 @@
 import {
+    DocumentFieldInputType,
     documentFields,
     DocumentFieldType,
     type BaseDocument,
@@ -23,13 +24,27 @@ export const termFields: DocumentField[] = [
     {
         id: "term",
         type: DocumentFieldType.string,
+        input: {
+            type: DocumentFieldInputType.textbox,
+            properties: {
+                placeholder: "Quantum Waffle",
+                maxlength: 200,
+            },
+        },
     },
     {
         id: "definition",
         type: DocumentFieldType.string,
+        input: {
+            type: DocumentFieldInputType.textbox,
+            properties: {
+                placeholder: "A subatomic particle that only appears when you're not looking",
+                multiline: true,
+                maxlength: 200,
+            },
+        },
     },
     {
-        optional: true,
         id: "image",
         type: DocumentFieldType.string,
     },

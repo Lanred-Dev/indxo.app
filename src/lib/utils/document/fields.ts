@@ -40,10 +40,10 @@ export function validateFieldType(value: unknown, type: DocumentField["type"]): 
  * @returns The fields that are missing or have incorrect types in the document
  */
 function getMissingFields(document: UnknownDocument, fields: DocumentField[]): DocumentField[] {
-    return fields.filter(({ id, type, optional = false }) => {
+    return fields.filter(({ id, type, input = { optional: false } }) => {
         const value: unknown = document[id];
 
-        if (!value) return !optional;
+        if (!value) return !input.optional;
 
         return validateFieldType(value, type);
     });
@@ -54,7 +54,7 @@ function getMissingFields(document: UnknownDocument, fields: DocumentField[]): D
  *
  * @param document
  * @param fields The correct set of fields the document should have
- * @returns The corrected document and if any changes were made
+ * @returns The corrected document and a boolean (true/false depending on if changes were made)
  */
 export function resolveMissingDocumentFields(
     document: UnknownDocument,
@@ -64,23 +64,37 @@ export function resolveMissingDocumentFields(
 
     if (missing.length === 0) return [document, false];
 
-    return [
-        {
-            // Remove all keys not in the fields array
-            ...Object.fromEntries(
-                Object.entries(document).filter(([id]) =>
-                    fields.find(({ id: field }) => id === field)
-                )
-            ),
-            // Add all the missing keys, that have a default value
-            ...Object.fromEntries(
-                missing
-                    .filter(({ defaultValue }) => defaultValue)
-                    .map(({ id, defaultValue }) => [id, defaultValue])
-            ),
-        },
-        true,
-    ];
+    document = {
+        // Remove all keys not in the fields array
+        ...Object.fromEntries(
+            Object.entries(document).filter(([id]) => fields.find(({ id: field }) => id === field))
+        ),
+        // Add all the missing keys, that have a default value
+        ...Object.fromEntries(
+            missing
+                .filter(({ defaultValue }) => defaultValue)
+                .map(({ id, defaultValue }) => [id, defaultValue])
+        ),
+    };
+
+    // Ensure maxlength property is enforced if present
+    for (const [id, value] of Object.entries(document)) {
+        const field: DocumentField | undefined = fields.find(({ id: fieldID }) => fieldID === id);
+
+        if (
+            !field ||
+            !field.input ||
+            !field.input.properties ||
+            typeof field.input.properties.maxlength !== "number"
+        )
+            continue;
+
+        const maxlength: number = field.input.properties.maxlength;
+
+        if (value.length > maxlength) document[id] = value.slice(maxlength, value.length);
+    }
+
+    return [document, true];
 }
 
 /**

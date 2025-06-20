@@ -20,13 +20,10 @@ export interface PublicFolder extends PublicOwnedDocument {
 export const folderFields: DocumentField[] = [
     ...ownedDocumentFields,
     {
-        updateable: true,
         id: "icon",
         type: DocumentFieldType.string,
     },
     {
-        defaultValue: [],
-        updateable: true,
         id: "sets",
         type: DocumentFieldType.array,
     },
