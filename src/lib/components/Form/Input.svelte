@@ -1,43 +1,54 @@
 <script lang="ts">
-    import { getContext, type Component, type Snippet } from "svelte";
+    import { getContext, onMount, type Component, type Snippet } from "svelte";
     import { formContextKey, type FormContext } from ".";
+    import type { ClassValue } from "svelte/elements";
 
     let {
         id,
         label,
-        properties = {},
+        inputProperties = {},
         Input,
         children,
+        optional = false,
+        ...properties
     }: {
         id: string;
         label?: string;
-        properties?: Record<string, unknown>;
+        inputProperties?: Record<string, unknown>;
         Input: Component<any>;
         children?: Snippet<[]>;
+        class?: ClassValue;
+        optional?: boolean;
     } = $props();
 
     const formContext: FormContext = getContext(formContextKey);
     let uid: string = $props.id();
-    let value: any = $state(properties.value);
-    let inputWidth: number = $state.raw(0);
+    const defaultValue: any = inputProperties.value ?? inputProperties.placeholder;
+    // NOTE: This prevents an error where value is undefined during component initialization (props_invalid_value).
+    let value: any = $state.raw(typeof defaultValue === "string" ? "" : defaultValue);
+
+    onMount(() => formContext().registerValue(id, value, optional, label));
 
     $effect(() => {
-        formContext().fields[id] = value;
+        formContext().fieldValues.set(id, { value, label });
     });
 </script>
 
-<div>
+<div class="flex flex-col gap-y-0.5 {properties.class}">
     {#if label}
-        <label
-            class="text-light mb-0.5 block overflow-x-hidden pl-3 font-light text-nowrap text-ellipsis"
-            style:width="{inputWidth}px"
-            for={uid}
-            id="{uid}-{id}">{label}</label
+        <label class="text-light block pl-4 font-light" for={uid} id="{uid}-{id}"
+            >{label}{!optional ? "*" : ""}</label
         >
     {/if}
 
-    <div class="w-fit" bind:clientWidth={inputWidth}>
-        <Input {id} aria-labeledby="{uid}-{id}" defaultValue={value} bind:value {...properties}>
+    <div>
+        <Input
+            {id}
+            aria-labeledby="{uid}-{id}"
+            defaultValue={value}
+            bind:value
+            {...inputProperties}
+        >
             {@render children?.()}
         </Input>
     </div>
