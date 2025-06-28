@@ -5,11 +5,11 @@
 
     let { children }: { children: Snippet<[]> } = $props();
 
-    const formContext: FormContext = getContext(formContextKey);
+    const form: FormContext = getContext(formContextKey);
 </script>
 
-<button type="submit" class="button-attention w-full" disabled={formContext().submitting}>
-    {#if formContext().submitting}
+<button type="submit" class="button-attention mt-5 w-full" disabled={form.isSubmitting}>
+    {#if form.isSubmitting}
         <Loader size={1.75} color="black" />
     {:else}
         {@render children()}

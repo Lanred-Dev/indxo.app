@@ -6,50 +6,48 @@
     let {
         id,
         label,
-        inputProperties = {},
-        Input,
+        value: defaultValue,
+        properties,
+        isRequired = false,
+        stage,
+        class: className,
+        Component,
         children,
-        optional = false,
-        ...properties
     }: {
         id: string;
         label?: string;
-        inputProperties?: Record<string, unknown>;
-        Input: Component<any>;
-        children?: Snippet<[]>;
+        value: unknown;
+        properties?: Record<string, unknown>;
+        Component: Component<any>;
         class?: ClassValue;
-        optional?: boolean;
+        stage?: string;
+        isRequired?: boolean;
+        children?: Snippet<[]>;
     } = $props();
 
-    const formContext: FormContext = getContext(formContextKey);
+    const form: FormContext = getContext(formContextKey);
     let uid: string = $props.id();
-    const defaultValue: any = inputProperties.value ?? inputProperties.placeholder;
-    // NOTE: This prevents an error where value is undefined during component initialization (props_invalid_value).
-    let value: any = $state.raw(typeof defaultValue === "string" ? "" : defaultValue);
+    let value: any = $state.raw(defaultValue);
 
-    onMount(() => formContext().registerValue(id, value, optional, label));
+    onMount(() => form.registerField(id, value, isRequired, label));
 
     $effect(() => {
-        formContext().fieldValues.set(id, { value, label });
+        form.fields.set(id, { value, label });
     });
 </script>
 
-<div class="flex flex-col gap-y-0.5 {properties.class}">
-    {#if label}
-        <label class="text-light block pl-4 font-light" for={uid} id="{uid}-{id}"
-            >{label}{!optional ? "*" : ""}</label
-        >
-    {/if}
+{#if !stage || stage === form.stage}
+    <div class="flex flex-col gap-y-0.5 {className}">
+        {#if label}
+            <label class="text-light block pl-4 font-light" for={uid} id="{uid}-{id}"
+                >{label}{isRequired ? "*" : ""}</label
+            >
+        {/if}
 
-    <div>
-        <Input
-            {id}
-            aria-labeledby="{uid}-{id}"
-            defaultValue={value}
-            bind:value
-            {...inputProperties}
-        >
-            {@render children?.()}
-        </Input>
+        <div>
+            <Component {id} aria-labeledby="{uid}-{id}" {defaultValue} bind:value {...properties}>
+                {@render children?.()}
+            </Component>
+        </div>
     </div>
-</div>
+{/if}

@@ -1,6 +1,8 @@
+export { default as FormContent } from "./Content.svelte";
 export { default as Form } from "./Form.svelte";
 export { default as FormInput } from "./Input.svelte";
 export { default as FormSubmit } from "./Submit.svelte";
+export { default as FormTitle } from "./Title.svelte";
 
 export enum FormSubmitMethods {
     post = "POST",
@@ -8,10 +10,11 @@ export enum FormSubmitMethods {
     delete = "DELETE",
 }
 
-export type FormContext = () => {
-    submitting: boolean;
-    fieldValues: Map<string, { value: unknown; label?: string }>;
-    registerValue: (id: string, value: unknown, optional: boolean, label?: string) => void;
-};
+export interface FormContext {
+    isSubmitting: boolean;
+    fields: Map<string, { value: unknown; label?: string }>;
+    stage: string | null;
+    registerField: (id: string, value: unknown, isRequired: boolean, label?: string) => void;
+}
 
 export let formContextKey: Symbol = Symbol("formContextKey");
