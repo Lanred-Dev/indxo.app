@@ -1,7 +1,7 @@
 import {
     DocumentFieldType,
     ownedDocumentFields,
-    type DocumentField,
+    type DocumentFields,
     type OwnedDocument,
     type PublicOwnedDocument,
 } from "./Document";
@@ -17,14 +17,22 @@ export interface PublicFolder extends PublicOwnedDocument {
     sets: PublicSet[];
 }
 
-export const folderFields: DocumentField[] = [
+export const folderFields: DocumentFields = {
     ...ownedDocumentFields,
-    {
-        id: "icon",
+    icon: {
         type: DocumentFieldType.string,
+        properties: {
+            isRequired: true,
+            isUserUpdateable: true,
+            defaultValue: "folder",
+        },
     },
-    {
-        id: "sets",
+    sets: {
         type: DocumentFieldType.array,
+        properties: {
+            isRequired: true,
+            isUserUpdateable: true,
+            defaultValue: [],
+        },
     },
-];
+};

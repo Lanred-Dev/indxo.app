@@ -1,9 +1,8 @@
 import {
-    DocumentFieldInputType,
     documentFields,
     DocumentFieldType,
     type BaseDocument,
-    type DocumentField,
+    type DocumentFields,
 } from "./Document";
 
 export interface Term extends BaseDocument {
@@ -19,33 +18,29 @@ export interface SortedTerm {
     sorted: boolean;
 }
 
-export const termFields: DocumentField[] = [
+export const termFields: DocumentFields = {
     ...documentFields,
-    {
-        id: "term",
+    term: {
         type: DocumentFieldType.string,
-        input: {
-            type: DocumentFieldInputType.textbox,
-            properties: {
-                placeholder: "Quantum Waffle",
-                maxlength: 200,
-            },
+        properties: {
+            isRequired: true,
+            isUserUpdateable: true,
+            maxlength: 100,
         },
     },
-    {
-        id: "definition",
+    definition: {
         type: DocumentFieldType.string,
-        input: {
-            type: DocumentFieldInputType.textbox,
-            properties: {
-                placeholder: "A subatomic particle that only appears when you're not looking",
-                multiline: true,
-                maxlength: 200,
-            },
+        properties: {
+            isRequired: true,
+            isUserUpdateable: true,
+            maxlength: 200,
         },
     },
-    {
-        id: "image",
+    image: {
         type: DocumentFieldType.string,
+        properties: {
+            isRequired: false,
+            isUserUpdateable: true,
+        },
     },
-];
+};

@@ -1,5 +1,3 @@
-import type { DropdownItemProperties } from "$lib/components/Dropdown";
-import type { ClassValue } from "svelte/elements";
 import type { BaseUser } from "./User";
 
 export enum DocumentType {
@@ -31,41 +29,17 @@ export enum DocumentFieldType {
     dictionary = "d",
 }
 
-export enum DocumentFieldInputType {
-    textbox,
-    number,
-    checkbox,
-    dropdown,
-}
-
-export enum DocumentCreationStage {
-    info,
-    terms,
-    permissions,
-}
-
-export type DocumentField = {
-    defaultValue?: unknown;
-    id: string;
+export interface DocumentField {
     type: DocumentFieldType | Record<string, DocumentFieldType> | (string | number)[];
-    input?: {
-        position?: {
-            stage?: DocumentCreationStage;
-            group?: number;
-            groupIndex?: number;
-        };
-        label?: string;
-        type: DocumentFieldInputType;
-        optional?: boolean;
-        class?: ClassValue;
-        properties?: {
-            placeholder?: unknown;
-            maxlength?: number;
-            [key: string]: unknown;
-        };
-        dropdownItems?: DropdownItemProperties[];
+    properties: {
+        isUserUpdateable: boolean;
+        defaultValue?: unknown;
+        isRequired?: boolean;
+        maxlength?: number;
     };
-};
+}
+
+export type DocumentFields = Record<string, DocumentField>;
 
 export interface BaseDocument {
     _id: string;
@@ -91,91 +65,57 @@ export interface SimpleOwnedDocument extends PublicOwnedDocument {
     metadata: { text: string; image?: string }[];
 }
 
-export const documentFields: DocumentField[] = [
-    {
-        id: "_id",
+export const documentFields: DocumentFields = {
+    _id: {
         type: DocumentFieldType.string,
+        properties: {
+            isUserUpdateable: false,
+        },
     },
-    {
-        id: "created",
+    created: {
         type: DocumentFieldType.number,
+        properties: {
+            isUserUpdateable: false,
+        },
     },
-];
+};
 
-export const ownedDocumentFields: DocumentField[] = [
+export const ownedDocumentFields: DocumentFields = {
     ...documentFields,
-    {
-        id: "name",
+    name: {
         type: DocumentFieldType.string,
-        input: {
-            position: {
-                stage: DocumentCreationStage.info,
-                group: 0,
-                groupIndex: 1,
-            },
-            label: "Name",
-            type: DocumentFieldInputType.textbox,
-            class: "grow",
-            properties: { placeholder: "Things My Brain Keeps Forgetting", maxlength: 100 },
+        properties: {
+            isUserUpdateable: true,
+            isRequired: true,
+            maxlength: 100,
         },
     },
-    {
-        id: "desciption",
+    description: {
         type: DocumentFieldType.string,
-        input: {
-            position: {
-                stage: DocumentCreationStage.info,
-                group: 1,
-            },
-            label: "Desciption",
-            type: DocumentFieldInputType.textbox,
-            class: "w-full",
-            optional: true,
-            properties: {
-                placeholder: "A wild collection of terms I *swear* I studied",
-                multiline: true,
-                maxlength: 500,
-            },
+        properties: {
+            isUserUpdateable: true,
+            isRequired: false,
+            maxlength: 500,
         },
     },
-    {
-        id: "owner",
+    owner: {
         type: DocumentFieldType.string,
+        properties: {
+            isUserUpdateable: false,
+        },
     },
-    {
-        defaultValue: DocumentVisiblity.link,
-        id: "visibility",
+    visiblity: {
         type: Object.values(DocumentVisiblity),
-        input: {
-            position: {
-                stage: DocumentCreationStage.info,
-                group: 0,
-                groupIndex: 0,
-            },
-            label: "Visibility",
-            type: DocumentFieldInputType.dropdown,
-            dropdownItems: [
-                {
-                    value: DocumentVisiblity.link,
-                    text: "Link",
-                    image: "/icons/general/Link.svg",
-                },
-                {
-                    value: DocumentVisiblity.private,
-                    text: "Private",
-                    image: "/icons/general/Lock.svg",
-                },
-                {
-                    value: DocumentVisiblity.public,
-                    text: "Public",
-                    image: "/icons/general/Web.svg",
-                },
-            ],
+        properties: {
+            defaultValue: DocumentVisiblity.link,
+            isUserUpdateable: true,
         },
     },
-    {
-        defaultValue: {},
-        id: "permissions",
+    permissions: {
         type: DocumentFieldType.dictionary,
+        properties: {
+            defaultValue: {},
+            isUserUpdateable: true,
+        },
     },
-];
+};

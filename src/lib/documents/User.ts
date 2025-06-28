@@ -2,7 +2,7 @@ import {
     documentFields,
     DocumentFieldType,
     type BaseDocument,
-    type DocumentField,
+    type DocumentFields,
 } from "./Document";
 import type { PublicFolder } from "./Folder";
 import type { PublicSet } from "./Set";
@@ -62,59 +62,83 @@ export const emptySessionUser: SessionUser = {
     favorites: [],
 };
 
-export const userFields: DocumentField[] = [
+export const userFields: DocumentFields = {
     ...documentFields,
-    {
-        id: "googleID",
+    googleID: {
         type: DocumentFieldType.string,
-    },
-    {
-        id: "email",
-        type: DocumentFieldType.string,
-    },
-    {
-        id: "name",
-        type: DocumentFieldType.string,
-    },
-    {
-        id: "picture",
-        type: DocumentFieldType.string,
-    },
-    {
-        defaultValue: [],
-        id: "sets",
-        type: DocumentFieldType.array,
-    },
-    {
-        defaultValue: [],
-        id: "folders",
-        type: DocumentFieldType.array,
-    },
-    {
-        defaultValue: [],
-        id: "favorites",
-        type: DocumentFieldType.array,
-    },
-    {
-        defaultValue: {
-            home: [],
-            strugglingTermThreshold: 3,
+        properties: {
+            isUserUpdateable: false,
         },
-        id: "preferences",
+    },
+    email: {
+        type: DocumentFieldType.string,
+        properties: {
+            isUserUpdateable: false,
+        },
+    },
+    name: {
+        type: DocumentFieldType.string,
+        properties: {
+            isUserUpdateable: true,
+            isRequired: true,
+            maxlength: 100,
+        },
+    },
+    picture: {
+        type: DocumentFieldType.string,
+        properties: {
+            isUserUpdateable: true,
+            isRequired: true,
+        },
+    },
+    sets: {
+        type: DocumentFieldType.array,
+        properties: {
+            isUserUpdateable: true,
+            isRequired: true,
+            defaultValue: [],
+        },
+    },
+    folders: {
+        type: DocumentFieldType.array,
+        properties: {
+            isUserUpdateable: true,
+            isRequired: true,
+            defaultValue: [],
+        },
+    },
+    favorites: {
+        type: DocumentFieldType.array,
+        properties: {
+            isUserUpdateable: true,
+            isRequired: true,
+            defaultValue: [],
+        },
+    },
+    preferences: {
         type: {
             home: DocumentFieldType.array,
             strugglingTermThreshold: DocumentFieldType.number,
         },
-    },
-    {
-        defaultValue: {
-            documentsOpenedAt: {},
-            sets: {},
+        properties: {
+            isUserUpdateable: true,
+            defaultValue: {
+                home: [],
+                strugglingTermThreshold: 3,
+            },
         },
-        id: "metadata",
+    },
+    metadata: {
         type: {
             documentsOpenedAt: DocumentFieldType.dictionary,
             sets: DocumentFieldType.dictionary,
         },
+        properties: {
+            isUserUpdateable: false,
+            defaultValue: {
+                documentsOpenedAt: {},
+                sets: {},
+            },
+        },
     },
-];
+};

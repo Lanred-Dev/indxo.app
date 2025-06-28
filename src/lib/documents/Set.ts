@@ -1,9 +1,7 @@
 import {
-    DocumentCreationStage,
-    DocumentFieldInputType,
     DocumentFieldType,
     ownedDocumentFields,
-    type DocumentField,
+    type DocumentFields,
     type OwnedDocument,
     type PublicOwnedDocument,
 } from "./Document";
@@ -21,33 +19,30 @@ export interface PublicSet extends PublicOwnedDocument {
     folders: string[];
 }
 
-export const setFields: DocumentField[] = [
+export const setFields: DocumentFields = {
     ...ownedDocumentFields,
-    {
-        id: "subject",
+    subject: {
         type: DocumentFieldType.string,
-        input: {
-            position: {
-                stage: DocumentCreationStage.info,
-                group: 0,
-                groupIndex: 2,
-            },
-            label: "Subject",
-            type: DocumentFieldInputType.textbox,
-            optional: true,
-            class: "grow",
-            properties: {
-                placeholder: "Magical Math",
-                maxlength: 100,
-            },
+        properties: {
+            isRequired: false,
+            isUserUpdateable: true,
+            maxlength: 100,
         },
     },
-    {
-        id: "terms",
+    terms: {
         type: DocumentFieldType.array,
+        properties: {
+            isUserUpdateable: true,
+            isRequired: true,
+            defaultValue: [],
+        },
     },
-    {
-        id: "folders",
+    folders: {
         type: DocumentFieldType.array,
+        properties: {
+            isUserUpdateable: true,
+            isRequired: false,
+            defaultValue: [],
+        },
     },
-];
+};
