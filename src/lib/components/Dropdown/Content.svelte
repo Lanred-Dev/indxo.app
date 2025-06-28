@@ -1,27 +1,21 @@
 <script lang="ts">
-    import { getContext, onMount } from "svelte";
-    import { dropdownContextKey, type DropdownContext, type DropdownItemProperties } from ".";
-    import { PopupAlignment, PopupContent } from "$lib/components/Popup";
-    import Item from "./Item.svelte";
+    import { getContext, type Snippet } from "svelte";
+    import { dropdownContextKey, type DropdownContext, type DropdownItem } from ".";
+    import { PopupContent } from "$lib/components/Popup";
 
     let {
-        items = [],
+        children,
+        ...properties
     }: {
-        items: DropdownItemProperties[];
+        children: Snippet<[]>;
+        [key: string]: any;
     } = $props();
 
-    const dropdownContext: DropdownContext = getContext(dropdownContextKey);
-    onMount(() => items.forEach((item) => dropdownContext().registerItem(item)));
+    const dropdown: DropdownContext = getContext(dropdownContextKey);
 </script>
 
-<PopupContent class="min-w-fit p-1!" alignment={PopupAlignment.left}>
-    <ul
-        role="listbox"
-        id={dropdownContext().uid}
-        style:width="{dropdownContext().longestTextWidth * 2.5}px"
-    >
-        {#each items as item (item.value)}
-            <Item {...item} />
-        {/each}
+<PopupContent class="min-w-fit p-1!" {...properties}>
+    <ul role="listbox" id={dropdown.uid} style:width="{dropdown.largestContentWidth * 2.5}px">
+        {@render children()}
     </ul>
 </PopupContent>

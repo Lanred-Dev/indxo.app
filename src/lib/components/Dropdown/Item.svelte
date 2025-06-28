@@ -1,12 +1,27 @@
 <script lang="ts">
-    import { getContext } from "svelte";
+    import { getContext, type Snippet } from "svelte";
     import { dropdownContextKey, type DropdownContext, type DropdownItemProperties } from ".";
     import { goto } from "$app/navigation";
 
-    let item: DropdownItemProperties = $props();
+    let {
+        value,
+        href,
+        children: Content,
+    }: {
+        value: DropdownItemProperties["value"];
+        href?: DropdownItemProperties["href"];
+        children: DropdownItemProperties["Content"];
+    } = $props();
 
-    const dropdownContext: DropdownContext = getContext(dropdownContextKey);
-    dropdownContext().registerItem(item);
+    const dropdown: DropdownContext = getContext(dropdownContextKey);
+    dropdown.registerItem({ value, href, Content });
+
+    let contentWidth: number = $state.raw(0);
+
+    $effect(() => {
+        if (contentWidth > dropdown.largestContentWidth)
+            dropdown.largestContentWidth = contentWidth;
+    });
 </script>
 
 <li class="w-full">
@@ -14,20 +29,18 @@
         class="button-navigation px-3! py-1.5!"
         role="option"
         type="button"
-        aria-selected={dropdownContext().value === item.value}
+        aria-selected={dropdown.value.value === value}
         onclick={() => {
-            if (item.href) return goto(item.href);
+            if (href) return goto(href);
 
-            dropdownContext().setValue(item);
+            dropdown.value = { value, href, Content };
         }}
     >
-        {#if item.image}
-            <img src={item.image} alt={item.text} />
-        {/if}
+        <div class="flex" bind:clientWidth={contentWidth}>
+            {@render Content()}
+        </div>
 
-        {item.text}
-
-        {#if item.href}
+        {#if href}
             <img class="size-4" src="/icons/general/Link.svg" alt="Link" />
         {/if}
     </button>

@@ -1,22 +1,22 @@
+import type { Snippet } from "svelte";
+
 export { default as DropdownContent } from "./Content.svelte";
 export { default as Dropdown } from "./Dropdown.svelte";
+export { default as DropdownItem } from "./Item.svelte";
 export { default as DropdownTrigger } from "./Trigger.svelte";
 
 export interface DropdownItemProperties {
     value: string | number;
-    text?: string;
-    image?: string;
     href?: string;
+    Content: Snippet<[]>;
 }
 
-export type DropdownContext = () => {
+export interface DropdownContext {
     uid: string;
     isVisible: boolean;
-    value: string | number;
-    currentItem: DropdownItemProperties;
-    longestTextWidth: number;
-    setValue: (item: DropdownItemProperties) => void;
+    value: DropdownItemProperties;
+    largestContentWidth: number;
     registerItem: (item: DropdownItemProperties) => Promise<void>;
-};
+}
 
 export let dropdownContextKey: Symbol = Symbol("dropdownContextKey");
