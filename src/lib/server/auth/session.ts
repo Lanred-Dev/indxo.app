@@ -1,10 +1,11 @@
 import { userFields, type Session, type User } from "$lib/documents";
 import { loadCollection } from "$lib/server/mongo";
-import { findDocumentByID, resolveMissingDocumentFields } from "$lib/utils/document";
+import { resolveMissingDocumentFields } from "$lib/utils/document/fields";
 import { sha256 } from "@oslojs/crypto/sha2";
 import { encodeBase32LowerCase, encodeHexLowerCase } from "@oslojs/encoding";
 import { milliseconds } from "date-fns";
 import { type Collection } from "mongodb";
+import { findDocumentByID } from "../utils/document/findByID";
 
 const sessions: Collection<Session> = loadCollection("accounts", "sessions");
 const users: Collection<User> = loadCollection("accounts", "users");
