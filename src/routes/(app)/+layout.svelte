@@ -1,21 +1,3 @@
-<script module lang="ts">
-    export type SizesContext = {
-        header: number;
-        sidebar: number;
-        isMobile: MediaQuery;
-    };
-
-    export type SidebarVisiblityContext = () => {
-        isVisible: boolean;
-        setVisible: (isVisible: boolean) => void;
-    };
-
-    export type SessionContext = {
-        session: Session | null;
-        user: SessionUser;
-    };
-</script>
-
 <script lang="ts">
     import { afterNavigate, beforeNavigate } from "$app/navigation";
     import { setContext } from "svelte";
@@ -24,43 +6,75 @@
     import { browser } from "$app/environment";
     import Header from "./Header.svelte";
     import { MediaQuery } from "svelte/reactivity";
-    import type { Session, SessionUser } from "$lib/documents";
     import Sidebar from "./Sidebar.svelte";
-    import { innerWidth } from "svelte/reactivity/window";
+    import type {
+        HeaderContext,
+        SessionContext,
+        SidebarContext,
+        ViewportContext,
+    } from "$lib/utils/global";
 
     let { data, children } = $props();
 
     setContext("session", {
         session: data.session,
         user: data.user,
-    });
-    const isMobile = new MediaQuery("(max-width: 768px)", true);
-    const sizes: SizesContext = $state({ header: 0, sidebar: 0, isMobile });
-    setContext("sizes", sizes);
-    let sidebarVisibility = $state(false);
-    setContext("sidebarVisibility", (() => {
-        return {
-            isVisible: sidebarVisibility,
-            setVisible: (isVisible: boolean) => (sidebarVisibility = isVisible),
-        };
-    }) satisfies SidebarVisiblityContext);
+    } satisfies SessionContext);
 
-    let viewport: HTMLElement;
+    let headerHeight: number = $state.raw(0);
+    setContext("header", {
+        get height() {
+            return headerHeight;
+        },
+        set height(newValue) {
+            headerHeight = newValue;
+        },
+    } satisfies HeaderContext);
+
+    let sidebarWidth: number = $state.raw(0);
+    let isSidebarVisibile: boolean = $state.raw(false);
+    setContext("sidebar", {
+        get isVisible() {
+            return isSidebarVisibile;
+        },
+        set isVisible(newValue) {
+            isSidebarVisibile = newValue;
+        },
+        get width() {
+            return sidebarWidth;
+        },
+        set width(newValue) {
+            sidebarWidth = newValue;
+        },
+    } satisfies SidebarContext);
+
+    let viewport: ViewportContext["content"] = $state.raw(undefined);
     let isLoading: boolean = $state.raw(false);
+    const isMobile = new MediaQuery("(max-width: 768px)", true);
+    setContext("viewport", {
+        get isMobile() {
+            return isMobile.current;
+        },
+        get isLoading() {
+            return isLoading;
+        },
+        get content() {
+            return viewport ?? (document.querySelector("main") as HTMLDivElement) ?? undefined;
+        },
+    } satisfies ViewportContext);
 
     beforeNavigate(() => {
         isLoading = true;
-
-        if (isMobile.current) sidebarVisibility = false;
+        if (isMobile.current) isSidebarVisibile = false;
     });
 
     afterNavigate(() => {
         isLoading = false;
-        viewport.scrollTop = 0;
+        if (viewport) viewport.scrollTop = 0;
     });
 
     $effect(() => {
-        sidebarVisibility = !isMobile.current;
+        isSidebarVisibile = !isMobile.current;
     });
 </script>
 
@@ -73,38 +87,49 @@
     </style>
 {/if}
 
-<div class="h-screen max-h-screen w-full overflow-hidden">
-    <Header />
+<Header />
 
-    {#if data.session}
-        <Sidebar />
-    {/if}
+{#if data.session}
+    <Sidebar />
+{/if}
 
+{#if isLoading}
     <div
-        class="relative h-full w-full grow overflow-hidden transition-[padding-left] duration-400"
-        style:padding-top="{sizes.header}px"
-        style:padding-left="{isMobile.current || !sidebarVisibility ? 0 : sizes.sidebar}px"
+        class="x-center y-center bg-page z-40 h-full w-full"
+        style:padding-top="{headerHeight}px"
+        style:padding-left="{isMobile.current || !isSidebarVisibile ? 0 : sidebarWidth}px"
+        transition:fade
     >
-        <div
-            class={[
-                "relative h-full w-full transition-[padding-left,padding-right,filter] duration-400",
-                isMobile.current && sidebarVisibility && "pointer-events-none blur-xs",
-            ]}
-            style:padding-left={!isMobile.current && !sidebarVisibility ? "5%" : "0"}
-            style:padding-right={!isMobile.current && !sidebarVisibility ? "10%" : "0"}
-        >
-            {#if isLoading}
-                <div class="x-center y-center bg-page z-40 h-full w-full" transition:fade>
-                    <Loader class="x-center y-center" />
-                </div>
-            {/if}
-
-            <main
-                class="relative h-full w-full overflow-y-auto px-7 pt-12 pb-6 md:px-16 md:pt-16 md:pr-[22.5%] md:pl-[10%] lg:pt-24 2xl:pr-[28%]"
-                bind:this={viewport}
-            >
-                {@render children?.()}
-            </main>
-        </div>
+        <Loader class="x-center y-center" />
     </div>
-</div>
+{/if}
+
+<main
+    class={[
+        "relative h-screen w-full overflow-y-auto pr-7 pb-6 transition-[padding-left,padding-right,padding-top,padding-bottom] duration-400 ease-in-out md:pr-22 xl:pr-[15%]",
+        isMobile.current && isSidebarVisibile && "pointer-events-none blur-xs",
+    ]}
+    bind:this={viewport}
+    style:--header-height="{headerHeight}px"
+    style:--sidebar-width="{!isMobile.current && isSidebarVisibile ? sidebarWidth : 0}px"
+>
+    {@render children?.()}
+</main>
+
+<style lang="postcss">
+    main {
+        --padding-top: calc(var(--spacing) * 12);
+        --padding-left: calc(var(--spacing) * 7);
+        padding-top: calc(var(--padding-top) + var(--header-height));
+        padding-left: calc(var(--padding-left) + var(--sidebar-width));
+
+        @media (width >= 48rem) {
+            --padding-top: calc(var(--spacing) * 16);
+            --padding-left: 10%;
+        }
+
+        @media (width >= 64rem) {
+            --padding-top: calc(var(--spacing) * 24);
+        }
+    }
+</style>

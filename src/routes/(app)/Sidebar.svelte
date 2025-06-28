@@ -1,13 +1,13 @@
 <script lang="ts">
     import { getContext } from "svelte";
     import { fly } from "svelte/transition";
-    import type { SidebarVisiblityContext, SizesContext } from "./+layout.svelte";
     import { innerHeight } from "svelte/reactivity/window";
     import { Wording } from "$lib/utils/wording";
     import { browser } from "$app/environment";
+    import type { HeaderContext, SidebarContext } from "$lib/utils/global";
 
-    const sizes: SizesContext = getContext("sizes");
-    const sidebarVisiblity: SidebarVisiblityContext = getContext("sidebarVisibility");
+    const header: HeaderContext = getContext("header");
+    const sidebar: SidebarContext = getContext("sidebar");
 </script>
 
 {#snippet group(links: { url: string; text: string; icon: string }[], name?: string)}
@@ -29,16 +29,16 @@
     </div>
 {/snippet}
 
-{#if sidebarVisiblity().isVisible}
+{#if sidebar.isVisible}
     <div
         class={[
             "bg-primary fixed left-0 z-30 flex h-full min-w-fit flex-col justify-between gap-10 overflow-x-hidden overflow-y-auto pt-2 pr-16 pb-5.5 pl-4 shadow-2xl transition-transform duration-300 md:bg-transparent md:pt-6 md:pr-4 md:pb-7 md:pl-7 md:shadow-none xl:w-[17.5%] 2xl:w-[15%]",
             !browser && "pointer-events-none opacity-0",
         ]}
-        style:height="{innerHeight.current ?? 0 - sizes.header}px"
-        style:top="{sizes.header}px"
+        style:height="{innerHeight.current ?? 0 - header.height}px"
+        style:top="{header.height}px"
         role="navigation"
-        bind:clientWidth={sizes.sidebar}
+        bind:clientWidth={sidebar.width}
         transition:fly={{ x: -10, duration: 300 }}
     >
         <nav class="min-w-fit space-y-10">
