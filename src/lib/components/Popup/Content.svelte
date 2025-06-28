@@ -1,66 +1,128 @@
 <script lang="ts">
     import { fade, fly } from "svelte/transition";
-    import { PopupAlignment, popupContextKey, type PopupContext } from ".";
-    import { innerHeight, innerWidth } from "svelte/reactivity/window";
+    import {
+        popupContextKey,
+        PopupRelativity,
+        PopupXAlignment,
+        PopupYAlignment,
+        type PopupContext,
+    } from ".";
+    import { innerHeight, innerWidth, scrollY } from "svelte/reactivity/window";
     import { getContext, type Snippet } from "svelte";
-    import type { SizesContext } from "../../../routes/(app)/+layout.svelte";
+    import type { HeaderContext, SidebarContext } from "$lib/utils/global";
 
     let {
-        alignment = PopupAlignment.center,
+        xAlignment = PopupXAlignment.left,
+        yAlignment = PopupYAlignment.bottom,
+        positionRelativity = PopupRelativity.trigger,
         offset = 2.5,
         children,
         ...properties
     }: {
-        alignment?: PopupAlignment;
+        xAlignment?: PopupXAlignment;
+        yAlignment?: PopupYAlignment;
+        positionRelativity?: PopupRelativity;
         offset?: number;
         children: Snippet<[]>;
         [key: string]: any;
     } = $props();
 
-    const sizes: SizesContext = getContext("sizes");
-    const popupContext: PopupContext = getContext(popupContextKey);
+    const header: HeaderContext = getContext("header");
+    const sidebar: SidebarContext = getContext("sidebar");
+    const popup: PopupContext = getContext(popupContextKey);
     let content: HTMLDivElement | null = $state.raw(null);
     let position: { x: number; y: number } = $derived.by(() => {
+        popup.scrollY;
+
         const position: { x: number; y: number } = {
             x: 0,
             y: 0,
         };
-        const { trigger, scrollY, isInViewport } = popupContext();
 
-        if (!trigger || !content || !innerHeight.current || !innerWidth.current) return position;
+        if (
+            !popup.trigger ||
+            !content ||
+            innerHeight.current === undefined ||
+            innerWidth.current === undefined ||
+            scrollY.current === undefined
+        )
+            return position;
 
-        const buttonBounding: DOMRect = trigger.getBoundingClientRect();
-        const buttonPosition: { x: number; y: number } = {
-            x: buttonBounding.left + window.scrollX,
-            y: buttonBounding.bottom + scrollY,
-        };
+        switch (positionRelativity) {
+            case PopupRelativity.trigger:
+                let triggerBounding = popup.trigger.getBoundingClientRect();
 
-        position.y = buttonPosition.y - scrollY;
+                switch (xAlignment) {
+                    case PopupXAlignment.left:
+                        position.x = triggerBounding.left;
+                        break;
+                    case PopupXAlignment.right:
+                        position.x = triggerBounding.right - content.offsetWidth;
+                        break;
+                    case PopupXAlignment.center:
+                        position.x =
+                            triggerBounding.left + triggerBounding.width - content.offsetWidth / 2;
+                        break;
+                }
 
-        switch (alignment) {
-            case PopupAlignment.left:
-                position.x = buttonPosition.x;
+                switch (yAlignment) {
+                    case PopupYAlignment.top:
+                        position.y = triggerBounding.top - content.offsetHeight - offset;
+                        break;
+                    case PopupYAlignment.bottom:
+                        position.y = triggerBounding.bottom + offset;
+                        break;
+                    case PopupYAlignment.center:
+                        position.y =
+                            triggerBounding.top +
+                            (triggerBounding.height - content.offsetHeight) / 2;
+                        break;
+                }
+
                 break;
-            case PopupAlignment.right:
-                position.x = buttonPosition.x + buttonBounding.width - content.clientWidth;
-                break;
-            case PopupAlignment.center:
-                position.x = buttonPosition.x + buttonBounding.width / 2 - content.clientWidth / 2;
+            case PopupRelativity.page:
+                switch (xAlignment) {
+                    case PopupXAlignment.left:
+                        position.x = offset;
+                        break;
+                    case PopupXAlignment.right:
+                        position.x = innerWidth.current - content.offsetWidth - offset;
+                        break;
+                    case PopupXAlignment.center:
+                        position.x = (innerWidth.current - content.offsetWidth) / 2;
+                        break;
+                }
+
+                switch (yAlignment) {
+                    case PopupYAlignment.top:
+                        position.y = offset;
+                        break;
+                    case PopupYAlignment.bottom:
+                        position.y = innerHeight.current - content.offsetHeight - offset;
+                        break;
+                    case PopupYAlignment.center:
+                        position.y = (innerHeight.current - content.offsetHeight) / 2;
+                        break;
+                }
+
                 break;
         }
 
-        // Make sure the popup is within the window bounds
-        if (buttonPosition.x + content.clientWidth > innerWidth.current)
-            position.x = buttonPosition.x - content.clientWidth + buttonBounding.width;
-        if (position.x < 0) position.x = 0 + offset;
-
-        if (buttonPosition.y + offset > innerHeight.current) {
-            position.y = buttonPosition.y - content.clientHeight - offset;
-        } else {
-            position.y = buttonPosition.y + offset;
+        if (popup.isInViewport && position.x - offset <= sidebar.width) {
+            position.x = sidebar.width + offset;
+        } else if (position.x + content.clientWidth + offset >= innerWidth.current) {
+            position.x = innerWidth.current - (content.clientWidth + offset);
+        } else if (position.x - offset <= 0) {
+            position.x = offset;
         }
 
-        if (position.y < sizes.header && isInViewport) position.y = sizes.header + offset;
+        if (popup.isInViewport && position.y - offset <= header.height) {
+            position.y = header.height + offset;
+        } else if (position.y + content.clientHeight + offset >= innerHeight.current) {
+            position.y = innerHeight.current - (content.clientHeight + offset);
+        } else if (position.y - offset <= 0) {
+            position.y = offset;
+        }
 
         return position;
     });
@@ -68,22 +130,30 @@
 
 <svelte:window
     onclick={(event: MouseEvent) => {
-        const { trigger, isVisible, setVisible } = popupContext();
-
-        if (isVisible && trigger && !trigger.contains(event.target as Node) && content && content)
-            setVisible(false);
+        if (
+            popup.isVisible &&
+            popup.trigger &&
+            !popup.trigger.contains(event.target as Node) &&
+            content
+        )
+            popup.isVisible = false;
     }}
 />
 
-{#if popupContext().isVisible}
-    <div
-        class={["container-primary fixed z-50 shadow-lg!", properties.class]}
-        style:left="{position.x}px"
-        style:top="{position.y}px"
-        in:fly={{ y: 10, duration: 100 }}
-        out:fade={{ duration: 100 }}
-        bind:this={content}
-    >
-        {@render children()}
-    </div>
-{/if}
+<div
+    class={[
+        "container-primary fixed z-50 shadow-xl! transition-[opacity,translate]",
+        properties.class,
+    ]}
+    style:left="{position.x}px"
+    style:top="{position.y}px"
+    style:opacity="{popup.isVisible ? 100 : 0}%"
+    style:translate={popup.isVisible ? undefined : "0px 10px"}
+    style:pointer-events={popup.isVisible ? "auto" : "none"}
+    in:fly={{ y: 10, duration: 100 }}
+    out:fade={{ duration: 100 }}
+    bind:this={content}
+>
+    <div></div>
+    {@render children()}
+</div>
