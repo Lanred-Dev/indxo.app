@@ -4,47 +4,39 @@
 
     let {
         onClose,
-        visible = $bindable(false),
+        isVisible = $bindable(false),
         children,
     }: {
         onClose?: () => void;
-        visible?: boolean;
+        isVisible?: boolean;
         children: Snippet<[]>;
     } = $props();
-
-    let trigger: HTMLButtonElement | null = null;
 
     /**
      * Sets the visibility of the popup.
      *
-     * @param isVisible
+     * @param newValue
      */
-    function setVisible(isVisible: boolean) {
-        if (visible === isVisible) return;
+    function setVisible(newValue: boolean) {
+        if (newValue === isVisible) return;
 
-        visible = isVisible;
-        if (!visible && onClose) onClose();
+        isVisible = newValue;
+        if (!newValue && onClose) onClose();
     }
 
-    setContext(dialogContextKey, (() => {
-        return {
-            isVisible: visible,
-            setVisible,
-            setTrigger: (newTrigger: HTMLButtonElement) => {
-                trigger = newTrigger;
-                trigger.addEventListener("click", () => (visible = !visible));
-            },
-        };
-    }) satisfies DialogContext);
-
-    onDestroy(() => {
-        if (trigger) trigger.removeEventListener("click", () => (visible = true));
-    });
+    setContext(dialogContextKey, {
+        get isVisible() {
+            return isVisible;
+        },
+        set isVisible(newValue) {
+            setVisible(newValue);
+        },
+    } satisfies DialogContext);
 </script>
 
 <svelte:window
     onkeydown={(event: KeyboardEvent) => {
-        if (event.key === "Escape" && visible) setVisible(false);
+        if (event.key === "Escape" && isVisible) setVisible(false);
     }}
 />
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { DialogClose } from ".";
+    import { DialogTrigger } from ".";
 
     let {
         title,
@@ -14,8 +14,8 @@
     <p class="text-center text-3xl font-bold">{title}</p>
 
     {#if includeClose}
-        <DialogClose class="button-icon y-center right-0">
+        <DialogTrigger class="button-icon y-center right-0">
             <img src="/icons/general/X.svg" alt="Close dialog" />
-        </DialogClose>
+        </DialogTrigger>
     {/if}
 </div>

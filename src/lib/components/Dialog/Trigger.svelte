@@ -3,20 +3,22 @@
     import { type DialogContext, dialogContextKey } from ".";
 
     let {
-        visible = $bindable(false),
         children,
         ...properties
     }: {
-        visible?: boolean;
         children: Snippet<[]>;
         [key: string]: any;
     } = $props();
 
-    const dialogContext: DialogContext = getContext(dialogContextKey);
-    let trigger: HTMLButtonElement;
-    onMount(() => dialogContext().setTrigger(trigger));
+    const dialog: DialogContext = getContext(dialogContextKey);
 </script>
 
-<button type="button" bind:this={trigger} {...properties}>
+<button
+    type="button"
+    onclick={() => {
+        dialog.isVisible = !dialog.isVisible;
+    }}
+    {...properties}
+>
     {@render children()}
 </button>
