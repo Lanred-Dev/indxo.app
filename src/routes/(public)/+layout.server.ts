@@ -1,4 +1,4 @@
-import { ResponseCodes } from "$lib/utils/apiResponses.js";
+import { ResponseCodes } from "$lib/utils/apiResponses";
 import { redirect } from "@sveltejs/kit";
 
 export function load({ locals }) {

@@ -12,13 +12,10 @@ import {
     type User,
 } from "$lib/documents";
 import { loadCollection } from "$lib/server/mongo";
+import { findDocumentByID } from "$lib/server/utils/document/findByID";
 import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
-import {
-    determineDocumentType,
-    determineIfDocumentContainsFields,
-    findDocumentByID,
-    validateFieldType,
-} from "$lib/utils/document";
+import { determineDocumentType } from "$lib/utils/document/determineType";
+import { determineIfDocumentContainsFields, validateFieldType } from "$lib/utils/document/fields";
 import { error, json } from "@sveltejs/kit";
 import type { Collection } from "mongodb";
 
@@ -146,9 +143,9 @@ export async function PUT({ params, locals, request }) {
     const documentFields = documentType === DocumentType.folder ? folderFields : setFields;
 
     for (const [id, value] of Object.entries(await request.json())) {
-        const field = documentFields.find(({ id: field }) => field === id);
+        const field = documentFields[id];
 
-        if (!field || !field.updateable) continue;
+        if (!field || !field.properties.isUserUpdateable) continue;
 
         const isValid = validateFieldType(value, field.type);
 
@@ -157,7 +154,7 @@ export async function PUT({ params, locals, request }) {
         validFields[id] = value;
     }
 
-    // No updates were made, so return
+    // No updates were made
     if (validFields.length === 0)
         return new Response(null, {
             status: ResponseCodes.SuccessNoResponse,

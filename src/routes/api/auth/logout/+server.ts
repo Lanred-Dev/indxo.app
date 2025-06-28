@@ -1,6 +1,6 @@
 import { dev } from "$app/environment";
-import { deleteSession, validateToken } from "$lib/server/auth/session.js";
-import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses.js";
+import { deleteSession, validateToken } from "$lib/server/auth/session";
+import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
 import { error, redirect } from "@sveltejs/kit";
 
 export async function GET({ cookies }) {
