@@ -1,4 +1,4 @@
-import { DocumentFieldType, type DocumentField } from "$lib/documents";
+import { DocumentFieldType, type DocumentField, type DocumentFields } from "$lib/documents";
 
 interface UnknownDocument {
     [key: string | number]: any;
@@ -39,11 +39,14 @@ export function validateFieldType(value: unknown, type: DocumentField["type"]): 
  * @param fields The correct set of fields the document should have
  * @returns The fields that are missing or have incorrect types in the document
  */
-function getMissingFields(document: UnknownDocument, fields: DocumentField[]): DocumentField[] {
-    return fields.filter(({ id, type, input = { optional: false } }) => {
+function getMissingFields(
+    document: UnknownDocument,
+    fields: DocumentFields
+): [string, DocumentField][] {
+    return Object.entries(fields).filter(([id, { type, properties = { isRequired: false } }]) => {
         const value: unknown = document[id];
 
-        if (!value) return !input.optional;
+        if (!value) return properties?.isRequired;
 
         return validateFieldType(value, type);
     });
@@ -58,7 +61,7 @@ function getMissingFields(document: UnknownDocument, fields: DocumentField[]): D
  */
 export function resolveMissingDocumentFields(
     document: UnknownDocument,
-    fields: DocumentField[]
+    fields: DocumentFields
 ): [UnknownDocument, boolean] {
     const missing = getMissingFields(document, fields);
 
@@ -66,33 +69,14 @@ export function resolveMissingDocumentFields(
 
     document = {
         // Remove all keys not in the fields array
-        ...Object.fromEntries(
-            Object.entries(document).filter(([id]) => fields.find(({ id: field }) => id === field))
-        ),
+        ...Object.fromEntries(Object.entries(document).filter(([id]) => id in fields)),
         // Add all the missing keys, that have a default value
         ...Object.fromEntries(
             missing
-                .filter(({ defaultValue }) => defaultValue)
-                .map(({ id, defaultValue }) => [id, defaultValue])
+                .filter(([_id, { properties }]) => properties?.defaultValue !== undefined)
+                .map(([id, { properties }]) => [id, properties?.defaultValue])
         ),
     };
-
-    // Ensure maxlength property is enforced if present
-    for (const [id, value] of Object.entries(document)) {
-        const field: DocumentField | undefined = fields.find(({ id: fieldID }) => fieldID === id);
-
-        if (
-            !field ||
-            !field.input ||
-            !field.input.properties ||
-            typeof field.input.properties.maxlength !== "number"
-        )
-            continue;
-
-        const maxlength: number = field.input.properties.maxlength;
-
-        if (value.length > maxlength) document[id] = value.slice(maxlength, value.length);
-    }
 
     return [document, true];
 }
@@ -106,12 +90,10 @@ export function resolveMissingDocumentFields(
  */
 export function determineIfDocumentContainsFields(
     document: UnknownDocument,
-    fields: DocumentField[]
+    fields: DocumentFields
 ): boolean {
     const missing = getMissingFields(document, fields);
-    const extra = Object.fromEntries(
-        Object.entries(document).filter(([id]) => !fields.find(({ id: field }) => id === field))
-    );
+    const extra = Object.fromEntries(Object.entries(document).filter(([id]) => !(id in fields)));
 
     return missing.length === 0 && extra.length === 0;
 }
