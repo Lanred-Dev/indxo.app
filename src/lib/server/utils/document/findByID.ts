@@ -1,7 +1,7 @@
 import { DocumentType, type Folder, type Session, type Set, type User } from "$lib/documents";
 import { loadCollection } from "$lib/server/mongo";
+import determineDocumentType from "$lib/utils/document/determineType";
 import { type Collection } from "mongodb";
-import { determineDocumentType } from "../../../utils/document/determineType";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 const sessions: Collection<Session> = loadCollection("accounts", "sessions");

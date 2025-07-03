@@ -11,7 +11,7 @@ let startingCharacters: string[]; // A prefix is used to determine the type, so 
  * @param documentType
  * @returns The generated id
  */
-export function generateDocumentID(length: number, documentType?: string): string {
+export default function generateDocumentID(length: number, documentType?: string): string {
     // The DocumentType enum may not first be available on runtime
     if (!startingCharacters)
         startingCharacters = characters

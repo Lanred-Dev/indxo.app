@@ -6,7 +6,7 @@ import { DocumentType } from "$lib/documents";
  * @param document
  * @returns The document type, or null if it couldnt be determined
  */
-export function determineDocumentType(
+export default function determineDocumentType(
     document: { _id: string; [key: string]: any } | string
 ): DocumentType | null {
     // NOTE: `id` will not always have the type of `DocumentType`
