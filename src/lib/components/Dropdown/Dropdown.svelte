@@ -1,21 +1,23 @@
 <script lang="ts">
     import { Popup } from "$lib/components/Popup";
-    import { setContext, type Snippet } from "svelte";
-    import { dropdownContextKey, type DropdownContext, type DropdownItemProperties } from ".";
-    import measureText from "$lib/utils/measureText";
+    import { setContext, type ComponentProps, type Snippet } from "svelte";
+    import { dropdownContextKey, DropdownItem, type DropdownContext } from ".";
 
     let {
         value = $bindable(null),
         children,
     }: {
         value?: string | number | null;
-        children: Snippet<[]>;
+        children?: Snippet<[]>;
     } = $props();
 
     const uid: string = $props.id();
     let isVisible: boolean = $state.raw(false);
-    let items: DropdownItemProperties[] = [];
-    let currentItem: DropdownItemProperties = $state.raw({ value: "", Content: emptyItemContent });
+    let items: ComponentProps<typeof DropdownItem>[] = [];
+    let currentItem: ComponentProps<typeof DropdownItem> = $state.raw({
+        value: "",
+        children: emptyItem,
+    });
     let largestContentWidth: number = $state.raw(0);
 
     setContext(dropdownContextKey, {
@@ -45,7 +47,7 @@
             // Adding 1 ensures that rounding wont cause issues with the width
             largestContentWidth = newValue + 1;
         },
-        registerItem: async (item: DropdownItemProperties) => {
+        registerItem: async (item: ComponentProps<typeof DropdownItem>) => {
             items.push(item);
 
             if (value === null || item.value === value) {
@@ -56,10 +58,10 @@
     } satisfies DropdownContext);
 </script>
 
-{#snippet emptyItemContent()}
+{#snippet emptyItem()}
     [empty]
 {/snippet}
 
 <Popup bind:isVisible>
-    {@render children()}
+    {@render children?.()}
 </Popup>

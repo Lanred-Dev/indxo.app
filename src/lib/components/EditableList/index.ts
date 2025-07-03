@@ -1,4 +1,6 @@
-import type { Component } from "svelte";
+import type { Component, ComponentProps } from "svelte";
+import type ActionButton from "../ActionButton.svelte";
+import type Item from "./Item.svelte";
 
 export { default as EditableListContent } from "./Content.svelte";
 export { default as EditableListAddItemButton } from "./Controls/AddItem.svelte";
@@ -23,31 +25,18 @@ export interface EditableListItemField {
     };
 }
 
-export interface EditableListItemButton {
-    image: string | { Component: Component<any>; properties?: Record<string, unknown> };
-    text: string;
-    onClick: (item: EditableListItemProperties) => void;
-}
-
-export interface EditableListItemProperties {
-    index: number;
-    id?: string;
-    fields: EditableListItemField[];
-    isDraggable?: boolean;
-}
-
 export interface EditableListContext {
     dragging: {
         isDraggable: boolean;
         current: number | null;
         over: number | null;
     };
-    items: EditableListItemProperties[];
-    buttons: EditableListItemButton[];
+    items: ComponentProps<typeof Item>[];
+    buttons: ComponentProps<typeof ActionButton>[];
     addItem: () => void;
     deleteItem: (index: number) => void;
     moveItem: (from: number, to: number) => void;
-    setValue: (index: number, value: Record<string, unknown>) => void;
+    setFieldValue: (index: number, fields: EditableListItemField[]) => void;
 }
 
 export let editableListContextKey: Symbol = Symbol("editableListContextKey");

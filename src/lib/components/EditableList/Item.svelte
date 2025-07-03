@@ -3,10 +3,10 @@
     import {
         editableListContextKey,
         type EditableListContext,
-        type EditableListItemProperties,
         type EditableListItemField,
     } from ".";
     import { slide } from "svelte/transition";
+    import ActionButton from "../ActionButton.svelte";
 
     let {
         index,
@@ -16,24 +16,11 @@
     }: {
         index: number;
         id?: string;
-        fields: EditableListItemProperties["fields"];
+        fields: EditableListItemField[];
         isDraggable?: boolean;
     } = $props();
 
     const editableList: EditableListContext = getContext(editableListContextKey);
-    let value: Record<string, unknown> = $state(
-        fields
-            .filter((field) => {
-                return field.value !== undefined && field.value !== null;
-            })
-            .reduce(
-                (acc, field) => {
-                    acc[field.id] = field.value;
-                    return acc;
-                },
-                {} as Record<string, unknown>
-            )
-    );
     let fieldGroups: EditableListItemField[][] = $derived.by(() => {
         const groups: EditableListItemField[][] = [];
 
@@ -48,7 +35,7 @@
     let draggable: boolean = $derived(isDraggable && editableList.dragging.isDraggable);
 
     $effect(() => {
-        editableList.setValue(index, value);
+        editableList.setFieldValue(index, fields);
     });
 </script>
 
@@ -78,25 +65,8 @@
             <p class="text-lg font-semibold">#{index + 1}</p>
 
             <div class="flex-center gap-3">
-                {#each editableList.buttons as { image, text, onClick }}
-                    <button
-                        type="button"
-                        onclick={() => {
-                            onClick({
-                                index,
-                                id,
-                                fields,
-                                isDraggable,
-                            });
-                        }}
-                        aria-labelledby={text}
-                    >
-                        {#if typeof image === "string"}
-                            <img class="size-6" src={image} alt={text} />
-                        {:else}
-                            <image.Component class="size-6" {...image.properties} />
-                        {/if}
-                    </button>
+                {#each editableList.buttons as button}
+                    <ActionButton {...button} />
                 {/each}
             </div>
         </div>
@@ -105,7 +75,8 @@
             {#each fieldGroups as group}
                 <div class="row">
                     {#each group as { Input, id: fieldID, properties }}
-                        <Input {id} bind:value={value[fieldID]} {...properties} />
+                        {@const fieldIndex: number = fields.findIndex(({ id }) => id === fieldID)}
+                        <Input id={fieldID} bind:value={fields[fieldIndex].value} {...properties} />
                     {/each}
                 </div>
             {/each}

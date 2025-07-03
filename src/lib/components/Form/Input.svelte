@@ -1,5 +1,5 @@
-<script lang="ts">
-    import { getContext, onMount, type Component, type Snippet } from "svelte";
+<script lang="ts" generics="C extends Component<any>">
+    import { getContext, onMount, type Component, type ComponentProps, type Snippet } from "svelte";
     import { formContextKey, type FormContext } from ".";
     import type { ClassValue } from "svelte/elements";
 
@@ -17,8 +17,8 @@
         id: string;
         label?: string;
         value: unknown;
-        properties?: Record<string, unknown>;
-        Component: Component<any>;
+        properties?: ComponentProps<C>;
+        Component: C;
         class?: ClassValue;
         stage?: string;
         isRequired?: boolean;

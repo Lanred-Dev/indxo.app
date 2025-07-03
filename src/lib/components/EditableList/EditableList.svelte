@@ -1,13 +1,14 @@
 <script lang="ts">
-    import { setContext, type Snippet } from "svelte";
+    import { setContext, type ComponentProps, type Snippet } from "svelte";
     import {
         DefaultEditableListItemButton,
         editableListContextKey,
+        EditableListItem,
         type EditableListContext,
-        type EditableListItemProperties,
-        type EditableListItemButton,
+        type EditableListItemField,
     } from ".";
     import Chevron, { ChevronState } from "../Chevron.svelte";
+    import ActionButton from "../ActionButton.svelte";
 
     let {
         value: values = $bindable([]),
@@ -16,23 +17,28 @@
         addItem,
     }: {
         value?: Record<string, unknown>[];
-        buttons?: (EditableListItemButton | DefaultEditableListItemButton)[];
-        children: Snippet<[]>;
-        addItem: (index: number, value?: Record<string, unknown>) => EditableListItemProperties;
+        buttons?: (ComponentProps<typeof ActionButton> | DefaultEditableListItemButton)[];
+        children?: Snippet<[]>;
+        addItem: (
+            index: number,
+            value?: Record<string, unknown>
+        ) => ComponentProps<typeof EditableListItem>;
     } = $props();
 
-    let items: EditableListItemProperties[] = $state(
+    let items: ComponentProps<typeof EditableListItem>[] = $state(
         values.map((value, index) => addItem(index, value))
     );
     let currentDraggingID: number | null = $state.raw(null);
     let draggingOverID: number | null = $state.raw(null);
     let isDraggable: boolean = $state.raw(true);
 
-    const defaultButtons: { [key in DefaultEditableListItemButton]: EditableListItemButton } = {
+    const defaultButtons: {
+        [key in DefaultEditableListItemButton]: ComponentProps<typeof ActionButton>;
+    } = {
         [DefaultEditableListItemButton.delete]: {
             image: "/icons/general/Trash.svg",
             text: "Delete",
-            onClick: ({ index }) => {
+            onclick: ({ index }) => {
                 deleteItem(index);
             },
         },
@@ -44,7 +50,7 @@
                 },
             },
             text: "Move Up",
-            onClick: ({ index }) => {
+            onclick: ({ index }) => {
                 moveItem(index, Math.max(index - 1, 0));
             },
         },
@@ -56,7 +62,7 @@
                 },
             },
             text: "Move Down",
-            onClick: ({ index }) => {
+            onclick: ({ index }) => {
                 moveItem(index, Math.min(index + 1, items.length - 1));
             },
         },
@@ -114,12 +120,25 @@
 
                 return button;
             }) ?? [],
-        items,
+        get items() {
+            return items;
+        },
         addItem: () => items.push(addItem(items.length)),
         deleteItem,
         moveItem,
-        setValue: (index: number, value: Record<string, unknown>) => {
-            values[index] = value;
+        setFieldValue: (index: number, fields: EditableListItemField[]) => {
+            items[index].fields = fields;
+            values[index] = fields
+                .filter((field) => {
+                    return field.value !== undefined && field.value !== null;
+                })
+                .reduce(
+                    (acc, field) => {
+                        acc[field.id] = field.value;
+                        return acc;
+                    },
+                    {} as Record<string, unknown>
+                );
         },
     } satisfies EditableListContext);
 
@@ -139,5 +158,5 @@
 <svelte:window onfocusin={() => (isDraggable = false)} onfocusout={() => (isDraggable = true)} />
 
 <div class="relative">
-    {@render children()}
+    {@render children?.()}
 </div>

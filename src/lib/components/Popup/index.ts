@@ -19,11 +19,17 @@ export enum PopupRelativity {
     page,
 }
 
+export enum PopupTriggerType {
+    button = "button",
+    input = "input",
+}
+
 export interface PopupContext {
     isInViewport: boolean;
     isVisible: boolean;
     scrollY: number;
-    trigger: HTMLButtonElement | HTMLInputElement | null;
+    openingTrigger: HTMLElement | undefined;
+    setVisible: (newValue: boolean, trigger?: HTMLElement) => void;
 }
 
 export let popupContextKey: Symbol = Symbol("popupContextKey");

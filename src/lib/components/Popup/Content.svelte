@@ -40,7 +40,7 @@
         };
 
         if (
-            !popup.trigger ||
+            !popup.openingTrigger ||
             !content ||
             innerHeight.current === undefined ||
             innerWidth.current === undefined ||
@@ -50,7 +50,7 @@
 
         switch (positionRelativity) {
             case PopupRelativity.trigger:
-                let triggerBounding = popup.trigger.getBoundingClientRect();
+                let triggerBounding = popup.openingTrigger.getBoundingClientRect();
 
                 switch (xAlignment) {
                     case PopupXAlignment.left:
@@ -108,7 +108,7 @@
                 break;
         }
 
-        if (popup.isInViewport && position.x - offset <= sidebar.width) {
+        if (popup.isInViewport && position.x - offset <= sidebar.width && sidebar.isVisible) {
             position.x = sidebar.width + offset;
         } else if (position.x + content.clientWidth + offset >= innerWidth.current) {
             position.x = innerWidth.current - (content.clientWidth + offset);
@@ -132,11 +132,11 @@
     onclick={(event: MouseEvent) => {
         if (
             popup.isVisible &&
-            popup.trigger &&
-            !popup.trigger.contains(event.target as Node) &&
+            popup.openingTrigger &&
+            !popup.openingTrigger.contains(event.target as Node) &&
             content
         )
-            popup.isVisible = false;
+            popup.setVisible(false);
     }}
 />
 

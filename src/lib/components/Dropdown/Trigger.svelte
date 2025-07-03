@@ -9,7 +9,7 @@
 
 <PopupTrigger class="input-primary" aria-controls={dropdown.uid} aria-haspopup="listbox">
     <div class="flex" style:width="{dropdown.largestContentWidth}px">
-        {@render dropdown.value.Content()}
+        {@render dropdown.value.children()}
     </div>
 
     <Chevron class="size-4" state={dropdown.isVisible ? ChevronState.up : ChevronState.down} />

@@ -1,8 +1,9 @@
 <script lang="ts">
     import { beforeNavigate } from "$app/navigation";
-    import { getContext, onDestroy, setContext, type Snippet } from "svelte";
+    import { getContext, setContext, type Snippet } from "svelte";
     import { popupContextKey, type PopupContext } from ".";
     import type { ViewportContext } from "$lib/utils/global";
+    import { browser } from "$app/environment";
 
     let {
         isVisible = $bindable(false),
@@ -13,10 +14,18 @@
     } = $props();
 
     const viewport: ViewportContext = getContext("viewport");
-    let trigger: HTMLButtonElement | HTMLInputElement | null = $state.raw(null);
-    let isInViewport: boolean = $state.raw(false);
     // `scrollY` is used to keep track of the scroll position of the main content area
     let scrollY: number = $state(0);
+    let openingTrigger: HTMLElement | undefined = $state.raw();
+    let isInViewport: boolean = $derived(
+        openingTrigger ? viewport.content!.contains(openingTrigger) : false
+    );
+    let body: HTMLElement;
+    let main: HTMLElement | undefined = $derived.by(() => {
+        if (!browser) return undefined;
+
+        return isInViewport ? viewport.content! : body;
+    });
 
     setContext(popupContextKey, {
         get isInViewport() {
@@ -28,57 +37,40 @@
         get isVisible() {
             return isVisible;
         },
-        set isVisible(newValue: boolean) {
+        get openingTrigger() {
+            return openingTrigger;
+        },
+        setVisible(newValue: boolean, trigger?: HTMLElement) {
+            if (newValue === isVisible) return;
+
             isVisible = newValue;
-        },
-        get trigger() {
-            return trigger;
-        },
-        set trigger(newValue: HTMLButtonElement | HTMLInputElement | null) {
-            if (!newValue) return;
-
-            trigger = newValue;
-
-            switch (trigger?.tagName.toLowerCase()) {
-                case "button":
-                    trigger.addEventListener("click", () => (isVisible = !isVisible));
-                    break;
-                case "input":
-                    trigger.addEventListener("focusin", () => (isVisible = true));
-                    trigger.addEventListener("keydown", () => (isVisible = true));
-                    break;
-            }
-
-            isInViewport = viewport.content!.contains(trigger);
-
-            const main: HTMLElement = isInViewport ? viewport.content! : document.body;
-            scrollY = main.scrollTop;
-            main.addEventListener("scroll", () => {
-                scrollY = main.scrollTop;
-            });
+            if (trigger) openingTrigger = trigger;
         },
     } satisfies PopupContext);
 
-    beforeNavigate(() => (isVisible = false));
+    /**
+     * Gets the `scrollTop` of the current main element.
+     */
+    function getScrollY() {
+        scrollY = main!.scrollTop;
+    }
 
-    onDestroy(() => {
-        if (trigger) {
-            trigger?.removeEventListener("click", () => {
-                isVisible = !isVisible;
-            });
-            trigger?.removeEventListener("focusin", () => {
-                isVisible = true;
-            });
-            trigger?.removeEventListener("keydown", () => {
-                isVisible = true;
-            });
+    beforeNavigate(() => {
+        isVisible = false;
+    });
 
-            const main: HTMLElement = isInViewport ? viewport.content! : document.body;
-            main.removeEventListener("scroll", () => {
-                scrollY = main.scrollTop;
-            });
-        }
+    $effect(() => {
+        if (!main) return;
+
+        getScrollY();
+        main.addEventListener("scroll", getScrollY);
+
+        return () => {
+            main.removeEventListener("scroll", getScrollY);
+        };
     });
 </script>
+
+<svelte:body bind:this={body} />
 
 {@render children()}

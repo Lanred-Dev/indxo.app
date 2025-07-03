@@ -1,20 +1,20 @@
 <script lang="ts">
     import { getContext, type Snippet } from "svelte";
-    import { dropdownContextKey, type DropdownContext, type DropdownItemProperties } from ".";
+    import { dropdownContextKey, type DropdownContext } from ".";
     import { goto } from "$app/navigation";
 
     let {
         value,
         href,
-        children: Content,
+        children,
     }: {
-        value: DropdownItemProperties["value"];
-        href?: DropdownItemProperties["href"];
-        children: DropdownItemProperties["Content"];
+        value: string | number;
+        href?: string;
+        children: Snippet<[]>;
     } = $props();
 
     const dropdown: DropdownContext = getContext(dropdownContextKey);
-    dropdown.registerItem({ value, href, Content });
+    dropdown.registerItem({ value, href, children });
 
     let contentWidth: number = $state.raw(0);
 
@@ -33,11 +33,11 @@
         onclick={() => {
             if (href) return goto(href);
 
-            dropdown.value = { value, href, Content };
+            dropdown.value = { value, href, children };
         }}
     >
         <div class="flex" bind:clientWidth={contentWidth}>
-            {@render Content()}
+            {@render children()}
         </div>
 
         {#if href}
