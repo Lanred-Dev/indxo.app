@@ -1,5 +1,3 @@
-// This helps ensure response codes are consistent across the app.
-
 export enum ResponseCodes {
     BadRequest = 400,
     ServerError = 500,
@@ -16,4 +14,5 @@ export enum ResponseMessages {
     Unauthorized = "Unauthorized.",
     UserUnauthorized = "You do not have authorization for this document.",
     NotFound = "Could not find document.",
+    InvalidDocumentType = "Invalid document type.",
 }
