@@ -1,4 +1,5 @@
 import cookie from "@fastify/cookie";
+import cors from "@fastify/cors";
 import multipart from "@fastify/multipart";
 import Fastify from "fastify";
 import { hook as authHook } from "./auth";
@@ -9,6 +10,10 @@ const app = Fastify();
 
 app.register(cookie);
 app.register(multipart);
+app.register(cors, {
+    origin: process.env.ORIGIN!.split(","),
+    credentials: true,
+});
 
 app.decorateRequest("user", null);
 
