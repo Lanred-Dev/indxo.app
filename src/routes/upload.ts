@@ -27,7 +27,7 @@ export const route: RouteOptions = {
 
         if (!fileType || !ALLOWED_FILE_TYPES.includes(fileType.ext.toLowerCase())) {
             return reply
-                .code(ResponseCodes.BadRequest)
+                .code(ResponseCodes.InvalidMediaType)
                 .send(new Error(`Allowed file types are ${ALLOWED_FILE_TYPES.join(", ")}`));
         }
 
@@ -35,7 +35,7 @@ export const route: RouteOptions = {
 
         if (sizeInMB > MAX_FILE_SIZE)
             return reply
-                .code(ResponseCodes.BadRequest)
+                .code(ResponseCodes.ContentTooLarge)
                 .send(new Error(`Max file size is ${MAX_FILE_SIZE}MB`));
 
         try {
