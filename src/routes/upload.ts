@@ -43,7 +43,7 @@ export const route: RouteOptions = {
             const filepath = path.join(UPLOAD_DIRECTORY, path.basename(filename));
             await sharp(buffer).webp({ quality: 50 }).toFile(filepath);
             return reply.send(filename);
-        } catch (_error) {
+        } catch {
             return reply.code(ResponseCodes.ServerError).send(new Error("Failed to save image"));
         }
     },

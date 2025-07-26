@@ -17,7 +17,7 @@ export const route: RouteOptions = {
             const filepath = path.join(UPLOAD_DIRECTORY, path.basename(filename));
             const data = await readFile(filepath);
             return reply.send(data);
-        } catch (_error) {
+        } catch {
             return reply.code(ResponseCodes.NotFound).send(new Error("Image does not exist"));
         }
     },
