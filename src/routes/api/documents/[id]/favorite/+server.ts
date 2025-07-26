@@ -17,7 +17,7 @@ export async function GET({ params, locals, fetch }) {
         }
     );
 
-    if (hasPermissionFetch.status !== ResponseCodes.SuccessNoResponse)
+    if (hasPermissionFetch.status !== ResponseCodes.Success)
         error(hasPermissionFetch.status, await hasPermissionFetch.json());
 
     return json(locals.user.favorites.includes(params.id));
@@ -34,13 +34,13 @@ export async function PUT({ params, locals, fetch, request }) {
         }
     );
 
-    if (hasPermissionFetch.status !== ResponseCodes.SuccessNoResponse)
+    if (hasPermissionFetch.status !== ResponseCodes.Success)
         error(hasPermissionFetch.status, await hasPermissionFetch.json());
 
-    const favorite: boolean = await request.json();
+    const isFavorite: boolean = await request.json();
 
     // Check if the favorite status is already the same
-    if (favorite === locals.user.favorites.includes(params.id))
+    if (isFavorite === locals.user.favorites.includes(params.id))
         return new Response(null, {
             status: ResponseCodes.SuccessNoResponse,
         });
@@ -48,7 +48,7 @@ export async function PUT({ params, locals, fetch, request }) {
     await users.updateOne(
         { _id: locals.user._id },
         {
-            [favorite ? "$pull" : "$addToSet"]: {
+            [isFavorite ? "$pull" : "$addToSet"]: {
                 favorites: params.id,
             },
         }

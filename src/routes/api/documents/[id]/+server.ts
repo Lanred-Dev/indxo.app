@@ -9,12 +9,13 @@ import {
     type PublicFolder,
     type PublicSet,
     type Set,
+    type Term,
     type User,
 } from "$lib/documents";
 import { loadCollection } from "$lib/server/mongo";
 import { findDocumentByID } from "$lib/server/utils/document/findByID";
 import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
-import { determineDocumentType } from "$lib/utils/document/determineType";
+import determineDocumentType from "$lib/utils/document/determineType";
 import { determineIfDocumentContainsFields, validateFieldType } from "$lib/utils/document/fields";
 import { error, json } from "@sveltejs/kit";
 import type { Collection } from "mongodb";
@@ -32,7 +33,7 @@ export async function GET({ params, fetch, locals }) {
         }
     );
 
-    if (hasPermissionFetch.status !== ResponseCodes.SuccessNoResponse)
+    if (hasPermissionFetch.status !== ResponseCodes.Success)
         error(hasPermissionFetch.status, await hasPermissionFetch.json());
 
     const document: Set | Folder = await findDocumentByID(params.id);
@@ -75,7 +76,7 @@ export async function GET({ params, fetch, locals }) {
     }
 }
 
-export async function DELETE({ params, locals }) {
+export async function DELETE({ params, locals, fetch }) {
     if (!locals.session) error(ResponseCodes.Unauthorized, ResponseMessages.Unauthorized);
 
     const hasPermissionFetch: Response = await fetch(
@@ -86,7 +87,7 @@ export async function DELETE({ params, locals }) {
         }
     );
 
-    if (hasPermissionFetch.status !== ResponseCodes.SuccessNoResponse)
+    if (hasPermissionFetch.status !== ResponseCodes.Success)
         error(hasPermissionFetch.status, await hasPermissionFetch.json());
 
     const documentType = determineDocumentType(params.id);
@@ -94,7 +95,7 @@ export async function DELETE({ params, locals }) {
     // If its a folder update any sets that are linked to it
     if (documentType === DocumentType.folder)
         await sets.updateMany(
-            { folder: { $in: [params.id] } },
+            { folders: { $in: [params.id] } },
             {
                 // For some reason a type error is thrown here, but it works fine
                 // @ts-ignore
@@ -124,7 +125,7 @@ export async function DELETE({ params, locals }) {
     });
 }
 
-export async function PUT({ params, locals, request }) {
+export async function PUT({ params, locals, request, fetch }) {
     if (!locals.session) error(ResponseCodes.Unauthorized, ResponseMessages.Unauthorized);
 
     const hasPermissionFetch = await fetch(
@@ -135,11 +136,11 @@ export async function PUT({ params, locals, request }) {
         }
     );
 
-    if (hasPermissionFetch.status !== ResponseCodes.SuccessNoResponse)
+    if (hasPermissionFetch.status !== ResponseCodes.Success)
         error(hasPermissionFetch.status, await hasPermissionFetch.json());
 
     const documentType = determineDocumentType(params.id);
-    const validFields: Record<string, any> = {};
+    const validFields: Record<string, unknown> = {};
     const documentFields = documentType === DocumentType.folder ? folderFields : setFields;
 
     for (const [id, value] of Object.entries(await request.json())) {
@@ -161,24 +162,46 @@ export async function PUT({ params, locals, request }) {
         });
 
     if (documentType === DocumentType.folder && "sets" in validFields) {
-        // If its a folder update any sets that are linked to it
-        await sets.updateMany(
-            { folders: { $in: [params.id] } },
-            {
-                // For some reason a type error is thrown here, but it works fine
-                // @ts-ignore
-                $pull: {
-                    folders: params.id,
-                },
-            }
+        const document: Folder = await findDocumentByID(params.id);
+        const removedSets: string[] = document.sets.filter(
+            (set) => !(validFields.sets as string[]).includes(set)
         );
-    } else if (documentType === DocumentType.set && "terms" in validFields) {
-        // If its a set ensure that all terms are valid
-        for (const term of validFields.terms) {
+        const addedSets: string[] = (validFields.sets as string[]).filter(
+            (set) => !document.sets.includes(set)
+        );
+
+        if (removedSets.length > 0)
+            await sets.updateMany(
+                { _id: { $in: removedSets } },
+                {
+                    $pull: {
+                        folders: params.id,
+                    },
+                }
+            );
+
+        if (addedSets.length > 0)
+            await sets.updateMany(
+                { _id: { $in: addedSets } },
+                {
+                    $push: {
+                        folders: params.id,
+                    },
+                }
+            );
+    } else if (
+        documentType === DocumentType.set &&
+        "terms" in validFields &&
+        Array.isArray(validFields.terms)
+    ) {
+        // Ensure that all terms are valid
+        for (const term of validFields.terms as Term[]) {
+            if (determineDocumentType(term._id) !== DocumentType.term)
+                error(ResponseCodes.BadRequest, "Non-term document provided.");
+
             const isValid = determineIfDocumentContainsFields(term, termFields);
 
-            if (!isValid || determineDocumentType(term._id) !== DocumentType.term)
-                error(ResponseCodes.BadRequest, "Invalid term provided.");
+            if (!isValid) error(ResponseCodes.BadRequest, "Invalid term provided.");
         }
     }
 

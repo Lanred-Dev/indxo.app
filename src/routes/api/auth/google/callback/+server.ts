@@ -4,7 +4,7 @@ import { google } from "$lib/server/auth/oauth";
 import { createSession, generateToken } from "$lib/server/auth/session";
 import { loadCollection } from "$lib/server/mongo";
 import { ResponseCodes } from "$lib/utils/apiResponses";
-import { generateDocumentID } from "$lib/utils/document/generateID";
+import generateDocumentID from "$lib/utils/document/generateID";
 import { error, redirect } from "@sveltejs/kit";
 import { decodeIdToken, type OAuth2Tokens } from "arctic";
 import { type Collection } from "mongodb";
@@ -24,7 +24,7 @@ export async function GET({ cookies, url }) {
 
     try {
         tokens = await google.validateAuthorizationCode(code, oauthVerifier);
-    } catch (_error) {
+    } catch {
         error(ResponseCodes.ServerError, "Failed to validate authorization code.");
     }
 
@@ -91,6 +91,7 @@ export async function GET({ cookies, url }) {
         sameSite: "lax",
         secure: !dev,
         expires: new Date(session.expires),
+        domain: dev ? "localhost" : "indxo.app",
     });
 
     redirect(ResponseCodes.Redirect, "/");

@@ -1,6 +1,6 @@
 import type { PublicFolder, PublicSet, PublicUser, User } from "$lib/documents";
+import { findDocumentByID } from "$lib/server/utils/document/findByID";
 import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
-import { findDocumentByID } from "$lib/utils/document";
 import { error, json } from "@sveltejs/kit";
 
 export async function GET({ params, fetch }) {
