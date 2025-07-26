@@ -15,8 +15,8 @@
     --color-input: #e5eaef;
     --color-container: #ffffff;
 
-    --background-color-light: #e7ebec;
-    --background-color-bright: #eff2f3;
+    --background-color-light: #eaeded;
+    --background-color-dark: #e4e6e7;
     --background-color-primary: #f7f9fa;
 
     --text-color-placeholder: #737373;
@@ -192,7 +192,7 @@
     }
 
     .button-primary {
-        @apply bg-bright hover:bg-light justify-center !border-none;
+        @apply bg-dark hover:bg-light justify-center !border-none;
     }
 
     .button-navigation {
