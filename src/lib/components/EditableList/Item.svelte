@@ -10,19 +10,19 @@
 
     let {
         index,
-        id,
-        fields = [],
+        _id,
+        fields = $bindable(),
         isDraggable = false,
     }: {
         index: number;
-        id?: string;
-        fields: EditableListItemField[];
+        _id?: string;
+        fields: EditableListItemField<any>[];
         isDraggable?: boolean;
     } = $props();
 
     const editableList: EditableListContext = getContext(editableListContextKey);
-    let fieldGroups: EditableListItemField[][] = $derived.by(() => {
-        const groups: EditableListItemField[][] = [];
+    let fieldGroups: EditableListItemField<any>[][] = $derived.by(() => {
+        const groups: EditableListItemField<any>[][] = [];
 
         fields.forEach((field) => {
             if (!groups[field.position.group]) groups[field.position.group] = [];
@@ -33,10 +33,6 @@
         return groups;
     });
     let draggable: boolean = $derived(isDraggable && editableList.dragging.isDraggable);
-
-    $effect(() => {
-        editableList.setFieldValue(index, fields);
-    });
 </script>
 
 <li
@@ -65,8 +61,14 @@
             <p class="text-lg font-semibold">#{index + 1}</p>
 
             <div class="flex-center gap-3">
-                {#each editableList.buttons as button}
-                    <ActionButton {...button} />
+                {#each editableList.buttons as { text, image, onclick }}
+                    <ActionButton
+                        {text}
+                        {image}
+                        onclick={() => {
+                            onclick({ index, _id, fields, isDraggable });
+                        }}
+                    />
                 {/each}
             </div>
         </div>
@@ -74,9 +76,9 @@
         <div class="flex-center w-full grow flex-wrap gap-3">
             {#each fieldGroups as group}
                 <div class="row">
-                    {#each group as { Input, id: fieldID, properties }}
-                        {@const fieldIndex: number = fields.findIndex(({ id }) => id === fieldID)}
-                        <Input id={fieldID} bind:value={fields[fieldIndex].value} {...properties} />
+                    {#each group as { Component, _id: fieldID, properties }}
+                        {@const fieldIndex: number = fields.findIndex(({ _id }) => _id === fieldID)}
+                        <Component bind:value={fields[fieldIndex].value} {...properties} />
                     {/each}
                 </div>
             {/each}

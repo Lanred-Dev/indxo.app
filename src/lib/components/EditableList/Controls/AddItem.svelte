@@ -13,7 +13,7 @@
 </script>
 
 <button
-    class="button-attention w-full {className}"
+    class={["button-attention w-full", className]}
     onclick={() => editableList.addItem()}
     type="button"
     {...properties}

@@ -14,11 +14,11 @@ export enum DefaultEditableListItemButton {
     moveDown = "moveDown",
 }
 
-export interface EditableListItemField {
-    id: string;
-    Input: Component<any>;
+export interface EditableListItemField<C extends Component = Component> {
+    _id: string;
+    Component: C;
     value?: unknown;
-    properties?: Record<string, unknown>;
+    properties?: ComponentProps<C>;
     position: {
         group: number;
         index: number;
@@ -36,7 +36,6 @@ export interface EditableListContext {
     addItem: () => void;
     deleteItem: (index: number) => void;
     moveItem: (from: number, to: number) => void;
-    setFieldValue: (index: number, fields: EditableListItemField[]) => void;
 }
 
 export let editableListContextKey: Symbol = Symbol("editableListContextKey");

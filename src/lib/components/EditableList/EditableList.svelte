@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { setContext, type ComponentProps, type Snippet } from "svelte";
+    import { onMount, setContext, untrack, type ComponentProps, type Snippet } from "svelte";
     import {
         DefaultEditableListItemButton,
         editableListContextKey,
@@ -7,16 +7,18 @@
         type EditableListContext,
         type EditableListItemField,
     } from ".";
-    import Chevron, { ChevronState } from "../Chevron.svelte";
+    import Chevron, { ChevronState } from "../Icons/Chevron.svelte";
     import ActionButton from "../ActionButton.svelte";
 
     let {
-        value: values = $bindable([]),
+        placeholderItems = 0,
+        value = $bindable([]),
         buttons,
         children,
         addItem,
     }: {
-        value?: Record<string, unknown>[];
+        placeholderItems?: number;
+        value?: (Record<string, unknown> | undefined)[];
         buttons?: (ComponentProps<typeof ActionButton> | DefaultEditableListItemButton)[];
         children?: Snippet<[]>;
         addItem: (
@@ -26,7 +28,9 @@
     } = $props();
 
     let items: ComponentProps<typeof EditableListItem>[] = $state(
-        values.map((value, index) => addItem(index, value))
+        value.length > 0
+            ? value.map((value, index) => addItem(index, value))
+            : [...Array(placeholderItems)].map((_value, index) => addItem(index))
     );
     let currentDraggingID: number | null = $state.raw(null);
     let draggingOverID: number | null = $state.raw(null);
@@ -36,7 +40,7 @@
         [key in DefaultEditableListItemButton]: ComponentProps<typeof ActionButton>;
     } = {
         [DefaultEditableListItemButton.delete]: {
-            image: "/icons/general/Trash.svg",
+            image: { url: "/icons/general/Trash.svg" },
             text: "Delete",
             onclick: ({ index }) => {
                 deleteItem(index);
@@ -126,20 +130,6 @@
         addItem: () => items.push(addItem(items.length)),
         deleteItem,
         moveItem,
-        setFieldValue: (index: number, fields: EditableListItemField[]) => {
-            items[index].fields = fields;
-            values[index] = fields
-                .filter((field) => {
-                    return field.value !== undefined && field.value !== null;
-                })
-                .reduce(
-                    (acc, field) => {
-                        acc[field.id] = field.value;
-                        return acc;
-                    },
-                    {} as Record<string, unknown>
-                );
-        },
     } satisfies EditableListContext);
 
     $effect(() => {
@@ -152,6 +142,36 @@
 
         moveItem(currentDraggingID, draggingOverID);
         currentDraggingID = draggingOverID;
+    });
+
+    $effect(() => {
+        const newValue = items
+            .map(({ _id, fields }) => {
+                fields = fields.filter(({ value }) => {
+                    let isEmpty: boolean = false;
+
+                    if (typeof value === "string" || Array.isArray(value))
+                        isEmpty = value.length === 0;
+
+                    return value !== undefined && value !== null && !isEmpty;
+                });
+
+                if (fields.length === 0) return;
+
+                return {
+                    _id,
+                    ...fields.reduce(
+                        (object, { _id, value }) => {
+                            object[_id] = typeof value === "string" ? value.trim() : value;
+                            return object;
+                        },
+                        {} as Record<string, unknown>
+                    ),
+                };
+            })
+            .filter((item) => item);
+
+        if (JSON.stringify(newValue) !== JSON.stringify(value)) value = newValue;
     });
 </script>
 

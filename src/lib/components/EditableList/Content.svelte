@@ -8,8 +8,8 @@
 
 <div class="list-primary">
     <ol class="list-container relative flex-col">
-        {#each editableList.items as item (item.index)}
-            <EditableListItem {...item} />
+        {#each editableList.items as { index, _id, fields, isDraggable } (index)}
+            <EditableListItem {index} {_id} bind:fields {isDraggable} />
         {/each}
     </ol>
 </div>
