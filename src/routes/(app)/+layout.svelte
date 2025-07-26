@@ -2,7 +2,7 @@
     import { afterNavigate, beforeNavigate } from "$app/navigation";
     import { setContext } from "svelte";
     import { fade } from "svelte/transition";
-    import Loader from "$lib/components/Loader.svelte";
+    import Loader from "$lib/components/Icons/Loader.svelte";
     import { browser } from "$app/environment";
     import Header from "./Header.svelte";
     import { MediaQuery } from "svelte/reactivity";
@@ -48,18 +48,22 @@
         },
     } satisfies SidebarContext);
 
-    let viewport: ViewportContext["content"] = $state.raw(undefined);
+    let Viewport: ViewportContext["Content"] = $state.raw(undefined);
+    let viewportScrollY: number = $state.raw(0);
     let isLoading: boolean = $state.raw(false);
     const isMobile = new MediaQuery("(max-width: 768px)", true);
     setContext("viewport", {
+        get scrollY() {
+            return viewportScrollY;
+        },
         get isMobile() {
             return isMobile.current;
         },
         get isLoading() {
             return isLoading;
         },
-        get content() {
-            return viewport ?? (document.querySelector("main") as HTMLDivElement) ?? undefined;
+        get Content() {
+            return Viewport ?? (document.querySelector("main") as HTMLDivElement) ?? undefined;
         },
     } satisfies ViewportContext);
 
@@ -70,7 +74,7 @@
 
     afterNavigate(() => {
         isLoading = false;
-        if (viewport) viewport.scrollTop = 0;
+        if (Viewport) Viewport.scrollTop = 0;
     });
 
     $effect(() => {
@@ -95,12 +99,14 @@
 
 {#if isLoading}
     <div
-        class="x-center y-center bg-page z-40 h-full w-full"
+        class="x-center y-center z-40 h-full w-full"
         style:padding-top="{headerHeight}px"
         style:padding-left="{isMobile.current || !isSidebarVisibile ? 0 : sidebarWidth}px"
         transition:fade
     >
-        <Loader class="x-center y-center" />
+        <div class="bg-page h-full w-full">
+            <Loader class="x-center y-center" />
+        </div>
     </div>
 {/if}
 
@@ -109,7 +115,10 @@
         "relative h-screen w-full overflow-y-auto pr-7 pb-6 transition-[padding-left,padding-right,padding-top,padding-bottom] duration-400 ease-in-out md:pr-22 xl:pr-[15%]",
         isMobile.current && isSidebarVisibile && "pointer-events-none blur-xs",
     ]}
-    bind:this={viewport}
+    bind:this={Viewport}
+    onscroll={() => {
+        viewportScrollY = Viewport?.scrollTop ?? 0;
+    }}
     style:--header-height="{headerHeight}px"
     style:--sidebar-width="{!isMobile.current && isSidebarVisibile ? sidebarWidth : 0}px"
 >

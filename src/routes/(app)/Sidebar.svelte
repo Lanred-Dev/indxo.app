@@ -4,10 +4,11 @@
     import { innerHeight } from "svelte/reactivity/window";
     import { Wording } from "$lib/utils/wording";
     import { browser } from "$app/environment";
-    import type { HeaderContext, SidebarContext } from "$lib/utils/global";
+    import type { HeaderContext, SessionContext, SidebarContext } from "$lib/utils/global";
 
     const header: HeaderContext = getContext("header");
     const sidebar: SidebarContext = getContext("sidebar");
+    const session: SessionContext = getContext("session");
 </script>
 
 {#snippet group(links: { url: string; text: string; icon: string }[], name?: string)}
@@ -44,7 +45,11 @@
         <nav class="min-w-fit space-y-10">
             {@render group([
                 { icon: "/icons/navigation/Home.svg", text: "Home", url: "/" },
-                { icon: "/icons/navigation/Account.svg", text: "Account", url: "/user" },
+                {
+                    icon: "/icons/navigation/Account.svg",
+                    text: "Account",
+                    url: `/${session.user._id}`,
+                },
             ])}
 
             {@render group(
