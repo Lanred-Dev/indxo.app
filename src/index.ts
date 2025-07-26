@@ -3,6 +3,7 @@ import cors from "@fastify/cors";
 import multipart from "@fastify/multipart";
 import Fastify from "fastify";
 import { hook as authHook } from "./auth";
+import deleteRoute from "./routes/delete";
 import getRoute from "./routes/get";
 import uploadRoute from "./routes/upload";
 
@@ -13,6 +14,7 @@ app.register(multipart);
 app.register(cors, {
     origin: process.env.ORIGIN!.split(","),
     credentials: true,
+    methods: ["GET", "POST", "DELETE"],
 });
 
 app.decorateRequest("user", null);
@@ -21,6 +23,7 @@ app.addHook("onRequest", authHook);
 
 app.route(uploadRoute);
 app.route(getRoute);
+app.route(deleteRoute);
 
 app.listen({ port: parseInt(process.env.PORT!) }, function (error) {
     if (error) {
