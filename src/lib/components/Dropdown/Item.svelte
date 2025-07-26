@@ -36,7 +36,7 @@
             dropdown.value = { value, href, children };
         }}
     >
-        <div class="flex" bind:clientWidth={contentWidth}>
+        <div class="flex gap-0.5" bind:clientWidth={contentWidth}>
             {@render children()}
         </div>
 

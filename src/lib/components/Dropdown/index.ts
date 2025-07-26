@@ -11,7 +11,7 @@ export interface DropdownContext {
     isVisible: boolean;
     value: ComponentProps<typeof Item>;
     largestContentWidth: number;
-    registerItem: (item: ComponentProps<typeof Item>) => Promise<void>;
+    registerItem: (item: ComponentProps<typeof Item>) => void;
 }
 
 export let dropdownContextKey: Symbol = Symbol("dropdownContextKey");

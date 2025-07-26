@@ -47,7 +47,7 @@
             // Adding 1 ensures that rounding wont cause issues with the width
             largestContentWidth = newValue + 1;
         },
-        registerItem: async (item: ComponentProps<typeof DropdownItem>) => {
+        registerItem: (item) => {
             items.push(item);
 
             if (value === null || item.value === value) {

@@ -2,13 +2,13 @@
     import { getContext } from "svelte";
     import { dropdownContextKey, type DropdownContext } from ".";
     import { PopupTrigger } from "../Popup";
-    import Chevron, { ChevronState } from "../Chevron.svelte";
+    import Chevron, { ChevronState } from "../Icons/Chevron.svelte";
 
     const dropdown: DropdownContext = getContext(dropdownContextKey);
 </script>
 
 <PopupTrigger class="input-primary" aria-controls={dropdown.uid} aria-haspopup="listbox">
-    <div class="flex" style:width="{dropdown.largestContentWidth}px">
+    <div class="flex gap-0.5" style:width="{dropdown.largestContentWidth}px">
         {@render dropdown.value.children()}
     </div>
 
