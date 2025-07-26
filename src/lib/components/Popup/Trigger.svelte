@@ -15,23 +15,23 @@
 
     const viewport: ViewportContext = getContext("viewport");
     const popup: PopupContext = getContext(popupContextKey);
-    let trigger: HTMLElement | undefined = $state.raw();
+    let Trigger: HTMLElement | undefined = $state.raw();
 
     onMount(() => {
-        if (!trigger) return;
+        if (!Trigger) return;
 
         switch (type) {
             case PopupTriggerType.button:
-                trigger.addEventListener("click", () => {
-                    popup.setVisible(!popup.isVisible, trigger);
+                Trigger.addEventListener("click", () => {
+                    popup.setVisible(!popup.isVisible, Trigger);
                 });
                 break;
             case PopupTriggerType.input:
-                trigger.addEventListener("focusin", () => {
-                    popup.setVisible(true, trigger);
+                Trigger.addEventListener("focusin", () => {
+                    popup.setVisible(true, Trigger);
                 });
-                trigger.addEventListener("keydown", () => {
-                    popup.setVisible(true, trigger);
+                Trigger.addEventListener("keydown", () => {
+                    popup.setVisible(true, Trigger);
                 });
                 break;
             default:
@@ -39,14 +39,14 @@
         }
 
         return () => {
-            trigger?.removeEventListener("click", () => {
-                popup.setVisible(!popup.isVisible, trigger);
+            Trigger?.removeEventListener("click", () => {
+                popup.setVisible(!popup.isVisible, Trigger);
             });
-            trigger?.removeEventListener("focusin", () => {
-                popup.setVisible(true, trigger);
+            Trigger?.removeEventListener("focusin", () => {
+                popup.setVisible(true, Trigger);
             });
-            trigger?.removeEventListener("keydown", () => {
-                popup.setVisible(true, trigger);
+            Trigger?.removeEventListener("keydown", () => {
+                popup.setVisible(true, Trigger);
             });
         };
     });
@@ -54,7 +54,7 @@
 
 <svelte:element
     this={type}
-    bind:this={trigger}
+    bind:this={Trigger}
     type="button"
     aria-expanded={popup.isVisible}
     {...properties}

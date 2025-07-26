@@ -15,16 +15,16 @@
 
     const viewport: ViewportContext = getContext("viewport");
     // `scrollY` is used to keep track of the scroll position of the main content area
-    let scrollY: number = $state(0);
-    let openingTrigger: HTMLElement | undefined = $state.raw();
+    let scrollY: number = $state.raw(0);
+    let OpeningTrigger: HTMLElement | undefined = $state.raw();
     let isInViewport: boolean = $derived(
-        openingTrigger ? viewport.content!.contains(openingTrigger) : false
+        OpeningTrigger ? viewport.Content!.contains(OpeningTrigger) : false
     );
     let body: HTMLElement;
     let main: HTMLElement | undefined = $derived.by(() => {
         if (!browser) return undefined;
 
-        return isInViewport ? viewport.content! : body;
+        return isInViewport ? viewport.Content! : body;
     });
 
     setContext(popupContextKey, {
@@ -37,14 +37,14 @@
         get isVisible() {
             return isVisible;
         },
-        get openingTrigger() {
-            return openingTrigger;
+        get OpeningTrigger() {
+            return OpeningTrigger;
         },
-        setVisible(newValue: boolean, trigger?: HTMLElement) {
+        setVisible(newValue, trigger) {
             if (newValue === isVisible) return;
 
             isVisible = newValue;
-            if (trigger) openingTrigger = trigger;
+            if (trigger) OpeningTrigger = trigger;
         },
     } satisfies PopupContext);
 
@@ -60,14 +60,16 @@
     });
 
     $effect(() => {
-        if (!main) return;
+        if (isInViewport) {
+            scrollY = viewport.scrollY;
+        } else if (main) {
+            getScrollY();
+            main.addEventListener("scroll", getScrollY);
 
-        getScrollY();
-        main.addEventListener("scroll", getScrollY);
-
-        return () => {
-            main.removeEventListener("scroll", getScrollY);
-        };
+            return () => {
+                main.removeEventListener("scroll", getScrollY);
+            };
+        }
     });
 </script>
 

@@ -28,7 +28,7 @@ export interface PopupContext {
     isInViewport: boolean;
     isVisible: boolean;
     scrollY: number;
-    openingTrigger: HTMLElement | undefined;
+    OpeningTrigger: HTMLElement | undefined;
     setVisible: (newValue: boolean, trigger?: HTMLElement) => void;
 }
 
