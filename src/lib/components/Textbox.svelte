@@ -17,8 +17,9 @@
 
     let attributes = $derived({
         class: [
-            `input-primary field-sizing-content resize-none w-full ${className}`,
+            `input-primary field-sizing-content resize-none w-full`,
             multiline && "h-40",
+            className,
         ],
         maxlength,
         "data-max": value?.length === maxlength ? true : undefined,
