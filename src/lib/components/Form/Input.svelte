@@ -6,7 +6,7 @@
     let {
         id,
         label,
-        value: defaultValue,
+        value = $bindable(),
         properties,
         isRequired = false,
         stage,
@@ -16,7 +16,7 @@
     }: {
         id: string;
         label?: string;
-        value: unknown;
+        value?: unknown;
         properties?: ComponentProps<C>;
         Component: C;
         class?: ClassValue;
@@ -27,9 +27,12 @@
 
     const form: FormContext = getContext(formContextKey);
     let uid: string = $props.id();
-    let value: any = $state.raw(defaultValue);
 
-    onMount(() => form.registerField(id, value, isRequired, label));
+    onMount(() => {
+        form.registerField(id, value, isRequired, label);
+
+        return () => form.removeField(id);
+    });
 
     $effect(() => {
         form.fields.set(id, { value, label });
@@ -37,7 +40,7 @@
 </script>
 
 {#if !stage || stage === form.stage}
-    <div class="flex flex-col gap-y-0.5 {className}">
+    <div class={["flex flex-col gap-y-0.5", className]}>
         {#if label}
             <label class="text-light block pl-4 font-light" for={uid} id="{uid}-{id}"
                 >{label}{isRequired ? "*" : ""}</label
@@ -45,7 +48,7 @@
         {/if}
 
         <div>
-            <Component {id} aria-labeledby="{uid}-{id}" {defaultValue} bind:value {...properties}>
+            <Component {id} aria-labeledby="{uid}-{id}" bind:value {...properties}>
                 {@render children?.()}
             </Component>
         </div>

@@ -15,6 +15,7 @@ export interface FormContext {
     fields: Map<string, { value: unknown; label?: string }>;
     stage: string | null;
     registerField: (id: string, value: unknown, isRequired: boolean, label?: string) => void;
+    removeField: (id: string) => void;
 }
 
 export let formContextKey: Symbol = Symbol("formContextKey");
