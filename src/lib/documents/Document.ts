@@ -9,10 +9,10 @@ export enum DocumentType {
 }
 
 export enum DocumentPermission {
-    view,
-    edit,
-    owner,
-    none,
+    view = 1,
+    edit = 2,
+    owner = 3,
+    none = 0,
 }
 
 export enum DocumentVisiblity {
@@ -101,6 +101,7 @@ export const ownedDocumentFields: DocumentFields = {
     owner: {
         type: DocumentFieldType.string,
         properties: {
+            isRequired: true,
             isUserUpdateable: false,
         },
     },
@@ -109,6 +110,7 @@ export const ownedDocumentFields: DocumentFields = {
         properties: {
             defaultValue: DocumentVisiblity.link,
             isUserUpdateable: true,
+            isRequired: true,
         },
     },
     permissions: {
@@ -116,6 +118,7 @@ export const ownedDocumentFields: DocumentFields = {
         properties: {
             defaultValue: {},
             isUserUpdateable: true,
+            isRequired: true,
         },
     },
 };

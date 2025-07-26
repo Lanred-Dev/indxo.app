@@ -45,4 +45,12 @@ export const setFields: DocumentFields = {
             defaultValue: [],
         },
     },
+    termTags: {
+        type: DocumentFieldType.array,
+        properties: {
+            isUserUpdateable: true,
+            isRequired: true,
+            defaultValue: [],
+        },
+    },
 };
