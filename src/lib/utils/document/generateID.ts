@@ -23,7 +23,7 @@ export default function generateDocumentID(length: number, documentType?: string
 
     let id: string = "";
 
-    for (let index: number = 0; index < length; index++)
+    for (let index: number = 0; index < length - (documentType ? 1 : 0); index++)
         id += randomArrayEntry(index === 0 ? startingCharacters : characters);
 
     return `${documentType ?? ""}${id}`;

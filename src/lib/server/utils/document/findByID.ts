@@ -40,7 +40,7 @@ export async function findDocumentByID(id: string): Promise<any | null> {
         }
 
         return await collection.findOne({ _id: id });
-    } catch (_error) {
+    } catch {
         return null;
     }
 }

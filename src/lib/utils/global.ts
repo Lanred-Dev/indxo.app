@@ -1,9 +1,10 @@
 import type { Session, SessionUser } from "$lib/documents";
 
 export interface ViewportContext {
+    scrollY: number;
     isMobile: boolean;
     isLoading: boolean;
-    content: HTMLElement | undefined;
+    Content: HTMLElement | undefined;
 }
 
 export interface HeaderContext {

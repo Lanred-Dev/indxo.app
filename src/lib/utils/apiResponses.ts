@@ -7,6 +7,8 @@ export enum ResponseCodes {
     SuccessNoResponse = 204,
     Success = 200,
     Redirect = 307,
+    InvalidMediaType = 415,
+    ContentTooLarge = 413,
 }
 
 // NOTE: These are generic responses and dont always have to be used.
