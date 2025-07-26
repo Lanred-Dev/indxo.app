@@ -1,19 +1,21 @@
-<script lang="ts">
-    import type { Component } from "svelte";
+<script lang="ts" generics="C extends Component<any>">
+    import type { Component, ComponentProps } from "svelte";
 
     interface Properties {
-        image: string | { Component: Component<any>; properties?: Record<string, unknown> };
+        image: { properties?: ComponentProps<C>; Component?: C; url?: string };
         text: string;
         onclick: (...args: any[]) => void;
+        [key: string]: unknown;
     }
 
-    let { image, text, onclick }: Properties = $props();
+    let { image, text, ...properties }: Properties = $props();
+    const { class: imageClassName = "", ...imageProperties } = image.properties ?? {};
 </script>
 
-<button type="button" aria-labelledby={text} {onclick}>
-    {#if typeof image === "string"}
-        <img class="size-6" src={image} alt={text} />
+<button type="button" aria-labelledby={text} {...properties}>
+    {#if "url" in image}
+        <img class={["size-6", imageClassName]} src={image.url} alt={text} {...imageProperties} />
     {:else}
-        <image.Component class="size-6" {...image.properties} />
+        <image.Component class={["size-6", imageClassName]} {...imageProperties} />
     {/if}
 </button>
