@@ -204,7 +204,7 @@
                                     _id: "definition",
                                     Component: Textbox,
                                     properties: {
-                                        class: "!w-fit flex-grow",
+                                        class: "w-full",
                                         placeholder: placeholders.definition,
                                         maxlength: termFields.definition.properties.maxlength,
                                         multiline: true,
@@ -215,8 +215,9 @@
                                     _id: "image",
                                     Component: ImageSelector,
                                     properties: {
+                                        class: "min-w-fit",
                                         imageProperties: {
-                                            class: "h-40 rounded-input",
+                                            class: "size-40 rounded-input object-contain",
                                         },
                                     },
                                     position: { group: 1, index: 1 },
