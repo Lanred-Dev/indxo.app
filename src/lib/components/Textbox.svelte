@@ -18,7 +18,7 @@
     let attributes = $derived({
         class: [
             `input-primary field-sizing-content resize-none w-full`,
-            multiline && "h-40",
+            multiline && "min-h-40 h-auto break-all",
             className,
         ],
         maxlength,
