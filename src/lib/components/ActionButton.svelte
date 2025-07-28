@@ -9,7 +9,9 @@
     }
 
     let { image, text, ...properties }: Properties = $props();
-    const { class: imageClassName = "", ...imageProperties } = image.properties ?? {};
+    const { class: imageClassName = "", ...imageProperties } = $derived(image.properties ?? {}) as {
+        [key: string]: unknown;
+    };
 </script>
 
 <button type="button" aria-labelledby={text} {...properties}>
