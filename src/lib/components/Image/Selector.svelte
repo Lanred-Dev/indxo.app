@@ -1,6 +1,9 @@
 <script lang="ts">
     import { PUBLIC_IMAGE_SERVER_URL } from "$env/static/public";
     import { ResponseCodes } from "$lib/utils/apiResponses";
+    import type { ClassValue } from "svelte/elements";
+    import { DialogContent, DialogTrigger } from "../Dialog";
+    import Dialog from "../Dialog/Dialog.svelte";
     import { PopupContent, PopupRelativity, PopupXAlignment, PopupYAlignment } from "../Popup";
     import Tooltip from "../Tooltip.svelte";
 
@@ -50,12 +53,14 @@
             imageServerFilename = await uploadResponse.text();
             value = `${PUBLIC_IMAGE_SERVER_URL}/get/${imageServerFilename}`;
         },
+        class: className,
         ...properties
     }: {
         value?: string | null;
         placeholder?: string;
         imageProperties?: Record<string, any>;
         onupload?: (file: File) => Promise<void>;
+        class: ClassValue;
         [key: string]: unknown;
     } = $props();
 
@@ -78,21 +83,43 @@
     </PopupContent>
 </Tooltip>
 
-<button {...properties} onclick={() => fileInput.click()} type="button">
-    <img src={value ?? placeholder} alt="Selected" {...imageProperties} />
+<div class={["group relative", className]} {...properties}>
+    <Dialog>
+        {#if value}
+            <DialogTrigger
+                class="absolute top-2 right-2 translate-y-2 opacity-0 transition-[translate,opacity] group-hover:translate-y-0 group-hover:opacity-100"
+            >
+                <img class="size-8" src="/icons/general/Expand.svg" alt="Expand" />
+            </DialogTrigger>
+        {/if}
 
-    <input
-        bind:this={fileInput}
-        bind:value={actualValue}
-        style:display="none"
-        type="file"
-        accept="image/png, image/jpeg, image/webp"
-        onchange={(event) => {
-            const file = (event.target as HTMLInputElement).files?.[0];
+        <DialogContent class="!rounded-none !p-0">
+            <DialogTrigger
+                class="button-primary absolute top-3 right-3 rounded-full !p-1.5 shadow-md"
+            >
+                <img class="size-8" src="/icons/general/X.svg" alt="Close" />
+            </DialogTrigger>
 
-            if (!file) return;
+            <img class="h-[200%] max-h-[80vh] w-auto max-w-[80vw]" src={value} alt="Expanded" />
+        </DialogContent>
+    </Dialog>
 
-            onupload(file);
-        }}
-    />
-</button>
+    <button onclick={() => fileInput.click()} type="button">
+        <img src={value ?? placeholder} alt="Selected" {...imageProperties} />
+
+        <input
+            bind:this={fileInput}
+            bind:value={actualValue}
+            style:display="none"
+            type="file"
+            accept="image/png, image/jpeg, image/webp"
+            onchange={(event) => {
+                const file = (event.target as HTMLInputElement).files?.[0];
+
+                if (!file) return;
+
+                onupload(file);
+            }}
+        />
+    </button>
+</div>
