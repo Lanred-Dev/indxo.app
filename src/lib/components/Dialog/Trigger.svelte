@@ -15,7 +15,8 @@
 
 <button
     type="button"
-    onclick={() => {
+    onclick={(event) => {
+        event.stopPropagation();
         dialog.isVisible = !dialog.isVisible;
     }}
     {...properties}
