@@ -8,8 +8,10 @@
     import { ResponseCodes } from "$lib/utils/apiResponses";
     import permissionIsEqual from "$lib/utils/document/permissionIsEqual";
     import { goto } from "$app/navigation";
+    import type { SessionContext } from "$lib/utils/global";
 
     const document: DocumentContext = getContext("document");
+    const session: SessionContext = getContext("session");
     const documentType: DocumentType = determineDocumentType(document._id)!;
     const buttons: ComponentProps<typeof ActionButton>[] = $derived.by(() => {
         const buttons: ComponentProps<typeof ActionButton>[] = [];
@@ -17,27 +19,28 @@
         switch (documentType) {
             case DocumentType.set:
             case DocumentType.folder:
-                buttons.push({
-                    image: {
-                        Component: Star,
-                        properties: {
-                            fill: document.isFavorite ? "var(--color-attention)" : "#000000",
+                if (session.session)
+                    buttons.push({
+                        image: {
+                            Component: Star,
+                            properties: {
+                                fill: document.isFavorite ? "var(--color-attention)" : "#000000",
+                            },
                         },
-                    },
-                    text: "Favorite",
-                    onclick: async () => {
-                        const response: Response = await fetch(
-                            `/api/documents/${document._id}/favorite`,
-                            {
-                                method: "PUT",
-                                body: JSON.stringify(!document.isFavorite),
-                            }
-                        );
+                        text: "Favorite",
+                        onclick: async () => {
+                            const response: Response = await fetch(
+                                `/api/documents/${document._id}/favorite`,
+                                {
+                                    method: "PUT",
+                                    body: JSON.stringify(!document.isFavorite),
+                                }
+                            );
 
-                        if (response.status === ResponseCodes.SuccessNoResponse)
-                            document.isFavorite = !document.isFavorite;
-                    },
-                });
+                            if (response.status === ResponseCodes.SuccessNoResponse)
+                                document.isFavorite = !document.isFavorite;
+                        },
+                    });
 
                 if (permissionIsEqual(document.permission, DocumentPermission.edit))
                     buttons.push({
