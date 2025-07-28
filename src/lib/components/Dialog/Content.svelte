@@ -1,28 +1,54 @@
 <script lang="ts">
-    import { getContext, type Snippet } from "svelte";
+    import { getContext, onMount, type Snippet } from "svelte";
     import { fade, fly } from "svelte/transition";
     import { dialogContextKey, type DialogContext } from ".";
+    import type { ClassValue } from "svelte/elements";
 
     let {
         children,
+        class: className,
+        ...properties
     }: {
         children: Snippet<[]>;
+        class?: ClassValue;
+        [key: string]: unknown;
     } = $props();
 
     const dialog: DialogContext = getContext(dialogContextKey);
+    let ContentWrapper: HTMLElement | null = $state.raw(null);
+    let Content: HTMLElement | null = $state.raw(null);
+
+    $effect(() => {
+        if (!ContentWrapper) return;
+
+        document.body.appendChild(ContentWrapper);
+    });
 </script>
+
+<svelte:window
+    onclick={(event) => {
+        if (dialog.isVisible && Content && !Content.contains(event.target as Node))
+            dialog.isVisible = false;
+    }}
+/>
 
 {#if dialog.isVisible}
     <div
         class="fixed top-0 left-0 z-50 h-full w-full backdrop-blur-sm backdrop-brightness-50"
         transition:fade={{ duration: 100 }}
+        bind:this={ContentWrapper}
     >
-        <div class="h-full w-full"></div>
+        <div class="pointer-events-none h-full w-full"></div>
 
         <div class="x-center y-center flex-center z-10 w-full px-5 md:px-0">
             <div
-                class="container-primary flex-center relative w-fit min-w-[20%] flex-col px-4 py-6 text-lg md:px-8 md:py-10"
+                class={[
+                    "container-primary flex-center relative w-fit min-w-[20%] flex-col px-4 py-6 text-lg md:px-8 md:py-10",
+                    className,
+                ]}
                 in:fly={{ y: 20, duration: 200 }}
+                bind:this={Content}
+                {...properties}
             >
                 {@render children()}
             </div>
