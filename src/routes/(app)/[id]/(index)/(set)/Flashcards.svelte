@@ -40,6 +40,7 @@
         CardOverlay?: Snippet<[]>;
     } = $props();
 
+    let flashcardScrollY: number = $state.raw(0);
     let isFlipped: boolean = $state.raw(false);
     let CardFront: HTMLDivElement;
     let CardBack: HTMLDivElement;
@@ -118,11 +119,17 @@
 />
 
 <div id="flashcards">
-    <button
-        class="sm:aspect-2 relative aspect-[1.6] max-h-96 w-full text-3xl outline-none"
+    <div
+        class="sm:aspect-2 relative aspect-[1.6] max-h-96 w-full cursor-pointer text-3xl outline-none"
         style:perspective="1000px"
-        onclick={() => flipCard()}
         in:fade={{ duration: 200 }}
+        aria-label="Flip card"
+        role="button"
+        tabindex="0"
+        onclick={() => flipCard()}
+        onkeydown={(event) => {
+            if (event.key === "Enter" || event.key === " ") flipCard();
+        }}
     >
         <div
             class="absolute top-0 left-0 h-full w-full"
@@ -142,19 +149,29 @@
                     style:transform="rotateX(180deg)"
                     bind:this={CardBack}
                 >
-                    <p class="text-light x-center top-3 text-base font-medium">
+                    <p
+                        class="text-light x-center top-3 text-base font-medium transition-opacity"
+                        style:opacity={flashcardScrollY > 0 ? 0 : 1}
+                    >
                         {currentTerm.term}
                     </p>
 
-                    {#if currentTerm.image}
-                        <ExpandableImage
-                            src={currentTerm.image}
-                            alt={currentTerm.term}
-                            class="h-30 w-auto"
-                        />
-                    {/if}
+                    <div
+                        class="flex flex-col items-center overflow-y-scroll py-6"
+                        onscroll={(event) => {
+                            flashcardScrollY = event.currentTarget.scrollTop;
+                        }}
+                    >
+                        {#if currentTerm.image}
+                            <ExpandableImage
+                                src={currentTerm.image}
+                                alt={currentTerm.term}
+                                class="mb-2 h-30 w-auto"
+                            />
+                        {/if}
 
-                    <p>{currentTerm.definition}</p>
+                        <p class="break-all">{currentTerm.definition}</p>
+                    </div>
                 </div>
 
                 <style lang="postcss">
@@ -166,7 +183,7 @@
                 </style>
             </div>
         </div>
-    </button>
+    </div>
 
     <div class="relative mt-4 w-full" in:fade={{ duration: 200 }}>
         <div class="flex-center gap-1">
