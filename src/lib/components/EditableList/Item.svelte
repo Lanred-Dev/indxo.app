@@ -75,10 +75,14 @@
 
         <div class="flex-center w-full grow flex-wrap gap-3">
             {#each fieldGroups as group}
-                <div class="row">
+                <div class="row flex-nowrap items-start overflow-hidden">
                     {#each group as { Component, _id: fieldID, properties }}
-                        {@const fieldIndex: number = fields.findIndex(({ _id }) => _id === fieldID)}
-                        <Component bind:value={fields[fieldIndex].value} {...properties} />
+                        <Component
+                            bind:value={
+                                fields[fields.findIndex(({ _id }) => _id === fieldID)].value
+                            }
+                            {...properties}
+                        />
                     {/each}
                 </div>
             {/each}
