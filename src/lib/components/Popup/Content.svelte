@@ -134,7 +134,7 @@
 </script>
 
 <svelte:window
-    onclick={(event: MouseEvent) => {
+    onclick={(event) => {
         if (
             popup.isVisible &&
             popup.OpeningTrigger &&
