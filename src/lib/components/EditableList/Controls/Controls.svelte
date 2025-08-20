@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { ViewportContext } from "$lib/utils/global";
-    import { getContext, onMount, type Snippet } from "svelte";
+    import { getContext, type Snippet } from "svelte";
 
     let { children, ...properties }: { [key: string]: unknown; children: Snippet<[]> } = $props();
 
@@ -13,13 +13,12 @@
 
         if (!Controls || !Controls.parentElement) return;
 
-        const parentBounding = Controls.parentElement.getBoundingClientRect();
-        const controlsBounding = Controls.getBoundingClientRect();
-        distanceToBottom = Math.floor(
-            Math.max(
-                ((parentBounding.bottom - controlsBounding.bottom) / parentBounding.height) * 100,
-                0
-            )
+        const { bottom: parentBottom, height: parentHeight } =
+            Controls.parentElement.getBoundingClientRect();
+        const { bottom: controlsBottom } = Controls.getBoundingClientRect();
+        distanceToBottom = Math.min(
+            100,
+            Math.ceil(Math.max(((parentBottom - controlsBottom) / parentHeight) * 100, 0))
         );
     });
 </script>
