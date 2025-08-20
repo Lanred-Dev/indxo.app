@@ -30,7 +30,10 @@ export enum DocumentFieldType {
 }
 
 export interface DocumentField {
-    type: DocumentFieldType | Record<string, DocumentFieldType> | (string | number)[];
+    type:
+        | DocumentFieldType
+        | Record<string, DocumentFieldType | (string | number)[]>
+        | (string | number)[];
     properties: {
         isUserUpdateable: boolean;
         defaultValue?: unknown;
