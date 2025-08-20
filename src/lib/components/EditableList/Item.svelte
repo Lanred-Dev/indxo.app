@@ -75,7 +75,7 @@
 
         <div class="flex-center w-full grow flex-wrap gap-3">
             {#each fieldGroups as group}
-                <div class="row flex-nowrap items-start overflow-hidden">
+                <div class="row flex-nowrap items-start">
                     {#each group as { Component, _id: fieldID, properties }}
                         <Component
                             bind:value={
