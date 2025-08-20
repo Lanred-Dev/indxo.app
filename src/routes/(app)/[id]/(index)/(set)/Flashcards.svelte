@@ -140,7 +140,7 @@
 
             <div>
                 <div class="CardFace" bind:this={CardFront}>
-                    <p class="font-medium">{currentTerm.term}</p>
+                    <p class="font-medium" aria-label="Term">{currentTerm.term}</p>
                 </div>
 
                 <div
@@ -152,12 +152,13 @@
                     <p
                         class="text-light x-center top-3 text-base font-medium transition-opacity"
                         style:opacity={flashcardScrollY > 0 ? 0 : 1}
+                        aria-label="Term"
                     >
                         {currentTerm.term}
                     </p>
 
                     <div
-                        class="flex flex-col items-center overflow-y-scroll py-6"
+                        class="flex w-full flex-col items-center overflow-y-auto py-6"
                         onscroll={(event) => {
                             flashcardScrollY = event.currentTarget.scrollTop;
                         }}
@@ -170,7 +171,7 @@
                             />
                         {/if}
 
-                        <p class="break-all">{currentTerm.definition}</p>
+                        <p class="break-all" aria-label="Definition">{currentTerm.definition}</p>
                     </div>
                 </div>
 
