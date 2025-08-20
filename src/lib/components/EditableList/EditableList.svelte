@@ -162,7 +162,21 @@
                     _id,
                     ...fields.reduce(
                         (object, { _id, value }) => {
-                            object[_id] = typeof value === "string" ? value.trim() : value;
+                            const cleanedValue = typeof value === "string" ? value.trim() : value;
+
+                            if (_id.includes(".")) {
+                                const [dictionaryKey, subKey] = _id.split(".");
+                                if (
+                                    typeof object[dictionaryKey] !== "object" ||
+                                    object[dictionaryKey] === null
+                                )
+                                    object[dictionaryKey] = {};
+                                (object[dictionaryKey] as Record<string, unknown>)[subKey] =
+                                    cleanedValue;
+                            } else {
+                                object[_id] = cleanedValue;
+                            }
+
                             return object;
                         },
                         {} as Record<string, unknown>
