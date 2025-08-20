@@ -6,8 +6,11 @@
     import Dialog from "../Dialog/Dialog.svelte";
     import { PopupContent, PopupRelativity, PopupXAlignment, PopupYAlignment } from "../Popup";
     import Tooltip from "../Tooltip.svelte";
+    import type { ComponentProps } from "svelte";
+    import ActionButton from "../ActionButton.svelte";
 
     let {
+        buttons = [],
         value = $bindable(),
         placeholder = "https://placehold.co/200x200.webp",
         imageProperties = {},
@@ -56,6 +59,7 @@
         class: className,
         ...properties
     }: {
+        buttons?: ComponentProps<typeof ActionButton>[];
         value?: string | null;
         placeholder?: string;
         imageProperties?: Record<string, any>;
@@ -103,6 +107,14 @@
             <img class="h-[200%] max-h-[80vh] w-auto max-w-[80vw]" src={value} alt="Expanded" />
         </DialogContent>
     </Dialog>
+
+    {#if buttons.length > 0}
+        <div class="absolute right-2 bottom-2 flex gap-1">
+            {#each buttons as button}
+                <ActionButton {...button} />
+            {/each}
+        </div>
+    {/if}
 
     <button onclick={() => fileInput.click()} type="button">
         <img src={value ?? placeholder} alt="Selected" {...imageProperties} />
