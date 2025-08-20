@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { Snippet } from "svelte";
-    import Popup from "./Popup/Popup.svelte";
+    import { Popup } from "./Popup";
 
     let {
         isVisible = $bindable(false),
