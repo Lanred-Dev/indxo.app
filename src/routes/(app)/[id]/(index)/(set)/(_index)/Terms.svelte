@@ -43,7 +43,7 @@
     });
 </script>
 
-<div class="list-primary mt-16">
+<div class="list-primary mt-20">
     <p class="list-title">{Wording.cards}</p>
 
     {#if permissionIsEqual(document.permission, DocumentPermission.edit)}
