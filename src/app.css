@@ -133,12 +133,12 @@
 }
 
 @utility clay-* {
-    --clay-color: --value(--color- *);
+    --clay-color: --value(--color-*);
     @apply container-clay;
 }
 
 @utility clay-sm-* {
-    --clay-color: --value(--color- *);
+    --clay-color: --value(--color-*);
     --clay-color-shadow-percentage: 50%;
     --clay-color-light-percentage: 75%;
     --clay-color-dark-percentage: 95%;
