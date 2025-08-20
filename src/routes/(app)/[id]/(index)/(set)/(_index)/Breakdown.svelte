@@ -19,6 +19,10 @@
 {/snippet}
 
 <div class="mt-15">
+    {#if document.description && document.description.length > 0}
+        <p class="break-word mb-8 text-lg">{document.description}</p>
+    {/if}
+
     <div class="flex w-full flex-col gap-y-3">
         {@render info(
             "/icons/general/Terms.svg",
@@ -34,8 +38,4 @@
 
         {@render info(document.owner.picture, "Created by", document.owner.name)}
     </div>
-
-    {#if document.description && document.description.length > 0}
-        <p class="break-word mt-8 text-lg">{document.description}</p>
-    {/if}
 </div>
