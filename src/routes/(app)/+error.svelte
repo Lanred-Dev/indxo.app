@@ -22,7 +22,7 @@
     };
 </script>
 
-<div class="h-full w-full pt-[25%] text-center">
+<div class="h-full w-full text-center">
     <div class="page-title">
         <p class="title">{messages[page.status].title}</p>
         <p class="description">{messages[page.status].message}</p>
