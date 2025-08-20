@@ -1,11 +1,11 @@
 <script lang="ts">
-    import type { DocumentPermission, PublicSet, Term } from "$lib/documents";
+    import type { Term } from "$lib/documents";
     import { animate } from "motion";
     import Flashcards, { CycleDirection } from "../Flashcards.svelte";
     import { getContext } from "svelte";
     import type { DocumentContext } from "../../+page.svelte";
     import Terms from "./Terms.svelte";
-    import About from "../../About.svelte";
+    import Breakdown from "./Breakdown.svelte";
 
     const document: DocumentContext = getContext("document");
     let FlashcardsComponent: Flashcards | undefined = $state.raw();
@@ -131,7 +131,7 @@
         ]}
     />
 
-    <About />
+    <Breakdown />
 
     <Terms />
 {/if}
