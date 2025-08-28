@@ -16,7 +16,7 @@ export enum Wording {
     favorites = "Favorites",
     mode = "Study Mode",
     modes = "Study Modes",
-    testMode = "Quiz",
+    quizMode = "Quiz",
     sortMode = "Sort",
     matchingMode = "Matching",
 }
