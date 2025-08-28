@@ -11,12 +11,11 @@ export async function GET({ params, fetch }) {
     const folders: PublicFolder[] = [];
 
     for (const id of user.folders) {
-        const response: Response = await fetch(`/api/documents/folder/${id}`);
+        const response: Response = await fetch(`/api/documents/${id}`);
 
         if (response.status !== ResponseCodes.Success) continue;
 
-        const folder: PublicFolder = await response.json();
-        folders.push(folder);
+        folders.push(await response.json());
     }
 
     return json(folders);
