@@ -1,3 +1,4 @@
+<!--svelte-ignore non_reactive_update-->
 <script lang="ts">
     import type { Term } from "$lib/documents";
     import { animate } from "motion";
@@ -6,10 +7,11 @@
     import type { DocumentContext } from "../../+page.svelte";
     import Terms from "./Terms.svelte";
     import Breakdown from "./Breakdown.svelte";
+    import Modes from "./Modes.svelte";
 
     const document: DocumentContext = getContext("document");
-    let FlashcardsComponent: Flashcards | undefined = $state.raw();
-    let Card: HTMLDivElement | undefined = $state.raw();
+    let FlashcardsComponent: Flashcards;
+    let Card: HTMLDivElement;
     let canCycle: boolean = $state.raw(true);
     let canFlip: boolean = $state.raw(true);
     let currentTermIndex: number = $state.raw(0);
@@ -132,6 +134,8 @@
     />
 
     <Breakdown />
+
+    <Modes />
 
     <Terms />
 {/if}

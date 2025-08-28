@@ -41,12 +41,9 @@
         switch (determineDocumentType(document._id)) {
             case DocumentType.user:
                 return UserDocument;
-            case DocumentType.set:
-                return SetDocument;
             case DocumentType.folder:
                 return FolderDocument;
             default:
-                // NOTE: This should never happen but this just fixes type warnings.
                 return SetDocument;
         }
     });

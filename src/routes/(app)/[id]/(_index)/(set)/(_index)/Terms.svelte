@@ -18,7 +18,7 @@
         EditableListContent,
         EditableListControls,
         EditableListItem,
-    } from "$lib/components/EditableList";
+    } from "$lib/components/Lists/Editable";
     import { FormContent, FormInput, FormSubmit, FormSubmitMethods } from "$lib/components/Form";
     import Form from "$lib/components/Form/Form.svelte";
     import generateDocumentID from "$lib/utils/document/generateID";

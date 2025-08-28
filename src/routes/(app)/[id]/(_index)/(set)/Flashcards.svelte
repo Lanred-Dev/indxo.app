@@ -22,7 +22,7 @@
         currentTerm,
         cycleButtons,
         actionButtons = [],
-        CardOverlay,
+        Overlay,
     }: {
         cycle: (direction: CycleDirection) => void;
         Card: HTMLDivElement | undefined;
@@ -37,7 +37,7 @@
             next: ComponentProps<typeof ActionButton>;
         };
         actionButtons?: ComponentProps<typeof ActionButton>[];
-        CardOverlay?: Snippet<[]>;
+        Overlay?: Snippet<[]>;
     } = $props();
 
     let flashcardScrollY: number = $state.raw(0);
@@ -136,7 +136,7 @@
             style:transform-style="preserve-3d"
             bind:this={Card}
         >
-            {@render CardOverlay?.()}
+            {@render Overlay?.()}
 
             <div>
                 <div class="CardFace" bind:this={CardFront}>
