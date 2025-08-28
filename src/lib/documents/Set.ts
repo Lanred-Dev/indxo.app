@@ -1,3 +1,4 @@
+import { Wording } from "$lib/utils/wording";
 import {
     DocumentFieldType,
     ownedDocumentFields,
@@ -6,6 +7,18 @@ import {
     type PublicOwnedDocument,
 } from "./Document";
 import type { Term } from "./Term";
+
+export enum StudyMode {
+    quiz = "q",
+    cards = "c",
+    sort = "s",
+}
+
+export const StudyModes: { [mode in StudyMode]: { text: string; url: string; icon: string } } = {
+    [StudyMode.quiz]: { text: Wording.quizMode, url: `/quiz/[id]`, icon: "" },
+    [StudyMode.cards]: { text: Wording.cards, url: `/[id]/${StudyMode.cards}`, icon: "" },
+    [StudyMode.sort]: { text: Wording.sortMode, url: `/[id]/${StudyMode.sort}`, icon: "" },
+};
 
 export interface Set extends OwnedDocument {
     subject: string;
