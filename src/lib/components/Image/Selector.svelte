@@ -12,7 +12,7 @@
     let {
         buttons = [],
         value = $bindable(),
-        placeholder = "https://placehold.co/200x200.webp",
+        placeholder = "/icons/general/Image.svg",
         imageProperties = {},
         onupload = async (file: File) => {
             // Delete the previous image if there was one
@@ -117,7 +117,13 @@
     {/if}
 
     <button onclick={() => fileInput.click()} type="button">
-        <img src={value ?? placeholder} alt="Selected" {...imageProperties} />
+        <img
+            src={value ?? placeholder}
+            alt="Selected"
+            {...imageProperties}
+            style:transform={value ? undefined : "scale(0.3)"}
+            style:opacity={value ? undefined : "0.8"}
+        />
 
         <input
             bind:this={fileInput}
