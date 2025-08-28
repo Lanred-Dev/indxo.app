@@ -1,5 +1,5 @@
+import type ActionButton from "$lib/components/ActionButton.svelte";
 import type { Component, ComponentProps } from "svelte";
-import type ActionButton from "../ActionButton.svelte";
 import type Item from "./Item.svelte";
 
 export { default as EditableListContent } from "./Content.svelte";

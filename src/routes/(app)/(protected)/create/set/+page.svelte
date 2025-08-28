@@ -32,7 +32,7 @@
         EditableListContent,
         EditableListControls,
         EditableListItem,
-    } from "$lib/components/EditableList";
+    } from "$lib/components/Lists/Editable";
     import generateDocumentID from "$lib/utils/document/generateID";
     import type { ComponentProps } from "svelte";
     import randomArrayEntry from "$lib/utils/randomArrayEntry";

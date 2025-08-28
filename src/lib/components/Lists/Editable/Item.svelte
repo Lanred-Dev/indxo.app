@@ -6,7 +6,7 @@
         type EditableListItemField,
     } from ".";
     import { slide } from "svelte/transition";
-    import ActionButton from "../ActionButton.svelte";
+    import ActionButton from "$lib/components/ActionButton.svelte";
 
     let {
         index,

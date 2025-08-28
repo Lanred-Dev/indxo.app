@@ -1,14 +1,13 @@
 <script lang="ts">
-    import { onMount, setContext, untrack, type ComponentProps, type Snippet } from "svelte";
+    import { setContext, type ComponentProps, type Snippet } from "svelte";
     import {
         DefaultEditableListItemButton,
         editableListContextKey,
         EditableListItem,
         type EditableListContext,
-        type EditableListItemField,
     } from ".";
-    import Chevron, { ChevronState } from "../Icons/Chevron.svelte";
-    import ActionButton from "../ActionButton.svelte";
+    import Chevron, { ChevronState } from "$lib/components/Icons/Chevron.svelte";
+    import ActionButton from "$lib/components/ActionButton.svelte";
 
     let {
         placeholderItems = 0,
