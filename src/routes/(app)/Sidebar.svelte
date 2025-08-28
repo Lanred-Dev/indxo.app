@@ -5,6 +5,7 @@
     import { Wording } from "$lib/utils/wording";
     import { browser } from "$app/environment";
     import type { HeaderContext, SessionContext, SidebarContext } from "$lib/utils/global";
+    import { MyPageType } from "$lib/utils/routing";
 
     const header: HeaderContext = getContext("header");
     const sidebar: SidebarContext = getContext("sidebar");
@@ -33,7 +34,7 @@
 {#if sidebar.isVisible}
     <div
         class={[
-            "bg-primary fixed left-0 z-30 flex h-full min-w-fit flex-col justify-between gap-10 overflow-x-hidden overflow-y-auto pt-2 pr-16 pb-5.5 pl-4 shadow-2xl transition-transform duration-300 md:bg-transparent md:pt-6 md:pr-4 md:pb-7 md:pl-7 md:shadow-none xl:w-[17.5%] 2xl:w-[15%]",
+            "bg-primary fixed left-0 z-30 flex h-full w-2/5 min-w-fit flex-col justify-between gap-10 overflow-x-hidden overflow-y-auto pt-2 pr-4 pb-5.5 pl-4 shadow-2xl transition-transform duration-300 md:w-auto md:bg-transparent md:pt-6 md:pr-4 md:pb-7 md:pl-7 md:shadow-none xl:w-[17.5%] 2xl:w-[15%]",
             !browser && "pointer-events-none opacity-0",
         ]}
         style:height="{innerHeight.current ?? 0 - header.height}px"
@@ -57,17 +58,17 @@
                     {
                         icon: "/icons/navigation/Stars.svg",
                         text: Wording.favorites,
-                        url: "/my/favorites",
+                        url: `/my/${MyPageType.favorites}`,
                     },
                     {
                         icon: "/icons/navigation/Folder.svg",
                         text: Wording.folders,
-                        url: "/my/folders",
+                        url: `/my/${MyPageType.folders}`,
                     },
                     {
                         icon: "/icons/navigation/Document.svg",
                         text: Wording.sets,
-                        url: "/my/sets",
+                        url: `/my/${MyPageType.sets}`,
                     },
                 ],
                 "Your library"
