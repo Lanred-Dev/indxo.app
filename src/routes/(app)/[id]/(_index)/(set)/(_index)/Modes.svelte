@@ -13,7 +13,7 @@
     <ul class="list-container">
         {#each Object.values(StudyModes) as { icon, text, url }}
             <li class="grow">
-                <a class="button-primary" href={url.replace("[id]", document.id)}>
+                <a class="button-primary" href={url.replace("[id]", document._id)}>
                     <img class="size-7" src={icon} alt={text} />
                     <p>{text}</p>
                 </a>

@@ -15,9 +15,21 @@ export enum StudyMode {
 }
 
 export const StudyModes: { [mode in StudyMode]: { text: string; url: string; icon: string } } = {
-    [StudyMode.quiz]: { text: Wording.quizMode, url: `/quiz/[id]`, icon: "" },
-    [StudyMode.cards]: { text: Wording.cards, url: `/[id]/${StudyMode.cards}`, icon: "" },
-    [StudyMode.sort]: { text: Wording.sortMode, url: `/[id]/${StudyMode.sort}`, icon: "" },
+    [StudyMode.quiz]: {
+        text: Wording.quizMode,
+        url: `/quiz/[id]`,
+        icon: "/icons/general/Quiz.svg",
+    },
+    [StudyMode.cards]: {
+        text: Wording.cards,
+        url: `/[id]/${StudyMode.cards}`,
+        icon: "/icons/general/Cards.svg",
+    },
+    [StudyMode.sort]: {
+        text: Wording.sortMode,
+        url: `/[id]/${StudyMode.sort}`,
+        icon: "/icons/general/Sort.svg",
+    },
 };
 
 export interface Set extends OwnedDocument {
