@@ -210,7 +210,7 @@ export async function PUT({ params, locals, request, fetch }) {
             _id: params.id,
         },
         {
-            $set: validFields,
+            $set: { ...validFields, updated: Date.now() },
         }
     );
 
