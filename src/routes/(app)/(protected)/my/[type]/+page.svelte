@@ -3,6 +3,8 @@
         SearchableListContent,
         SearchableListFilters,
         SearchableListSearchbar,
+        SearchableListError,
+        EmptyListState,
     } from "$lib/components/Lists/Searchable";
     import SearchableList from "$lib/components/Lists/Searchable/SearchableList.svelte";
     import { MyPageType } from "$lib/utils/routing";
@@ -44,4 +46,19 @@
         ]}
     />
     <SearchableListContent />
+
+    <SearchableListError
+        states={{
+            [EmptyListState.noDocuments]: {
+                image: "/icons/general/RaisedHand.svg",
+                title: "Echoes... Just Echoes",
+                message: "Nothing’s here yet. Maybe it’s time to start something awesome?",
+            },
+            [EmptyListState.noSearchResults]: {
+                image: "/icons/general/Search.svg",
+                title: "No Matches in Sight",
+                message: "You’ve outsmarted the search bar. Try a different word or two?",
+            },
+        }}
+    />
 </SearchableList>
