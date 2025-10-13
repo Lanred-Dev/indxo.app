@@ -11,7 +11,7 @@ import type { Term } from "./Term";
 export enum StudyMode {
     quiz = "q",
     cards = "c",
-    sort = "s",
+    sort = "sort",
 }
 
 export const StudyModes: { [mode in StudyMode]: { text: string; url: string; icon: string } } = {
