@@ -10,10 +10,7 @@
 </script>
 
 <div class="page-title">
-    <h1 class="title">
-        <img src="/icons/general/RaisedHand.svg" alt="Error" />
-        {document.name} looks ready, but it’s empty right now
-    </h1>
+    <h1 class="title">{document.name} looks ready, but it’s empty right now</h1>
 
     <p class="description">No {contentWording} have arrived yet. Perhaps check back later?</p>
 </div>
