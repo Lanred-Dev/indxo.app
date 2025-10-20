@@ -11,7 +11,7 @@
     import { setContext, type Component } from "svelte";
     import Header from "./Header.svelte";
     import FolderDocument from "./Folder/Document.svelte";
-    import SetDocument from "./(set)/(_index)/Document.svelte";
+    import SetDocument from "./Set/Document.svelte";
     import UserDocument from "./User/Document.svelte";
     import determineDocumentType from "$lib/utils/document/determineType";
     import EmptyError from "./EmptyError.svelte";

@@ -3,10 +3,10 @@
 <!--svelte-ignore non_reactive_update-->
 <script lang="ts">
     import { getContext } from "svelte";
-    import type { DocumentContext } from "../../../+page.svelte";
+    import type { DocumentContext } from "../../+page.svelte";
     import { beforeNavigate } from "$app/navigation";
     import type { SortedTerm, Term } from "$lib/documents";
-    import Flashcards, { CycleDirection } from "../../Flashcards.svelte";
+    import Flashcards, { CycleDirection } from "../Flashcards.svelte";
     import { SvelteMap, SvelteSet } from "svelte/reactivity";
     import { animate } from "motion";
 
