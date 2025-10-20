@@ -37,5 +37,13 @@
         )}
 
         {@render info(document.owner.picture, "Created by", document.owner.name)}
+
+        {#if document.updated}
+            {@render info(
+                "/icons/general/Updated.svg",
+                "Last updated",
+                format(document.updated, "dd/MM/yyyy")
+            )}
+        {/if}
     </div>
 </div>

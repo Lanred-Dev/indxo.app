@@ -140,12 +140,12 @@
 }
 
 @utility clay-* {
-    --clay-color: --value(--color-*);
+    --clay-color: --value(--color- *);
     @apply container-clay;
 }
 
 @utility clay-sm-* {
-    --clay-color: --value(--color-*);
+    --clay-color: --value(--color- *);
     --clay-color-shadow-percentage: 50%;
     --clay-color-light-percentage: 75%;
     --clay-color-dark-percentage: 95%;
@@ -173,7 +173,11 @@
     @apply mb-10 w-full;
 
     & .title {
-        @apply break-word text-3xl leading-snug font-bold md:text-4xl;
+        @apply break-word flex items-center gap-1 text-3xl leading-snug font-bold md:text-4xl;
+
+        & img {
+            @apply size-10;
+        }
     }
 
     & .description {

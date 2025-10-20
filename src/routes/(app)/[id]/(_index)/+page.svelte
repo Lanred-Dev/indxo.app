@@ -14,21 +14,21 @@
     import SetDocument from "./(set)/(_index)/Document.svelte";
     import UserDocument from "./User/Document.svelte";
     import determineDocumentType from "$lib/utils/document/determineType";
+    import EmptyError from "./EmptyError.svelte";
 
     let { data } = $props();
-    let { document, permission, isFavorite: initialIsFavorite } = data;
 
-    let isFavorite = $state.raw(initialIsFavorite);
-    let terms: Term[] = $state.raw("terms" in document ? document.terms : []);
+    let isFavorite = $state.raw(data.isFavorite);
+    let terms: Term[] = $state.raw("terms" in data.document ? data.document.terms : []);
     setContext("document", {
-        ...document,
+        ...data.document,
         get terms() {
             return terms;
         },
         set terms(newValue) {
             terms = newValue;
         },
-        permission: permission ?? DocumentPermission.none,
+        permission: data.permission ?? DocumentPermission.none,
         get isFavorite() {
             return isFavorite;
         },
@@ -38,7 +38,7 @@
     } satisfies DocumentContext);
 
     const DocumentComponent: Component<any> = $derived.by(() => {
-        switch (determineDocumentType(document._id)) {
+        switch (determineDocumentType(data.document._id)) {
             case DocumentType.user:
                 return UserDocument;
             case DocumentType.folder:
@@ -49,6 +49,9 @@
     });
 </script>
 
-<Header />
-
-<DocumentComponent {...document} />
+{#if data.isEmpty}
+    <EmptyError />
+{:else}
+    <Header />
+    <DocumentComponent {...data.document} />
+{/if}

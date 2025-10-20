@@ -15,6 +15,10 @@
     let canCycle: boolean = $state.raw(true);
     let canFlip: boolean = $state.raw(true);
     let currentTermIndex: number = $state.raw(0);
+    // In most cases current term index should be in range, but due to hot reloading while the user is editing the set, it might go out of bounds
+    let term: Term = $derived.by(() =>
+        currentTermIndex in document.terms ? document.terms[currentTermIndex] : document.terms[0]
+    );
 
     /**
      * Cycle through the terms in the set.
@@ -83,59 +87,51 @@
     });
 </script>
 
-{#if document.terms.length === 0}
-    <div class="flex-center sm:aspect-2 aspect-[1.1] max-h-68 w-full flex-col gap-1 outline-none">
-        <p class="text-3xl font-bold">Oops! It's Just a Title Right Now</p>
-    </div>
-{:else}
-    <!--A check is required due to term hot reloading-->
-    {@const term: Term = currentTermIndex in document.terms ? document.terms[currentTermIndex] : document.terms[0]}
-    <Flashcards
-        {cycle}
-        termCount={document.terms.length}
-        currentTerm={{
-            index: currentTermIndex + 1,
-            ...term,
-        }}
-        bind:this={FlashcardsComponent}
-        bind:Card
-        bind:canCycle
-        bind:canFlip
-        cycleButtons={{
-            previous: {
-                image: { properties: { class: "size-9" }, url: "/icons/general/LeftArrow.svg" },
-                text: "Previous",
-                onclick: () => {
-                    cycle(CycleDirection.previous);
-                },
-                disabled: currentTermIndex === 0,
+<Flashcards
+    {cycle}
+    termCount={document.terms.length}
+    currentTerm={{
+        index: currentTermIndex + 1,
+        ...term,
+    }}
+    bind:this={FlashcardsComponent}
+    bind:Card
+    bind:canCycle
+    bind:canFlip
+    cycleButtons={{
+        previous: {
+            image: { properties: { class: "size-9" }, url: "/icons/general/LeftArrow.svg" },
+            text: "Previous",
+            onclick: () => {
+                cycle(CycleDirection.previous);
             },
-            next: {
-                image: { properties: { class: "size-9" }, url: "/icons/general/RightArrow.svg" },
-                text: "Next",
-                onclick: () => {
-                    cycle(CycleDirection.next);
-                },
-                disabled: currentTermIndex >= document.terms.length - 1,
+            disabled: currentTermIndex === 0,
+        },
+        next: {
+            image: { properties: { class: "size-9" }, url: "/icons/general/RightArrow.svg" },
+            text: "Next",
+            onclick: () => {
+                cycle(CycleDirection.next);
             },
-        }}
-        actionButtons={[
-            {
-                image: { url: "/icons/general/Restart.svg" },
-                text: "Restart",
-                onclick: restart,
-            },
-            {
-                image: { url: "/icons/general/Shuffle.svg" },
-                text: "Shuffle",
-                onclick: shuffle,
-            },
-        ]}
-    />
+            disabled: currentTermIndex >= document.terms.length - 1,
+        },
+    }}
+    actionButtons={[
+        {
+            image: { url: "/icons/general/Restart.svg" },
+            text: "Restart",
+            onclick: restart,
+        },
+        {
+            image: { url: "/icons/general/Shuffle.svg" },
+            text: "Shuffle",
+            onclick: shuffle,
+        },
+    ]}
+/>
 
-    <Breakdown />
+<Breakdown />
 
-    <Modes />
+<Modes />
 
-    <Terms />
-{/if}
+<Terms />

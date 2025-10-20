@@ -23,8 +23,18 @@ export async function load({ params, fetch, parent }) {
 
     let permission: DocumentPermission | undefined = undefined;
     let isFavorite: boolean = false;
+    let isEmpty: boolean = false;
 
     if (documentType !== DocumentType.user) {
+        switch (documentType) {
+            case DocumentType.folder:
+                isEmpty = (document as PublicFolder).sets.length === 0;
+                break;
+            case DocumentType.set:
+                isEmpty = (document as PublicSet).terms.length === 0;
+                break;
+        }
+
         const permissionResponse: Response = await fetch(
             `/api/documents/${document._id}/permissions/${user._id}`,
             {
@@ -46,5 +56,6 @@ export async function load({ params, fetch, parent }) {
         document,
         permission,
         isFavorite,
+        isEmpty,
     };
 }
