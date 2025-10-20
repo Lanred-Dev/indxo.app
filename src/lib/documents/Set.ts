@@ -11,7 +11,7 @@ import type { Term } from "./Term";
 export enum StudyMode {
     quiz = "q",
     cards = "c",
-    sort = "sort",
+    sort = "s",
 }
 
 export const StudyModes: { [mode in StudyMode]: { text: string; url: string; icon: string } } = {
@@ -22,12 +22,12 @@ export const StudyModes: { [mode in StudyMode]: { text: string; url: string; ico
     },
     [StudyMode.cards]: {
         text: Wording.cards,
-        url: `/[id]/${StudyMode.cards}`,
+        url: `/[id]?m=${StudyMode.cards}`,
         icon: "/icons/general/Cards.svg",
     },
     [StudyMode.sort]: {
         text: Wording.sortMode,
-        url: `/[id]/${StudyMode.sort}`,
+        url: `/[id]?m=${StudyMode.sort}`,
         icon: "/icons/general/Sort.svg",
     },
 };
