@@ -90,7 +90,5 @@
                 "Create"
             )}
         </nav>
-
-        <p class="text-dark pl-3 text-sm">Made for Savannah ❤️</p>
     </div>
 {/if}
