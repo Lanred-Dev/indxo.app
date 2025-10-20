@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { browser } from "$app/environment";
     import { page } from "$app/state";
     import Chevron, { ChevronState } from "$lib/components/Icons/Chevron.svelte";
     import { ResponseCodes } from "$lib/utils/apiResponses";
