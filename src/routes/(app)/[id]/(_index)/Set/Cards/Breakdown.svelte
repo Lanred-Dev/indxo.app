@@ -31,7 +31,7 @@
         )}
 
         {@render info(
-            "/icons/general/Created.svg",
+            "/icons/general/Clock.svg",
             "Created on",
             format(document.created, "dd/MM/yyyy")
         )}
@@ -40,7 +40,7 @@
 
         {#if document.updated}
             {@render info(
-                "/icons/general/Updated.svg",
+                "/icons/general/Clock.svg",
                 "Last updated",
                 format(document.updated, "dd/MM/yyyy")
             )}
