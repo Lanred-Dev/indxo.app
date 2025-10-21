@@ -34,9 +34,12 @@ export async function GET({ params, fetch, locals }) {
     );
 
     if (hasPermissionFetch.status !== ResponseCodes.Success)
-        error(hasPermissionFetch.status, await hasPermissionFetch.json());
+        error(hasPermissionFetch.status, hasPermissionFetch.statusText);
 
-    const document: Set | Folder = await findDocumentByID(params.id);
+    const document: Set | Folder | null = await findDocumentByID(params.id);
+
+    if (!document) error(ResponseCodes.NotFound, ResponseMessages.NotFound);
+
     const owner: BaseUser = await (await fetch(`/api/user/${document.owner}/base`)).json();
     const documentType = determineDocumentType(params.id);
 
