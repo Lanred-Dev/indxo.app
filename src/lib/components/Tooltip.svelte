@@ -8,16 +8,16 @@
         children,
     }: { isVisible: boolean; duration: number; children: Snippet<[]> } = $props();
 
-    let visiblityTimeout: number | null;
+    let visibilityTimeout: number | null;
 
     $effect(() => {
-        if (visiblityTimeout) {
-            clearTimeout(visiblityTimeout);
-            visiblityTimeout = null;
+        if (visibilityTimeout) {
+            clearTimeout(visibilityTimeout);
+            visibilityTimeout = null;
         }
 
         if (isVisible)
-            visiblityTimeout = setTimeout(() => {
+            visibilityTimeout = setTimeout(() => {
                 isVisible = false;
             }, duration * 1000);
     });

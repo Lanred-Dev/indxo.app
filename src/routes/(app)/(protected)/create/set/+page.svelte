@@ -110,11 +110,11 @@
         {#if stage === CreationStage.info}
             <div class="row">
                 <FormInput
-                    id="visiblity"
-                    label="Visiblity"
+                    id="visibility"
+                    label="Visibility"
                     Component={Dropdown}
-                    isRequired={setFields.visiblity.properties.isRequired}
-                    value={setFields.visiblity.properties.defaultValue}
+                    isRequired={setFields.visibility.properties.isRequired}
+                    value={setFields.visibility.properties.defaultValue}
                 >
                     <DropdownTrigger />
 

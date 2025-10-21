@@ -53,7 +53,7 @@ export interface OwnedDocument extends BaseDocument {
     name: string;
     description: string;
     owner: string;
-    visiblity: DocumentVisibility;
+    visibility: DocumentVisibility;
     permissions: Record<string, DocumentPermission>;
     updated?: number;
 }
@@ -110,7 +110,7 @@ export const ownedDocumentFields: DocumentFields = {
             isUserUpdateable: false,
         },
     },
-    visiblity: {
+    visibility: {
         type: Object.values(DocumentVisibility),
         properties: {
             defaultValue: DocumentVisibility.link,
