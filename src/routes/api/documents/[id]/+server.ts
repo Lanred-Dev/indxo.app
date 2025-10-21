@@ -43,39 +43,47 @@ export async function GET({ params, fetch, locals }) {
     const owner: BaseUser = await (await fetch(`/api/user/${document.owner}/base`)).json();
     const documentType = determineDocumentType(params.id);
 
-    if (documentType === DocumentType.folder) {
-        const { name, icon, description, created, _id, sets } = document as Folder;
-        const actualSets: PublicSet[] = [];
+    switch (documentType) {
+        case DocumentType.folder: {
+            const { name, icon, description, created, _id, sets, visibility } = document as Folder;
+            const actualSets: PublicSet[] = [];
 
-        for (const id of sets) {
-            const setFetch = await fetch(`/api/documents/${id}`);
+            for (const id of sets) {
+                const setFetch = await fetch(`/api/documents/${id}`);
 
-            if (setFetch.status !== ResponseCodes.Success) continue;
+                if (setFetch.status !== ResponseCodes.Success) continue;
 
-            actualSets.push((await setFetch.json()) as PublicSet);
+                actualSets.push((await setFetch.json()) as PublicSet);
+            }
+
+            return json({
+                name,
+                icon,
+                description,
+                created,
+                _id,
+                sets: actualSets,
+                owner,
+                visibility,
+            } satisfies PublicFolder);
         }
-
-        return json({
-            name,
-            icon,
-            description,
-            created,
-            _id,
-            sets: actualSets,
-            owner: owner,
-        } satisfies PublicFolder);
-    } else if (documentType === DocumentType.set) {
-        const { name, terms, subject, description, created, _id, folders } = document as Set;
-        return json({
-            name,
-            terms,
-            subject,
-            description,
-            created,
-            _id,
-            folders,
-            owner: owner,
-        } satisfies PublicSet);
+        case DocumentType.set: {
+            const { name, terms, subject, description, created, _id, folders, visibility } =
+                document as Set;
+            return json({
+                name,
+                terms,
+                subject,
+                description,
+                created,
+                _id,
+                folders,
+                owner,
+                visibility,
+            } satisfies PublicSet);
+        }
+        default:
+            error(ResponseCodes.BadRequest, ResponseMessages.InvalidDocumentType);
     }
 }
 

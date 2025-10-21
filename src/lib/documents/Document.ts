@@ -63,6 +63,7 @@ export interface PublicOwnedDocument extends BaseDocument {
     description: string;
     owner: BaseUser;
     updated?: number;
+    visibility: DocumentVisibility;
 }
 
 export interface SimpleOwnedDocument extends PublicOwnedDocument {
