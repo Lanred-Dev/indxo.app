@@ -6,7 +6,7 @@
     import type { DocumentContext } from "./+page.svelte";
     import determineDocumentType from "$lib/utils/document/determineType";
     import { ResponseCodes } from "$lib/utils/apiResponses";
-    import permissionIsEqual from "$lib/utils/document/permissionIsEqual";
+    import isPermissionEqual from "$lib/utils/document/isPermissionEqual";
     import { goto } from "$app/navigation";
     import type { SessionContext } from "$lib/utils/global";
 
@@ -42,7 +42,7 @@
                         },
                     });
 
-                if (permissionIsEqual(document.permission, DocumentPermission.edit))
+                if (isPermissionEqual(document.permission, DocumentPermission.edit))
                     buttons.push({
                         image: { url: "/icons/general/Pencil.svg" },
                         text: "Edit",
@@ -51,7 +51,7 @@
                         },
                     });
 
-                if (permissionIsEqual(document.permission, DocumentPermission.owner))
+                if (isPermissionEqual(document.permission, DocumentPermission.owner))
                     buttons.push({
                         image: { url: "/icons/general/Trash.svg" },
                         text: "Delete",

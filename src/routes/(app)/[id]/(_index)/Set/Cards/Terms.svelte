@@ -10,7 +10,7 @@
     import TermCard from "../TermCard.svelte";
     import { Wording } from "$lib/utils/wording";
     import type { DocumentContext } from "../../+page.svelte";
-    import permissionIsEqual from "$lib/utils/document/permissionIsEqual";
+    import isPermissionEqual from "$lib/utils/document/isPermissionEqual";
     import {
         DefaultEditableListItemButton,
         EditableList,
@@ -46,7 +46,7 @@
 <div class="list-primary mt-20">
     <p class="list-title">{Wording.cards}</p>
 
-    {#if permissionIsEqual(document.permission, DocumentPermission.edit)}
+    {#if isPermissionEqual(document.permission, DocumentPermission.edit)}
         <Form
             class="w-full"
             method={FormSubmitMethods.put}

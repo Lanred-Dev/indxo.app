@@ -1,13 +1,13 @@
 import { DocumentPermission } from "$lib/documents";
 
 /**
- * Determines if a permission is equal to another (edit = owner).
+ * Determines if a permission is equal to (or greater than) another.
  *
  * @param permission1
  * @param permission2
- * @returns If the permissions have the same authority
+ * @returns true/false
  */
-export default function permissionIsEqual(
+export default function isPermissionEqual(
     permission1: DocumentPermission,
     permission2: DocumentPermission
 ): boolean {

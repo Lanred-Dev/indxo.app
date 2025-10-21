@@ -2,7 +2,7 @@ import { DocumentPermission, DocumentType, type Folder, type Set } from "$lib/do
 import { findDocumentByID } from "$lib/server/utils/document/findByID";
 import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
 import determineDocumentType from "$lib/utils/document/determineType";
-import permissionIsEqual from "$lib/utils/document/permissionIsEqual";
+import isPermissionEqual from "$lib/utils/document/isPermissionEqual";
 import { error, json } from "@sveltejs/kit";
 
 export async function GET({ params, locals }) {
@@ -38,7 +38,7 @@ export async function POST({ params, locals, request }) {
             : DocumentPermission.none;
     const requiredPermission: DocumentPermission = await request.json();
 
-    if (!permissionIsEqual(userPermission, requiredPermission)) {
+    if (!isPermissionEqual(userPermission, requiredPermission)) {
         error(ResponseCodes.UserUnauthorized, `User does not have ${requiredPermission}.`);
     } else {
         return json(document.permissions[params.user] ?? DocumentPermission.none);
