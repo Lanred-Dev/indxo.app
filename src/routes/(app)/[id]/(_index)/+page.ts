@@ -13,14 +13,11 @@ export async function load({ params, fetch, parent }) {
     const documentResponse: Response = await fetch(
         `/api/${documentType === DocumentType.user ? "user" : "documents"}/${params.id}`
     );
-    const document: PublicFolder | PublicSet | PublicUser = await documentResponse.json();
 
     if (documentResponse.status !== ResponseCodes.Success)
-        error(
-            documentResponse.status,
-            (document as { message?: string }).message ?? documentResponse.statusText
-        );
+        error(documentResponse.status, documentResponse.statusText);
 
+    const document: PublicFolder | PublicSet | PublicUser = await documentResponse.json();
     let permission: DocumentPermission | undefined = undefined;
     let isFavorite: boolean = false;
     let isEmpty: boolean = false;
