@@ -14,7 +14,7 @@
     import Textbox from "$lib/components/Textbox.svelte";
     import {
         DocumentType,
-        DocumentVisiblity,
+        DocumentVisibility,
         setFields,
         termFields,
         termPlaceholders,
@@ -119,15 +119,15 @@
                     <DropdownTrigger />
 
                     <DropdownContent>
-                        <DropdownItem value={DocumentVisiblity.public}>
+                        <DropdownItem value={DocumentVisibility.public}>
                             <img src="/icons/general/Web.svg" alt="Public" />
                             Public
                         </DropdownItem>
-                        <DropdownItem value={DocumentVisiblity.private}>
+                        <DropdownItem value={DocumentVisibility.private}>
                             <img src="/icons/general/Lock.svg" alt="Public" />
                             Private
                         </DropdownItem>
-                        <DropdownItem value={DocumentVisiblity.link}>
+                        <DropdownItem value={DocumentVisibility.link}>
                             <img src="/icons/general/Link.svg" alt="Public" />
                             Link
                         </DropdownItem>

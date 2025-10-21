@@ -15,7 +15,7 @@ export enum DocumentPermission {
     none = 0,
 }
 
-export enum DocumentVisiblity {
+export enum DocumentVisibility {
     link,
     private,
     public,
@@ -53,7 +53,7 @@ export interface OwnedDocument extends BaseDocument {
     name: string;
     description: string;
     owner: string;
-    visiblity: DocumentVisiblity;
+    visiblity: DocumentVisibility;
     permissions: Record<string, DocumentPermission>;
     updated?: number;
 }
@@ -111,9 +111,9 @@ export const ownedDocumentFields: DocumentFields = {
         },
     },
     visiblity: {
-        type: Object.values(DocumentVisiblity),
+        type: Object.values(DocumentVisibility),
         properties: {
-            defaultValue: DocumentVisiblity.link,
+            defaultValue: DocumentVisibility.link,
             isUserUpdateable: true,
             isRequired: true,
         },
