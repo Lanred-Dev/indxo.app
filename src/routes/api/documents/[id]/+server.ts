@@ -45,7 +45,8 @@ export async function GET({ params, fetch, locals }) {
 
     switch (documentType) {
         case DocumentType.folder: {
-            const { name, icon, description, created, _id, sets, visibility } = document as Folder;
+            const { name, icon, description, created, _id, sets, visibility, updated } =
+                document as Folder;
             const actualSets: PublicSet[] = [];
 
             for (const id of sets) {
@@ -65,11 +66,21 @@ export async function GET({ params, fetch, locals }) {
                 sets: actualSets,
                 owner,
                 visibility,
+                updated,
             } satisfies PublicFolder);
         }
         case DocumentType.set: {
-            const { name, terms, subject, description, created, _id, folders, visibility } =
-                document as Set;
+            const {
+                name,
+                terms,
+                subject,
+                description,
+                created,
+                _id,
+                folders,
+                visibility,
+                updated,
+            } = document as Set;
             return json({
                 name,
                 terms,
@@ -80,6 +91,7 @@ export async function GET({ params, fetch, locals }) {
                 folders,
                 owner,
                 visibility,
+                updated,
             } satisfies PublicSet);
         }
         default:
