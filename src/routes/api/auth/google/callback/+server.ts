@@ -72,7 +72,7 @@ export async function GET({ cookies, url }) {
                 strugglingTermThreshold: 0,
                 home: [],
             },
-            created: new Date().getMilliseconds(),
+            created: Date.now(),
             metadata: {
                 documentsOpenedAt: {},
                 sets: {},
