@@ -10,7 +10,7 @@ export async function GET({ params, fetch }) {
 
     const documents: (PublicSet | PublicFolder)[] = [];
 
-    for (const id of user.folders) {
+    for (const id of user.favorites) {
         const response: Response = await fetch(`/api/documents/${id}`);
 
         if (response.status !== ResponseCodes.Success) continue;
