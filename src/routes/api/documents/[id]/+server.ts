@@ -179,7 +179,7 @@ export async function PUT({ params, locals, request, fetch }) {
     }
 
     // No updates were made
-    if (validFields.length === 0)
+    if (Object.keys(validFields).length === 0)
         return new Response(null, {
             status: ResponseCodes.SuccessNoResponse,
         });
