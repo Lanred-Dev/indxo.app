@@ -17,6 +17,16 @@ export interface BaseUser extends BaseDocument {
     picture: string;
 }
 
+export interface SortedSetMetadata {
+    terms: {
+        [termID: string]: {
+            timesMissed: number;
+            struggling: boolean;
+            sorted: boolean;
+        };
+    };
+}
+
 export interface User extends BaseUser {
     googleID: string;
     email: string;
@@ -29,7 +39,7 @@ export interface User extends BaseUser {
         sets: Record<
             string,
             {
-                sorting: any;
+                sorting: SortedSetMetadata;
             }
         >;
     };
