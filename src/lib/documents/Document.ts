@@ -22,6 +22,7 @@ export enum DocumentVisibility {
 }
 
 export enum DocumentFieldType {
+    // string, number, and boolean are all checked using typeof
     string = "string",
     number = "number",
     boolean = "boolean",
