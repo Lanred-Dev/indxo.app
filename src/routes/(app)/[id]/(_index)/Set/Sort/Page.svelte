@@ -1,15 +1,15 @@
-<!--TODO: improve sorting functionality (cleanup basically)-->
-
 <!--svelte-ignore non_reactive_update-->
 <script lang="ts">
-    import { getContext } from "svelte";
+    import { getContext, onMount } from "svelte";
     import type { DocumentContext } from "../../+page.svelte";
     import { beforeNavigate } from "$app/navigation";
-    import type { SortedTerm, Term } from "$lib/documents";
+    import type { SortedSetMetadata, SortedTerm, Term } from "$lib/documents";
     import Flashcards, { CycleDirection } from "../Flashcards.svelte";
     import { SvelteMap, SvelteSet } from "svelte/reactivity";
     import { animate } from "motion";
+    import type { SessionContext } from "$lib/utils/global";
 
+    const session: SessionContext = getContext("session");
     const document: DocumentContext = getContext("document");
     let currentTermIndex: number = $state.raw(0);
     let canCycle: boolean = $state.raw(true);
@@ -17,24 +17,10 @@
     let FlashcardsComponent: Flashcards;
     let Card: HTMLDivElement;
     let CardOverlay: HTMLDivElement;
-    let unsortedTerms: SvelteSet<string> = new SvelteSet(
-        document.terms
-            .filter((term: Term) => {
-                const matchedTerm: SortedTerm | undefined = document.saved.find(
-                    ({ _id }: SortedTerm) => _id === term._id
-                );
-
-                if (matchedTerm) {
-                    return !matchedTerm.sorted;
-                } else {
-                    // If the term is not in the saved array, it means it is not sorted yet
-                    return true;
-                }
-            })
-            .map(({ _id }: Term) => _id)
-    );
+    let unsortedTerms: SvelteSet<string> = new SvelteSet();
     let stillLearningTerms: SvelteSet<string> = new SvelteSet();
     let knowTerms: SvelteSet<string> = new SvelteSet();
+    let timesMissed: SvelteMap<string, number> = new SvelteMap();
     let strugglingTerms: SvelteMap<string, number> = new SvelteMap();
 
     /**
@@ -77,11 +63,17 @@
         switch (direction) {
             case CycleDirection.previous:
                 stillLearningTerms.add(id);
-                strugglingTerms.set(id, (strugglingTerms.get(id) ?? 0) + 1);
+                timesMissed.set(id, (timesMissed.get(id) ?? 0) + 1);
             case CycleDirection.next:
                 knowTerms.add(id);
-                strugglingTerms.set(id, 0);
+                timesMissed.set(id, 0);
                 break;
+        }
+
+        if (timesMissed.get(id)! >= session.user.preferences.strugglingTermThreshold) {
+            strugglingTerms.set(id, timesMissed.get(id)!);
+        } else {
+            strugglingTerms.delete(id);
         }
 
         unsortedTerms.delete(id);
@@ -149,8 +141,46 @@
         }
     }
 
-    // TODO: save progress
-    beforeNavigate(() => {});
+    onMount(async () => {
+        const response = await fetch(`/api/user/${session.user._id}/metadata/sort/${document._id}`);
+        const sortedSetMetadata: SortedSetMetadata = await response.json();
+
+        document.terms
+            .filter(({ _id }: Term) => {
+                if (_id in sortedSetMetadata.terms) {
+                    return sortedSetMetadata.terms[_id].sorted;
+                } else {
+                    // If the term is not in the saved array, it means it is not sorted yet
+                    return true;
+                }
+            })
+            .map(({ _id }: Term) => _id)
+            .forEach((termID: string) => {
+                unsortedTerms.add(termID);
+            });
+    });
+
+    beforeNavigate(async () => {
+        if (!session.session) return;
+
+        await fetch(`/api/user/${session.user._id}/metadata/sort/${document._id}`, {
+            method: "PUT",
+            body: JSON.stringify(
+                Object.fromEntries(
+                    document.terms.map((term: Term) => {
+                        return [
+                            term._id,
+                            {
+                                timesMissed: timesMissed.get(term._id) ?? 0,
+                                struggling: strugglingTerms.has(term._id),
+                                sorted: knowTerms.has(term._id) || stillLearningTerms.has(term._id),
+                            },
+                        ];
+                    })
+                )
+            ),
+        });
+    });
 </script>
 
 {#if unsortedTerms.size > 0}
@@ -199,7 +229,7 @@
     >
         {#snippet Overlay()}
             <div
-                class="rounded-container absolute top-0 left-0 z-[5] h-full w-full opacity-0"
+                class="rounded-container absolute top-0 left-0 z-5 h-full w-full opacity-0"
                 bind:this={CardOverlay}
             ></div>
         {/snippet}</Flashcards
