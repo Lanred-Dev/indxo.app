@@ -1,21 +1,50 @@
 <script lang="ts">
-    import { Form, FormInput, FormSubmit, FormRow } from "$lib/components/Form";
-    import { page } from "$app/state";
+    import {
+        Form,
+        FormContent,
+        FormInput,
+        FormSubmit,
+        FormSubmitMethods,
+        FormTitle,
+    } from "$lib/components/Form";
     import { goto } from "$app/navigation";
-    import determineWording from "$lib/utils/determineWording";
+    import { ResponseCodes } from "$lib/utils/apiResponses";
+    import { Wording } from "$lib/utils/wording";
+    import Arrow, { ArrowState } from "$lib/components/Icons/Arrow.svelte";
+    import Textbox from "$lib/components/Textbox.svelte";
+    import {
+        DocumentType,
+        DocumentVisibility,
+        setFields,
+        termFields,
+        termPlaceholders,
+    } from "$lib/documents";
+    import {
+        Dropdown,
+        DropdownContent,
+        DropdownItem,
+        DropdownTrigger,
+    } from "$lib/components/Dropdown";
+    import {
+        DefaultEditableListItemButton,
+        EditableList,
+        EditableListAddItemButton,
+        EditableListContent,
+        EditableListControls,
+        EditableListItem,
+    } from "$lib/components/Lists/Editable";
+    import generateDocumentID from "$lib/utils/document/generateID";
+    import type { ComponentProps } from "svelte";
+    import randomArrayEntry from "$lib/utils/randomArrayEntry";
+    import { ImageSelector } from "$lib/components/Image";
 
-    export const WORDING = {
-        creation: [
-            `Lets create a new ${determineWording("set")}!`,
-            "Get started by entering the basics below.",
-        ],
-        setup: [
-            `Now its time to create some ${determineWording("cards")}.`,
-            "Get started by entering some terms and definitions below.",
-        ],
-    };
+    enum CreationStage {
+        info = "i",
+        terms = "t",
+        permissions = "p",
+    }
 
-    let stage: "creation" | "setup" = $state.raw("creation");
+    let stage: CreationStage = $state.raw(CreationStage.info);
     let documentID: string = $state.raw("");
 
     /**
@@ -25,98 +54,194 @@
      * @param data Meta data from the submission
      * @returns never
      */
-    function afterSubmit(status: number, data: any) {
-        if (status !== 201 && status !== 204) return location.reload();
+    async function afterSubmit(response: Response) {
+        if (
+            response.status !== ResponseCodes.Success &&
+            response.status !== ResponseCodes.SuccessNoResponse
+        )
+            return location.reload();
 
-        if (stage === "setup") {
-            goto(`/set/${documentID}`);
-        } else if (stage === "creation") {
-            stage = "setup";
-            documentID = data;
+        switch (stage) {
+            case CreationStage.info:
+                stage = CreationStage.terms;
+                documentID = await response.json();
+                break;
+            case CreationStage.terms:
+                stage = CreationStage.permissions;
+                break;
+            case CreationStage.permissions:
+                goto(`/${documentID}`);
+                break;
         }
     }
 </script>
 
 <svelte:head>
-    <title>Create a {determineWording("set")}</title>
+    <title>Create a {Wording.set}</title>
 </svelte:head>
 
-<div class="page-title">
-    <h1 class="page-title">{WORDING[stage][0]}</h1>
-    <p class="page-subtitle">{WORDING[stage][1]}</p>
-</div>
-
 <Form
-    classes="w-full"
-    method={stage === "creation" ? "POST" : "PUT"}
-    endpoint={stage === "creation"
-        ? `/api/documents/set/create`
-        : `/api/documents/set/${documentID}/update`}
+    class="w-full"
+    method={stage === CreationStage.info ? FormSubmitMethods.post : FormSubmitMethods.put}
+    endpoint={stage === CreationStage.info
+        ? `/api/documents/create/${DocumentType.set}`
+        : `/api/documents/${documentID}`}
+    {stage}
     {afterSubmit}
 >
-    {#if stage === "creation"}
-        <FormRow>
+    <FormTitle
+        titles={{
+            [CreationStage.info]: {
+                title: `Lets create a ${Wording.set}!`,
+                description: "Get started by entering the basics below.",
+            },
+            [CreationStage.terms]: {
+                title: `What ${Wording.terms} will you study?`,
+                description: `Enter the ${Wording.terms} you want to study in your ${Wording.set}.`,
+            },
+            [CreationStage.permissions]: {
+                title: "Share the responsibility.",
+                description: `Choose who can do what with your ${Wording.set}.`,
+            },
+        }}
+    />
+
+    <FormContent>
+        {#if stage === CreationStage.info}
+            <div class="row">
+                <FormInput
+                    id="visibility"
+                    label="Visibility"
+                    Component={Dropdown}
+                    isRequired={setFields.visibility.properties.isRequired}
+                    value={setFields.visibility.properties.defaultValue}
+                >
+                    <DropdownTrigger />
+
+                    <DropdownContent>
+                        <DropdownItem value={DocumentVisibility.public}>
+                            <img src="/icons/general/Web.svg" alt="Public" />
+                            Public
+                        </DropdownItem>
+                        <DropdownItem value={DocumentVisibility.private}>
+                            <img src="/icons/general/Lock.svg" alt="Public" />
+                            Private
+                        </DropdownItem>
+                        <DropdownItem value={DocumentVisibility.link}>
+                            <img src="/icons/general/Link.svg" alt="Public" />
+                            Link
+                        </DropdownItem>
+                    </DropdownContent>
+                </FormInput>
+
+                <FormInput
+                    id="name"
+                    label="Name"
+                    class="grow"
+                    Component={Textbox}
+                    isRequired={setFields.name.properties.isRequired}
+                    properties={{
+                        placeholder: "Things My Brain Keeps Forgetting",
+                        maxlength: setFields.name.properties.maxlength,
+                    }}
+                />
+
+                <FormInput
+                    id="subject"
+                    label="Subject"
+                    class="grow"
+                    Component={Textbox}
+                    isRequired={setFields.subject.properties.isRequired}
+                    properties={{
+                        placeholder: "Magical Math",
+                        maxlength: setFields.subject.properties.maxlength,
+                    }}
+                />
+            </div>
+
             <FormInput
-                id="isPublic"
-                label="Visiblity"
-                type="checkbox"
+                id="description"
+                label="What is this study set for?"
+                class="w-full"
+                Component={Textbox}
+                isRequired={setFields.description.properties.isRequired}
                 properties={{
-                    value: true,
-                    states: {
-                        true: {
-                            text: "Public",
-                            icon: "/icons/general/Web.svg",
-                        },
-                        false: {
-                            text: "Private",
-                            icon: "/icons/general/Lock.svg",
-                        },
-                    },
+                    placeholder: "A wild collection of terms I *swear* I studied",
+                    maxlength: setFields.description.properties.maxlength,
+                    multiline: true,
                 }}
             />
-
+        {:else if stage === CreationStage.terms}
             <FormInput
-                id="name"
-                label="Name"
-                type="text"
-                properties={{ placeholder: "Yapping 101 final exam...", maxlength: 50 }}
-            />
+                id="terms"
+                Component={EditableList}
+                value={[]}
+                properties={{
+                    placeholderItems: 3,
+                    buttons: [
+                        DefaultEditableListItemButton.moveUp,
+                        DefaultEditableListItemButton.moveDown,
+                        DefaultEditableListItemButton.delete,
+                    ],
+                    addItem: (index) => {
+                        const placeholders: { term: string; definition: string } =
+                            randomArrayEntry(termPlaceholders);
 
-            <FormInput
-                id="subject"
-                label="Subject"
-                type="text"
-                properties={{ placeholder: "Math, English, ...", maxlength: 50 }}
-            />
-        </FormRow>
-
-        <FormInput
-            id="description"
-            label="What is this study set for?"
-            type="textarea"
-            properties={{ placeholder: "This study set is for my final exam..." }}
-        />
-    {:else}
-        <FormInput
-            id="terms"
-            type="editableList"
-            properties={{
-                isDraggable: true,
-                properties: [
-                    {
-                        _id: "term",
-                        type: "input",
-                        placeholder: "Term",
+                        return {
+                            index,
+                            _id: generateDocumentID(5, DocumentType.term),
+                            fields: [
+                                {
+                                    _id: "term",
+                                    Component: Textbox,
+                                    properties: {
+                                        placeholder: placeholders.term,
+                                        maxlength: termFields.term.properties.maxlength,
+                                    },
+                                    position: { group: 0, index: 0 },
+                                },
+                                {
+                                    _id: "definition",
+                                    Component: Textbox,
+                                    properties: {
+                                        class: "w-full",
+                                        placeholder: placeholders.definition,
+                                        maxlength: termFields.definition.properties.maxlength,
+                                        multiline: true,
+                                    },
+                                    position: { group: 1, index: 0 },
+                                },
+                                {
+                                    _id: "image",
+                                    Component: ImageSelector,
+                                    properties: {
+                                        class: "min-w-fit",
+                                        imageProperties: {
+                                            class: "size-40 rounded-input object-contain",
+                                        },
+                                    },
+                                    position: { group: 1, index: 1 },
+                                },
+                            ],
+                            isDraggable: true,
+                        } satisfies ComponentProps<typeof EditableListItem>;
                     },
-                    {
-                        _id: "definition",
-                        type: "textarea",
-                        placeholder: "Definition",
-                    },
-                ],
-            }}
-        />
-    {/if}
+                }}
+            >
+                <EditableListContent />
 
-    <FormSubmit text="Create" />
+                <EditableListControls>
+                    <EditableListAddItemButton>Add term</EditableListAddItemButton>
+                </EditableListControls>
+            </FormInput>
+        {/if}
+    </FormContent>
+
+    <FormSubmit>
+        {#if stage == CreationStage.permissions}
+            Create
+        {:else}
+            Next <Arrow class="size-4" state={ArrowState.right} />
+        {/if}
+    </FormSubmit>
 </Form>

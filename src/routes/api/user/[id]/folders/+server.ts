@@ -1,22 +1,21 @@
-import type { PublicFolder } from "$lib/database/documents/Folder";
-import type { User } from "$lib/database/documents/User";
-import idToDocument from "$lib/utils/idToDocument";
+import type { PublicFolder, User } from "$lib/documents";
+import { findDocumentByID } from "$lib/server/utils/document/findByID.js";
+import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses.js";
 import { error, json } from "@sveltejs/kit";
 
 export async function GET({ params, fetch }) {
-    const user: User | null = await idToDocument("users", params.id);
+    const user: User | null = await findDocumentByID(params.id);
 
-    if (!user) error(404, "User not found.");
+    if (!user) error(ResponseCodes.NotFound, ResponseMessages.NotFound);
 
     const folders: PublicFolder[] = [];
 
     for (const id of user.folders) {
-        const response: Response = await fetch(`/api/documents/folder/${id}`);
+        const response: Response = await fetch(`/api/documents/${id}`);
 
-        if (response.status !== 200) continue;
+        if (response.status !== ResponseCodes.Success) continue;
 
-        const folder: PublicFolder = await response.json();
-        folders.push(folder);
+        folders.push(await response.json());
     }
 
     return json(folders);

@@ -1,78 +1,90 @@
-<script module lang="ts">
-    export type SizesContext = {
-        header: number;
-        sidebar: number;
-        window: {
-            width: number;
-            height: number;
-        };
-    };
-
-    export type SidebarContext = {
-        visible: boolean;
-    };
-</script>
-
 <script lang="ts">
-    import Header from "./Header.svelte";
-    import Sidebar from "./Sidebar.svelte";
     import { afterNavigate, beforeNavigate } from "$app/navigation";
-    import { onMount, setContext, tick } from "svelte";
+    import { setContext } from "svelte";
     import { fade } from "svelte/transition";
-    import Loader from "$lib/components/Loader.svelte";
+    import Loader from "$lib/components/Icons/Loader.svelte";
+    import { browser } from "$app/environment";
+    import Header from "./Header.svelte";
+    import { MediaQuery } from "svelte/reactivity";
+    import Sidebar from "./Sidebar.svelte";
+    import type {
+        HeaderContext,
+        SessionContext,
+        SidebarContext,
+        ViewportContext,
+    } from "$lib/utils/global";
 
     let { data, children } = $props();
 
-    setContext("session", data.session);
-    setContext("user", data.user);
+    setContext("session", {
+        session: data.session,
+        user: data.user,
+    } satisfies SessionContext);
 
-    const sizes: SizesContext = $state({ header: 0, sidebar: 0, window: { width: 0, height: 0 } });
-    setContext("sizes", sizes);
-    const sidebar: SidebarContext = $state({ visible: true });
-    setContext("sidebar", sidebar);
+    let headerHeight: number = $state.raw(0);
+    setContext("header", {
+        get height() {
+            return headerHeight;
+        },
+        set height(newValue) {
+            headerHeight = newValue;
+        },
+    } satisfies HeaderContext);
 
-    let isMobile: boolean = $state.raw(false);
+    let sidebarWidth: number = $state.raw(0);
+    let isSidebarVisible: boolean = $state.raw(false);
+    setContext("sidebar", {
+        get isVisible() {
+            return isSidebarVisible;
+        },
+        set isVisible(newValue) {
+            isSidebarVisible = newValue;
+        },
+        get width() {
+            return sidebarWidth;
+        },
+        set width(newValue) {
+            sidebarWidth = newValue;
+        },
+    } satisfies SidebarContext);
+
+    let Viewport: ViewportContext["Content"] = $state.raw(undefined);
+    let viewportScrollY: number = $state.raw(0);
     let isLoading: boolean = $state.raw(false);
-    // `isInitialLoad` is used to prevent transitions during the initial load of the page.
-    let isInitialLoad: boolean = $state.raw(true);
-    let viewport: HTMLElement;
+    // NOTE: 768px is the same sizing used for md: in tailwind
+    const isMobile: MediaQuery = new MediaQuery("(max-width: 768px)", true);
+    setContext("viewport", {
+        get scrollY() {
+            return viewportScrollY;
+        },
+        get isMobile() {
+            return isMobile.current;
+        },
+        get isLoading() {
+            return isLoading;
+        },
+        get Content() {
+            return Viewport ?? (document.querySelector("main") as HTMLDivElement) ?? undefined;
+        },
+    } satisfies ViewportContext);
 
     beforeNavigate(() => {
         isLoading = true;
-
-        if (isMobile) sidebar.visible = false;
+        if (isMobile.current) isSidebarVisible = false;
     });
 
     afterNavigate(() => {
         isLoading = false;
-        viewport.scrollTop = 0;
+        if (Viewport) Viewport.scrollTop = 0;
     });
 
-    /**
-     * Checks if the window is mobile or not.
-     *
-     * @returns never
-     */
-    function checkIfMobile() {
-        if (window.innerWidth <= 786 && !isMobile) {
-            isMobile = true;
-            sidebar.visible = false;
-        } else if (window.innerWidth > 786 && isMobile) {
-            isMobile = false;
-            sidebar.visible = true;
-        }
-    }
-
-    onMount(async () => {
-        checkIfMobile();
-
-        // tick is used to wait for the DOM to be updated before setting the initial load to false.
-        await tick();
-        isInitialLoad = false;
+    $effect(() => {
+        isSidebarVisible = !isMobile.current;
     });
 </script>
 
-{#if isInitialLoad}
+<!--(`!browser` acts as intial load indicator) Prevent animated layout shifts from happening during first page load-->
+{#if !browser}
     <style>
         * {
             transition: none !important;
@@ -80,47 +92,54 @@
     </style>
 {/if}
 
-<svelte:window
-    bind:innerHeight={sizes.window.height}
-    bind:innerWidth={sizes.window.width}
-    onresize={checkIfMobile}
-/>
+<Header />
 
-<div class="flex h-screen max-h-screen w-full flex-col overflow-hidden">
-    <Header />
+{#if data.session}
+    <Sidebar />
+{/if}
 
-    {#if data.session && sidebar.visible}
-        <Sidebar {isInitialLoad} {isMobile} />
-    {/if}
-
+{#if isLoading}
     <div
-        class="relative flex w-full grow overflow-hidden transition-[padding-left] duration-400"
-        style:padding-top="{sizes.header}px"
-        style:padding-left="{isMobile || !sidebar.visible ? 0 : sizes.sidebar}px"
+        class="x-center y-center z-40 h-full w-full"
+        style:padding-top="{headerHeight}px"
+        style:padding-left="{isMobile.current || !isSidebarVisible ? 0 : sidebarWidth}px"
+        transition:fade
     >
-        <div
-            class="relative h-full w-full transition-[padding-left] duration-400 {!isMobile &&
-            !sidebar.visible
-                ? 'pl-[5%] lg:pl-[10%]'
-                : ''}"
-        >
-            {#if isLoading}
-                <div class="x-center y-center bg-page z-40 flex h-full w-full" transition:fade>
-                    <div class="x-center y-center">
-                        <Loader />
-                    </div>
-                </div>
-            {/if}
-
-            <main
-                class="relative flex h-full w-full flex-col items-start justify-start overflow-x-hidden px-7 pt-12 pb-6 transition-[filter] duration-500 md:px-16 md:pt-16 md:pr-[22.5%] md:pl-[10%] lg:pt-24 2xl:pr-[28%] {sidebar.visible &&
-                isMobile
-                    ? 'pointer-events-none blur-xs'
-                    : ''}"
-                bind:this={viewport}
-            >
-                {@render children?.()}
-            </main>
+        <div class="bg-page h-full w-full">
+            <Loader class="x-center y-center" />
         </div>
     </div>
-</div>
+{/if}
+
+<main
+    class={[
+        "relative h-screen w-full overflow-y-auto pr-7 pb-6 transition-[padding-left,padding-right,padding-top,padding-bottom] duration-400 ease-in-out md:pr-22 xl:pr-[15%]",
+        isMobile.current && isSidebarVisible && "pointer-events-none blur-xs",
+    ]}
+    bind:this={Viewport}
+    onscroll={() => {
+        viewportScrollY = Viewport?.scrollTop ?? 0;
+    }}
+    style:--header-height="{headerHeight}px"
+    style:--sidebar-width="{!isMobile.current && isSidebarVisible ? sidebarWidth : 0}px"
+>
+    {@render children?.()}
+</main>
+
+<style lang="postcss">
+    main {
+        --padding-top: calc(var(--spacing) * 12);
+        --padding-left: calc(var(--spacing) * 7);
+        padding-top: calc(var(--padding-top) + var(--header-height));
+        padding-left: calc(var(--padding-left) + var(--sidebar-width));
+
+        @media (width >= 48rem) {
+            --padding-top: calc(var(--spacing) * 16);
+            --padding-left: 10%;
+        }
+
+        @media (width >= 64rem) {
+            --padding-top: calc(var(--spacing) * 24);
+        }
+    }
+</style>

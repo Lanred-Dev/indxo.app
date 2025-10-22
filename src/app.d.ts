@@ -1,11 +1,11 @@
-import type { Session } from "$lib/database/documents/Session";
-import type { SimpleUserWithEmail } from "$lib/database/documents/User";
+import type { Session, SessionUser } from "$lib/documents";
 
 declare global {
     namespace App {
         interface Locals {
             session: Session | null;
-            user: SimpleUserWithEmail;
+            // NOTE: If the user is not logged in, this will be an empty user object.
+            user: SessionUser;
         }
     }
 }

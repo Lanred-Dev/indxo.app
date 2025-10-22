@@ -1,119 +1,129 @@
 <script lang="ts">
-    import { type Snippet } from "svelte";
-    import { twMerge } from "tailwind-merge";
-    import { type InputType } from "./FormInput.svelte";
-    import { getCheckboxFormInputValue } from "./Checkbox.svelte";
-    import { getDropdownFormInputValue } from "./Dropdown.svelte";
-    import { getEditableListFormInputValue } from "./EditableList/EditableList.svelte";
+    import { setContext, type Snippet } from "svelte";
+    import { formContextKey, FormSubmitMethods, type FormContext } from ".";
+    import { ResponseCodes } from "$lib/utils/apiResponses";
+    import Tooltip from "../Tooltip.svelte";
+    import { PopupContent, PopupRelativity, PopupXAlignment, PopupYAlignment } from "../Popup";
+    import type { ClassValue } from "svelte/elements";
 
     let {
         endpoint,
-        method = "POST",
-        afterSubmit = () => {},
-        classes,
+        method = FormSubmitMethods.post,
+        title,
+        stage = null,
+        afterSubmit,
         children,
+        class: className,
+        ...properties
     }: {
         endpoint: string;
-        method?: "POST" | "GET" | "PUT";
-        afterSubmit?: (status: number, data?: any) => void;
-        classes?: string;
-        children?: Snippet<[]>;
+        method: FormSubmitMethods;
+        stage?: FormContext["stage"];
+        afterSubmit?: (response: Response) => void;
+        children: Snippet<[]>;
+        class: ClassValue;
+        [key: string]: any;
     } = $props();
 
-    let submitting: boolean = $state.raw(false);
-    let form: HTMLFormElement;
+    let fields: Map<string, { value: unknown; label?: string }> = new Map();
+    let required: Set<string> = new Set();
+    let isSubmitting: boolean = $state.raw(false);
+    let submitError: string = $state.raw("");
+    let submitErrorVisible: boolean = $state.raw(false);
+
+    setContext(formContextKey, {
+        get isSubmitting() {
+            return isSubmitting;
+        },
+        fields,
+        stage,
+        registerField: (id, value, isRequired, label) => {
+            fields.set(id, { value, label });
+
+            if (isRequired) required.add(id);
+        },
+        removeField: (id) => {
+            fields.delete(id);
+            required.delete(id);
+        },
+    } satisfies FormContext);
 
     /**
-     * Handles the form submission. Gathers the data from all the form components. Prevents the default form submission and sends a fetch request to the endpoint.
+     * Handles submitting a form.
      *
-     * @param event The form submission event.
-     * @returns never
+     * @param event
      */
-    async function onSubmit(event: Event) {
+    async function onSubmit(event: SubmitEvent) {
         event.preventDefault();
 
-        if (submitting) return;
+        let missingFields: string[] = [];
 
-        submitting = true;
+        required.forEach((id) => {
+            const { value, label } = fields.get(id) ?? {};
 
-        const inputs: NodeListOf<HTMLElement> = form.querySelectorAll(
-            ".FormInput"
-        ) as NodeListOf<HTMLElement>;
-        const data: { [key: string]: any } = {};
+            if (
+                value === null ||
+                value === undefined ||
+                ((typeof value === "string" || Array.isArray(value)) && value.length === 0)
+            )
+                missingFields.push(`${label} (${id})`);
+        });
 
-        inputs.forEach((inputContainer: HTMLElement) => {
-            const type: InputType = inputContainer.getAttribute("data-type") as InputType;
-            const id: string = inputContainer.getAttribute("data-id")!;
-            let value: any;
+        if (missingFields.length > 0) {
+            submitError = `Missing ${missingFields.length} required field${missingFields.length === 1 ? "" : "s"}.`;
+            submitErrorVisible = true;
+            return;
+        }
 
-            switch (type) {
-                case "editableList":
-                    value = getEditableListFormInputValue(inputContainer);
+        isSubmitting = true;
+
+        const response = await fetch(endpoint, {
+            method,
+            body: JSON.stringify(
+                Object.fromEntries([...fields].map(([id, { value }]) => [id, value]))
+            ),
+        });
+
+        isSubmitting = false;
+
+        if (
+            response.status !== ResponseCodes.Success &&
+            response.status !== ResponseCodes.SuccessNoResponse
+        ) {
+            switch (response.status) {
+                case ResponseCodes.NotFound:
+                    submitError = "Could not send request.";
                     break;
-                case "dropdown": {
-                    value = getDropdownFormInputValue(inputContainer);
+                default:
+                    submitError = (await response.json()).message ?? response.statusText;
                     break;
-                }
-                case "checkbox": {
-                    value = getCheckboxFormInputValue(inputContainer);
-                    break;
-                }
-                case "custom": {
-                    const format = (inputContainer.getAttribute("data-type") ?? "string") as
-                        | "json"
-                        | "string"
-                        | "number";
-                    const inputValue: string = inputContainer.getAttribute("data-value") ?? "";
-
-                    switch (format) {
-                        case "json":
-                            value = JSON.parse(inputValue);
-                            break;
-                        case "number":
-                            value = parseInt(inputValue);
-                            break;
-                        default:
-                            value = inputValue;
-                            break;
-                    }
-
-                    break;
-                }
-                default: {
-                    const element: HTMLInputElement | HTMLTextAreaElement =
-                        inputContainer.querySelector(".Input") as
-                            | HTMLInputElement
-                            | HTMLTextAreaElement;
-                    value = element.value;
-                    break;
-                }
             }
 
-            data[id] = typeof value === "string" ? value.trim() : value;
-        });
+            submitErrorVisible = true;
+            return;
+        }
 
-        const response: Response = await fetch(endpoint, {
-            method,
-            body: JSON.stringify(data),
-        });
-
-        // If the response is 204 (No Content), we don't expect any JSON response body.
-        afterSubmit(
-            response.status,
-            response.ok && response.status !== 204 ? await response.json() : {}
-        );
-
-        submitting = false;
+        if (afterSubmit) afterSubmit(response);
     }
 </script>
 
+<Tooltip bind:isVisible={submitErrorVisible} duration={5}>
+    <PopupContent
+        class="bg-alert"
+        xAlignment={PopupXAlignment.center}
+        yAlignment={PopupYAlignment.bottom}
+        positionRelativity={PopupRelativity.page}
+        offset={15}
+    >
+        {submitError}
+    </PopupContent>
+</Tooltip>
+
 <form
-    class={twMerge("space-y-5", classes)}
-    style:pointer-events={submitting ? "none" : "auto"}
+    class={["flex flex-col gap-y-5", className]}
+    style:pointer-events={isSubmitting ? "none" : undefined}
     onsubmit={onSubmit}
-    autocomplete="off"
-    data-submitting={submitting}
-    bind:this={form}
+    {...properties}
 >
-    {@render children?.()}
+    {@render children()}
 </form>

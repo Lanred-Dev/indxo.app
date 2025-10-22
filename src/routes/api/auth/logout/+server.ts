@@ -1,15 +1,16 @@
 import { dev } from "$app/environment";
-import { deleteSession, validateToken } from "$lib/auth/session";
+import { deleteSession, validateToken } from "$lib/server/auth/session";
+import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
 import { error, redirect } from "@sveltejs/kit";
 
 export async function GET({ cookies }) {
-    const token: string | null = cookies.get("session") ?? null;
+    const token = cookies.get("session");
 
-    if (!token) error(401, "Not logged in.");
+    if (!token) error(ResponseCodes.Unauthorized, ResponseMessages.Unauthorized);
 
     const validation = await validateToken(token);
 
-    if (!validation) error(401, "Token is invalid.");
+    if (!validation) error(ResponseCodes.Unauthorized, ResponseMessages.Unauthorized);
 
     deleteSession(validation.session._id);
     cookies.set("session", "", {
@@ -20,5 +21,5 @@ export async function GET({ cookies }) {
         maxAge: 0,
     });
 
-    redirect(302, "/");
+    redirect(ResponseCodes.Redirect, "/");
 }

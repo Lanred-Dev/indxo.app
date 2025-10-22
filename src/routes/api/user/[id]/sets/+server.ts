@@ -1,22 +1,22 @@
-import type { PublicSet } from "$lib/database/documents/Set";
-import type { User } from "$lib/database/documents/User";
-import idToDocument from "$lib/utils/idToDocument";
+import type { PublicSet } from "$lib/documents/Set.js";
+import type { User } from "$lib/documents/User.js";
+import { findDocumentByID } from "$lib/server/utils/document/findByID.js";
+import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses.js";
 import { error, json } from "@sveltejs/kit";
 
 export async function GET({ params, fetch }) {
-    const user: User | null = await idToDocument("users", params.id);
+    const user: User | null = await findDocumentByID(params.id);
 
-    if (!user) error(404, "User not found.");
+    if (!user) error(ResponseCodes.NotFound, ResponseMessages.NotFound);
 
     const sets: PublicSet[] = [];
 
     for (const id of user.sets) {
-        const response: Response = await fetch(`/api/documents/set/${id}`);
+        const response: Response = await fetch(`/api/documents/${id}`);
 
-        if (response.status !== 200) continue;
+        if (response.status !== ResponseCodes.Success) continue;
 
-        const set: PublicSet = await response.json();
-        sets.push(set);
+        sets.push(await response.json());
     }
 
     return json(sets);

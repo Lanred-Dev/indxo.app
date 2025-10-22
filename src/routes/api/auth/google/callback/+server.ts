@@ -1,10 +1,10 @@
 import { dev } from "$app/environment";
-import { google } from "$lib/auth/oauth";
-import { createSession, generateToken } from "$lib/auth/session";
-import type { Session } from "$lib/database/documents/Session";
-import type { User } from "$lib/database/documents/User";
-import { loadCollection } from "$lib/database/mongo";
-import generateRandomID from "$lib/utils/generateRandomID";
+import { DocumentType, type User } from "$lib/documents";
+import { google } from "$lib/server/auth/oauth";
+import { createSession, generateToken } from "$lib/server/auth/session";
+import { loadCollection } from "$lib/server/mongo";
+import { ResponseCodes } from "$lib/utils/apiResponses";
+import generateDocumentID from "$lib/utils/document/generateID";
 import { error, redirect } from "@sveltejs/kit";
 import { decodeIdToken, type OAuth2Tokens } from "arctic";
 import { type Collection } from "mongodb";
@@ -12,22 +12,31 @@ import { type Collection } from "mongodb";
 const users: Collection<User> = loadCollection("accounts", "users");
 
 export async function GET({ cookies, url }) {
-    const oauthState: string | null = cookies.get("google-state") ?? null;
-    const oauthVerifier: string | null = cookies.get("google-verifier") ?? null;
+    const oauthState = cookies.get("state");
+    const oauthVerifier = cookies.get("verifier");
     const code = url.searchParams.get("code");
     const state = url.searchParams.get("state");
 
-    // Validate the parameters
     if (!oauthState || !oauthVerifier || !code || !state || oauthState !== state)
-        error(400, "Invalid state");
+        error(ResponseCodes.BadRequest, "Invalid state.");
 
     let tokens: OAuth2Tokens;
 
     try {
         tokens = await google.validateAuthorizationCode(code, oauthVerifier);
-    } catch (_error) {
-        error(500, "Failed to validate authorization code");
+    } catch {
+        error(ResponseCodes.ServerError, "Failed to validate authorization code.");
     }
+
+    cookies.set("state", "", {
+        path: "/",
+        maxAge: 0,
+    });
+
+    cookies.set("verifier", "", {
+        path: "/",
+        maxAge: 0,
+    });
 
     const claims: {
         iss: string;
@@ -48,24 +57,25 @@ export async function GET({ cookies, url }) {
         email: claims.email,
     });
 
-    // If the user doesn't exist, create a new user because they are logging in for the first time
+    // If the user doesn't exist, this is a new user
     if (!user) {
         user = {
-            _id: generateRandomID(15, "u"),
-            google: claims.sub,
+            _id: generateDocumentID(15, DocumentType.user),
+            googleID: claims.sub,
             name: claims.name,
             email: claims.email,
-            image: claims.picture,
-            banned: false,
+            picture: claims.picture,
             sets: [],
             folders: [],
             favorites: [],
-            homeSections: [],
-            openedSets: [],
-            sorting: {},
             preferences: {
                 strugglingTermThreshold: 0,
                 home: [],
+            },
+            created: new Date().getMilliseconds(),
+            metadata: {
+                documentsOpenedAt: {},
+                sets: {},
             },
         };
 
@@ -73,7 +83,7 @@ export async function GET({ cookies, url }) {
     }
 
     const token: string = generateToken();
-    const session: Session = await createSession(token, user._id);
+    const session = await createSession(token, user._id);
 
     cookies.set("session", token, {
         httpOnly: true,
@@ -81,7 +91,8 @@ export async function GET({ cookies, url }) {
         sameSite: "lax",
         secure: !dev,
         expires: new Date(session.expires),
+        domain: dev ? "localhost" : "indxo.app",
     });
 
-    redirect(302, "/");
+    redirect(ResponseCodes.Redirect, "/");
 }
