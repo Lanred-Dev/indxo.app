@@ -24,7 +24,7 @@ export const folderFields: DocumentFields = {
         properties: {
             isRequired: true,
             isUserUpdateable: true,
-            defaultValue: "folder",
+            defaultValue: "/icons/folder/Folder.svg",
         },
     },
     sets: {
