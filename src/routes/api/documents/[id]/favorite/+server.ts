@@ -48,7 +48,7 @@ export async function PUT({ params, locals, fetch, request }) {
     await users.updateOne(
         { _id: locals.user._id },
         {
-            [isFavorite ? "$pull" : "$addToSet"]: {
+            [isFavorite ? "$addToSet" : "$pull"]: {
                 favorites: params.id,
             },
         }
