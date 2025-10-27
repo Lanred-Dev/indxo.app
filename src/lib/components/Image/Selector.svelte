@@ -97,9 +97,9 @@
             </DialogTrigger>
         {/if}
 
-        <DialogContent class="!rounded-none !p-0">
+        <DialogContent class="rounded-none! p-0!">
             <DialogTrigger
-                class="button-primary absolute top-3 right-3 rounded-full !p-1.5 shadow-md"
+                class="button-primary absolute top-3 right-3 rounded-full p-1.5! shadow-md"
             >
                 <img class="size-8" src="/icons/general/X.svg" alt="Close" />
             </DialogTrigger>
