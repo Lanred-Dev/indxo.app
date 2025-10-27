@@ -1,5 +1,6 @@
 import { RouteOptions } from "fastify";
 import { fileTypeFromBuffer } from "file-type";
+import fs from "fs";
 import path from "path";
 import sharp from "sharp";
 import { ResponseCodes, ResponseMessages } from "../utils/apiResponses";
@@ -7,7 +8,9 @@ import generateDocumentID from "../utils/generateID";
 
 const MAX_FILE_SIZE: number = parseInt(process.env.MAX_FILE_SIZE!);
 const ALLOWED_FILE_TYPES: string[] = process.env.ALLOWED_FILE_TYPES!.split(",");
-const UPLOAD_DIRECTORY: string = process.env.UPLOAD_DIRECTORY!;
+const UPLOAD_DIRECTORY: string = path.join(".", process.env.UPLOAD_DIRECTORY!);
+
+if (!fs.existsSync(UPLOAD_DIRECTORY)) fs.mkdirSync(UPLOAD_DIRECTORY, { recursive: true });
 
 export const route: RouteOptions = {
     method: "POST",
@@ -40,7 +43,7 @@ export const route: RouteOptions = {
 
         try {
             const filename: string = `${request.user._id}-${generateDocumentID(15)}.webp`;
-            const filepath: string = path.join(".", UPLOAD_DIRECTORY, path.basename(filename));
+            const filepath: string = path.join(UPLOAD_DIRECTORY, path.basename(filename));
             await sharp(buffer).webp({ quality: 50 }).toFile(filepath);
             return reply.send(filename);
         } catch {
