@@ -25,7 +25,7 @@ app.route(uploadRoute);
 app.route(getRoute);
 app.route(deleteRoute);
 
-app.listen({ port: parseInt(process.env.PORT!) }, function (error) {
+app.listen({ port: parseInt(process.env.PORT!), host: "0.0.0.0" }, function (error) {
     if (error) {
         app.log.error(error);
         process.exit(1);
