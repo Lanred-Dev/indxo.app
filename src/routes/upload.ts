@@ -40,7 +40,7 @@ export const route: RouteOptions = {
 
         try {
             const filename: string = `${request.user._id}-${generateDocumentID(15)}.webp`;
-            const filepath = path.join(UPLOAD_DIRECTORY, path.basename(filename));
+            const filepath: string = path.join(".", UPLOAD_DIRECTORY, path.basename(filename));
             await sharp(buffer).webp({ quality: 50 }).toFile(filepath);
             return reply.send(filename);
         } catch {
