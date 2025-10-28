@@ -1,0 +1,245 @@
+@import "tailwindcss";
+
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/container-queries';
+@plugin '@tailwindcss/aspect-ratio';
+
+@theme {
+    --background-color-page: #f9fafe;
+    --color-scrollbar: #d4d7d8;
+
+    --color-attention: #7c9edd;
+    --color-attention-bright: #dde4f0;
+    --color-attention-dark: #bccbe4;
+    --color-alert: #f26a63;
+    --color-input: #e5eaef;
+    --color-container: #ffffff;
+
+    --background-color-light: #eaeded;
+    --background-color-dark: #e4e6e7;
+    --background-color-primary: #f7f9fa;
+
+    --text-color-placeholder: #737373;
+    --text-color-light: #393939;
+    --text-color-dark: #131313;
+    --text-color-primary: #000000;
+
+    --border-color-primary: #e7e7e7;
+
+    --radius-container: 20px;
+    --radius-input: 15px;
+    --radius-button: 15px;
+}
+
+@layer base {
+    @font-face {
+        font-family: "PlusJakartaSans";
+        src: url("/fonts/PlusJakartaSans.ttf") format("truetype");
+        font-style: normal;
+        font-display: swap;
+    }
+
+    @font-face {
+        font-family: "GoogleSansCode";
+        src: url("/fonts/GoogleSansCode.ttf") format("truetype");
+        font-style: normal;
+        font-display: swap;
+    }
+
+    body {
+        font-family: PlusJakartaSans, sans-serif;
+        @apply bg-page text-primary;
+    }
+
+    * {
+        @apply touch-manipulation focus:outline-none;
+
+        &::placeholder {
+            @apply text-placeholder overflow-y-visible select-none;
+        }
+
+        &::-webkit-scrollbar {
+            @apply w-3;
+        }
+
+        &::-webkit-scrollbar-track {
+            @apply bg-page rounded-full;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            border: 3px solid var(--background-color-page);
+            @apply bg-scrollbar rounded-full;
+        }
+
+        @supports not selector(::-webkit-scrollbar) {
+            & {
+                scrollbar-color: var(--color-scrollbar) var(--background-color-page);
+            }
+        }
+    }
+
+    img {
+        @apply pointer-events-none select-none;
+    }
+
+    button,
+    a {
+        @apply cursor-pointer select-none;
+    }
+
+    /* NOTE: Prevents characters like y and g from being cut off */
+    button,
+    a,
+    p,
+    span,
+    h1,
+    h2,
+    h3,
+    h5,
+    text-area,
+    input {
+        @apply overflow-y-visible;
+    }
+}
+
+@utility cover-screen {
+    @apply h-screen w-full;
+}
+
+@utility x-center {
+    @apply absolute left-1/2 -translate-x-1/2;
+}
+
+@utility y-center {
+    @apply absolute top-1/2 -translate-y-1/2;
+}
+
+@utility flex-center {
+    @apply flex items-center justify-center;
+}
+
+@utility break-word {
+    word-break: break-word;
+    @apply hyphens-auto;
+}
+
+@utility container-clay {
+    --clay-color-shadow-percentage: 50%;
+    --clay-color-light-percentage: 60%;
+    --clay-color-dark-percentage: 88%;
+    --clay-shadow: 0px 2px 15px 0px;
+    box-shadow: var(--clay-shadow)
+        color-mix(in srgb, var(--clay-color) var(--clay-color-shadow-percentage), transparent);
+    background-color: var(--clay-color);
+    background: linear-gradient(
+        170deg,
+        color-mix(in srgb, var(--clay-color) var(--clay-color-light-percentage), #ffffff) -10%,
+        var(--clay-color) 45%,
+        color-mix(in srgb, var(--clay-color) var(--clay-color-dark-percentage), #000000) 110%
+    );
+}
+
+@utility clay-* {
+    --clay-color: --value(--color- *);
+    @apply container-clay;
+}
+
+@utility clay-sm-* {
+    --clay-color: --value(--color- *);
+    --clay-color-shadow-percentage: 50%;
+    --clay-color-light-percentage: 75%;
+    --clay-color-dark-percentage: 95%;
+    --clay-shadow: 1px 2px 8px 0px;
+    @apply container-clay;
+}
+
+@utility row {
+    @apply flex w-full flex-wrap items-center gap-5;
+}
+
+@utility list-primary {
+    @apply w-full;
+
+    & .list-title {
+        @apply text-dark mb-3 text-2xl font-semibold;
+    }
+
+    & .list-container {
+        @apply flex flex-wrap gap-x-4 gap-y-2.5;
+    }
+}
+
+@utility page-title {
+    @apply mb-10 w-full;
+
+    & .title {
+        @apply break-word flex items-center gap-1 text-3xl leading-snug font-bold md:text-4xl;
+
+        & img {
+            @apply size-10;
+        }
+    }
+
+    & .description {
+        @apply text-light break-word text-lg leading-none font-semibold md:text-xl;
+    }
+}
+
+@layer components {
+    .button-attention,
+    .button-primary,
+    .input-primary,
+    .input-secondary,
+    .button-navigation {
+        @apply text-primary rounded-button flex items-center gap-2 px-4 py-2 text-lg transition-all duration-200 disabled:pointer-events-none disabled:opacity-50;
+
+        & img {
+            @apply size-7;
+        }
+    }
+
+    .button-attention {
+        @apply clay-attention justify-center;
+    }
+
+    .button-primary {
+        @apply bg-dark hover:bg-light justify-center !border-none;
+    }
+
+    .button-navigation {
+        @apply hover:bg-light flex w-full items-center gap-2 !border-none text-nowrap;
+    }
+
+    .button-icon {
+        @apply hover:bg-light rounded-full bg-transparent p-2 transition-[background-color,scale] duration-200 active:scale-75;
+
+        & img {
+            @apply size-7;
+        }
+    }
+
+    .button-basic {
+        @apply flex-center gap-0.25 text-lg hover:[&>img]:-translate-x-0.5;
+
+        & img {
+            @apply transition-transform duration-100;
+        }
+    }
+
+    .input-primary,
+    .input-secondary {
+        @apply focus:ring-attention rounded-input data-max:border-alert flex items-center gap-1 !border-none !outline-none;
+    }
+
+    .input-primary {
+        @apply bg-input;
+    }
+
+    .input-secondary {
+        @apply bg-attention;
+    }
+
+    .container-primary {
+        @apply rounded-container border-primary bg-container overflow-hidden border p-4 shadow;
+    }
+}
