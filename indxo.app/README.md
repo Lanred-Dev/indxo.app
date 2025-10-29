@@ -1,38 +1,28 @@
-# sv
+# indxo.app
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+The main site for indxo.app.
 
-## Creating a project
+### Requirements
 
-If you're seeing this, you've probably already done this step. Congrats!
+* Docker 28 (or newer)
 
-```bash
-# create a new project in the current directory
-npx sv create
+### Setup
 
-# create a new project in my-app
-npx sv create my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+1. Clone the repository:
 
 ```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+git clone https://github.com/Lanred-Dev/indxo.app.git
+cd indxo.app/indxo.app
 ```
 
-## Building
-
-To create a production version of your app:
+2. Build the Docker image:
 
 ```bash
-npm run build
+docker build -t indxo.app .
 ```
 
-You can preview the production build with `npm run preview`.
+3. Run the container:
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+```bash
+docker run --env-file .env -p 3000:3000 indxo.app
+```
