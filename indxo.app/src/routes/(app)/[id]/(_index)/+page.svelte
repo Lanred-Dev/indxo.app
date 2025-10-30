@@ -4,6 +4,10 @@
         permission: DocumentPermission;
         isFavorite: boolean;
     }
+
+    export interface DocumentHeaderContext {
+        showActions: boolean;
+    }
 </script>
 
 <script lang="ts">
@@ -36,6 +40,16 @@
             isFavorite = newValue;
         },
     } satisfies DocumentContext);
+
+    let showActions: boolean = $state.raw(true);
+    setContext("documentHeader", {
+        get showActions() {
+            return showActions;
+        },
+        set showActions(newValue) {
+            showActions = newValue;
+        },
+    } satisfies DocumentHeaderContext);
 
     const DocumentComponent: Component<any> = $derived.by(() => {
         switch (determineDocumentType(data.document._id)) {

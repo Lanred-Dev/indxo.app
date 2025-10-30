@@ -3,7 +3,7 @@
     import Star from "$lib/components/Icons/Star.svelte";
     import { DocumentPermission, DocumentType } from "$lib/documents";
     import { getContext, type ComponentProps } from "svelte";
-    import type { DocumentContext } from "./+page.svelte";
+    import type { DocumentContext, DocumentHeaderContext } from "./+page.svelte";
     import determineDocumentType from "$lib/utils/document/determineType";
     import { ResponseCodes } from "$lib/utils/apiResponses";
     import isPermissionEqual from "$lib/utils/document/isPermissionEqual";
@@ -11,6 +11,7 @@
     import type { SessionContext } from "$lib/utils/global";
 
     const document: DocumentContext = getContext("document");
+    const documentHeader: DocumentHeaderContext = getContext("documentHeader");
     const session: SessionContext = getContext("session");
     const documentType: DocumentType = determineDocumentType(document._id)!;
     const buttons: ComponentProps<typeof ActionButton>[] = $derived.by(() => {
@@ -116,10 +117,12 @@
             <h1 class="title">{document.name}</h1>
         </div>
 
-        <div class="flex-center min-w-fit -translate-x-2 gap-2 lg:translate-x-2">
-            {#each buttons as button}
-                <ActionButton class="button-icon" {...button} />
-            {/each}
-        </div>
+        {#if documentHeader.showActions}
+            <div class="flex-center min-w-fit -translate-x-2 gap-2 lg:translate-x-2">
+                {#each buttons as button}
+                    <ActionButton class="button-icon" {...button} />
+                {/each}
+            </div>
+        {/if}
     </div>
 </div>
