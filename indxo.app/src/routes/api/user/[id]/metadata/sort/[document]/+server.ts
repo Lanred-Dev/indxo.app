@@ -14,7 +14,7 @@ export async function GET({ params }) {
 
     return json(
         params.document in user.metadata.sets
-            ? user.metadata.sets[params.document]
+            ? user.metadata.sets[params.document].sorting
             : ({
                   terms: {},
               } satisfies SortedSetMetadata)
@@ -29,11 +29,17 @@ export async function PUT({ params, request }) {
     if (!user.sets.includes(params.document))
         error(ResponseCodes.BadRequest, ResponseMessages.NotFound);
 
-    const sortedTerms: SortedSetMetadata["terms"] = await request.json();
+    const sorted: SortedSetMetadata["terms"] = await request.json();
 
     await users.updateOne(
         { _id: params.id },
-        { $set: { [`metadata.sets.${params.document}.sorting`]: { sortedTerms } } }
+        {
+            $set: {
+                [`metadata.sets.${params.document}.sorting`]: {
+                    terms: sorted,
+                } satisfies SortedSetMetadata,
+            },
+        }
     );
 
     return new Response(null, {
