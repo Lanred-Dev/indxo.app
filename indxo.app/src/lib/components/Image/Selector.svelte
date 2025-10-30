@@ -10,52 +10,11 @@
     import ActionButton from "../ActionButton.svelte";
 
     let {
-        buttons = [],
         value = $bindable(),
         placeholder = "/icons/general/Image.svg",
         imageProperties = {},
-        onupload = async (file: File) => {
-            // Delete the previous image if there was one
-            if (value && value.startsWith(PUBLIC_IMAGE_SERVER_URL)) {
-                try {
-                    await fetch(`${PUBLIC_IMAGE_SERVER_URL}/delete/${imageServerFilename}`, {
-                        method: "DELETE",
-                        credentials: "include",
-                    });
-                } catch {
-                    // Ignore errors when deleting the previous image
-                }
-            }
-
-            const formData = new FormData();
-            formData.append("file", file);
-
-            const uploadResponse = await fetch(`${PUBLIC_IMAGE_SERVER_URL}/upload`, {
-                method: "POST",
-                body: formData,
-                credentials: "include",
-            });
-
-            if (uploadResponse.status !== ResponseCodes.Success) {
-                switch (uploadResponse.status) {
-                    case ResponseCodes.InvalidMediaType:
-                    case ResponseCodes.ContentTooLarge:
-                    case ResponseCodes.BadRequest:
-                        uploadError = (await uploadResponse.json()).message;
-                        break;
-                    default:
-                        uploadError = "An unknown error occurred when uploading your image.";
-                }
-
-                value = null;
-                actualValue = "";
-                uploadErrorVisible = true;
-                return;
-            }
-
-            imageServerFilename = await uploadResponse.text();
-            value = `${PUBLIC_IMAGE_SERVER_URL}/get/${imageServerFilename}`;
-        },
+        onupload = upload,
+        ondelete = deleteImage,
         class: className,
         ...properties
     }: {
@@ -64,6 +23,7 @@
         placeholder?: string;
         imageProperties?: Record<string, any>;
         onupload?: (file: File) => Promise<void>;
+        ondelete?: (name: string) => Promise<void>;
         class: ClassValue;
         [key: string]: unknown;
     } = $props();
@@ -73,6 +33,60 @@
     let uploadError: string = $state.raw("");
     let uploadErrorVisible: boolean = $state.raw(false);
     let fileInput: HTMLInputElement;
+
+    async function deleteImage(name: string) {
+        try {
+            const response = await fetch(`${PUBLIC_IMAGE_SERVER_URL}/delete/${name}`, {
+                method: "DELETE",
+                credentials: "include",
+            });
+
+            // Force an error to be shown to the user
+            if (response.status !== ResponseCodes.Success) throw new Error();
+
+            value = null;
+            actualValue = "";
+            imageServerFilename = null;
+        } catch {
+            uploadError = "An unknown error occurred when deleting your image.";
+            uploadErrorVisible = true;
+        }
+    }
+
+    async function upload(file: File) {
+        // Delete the previous image if there was one
+        if (value && value.startsWith(PUBLIC_IMAGE_SERVER_URL) && imageServerFilename)
+            await deleteImage(imageServerFilename);
+
+        const data = new FormData();
+        data.append("file", file);
+
+        const response = await fetch(`${PUBLIC_IMAGE_SERVER_URL}/upload`, {
+            method: "POST",
+            body: data,
+            credentials: "include",
+        });
+
+        if (response.status !== ResponseCodes.Success) {
+            switch (response.status) {
+                case ResponseCodes.InvalidMediaType:
+                case ResponseCodes.ContentTooLarge:
+                case ResponseCodes.BadRequest:
+                    uploadError = (await response.json()).message;
+                    break;
+                default:
+                    uploadError = "An unknown error occurred when uploading your image.";
+            }
+
+            value = null;
+            actualValue = "";
+            uploadErrorVisible = true;
+            return;
+        }
+
+        imageServerFilename = await response.text();
+        value = `${PUBLIC_IMAGE_SERVER_URL}/get/${imageServerFilename}`;
+    }
 </script>
 
 <Tooltip bind:isVisible={uploadErrorVisible} duration={5}>
@@ -90,11 +104,17 @@
 <div class={["group relative", className]} {...properties}>
     <Dialog>
         {#if value}
-            <DialogTrigger
-                class="absolute top-2 right-2 translate-y-2 opacity-0 transition-[translate,opacity] group-hover:translate-y-0 group-hover:opacity-100"
+            <div
+                class="absolute top-2 right-2 flex translate-y-2 gap-2 opacity-0 transition-[translate,opacity] group-hover:translate-y-0 group-hover:opacity-100"
             >
-                <img class="size-8" src="/icons/general/Expand.svg" alt="Expand" />
-            </DialogTrigger>
+                <DialogTrigger>
+                    <img class="size-8" src="/icons/general/Expand.svg" alt="Expand" />
+                </DialogTrigger>
+
+                <button onclick={() => ondelete(imageServerFilename!)} type="button">
+                    <img class="size-8" src="/icons/general/Trash.svg" alt="Delete" />
+                </button>
+            </div>
         {/if}
 
         <DialogContent class="rounded-none! p-0!">
@@ -107,14 +127,6 @@
             <img class="h-[200%] max-h-[80vh] w-auto max-w-[80vw]" src={value} alt="Expanded" />
         </DialogContent>
     </Dialog>
-
-    {#if buttons.length > 0}
-        <div class="absolute right-2 bottom-2 flex gap-1">
-            {#each buttons as button}
-                <ActionButton {...button} />
-            {/each}
-        </div>
-    {/if}
 
     <button onclick={() => fileInput.click()} type="button">
         <img
