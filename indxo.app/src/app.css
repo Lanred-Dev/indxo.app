@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
-@plugin '@tailwindcss/forms';
-@plugin '@tailwindcss/container-queries';
-@plugin '@tailwindcss/aspect-ratio';
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/container-queries";
+@plugin "@tailwindcss/aspect-ratio";
 
 @theme {
     --background-color-page: #f9fafe;
@@ -12,6 +12,7 @@
     --color-attention-bright: #dde4f0;
     --color-attention-dark: #bccbe4;
     --color-alert: #f26a63;
+    --color-success: #4caf50;
     --color-input: #e5eaef;
     --color-container: #ffffff;
 
@@ -140,12 +141,12 @@
 }
 
 @utility clay-* {
-    --clay-color: --value(--color- *);
+    --clay-color: --value(--color-*);
     @apply container-clay;
 }
 
 @utility clay-sm-* {
-    --clay-color: --value(--color- *);
+    --clay-color: --value(--color-*);
     --clay-color-shadow-percentage: 50%;
     --clay-color-light-percentage: 75%;
     --clay-color-dark-percentage: 95%;
