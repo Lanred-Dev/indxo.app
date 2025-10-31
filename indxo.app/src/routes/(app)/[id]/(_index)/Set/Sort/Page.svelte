@@ -1,37 +1,49 @@
 <!--svelte-ignore non_reactive_update-->
 <script lang="ts">
     import { getContext, onMount } from "svelte";
-    import type { DocumentContext } from "../../+page.svelte";
+    import type { DocumentContext, DocumentHeaderContext } from "../../+page.svelte";
     import { beforeNavigate } from "$app/navigation";
-    import type { SortedSetMetadata, SortedTerm, Term } from "$lib/documents";
+    import type { Term, SortedSetMetadata, SortedTerm } from "$lib/documents";
     import Flashcards, { CycleDirection } from "../Flashcards.svelte";
     import { SvelteMap, SvelteSet } from "svelte/reactivity";
     import { animate } from "motion";
     import type { SessionContext } from "$lib/utils/global";
+    import Results from "./Results.svelte";
 
     const session: SessionContext = getContext("session");
     const document: DocumentContext = getContext("document");
+    const documentHeader: DocumentHeaderContext = getContext("documentHeader");
     let currentTermIndex: number = $state.raw(0);
     let canCycle: boolean = $state.raw(true);
     let canFlip: boolean = $state.raw(true);
     let FlashcardsComponent: Flashcards;
     let Card: HTMLDivElement;
     let CardOverlay: HTMLDivElement;
+    let terms: Term[] = $state.raw([]);
     let unsortedTerms: SvelteSet<string> = new SvelteSet();
     let stillLearningTerms: SvelteSet<string> = new SvelteSet();
     let knowTerms: SvelteSet<string> = new SvelteSet();
     let timesMissed: SvelteMap<string, number> = new SvelteMap();
     let strugglingTerms: SvelteMap<string, number> = new SvelteMap();
+    let isLoaded: boolean = $state.raw(false);
 
     /**
      * Restarts the study session by resetting all the state variables.
      *
      * @returns never
      */
-    function restart() {
+    function restart(withTerms: Term[]) {
         canCycle = true;
         canFlip = true;
         currentTermIndex = 0;
+
+        terms = withTerms;
+        terms.forEach(({ _id }: Term) => {
+            unsortedTerms.add(_id);
+
+            if (knowTerms.has(_id)) knowTerms.delete(_id);
+            if (stillLearningTerms.has(_id)) stillLearningTerms.delete(_id);
+        });
 
         if (FlashcardsComponent) FlashcardsComponent.flipCard(false, false);
     }
@@ -42,8 +54,8 @@
      * @returns never
      */
     function shuffle() {
-        restart();
-        document.terms = [...document.terms].sort(() => Math.random() - 0.5);
+        restart(terms);
+        terms = [...terms].sort(() => Math.random() - 0.5);
     }
 
     /**
@@ -58,29 +70,30 @@
         canCycle = false;
         canFlip = false;
 
-        const id: string = document.terms[currentTermIndex]._id;
+        const { _id } = terms[currentTermIndex];
 
         switch (direction) {
             case CycleDirection.previous:
-                stillLearningTerms.add(id);
-                timesMissed.set(id, (timesMissed.get(id) ?? 0) + 1);
+                stillLearningTerms.add(_id);
+                timesMissed.set(_id, (timesMissed.get(_id) ?? 0) + 1);
+                break;
             case CycleDirection.next:
-                knowTerms.add(id);
-                timesMissed.set(id, 0);
+                knowTerms.add(_id);
+                timesMissed.set(_id, 0);
                 break;
         }
 
-        if (timesMissed.get(id)! >= session.user.preferences.strugglingTermThreshold) {
-            strugglingTerms.set(id, timesMissed.get(id)!);
+        if (timesMissed.get(_id)! >= session.user.preferences.strugglingTermThreshold) {
+            strugglingTerms.set(_id, timesMissed.get(_id)!);
         } else {
-            strugglingTerms.delete(id);
+            strugglingTerms.delete(_id);
         }
 
-        unsortedTerms.delete(id);
+        unsortedTerms.delete(_id);
 
         // Apply a color overlay to the card to indicate the direction of the cycle and then animate it in
         CardOverlay.style.backgroundColor =
-            direction === CycleDirection.next ? "#4caf50" : "#f26a63";
+            direction === CycleDirection.next ? "var(--color-success)" : "var(--color-alert)";
         animate(
             CardOverlay,
             {
@@ -142,22 +155,34 @@
     }
 
     onMount(async () => {
+        documentHeader.showActions = false;
+
         const response = await fetch(`/api/user/${session.user._id}/metadata/sort/${document._id}`);
         const sortedSetMetadata: SortedSetMetadata = await response.json();
 
-        document.terms
-            .filter(({ _id }: Term) => {
+        restart(
+            document.terms.filter(({ _id }: Term) => {
                 if (_id in sortedSetMetadata.terms) {
-                    return sortedSetMetadata.terms[_id].sorted;
+                    const sortedTerm = sortedSetMetadata.terms[_id];
+
+                    if (sortedTerm.sorted) {
+                        if (sortedTerm.knows) {
+                            stillLearningTerms.add(_id);
+                        } else {
+                            knowTerms.add(_id);
+                        }
+                    }
+
+                    timesMissed.set(_id, sortedTerm.timesMissed);
+                    return sortedTerm.sorted === false;
                 } else {
                     // If the term is not in the saved array, it means it is not sorted yet
                     return true;
                 }
             })
-            .map(({ _id }: Term) => _id)
-            .forEach((termID: string) => {
-                unsortedTerms.add(termID);
-            });
+        );
+
+        isLoaded = true;
     });
 
     beforeNavigate(async () => {
@@ -172,9 +197,9 @@
                             term._id,
                             {
                                 timesMissed: timesMissed.get(term._id) ?? 0,
-                                struggling: strugglingTerms.has(term._id),
                                 sorted: knowTerms.has(term._id) || stillLearningTerms.has(term._id),
-                            },
+                                knows: knowTerms.has(term._id),
+                            } satisfies SortedTerm,
                         ];
                     })
                 )
@@ -183,11 +208,13 @@
     });
 </script>
 
-{#if unsortedTerms.size > 0}
-    {@const term: Term = document.terms[currentTermIndex]}
+{#if unsortedTerms.size > 0 && isLoaded}
+    <div class="w-full"></div>
+
+    {@const term: Term = terms[currentTermIndex]}
     <Flashcards
         {cycle}
-        termCount={document.terms.length}
+        termCount={terms.length}
         currentTerm={{
             index: currentTermIndex + 1,
             ...term,
@@ -198,27 +225,27 @@
         bind:canFlip
         cycleButtons={{
             previous: {
-                image: { properties: { class: "size-9" }, url: "/icons/general/LeftArrow.svg" },
-                text: "Previous",
+                image: { properties: { class: "size-9" }, url: "/icons/general/X.svg" },
+                text: "Still learning",
                 onclick: () => {
                     cycle(CycleDirection.previous);
                 },
-                disabled: currentTermIndex === 0,
+                disabled: unsortedTerms.size === 0,
             },
             next: {
-                image: { properties: { class: "size-9" }, url: "/icons/general/RightArrow.svg" },
-                text: "Next",
+                image: { properties: { class: "size-9" }, url: "/icons/general/Check.svg" },
+                text: "Know",
                 onclick: () => {
                     cycle(CycleDirection.next);
                 },
-                disabled: currentTermIndex >= document.terms.length - 1,
+                disabled: unsortedTerms.size === 0,
             },
         }}
         actionButtons={[
             {
                 image: { url: "/icons/general/Restart.svg" },
                 text: "Restart",
-                onclick: restart,
+                onclick: () => restart(terms),
             },
             {
                 image: { url: "/icons/general/Shuffle.svg" },
@@ -232,6 +259,8 @@
                 class="rounded-container absolute top-0 left-0 z-5 h-full w-full opacity-0"
                 bind:this={CardOverlay}
             ></div>
-        {/snippet}</Flashcards
-    >
-{:else}{/if}
+        {/snippet}
+    </Flashcards>
+{:else if isLoaded}
+    <Results {knowTerms} {stillLearningTerms} {strugglingTerms} {terms} {restart} />
+{/if}
