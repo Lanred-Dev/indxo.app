@@ -120,7 +120,7 @@
 
 <div id="flashcards">
     <div
-        class="sm:aspect-2 relative aspect-[1.6] max-h-96 w-full cursor-pointer text-3xl outline-none"
+        class="sm:aspect-2 relative aspect-[1.6] max-h-96 w-full cursor-pointer outline-none"
         style:perspective="1000px"
         in:fade={{ duration: 200 }}
         aria-label="Flip card"
@@ -140,7 +140,9 @@
 
             <div>
                 <div class="CardFace" bind:this={CardFront}>
-                    <p class="font-medium" aria-label="Term">{currentTerm.term}</p>
+                    <p class="text-2xl font-medium md:text-3xl" aria-label="Term">
+                        {currentTerm.term}
+                    </p>
                 </div>
 
                 <div
@@ -171,7 +173,9 @@
                             />
                         {/if}
 
-                        <p class="break-all" aria-label="Definition">{currentTerm.definition}</p>
+                        <p class="break-word text-xl md:text-2xl" aria-label="Definition">
+                            {currentTerm.definition}
+                        </p>
                     </div>
                 </div>
 
