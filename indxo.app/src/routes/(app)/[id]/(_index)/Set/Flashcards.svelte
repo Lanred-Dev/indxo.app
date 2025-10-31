@@ -120,7 +120,7 @@
 
 <div id="flashcards">
     <div
-        class="sm:aspect-2 relative aspect-[1.6] max-h-96 w-full cursor-pointer outline-none"
+        class="md:aspect-2 relative aspect-[1.25] max-h-96 w-full cursor-pointer outline-none sm:aspect-[1.45]"
         style:perspective="1000px"
         in:fade={{ duration: 200 }}
         aria-label="Flip card"
