@@ -68,37 +68,10 @@
 </script>
 
 <div in:fade class="space-y-10">
-    <div class="w-full">
-        <p class="mb-6 text-lg">
-            You have sorted all the terms in this set. You can restart the sorting or go back to the {Wording.set}.
-        </p>
-
-        <div class="flex flex-wrap gap-4">
-            <button class="button-attention" onclick={() => restart(terms)}>Restart</button>
-
-            {#if stillLearningTerms.size > 0}
-                <button
-                    class="button-attention"
-                    onclick={() =>
-                        restart(terms.filter((term) => stillLearningTerms.has(term._id)))}
-                >
-                    Study still learning terms
-                </button>
-            {/if}
-
-            {#if strugglingTerms.size > 0}
-                <button
-                    class="button-attention"
-                    onclick={() => restart(terms.filter((term) => strugglingTerms.has(term._id)))}
-                >
-                    Study struggling terms
-                </button>
-            {/if}
-        </div>
-    </div>
+    <p class="text-2xl font-bold">Here's how you did:</p>
 
     <div class="flex w-full flex-col gap-10 md:flex-row md:items-center">
-        <div class="relative aspect-square w-3/5 md:w-2/5 lg:w-2/7">
+        <div class="relative aspect-square w-3/5 md:w-2/5 lg:w-1/4">
             <canvas
                 class="h-full w-full"
                 bind:this={Canvas}
@@ -106,11 +79,11 @@
                 bind:clientHeight={canvasHeight}
             ></canvas>
 
-            <div class="x-center y-center absolute z-1 text-center">
+            <div class="x-center y-center absolute z-1 w-full text-center">
                 <p class="text-3xl font-bold">
                     {((knowTerms.size / terms.length) * 100).toFixed(0)}%
                 </p>
-                <p>of the way there</p>
+                <p class="w-full">of the way there</p>
             </div>
         </div>
 
@@ -154,5 +127,27 @@
                 {/if}
             </p>
         </div>
+    </div>
+
+    <div class="flex flex-wrap gap-4">
+        <button class="button-primary" onclick={() => restart(terms)}>Restart</button>
+
+        {#if stillLearningTerms.size > 0}
+            <button
+                class="button-attention clay-alert"
+                onclick={() => restart(terms.filter((term) => stillLearningTerms.has(term._id)))}
+            >
+                Study still learning terms
+            </button>
+        {/if}
+
+        {#if strugglingTerms.size > 0}
+            <button
+                class="button-attention clay-alert"
+                onclick={() => restart(terms.filter((term) => strugglingTerms.has(term._id)))}
+            >
+                Study struggling terms
+            </button>
+        {/if}
     </div>
 </div>
