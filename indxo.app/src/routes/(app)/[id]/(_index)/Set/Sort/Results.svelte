@@ -98,7 +98,7 @@
     </div>
 
     <div class="flex w-full flex-col gap-10 md:flex-row md:items-center">
-        <div class="relative aspect-square w-3/5 md:w-2/5 lg:w-1/3">
+        <div class="relative aspect-square w-3/5 md:w-2/5 lg:w-2/7">
             <canvas
                 class="h-full w-full"
                 bind:this={Canvas}
