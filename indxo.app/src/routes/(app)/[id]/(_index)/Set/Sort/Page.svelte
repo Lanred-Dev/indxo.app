@@ -256,7 +256,7 @@
     >
         {#snippet Overlay()}
             <div
-                class="rounded-container absolute top-0 left-0 z-5 h-full w-full opacity-0"
+                class="rounded-container pointer-events-none absolute top-0 left-0 z-5 h-full w-full opacity-0"
                 bind:this={CardOverlay}
             ></div>
         {/snippet}
