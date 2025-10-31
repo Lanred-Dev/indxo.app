@@ -1,30 +1,14 @@
 <script lang="ts">
-    import { getContext, type ComponentProps } from "svelte";
-    import {
-        DocumentPermission,
-        DocumentType,
-        termFields,
-        termPlaceholders,
-        type Term,
-    } from "$lib/documents";
+    import { getContext } from "svelte";
+    import { DocumentPermission, type Term } from "$lib/documents";
     import TermCard from "../TermCard.svelte";
     import { Wording } from "$lib/utils/wording";
     import type { DocumentContext } from "../../+page.svelte";
     import isPermissionEqual from "$lib/utils/document/isPermissionEqual";
-    import {
-        DefaultEditableListItemButton,
-        EditableList,
-        EditableListAddItemButton,
-        EditableListContent,
-        EditableListControls,
-        EditableListItem,
-    } from "$lib/components/Lists/Editable";
-    import { FormContent, FormInput, FormSubmit, FormSubmitMethods } from "$lib/components/Form";
+    import { FormContent, FormSubmit, FormSubmitMethods } from "$lib/components/Form";
     import Form from "$lib/components/Form/Form.svelte";
-    import generateDocumentID from "$lib/utils/document/generateID";
-    import randomArrayEntry from "$lib/utils/randomArrayEntry";
-    import Textbox from "$lib/components/Textbox.svelte";
-    import { ImageSelector } from "$lib/components/Image";
+    import EditableTerms from "$lib/components/Lists/EditableTerms.svelte";
+    import { EditableListAddItemButton } from "$lib/components/Lists/Editable";
 
     const document: DocumentContext = getContext("document");
     let areChangesMade: boolean = $state.raw(false);
@@ -54,83 +38,19 @@
             afterSubmit={updateSavedValue}
         >
             <FormContent>
-                <FormInput
-                    id="terms"
-                    Component={EditableList}
-                    bind:value={termsValue}
-                    properties={{
-                        placeholderItems: 3,
-                        buttons: [
-                            DefaultEditableListItemButton.moveUp,
-                            DefaultEditableListItemButton.moveDown,
-                            DefaultEditableListItemButton.delete,
-                        ],
-                        addItem: (index, value) => {
-                            const placeholders: { term: string; definition: string } =
-                                randomArrayEntry(termPlaceholders);
+                <EditableTerms bind:value={termsValue}>
+                    <EditableListAddItemButton
+                        class="transition-[width]"
+                        style="width: {areChangesMade ? '50%' : '100%'}"
+                        >Add term</EditableListAddItemButton
+                    >
 
-                            return {
-                                index,
-                                _id:
-                                    (value?.id as string) ??
-                                    generateDocumentID(5, DocumentType.term),
-                                fields: [
-                                    {
-                                        _id: "term",
-                                        Component: Textbox,
-                                        value: value?.term,
-                                        properties: {
-                                            placeholder: placeholders.term,
-                                            maxlength: termFields.term.properties.maxlength,
-                                        },
-                                        position: { group: 0, index: 0 },
-                                    },
-                                    {
-                                        _id: "definition",
-                                        Component: Textbox,
-                                        value: value?.definition,
-                                        properties: {
-                                            class: "w-full",
-                                            placeholder: placeholders.definition,
-                                            maxlength: termFields.definition.properties.maxlength,
-                                            multiline: true,
-                                        },
-                                        position: { group: 1, index: 0 },
-                                    },
-                                    {
-                                        _id: "image",
-                                        Component: ImageSelector,
-                                        value: value?.image,
-                                        properties: {
-                                            class: "min-w-fit",
-                                            imageProperties: {
-                                                class: "size-40 rounded-input object-contain",
-                                            },
-                                        },
-                                        position: { group: 1, index: 1 },
-                                    },
-                                ],
-                                isDraggable: true,
-                            } satisfies ComponentProps<typeof EditableListItem>;
-                        },
-                    }}
-                >
-                    <EditableListContent />
-
-                    <EditableListControls>
-                        <EditableListAddItemButton
-                            class="transition-[width]"
-                            style="width: {areChangesMade ? '50%' : '100%'}"
-                            >Add term</EditableListAddItemButton
-                        >
-
-                        {#if areChangesMade}
-                            <div class="w-1/2">
-                                <FormSubmit class="clay-attention-dark">Update</FormSubmit>
-                            </div>
-                        {/if}
-                    </EditableListControls>
-                </FormInput>
+                    {#if areChangesMade}
+                        <div class="w-1/2">
+                            <FormSubmit class="clay-attention-dark">Update</FormSubmit>
+                        </div>
+                    {/if}
+                </EditableTerms>
             </FormContent>
         </Form>
     {:else}
