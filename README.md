@@ -1,6 +1,6 @@
 # [indxo.app](https://indxo.app)
 
-A Quizlet-inspired studying website built with SvelteKit.
+A completely free, open-source platform for studying.
 
 > **Note**: indxo.app is still in development.
 
