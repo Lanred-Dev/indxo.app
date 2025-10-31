@@ -44,7 +44,7 @@
 </script>
 
 <div class="list-primary mt-20">
-    <p class="list-title">{Wording.cards}</p>
+    <p class="list-title">{Wording.terms}</p>
 
     {#if isPermissionEqual(document.permission, DocumentPermission.edit)}
         <Form
