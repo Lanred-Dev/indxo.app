@@ -12,31 +12,14 @@
     import { Wording } from "$lib/utils/wording";
     import Arrow, { ArrowState } from "$lib/components/Icons/Arrow.svelte";
     import Textbox from "$lib/components/Textbox.svelte";
-    import {
-        DocumentType,
-        DocumentVisibility,
-        setFields,
-        termFields,
-        termPlaceholders,
-    } from "$lib/documents";
+    import { DocumentType, DocumentVisibility, setFields } from "$lib/documents";
     import {
         Dropdown,
         DropdownContent,
         DropdownItem,
         DropdownTrigger,
     } from "$lib/components/Dropdown";
-    import {
-        DefaultEditableListItemButton,
-        EditableList,
-        EditableListAddItemButton,
-        EditableListContent,
-        EditableListControls,
-        EditableListItem,
-    } from "$lib/components/Lists/Editable";
-    import generateDocumentID from "$lib/utils/document/generateID";
-    import type { ComponentProps } from "svelte";
-    import randomArrayEntry from "$lib/utils/randomArrayEntry";
-    import { ImageSelector } from "$lib/components/Image";
+    import EditableTermsList from "$lib/components/Lists/EditableTerms.svelte";
 
     enum CreationStage {
         info = "i",
@@ -172,68 +155,7 @@
                 }}
             />
         {:else if stage === CreationStage.terms}
-            <FormInput
-                id="terms"
-                Component={EditableList}
-                value={[]}
-                properties={{
-                    placeholderItems: 3,
-                    buttons: [
-                        DefaultEditableListItemButton.moveUp,
-                        DefaultEditableListItemButton.moveDown,
-                        DefaultEditableListItemButton.delete,
-                    ],
-                    addItem: (index) => {
-                        const placeholders: { term: string; definition: string } =
-                            randomArrayEntry(termPlaceholders);
-
-                        return {
-                            index,
-                            _id: generateDocumentID(5, DocumentType.term),
-                            fields: [
-                                {
-                                    _id: "term",
-                                    Component: Textbox,
-                                    properties: {
-                                        placeholder: placeholders.term,
-                                        maxlength: termFields.term.properties.maxlength,
-                                    },
-                                    position: { group: 0, index: 0 },
-                                },
-                                {
-                                    _id: "definition",
-                                    Component: Textbox,
-                                    properties: {
-                                        class: "w-full",
-                                        placeholder: placeholders.definition,
-                                        maxlength: termFields.definition.properties.maxlength,
-                                        multiline: true,
-                                    },
-                                    position: { group: 1, index: 0 },
-                                },
-                                {
-                                    _id: "image",
-                                    Component: ImageSelector,
-                                    properties: {
-                                        class: "min-w-fit",
-                                        imageProperties: {
-                                            class: "size-40 rounded-input object-contain",
-                                        },
-                                    },
-                                    position: { group: 1, index: 1 },
-                                },
-                            ],
-                            isDraggable: true,
-                        } satisfies ComponentProps<typeof EditableListItem>;
-                    },
-                }}
-            >
-                <EditableListContent />
-
-                <EditableListControls>
-                    <EditableListAddItemButton>Add term</EditableListAddItemButton>
-                </EditableListControls>
-            </FormInput>
+            <EditableTermsList value={[]} />
         {/if}
     </FormContent>
 
