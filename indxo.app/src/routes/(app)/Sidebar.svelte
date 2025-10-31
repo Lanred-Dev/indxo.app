@@ -4,12 +4,18 @@
     import { innerHeight } from "svelte/reactivity/window";
     import { Wording } from "$lib/utils/wording";
     import { browser } from "$app/environment";
-    import type { HeaderContext, SessionContext, SidebarContext } from "$lib/utils/global";
+    import type {
+        HeaderContext,
+        SessionContext,
+        SidebarContext,
+        ViewportContext,
+    } from "$lib/utils/global";
     import { MyPageType } from "$lib/utils/routing";
 
     const header: HeaderContext = getContext("header");
     const sidebar: SidebarContext = getContext("sidebar");
     const session: SessionContext = getContext("session");
+    const viewport: ViewportContext = getContext("viewport");
 </script>
 
 {#snippet group(links: { url: string; text: string; icon: string }[], name?: string)}
@@ -32,6 +38,17 @@
 {/snippet}
 
 {#if sidebar.isVisible}
+    {#if viewport.isMobile}
+        <button
+            class="cover-screen fixed top-0 left-0 z-20"
+            aria-label="Close sidebar"
+            on:click={() => {
+                sidebar.isVisible = false;
+            }}
+        >
+        </button>
+    {/if}
+
     <div
         class={[
             "bg-primary fixed left-0 z-30 flex h-full w-4/5 min-w-fit flex-col justify-between gap-10 overflow-x-hidden overflow-y-auto pt-2 pr-4 pb-5.5 pl-4 shadow-2xl transition-transform duration-300 sm:w-2/5 md:w-auto md:bg-transparent md:pt-6 md:pr-4 md:pb-7 md:pl-7 md:shadow-none xl:w-[17.5%] 2xl:w-[15%]",
