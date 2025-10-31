@@ -104,7 +104,7 @@
 }
 
 @utility cover-screen {
-    @apply h-screen w-full;
+    @apply h-dvh w-full;
 }
 
 @utility x-center {
