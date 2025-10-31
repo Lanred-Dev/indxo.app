@@ -204,11 +204,11 @@
     }
 
     .button-primary {
-        @apply bg-dark hover:bg-light justify-center !border-none;
+        @apply bg-dark hover:bg-light justify-center border-none!;
     }
 
     .button-navigation {
-        @apply hover:bg-light flex w-full items-center gap-2 !border-none text-nowrap;
+        @apply hover:bg-light flex w-full items-center gap-2 border-none! text-nowrap;
     }
 
     .button-icon {
@@ -220,7 +220,7 @@
     }
 
     .button-basic {
-        @apply flex-center gap-0.25 text-lg hover:[&>img]:-translate-x-0.5;
+        @apply flex-center gap-px text-lg hover:[&>img]:-translate-x-0.5;
 
         & img {
             @apply transition-transform duration-100;
@@ -229,7 +229,7 @@
 
     .input-primary,
     .input-secondary {
-        @apply focus:ring-attention rounded-input data-max:border-alert flex items-center gap-1 !border-none !outline-none;
+        @apply focus:ring-attention rounded-input data-max:border-alert flex items-center gap-1 border-none! outline-none!;
     }
 
     .input-primary {
