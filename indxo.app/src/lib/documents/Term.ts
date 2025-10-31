@@ -12,7 +12,6 @@ export interface Term extends BaseDocument {
 }
 
 export interface SortedTerm {
-    _id: string;
     timesMissed: number;
     knows: boolean;
     sorted: boolean;

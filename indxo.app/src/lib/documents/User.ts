@@ -6,6 +6,7 @@ import {
 } from "./Document";
 import type { PublicFolder } from "./Folder";
 import type { PublicSet } from "./Set";
+import type { SortedTerm } from "./Term";
 
 type UserPreferences = {
     home: any[];
@@ -19,11 +20,7 @@ export interface BaseUser extends BaseDocument {
 
 export interface SortedSetMetadata {
     terms: {
-        [termID: string]: {
-            timesMissed: number;
-            struggling: boolean;
-            sorted: boolean;
-        };
+        [termID: string]: SortedTerm;
     };
 }
 
