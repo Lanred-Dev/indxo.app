@@ -51,7 +51,7 @@
 
     <div
         class={[
-            "bg-primary fixed left-0 z-30 flex h-full w-4/5 min-w-fit flex-col justify-between gap-10 overflow-x-hidden overflow-y-auto pt-2 pr-4 pb-5.5 pl-4 shadow-2xl transition-transform duration-300 sm:w-2/5 md:w-auto md:bg-transparent md:pt-6 md:pr-4 md:pb-7 md:pl-7 md:shadow-none xl:w-[17.5%] 2xl:w-[15%]",
+            "bg-primary fixed left-0 z-30 flex h-full w-4/6 min-w-fit flex-col justify-between gap-10 overflow-x-hidden overflow-y-auto pt-2 pr-4 pb-5.5 pl-4 shadow-2xl transition-transform duration-300 sm:w-2/5 md:w-auto md:bg-transparent md:pt-6 md:pr-4 md:pb-7 md:pl-7 md:shadow-none xl:w-[17.5%] 2xl:w-[15%]",
             !browser && "pointer-events-none opacity-0",
         ]}
         style:height="{innerHeight.current ?? 0 - header.height}px"
