@@ -1,3 +1,7 @@
+<script lang="ts">
+    import { enhance } from "$app/forms";
+</script>
+
 <svelte:head>
     <title>Logout</title>
 </svelte:head>
@@ -6,9 +10,10 @@
     <h1 class="title">Are you sure you want to logout?</h1>
 
     <div class="row w-fit text-xl">
-        <a class="button-attention clay-alert" href="/api/auth/logout" data-sveltekit-reload
-            >Yes, logout</a
-        >
+        <form method="POST" use:enhance>
+            <button class="button-attention clay-alert">Yes, logout</button>
+        </form>
+
         <a href="/" class="button-primary">No, take me back</a>
     </div>
 </div>
