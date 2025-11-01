@@ -28,14 +28,12 @@ export async function GET({ cookies, url }) {
         error(ResponseCodes.ServerError, "Failed to validate authorization code.");
     }
 
-    cookies.set("state", "", {
+    cookies.delete("state", {
         path: "/",
-        maxAge: 0,
     });
 
-    cookies.set("verifier", "", {
+    cookies.delete("verifier", {
         path: "/",
-        maxAge: 0,
     });
 
     const claims: {
