@@ -9,6 +9,7 @@
     import { animate } from "motion";
     import type { SessionContext } from "$lib/utils/global";
     import Results from "./Results.svelte";
+    import ProgressBar from "./ProgressBar.svelte";
 
     const session: SessionContext = getContext("session");
     const document: DocumentContext = getContext("document");
@@ -24,7 +25,7 @@
     let stillLearningTerms: SvelteSet<string> = new SvelteSet();
     let knowTerms: SvelteSet<string> = new SvelteSet();
     let timesMissed: SvelteMap<string, number> = new SvelteMap();
-    let strugglingTerms: SvelteMap<string, number> = new SvelteMap();
+    let strugglingTerms: SvelteSet<string> = new SvelteSet();
     let isLoaded: boolean = $state.raw(false);
 
     /**
@@ -84,7 +85,7 @@
         }
 
         if (timesMissed.get(_id)! >= session.user.preferences.strugglingTermThreshold) {
-            strugglingTerms.set(_id, timesMissed.get(_id)!);
+            strugglingTerms.add(_id);
         } else {
             strugglingTerms.delete(_id);
         }
@@ -209,7 +210,12 @@
 </script>
 
 {#if unsortedTerms.size > 0 && isLoaded}
-    <div class="w-full"></div>
+    <ProgressBar
+        knowTerms={knowTerms.size}
+        stillLearningTerms={stillLearningTerms.size}
+        strugglingTerms={strugglingTerms.size}
+        terms={terms.length}
+    />
 
     {@const term: Term = terms[currentTermIndex]}
     <Flashcards

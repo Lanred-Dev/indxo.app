@@ -15,7 +15,7 @@
     }: {
         knowTerms: SvelteSet<string>;
         stillLearningTerms: SvelteSet<string>;
-        strugglingTerms: SvelteMap<string, number>;
+        strugglingTerms: SvelteSet<string>;
         terms: Term[];
         restart: (withTerms: Term[]) => void;
     } = $props();
