@@ -100,7 +100,7 @@
                             <Card
                                 name={document.name}
                                 description={(document as PublicFolder).description}
-                                url="/${document._id}"
+                                url="/{document._id}"
                                 icon={(document as PublicFolder).icon}
                                 {breadcrumbs}
                             />
