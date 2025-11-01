@@ -3,6 +3,7 @@ import {
     DocumentFieldType,
     type BaseDocument,
     type DocumentFields,
+    type OwnedDocument,
 } from "./Document";
 import type { PublicFolder } from "./Folder";
 import type { PublicSet } from "./Set";
@@ -45,7 +46,7 @@ export interface User extends BaseUser {
 export interface PublicUser extends BaseUser {
     sets: PublicSet[];
     folders: PublicFolder[];
-    favorites: string[];
+    favorites: OwnedDocument[];
 }
 
 export interface SessionUser {
