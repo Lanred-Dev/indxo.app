@@ -23,7 +23,7 @@
                     title: "My Folders",
                     description: "All the folders you've created to organize your stuff.",
                 };
-            case MyPageType.sets:
+            default:
                 return {
                     title: "My Sets",
                     description: "Your own sets—full of terms and study stuff you’ve put together.",
