@@ -62,7 +62,7 @@
                         </li>
                     </ul>
 
-                    <a class="button-navigation" href="/api/auth/logout">
+                    <a class="button-navigation" href="/logout">
                         <img src="/icons/navigation/LogOut.svg" alt="Log out" />
                         <span>Log out</span>
                     </a>
