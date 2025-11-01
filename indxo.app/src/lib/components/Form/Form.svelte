@@ -26,10 +26,10 @@
     } = $props();
 
     let fields: Map<string, { value: unknown; label?: string }> = new Map();
-    let required: Set<string> = new Set();
+    let requiredFields: Set<string> = new Set();
     let isSubmitting: boolean = $state.raw(false);
     let submitError: string = $state.raw("");
-    let submitErrorVisible: boolean = $state.raw(false);
+    let isSubmitErrorVisible: boolean = $state.raw(false);
 
     setContext(formContextKey, {
         get isSubmitting() {
@@ -40,11 +40,11 @@
         registerField: (id, value, isRequired, label) => {
             fields.set(id, { value, label });
 
-            if (isRequired) required.add(id);
+            if (isRequired) requiredFields.add(id);
         },
         removeField: (id) => {
             fields.delete(id);
-            required.delete(id);
+            requiredFields.delete(id);
         },
     } satisfies FormContext);
 
@@ -58,7 +58,7 @@
 
         let missingFields: string[] = [];
 
-        required.forEach((id) => {
+        requiredFields.forEach((id) => {
             const { value, label } = fields.get(id) ?? {};
 
             if (
@@ -71,7 +71,7 @@
 
         if (missingFields.length > 0) {
             submitError = `Missing ${missingFields.length} required field${missingFields.length === 1 ? "" : "s"}.`;
-            submitErrorVisible = true;
+            isSubmitErrorVisible = true;
             return;
         }
 
@@ -99,7 +99,7 @@
                     break;
             }
 
-            submitErrorVisible = true;
+            isSubmitErrorVisible = true;
             return;
         }
 
@@ -107,7 +107,7 @@
     }
 </script>
 
-<Tooltip bind:isVisible={submitErrorVisible} duration={5}>
+<Tooltip bind:isVisible={isSubmitErrorVisible} duration={5}>
     <PopupContent
         class="bg-alert"
         xAlignment={PopupXAlignment.center}
