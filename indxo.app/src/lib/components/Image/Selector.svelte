@@ -13,8 +13,8 @@
         value = $bindable(),
         placeholder = "/icons/general/Image.svg",
         imageProperties = {},
-        onupload = upload,
-        ondelete = deleteImage,
+        onUpload = upload,
+        onDelete = deleteImage,
         class: className,
         ...properties
     }: {
@@ -22,8 +22,8 @@
         value?: string | null;
         placeholder?: string;
         imageProperties?: Record<string, any>;
-        onupload?: (file: File) => Promise<void>;
-        ondelete?: (name: string) => Promise<void>;
+        onUpload?: (file: File) => Promise<void>;
+        onDelete?: (name: string) => Promise<void>;
         class: ClassValue;
         [key: string]: unknown;
     } = $props();
@@ -31,7 +31,7 @@
     let imageServerFilename: string | null = null;
     let actualValue: string = $state.raw("");
     let uploadError: string = $state.raw("");
-    let uploadErrorVisible: boolean = $state.raw(false);
+    let isUploadErrorVisible: boolean = $state.raw(false);
     let fileInput: HTMLInputElement;
 
     async function deleteImage(name: string) {
@@ -49,7 +49,7 @@
             imageServerFilename = null;
         } catch {
             uploadError = "An unknown error occurred when deleting your image.";
-            uploadErrorVisible = true;
+            isUploadErrorVisible = true;
         }
     }
 
@@ -80,7 +80,7 @@
 
             value = null;
             actualValue = "";
-            uploadErrorVisible = true;
+            isUploadErrorVisible = true;
             return;
         }
 
@@ -89,7 +89,7 @@
     }
 </script>
 
-<Tooltip bind:isVisible={uploadErrorVisible} duration={5}>
+<Tooltip bind:isVisible={isUploadErrorVisible} duration={5}>
     <PopupContent
         class="bg-alert"
         xAlignment={PopupXAlignment.center}
@@ -111,7 +111,7 @@
                     <img class="size-8" src="/icons/general/Expand.svg" alt="Expand" />
                 </DialogTrigger>
 
-                <button onclick={() => ondelete(imageServerFilename!)} type="button">
+                <button onclick={() => onDelete(imageServerFilename!)} type="button">
                     <img class="size-8" src="/icons/general/Trash.svg" alt="Delete" />
                 </button>
             </div>
@@ -148,7 +148,7 @@
 
                 if (!file) return;
 
-                onupload(file);
+                onUpload(file);
             }}
         />
     </button>
