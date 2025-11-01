@@ -64,14 +64,14 @@
 
                     <a class="button-navigation" href="/logout">
                         <img src="/icons/navigation/LogOut.svg" alt="Log out" />
-                        <span>Log out</span>
+                        <span>Logout</span>
                     </a>
                 </PopupContent>
             </Popup>
         {:else}
             <a class="button-primary rounded-full" href="/login">
                 <img class="size-5" src="/icons/navigation/Account.svg" alt="Login" />
-                <span>Log in</span>
+                <span>Login</span>
             </a>
         {/if}
     </div>
