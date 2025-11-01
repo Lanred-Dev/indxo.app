@@ -9,9 +9,9 @@
     import Textbox from "$lib/components/Textbox.svelte";
     import { DocumentVisibility, setFields } from "$lib/documents";
     import { getContext } from "svelte";
-    import type { DocumentContext } from "../+page.svelte";
+    import type { DocumentEditContext } from "../+page.svelte";
 
-    const document: DocumentContext = getContext("document");
+    const document: DocumentEditContext = getContext("documentEdit");
 </script>
 
 <div class="row">

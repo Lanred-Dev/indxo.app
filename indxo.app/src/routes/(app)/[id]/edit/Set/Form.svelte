@@ -1,10 +1,10 @@
 <script lang="ts">
     import EditableTermsList from "$lib/components/Lists/EditableTerms.svelte";
     import { getContext } from "svelte";
-    import type { DocumentContext } from "../+page.svelte";
+    import type { DocumentEditContext } from "../+page.svelte";
     import Details from "./Details.svelte";
 
-    const document: DocumentContext = getContext("document");
+    const document: DocumentEditContext = getContext("documentEdit");
 </script>
 
 <Details />

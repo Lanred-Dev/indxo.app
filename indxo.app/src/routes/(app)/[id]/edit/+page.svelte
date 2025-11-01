@@ -1,5 +1,5 @@
 <script lang="ts" module>
-    export interface DocumentContext {
+    export interface DocumentEditContext {
         [key: string]: any;
         permission: DocumentPermission;
     }
@@ -23,10 +23,10 @@
 
     let { data } = $props();
 
-    setContext("document", {
+    setContext("documentEdit", {
         ...data.document,
         permission: data.permission,
-    } satisfies DocumentContext);
+    } satisfies DocumentEditContext);
 
     const FormComponent: Component<any> = $derived.by(() => {
         switch (determineDocumentType(data.document._id)) {

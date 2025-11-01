@@ -4,10 +4,10 @@
     import { Wording } from "$lib/utils/wording";
     import { getContext } from "svelte";
     import Chevron, { ChevronState } from "$lib/components/Icons/Chevron.svelte";
-    import type { DocumentContext } from "./+page.svelte";
     import { FormSubmit } from "$lib/components/Form";
+    import type { DocumentEditContext } from "./+page.svelte";
 
-    const document: DocumentContext = getContext("document");
+    const document: DocumentEditContext = getContext("documentEdit");
 </script>
 
 <div class="mb-5 flex justify-between">
