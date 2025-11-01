@@ -1,4 +1,4 @@
-import type { CardDocumentType } from "$lib/components/Card/index.js";
+import type { CardDocumentType } from "$lib/components/Card/index";
 import { MyPageType } from "$lib/utils/routing";
 
 export async function load({ params, fetch, parent }) {
