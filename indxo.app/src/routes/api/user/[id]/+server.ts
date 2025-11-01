@@ -1,4 +1,4 @@
-import type { PublicFolder, PublicSet, PublicUser, User } from "$lib/documents";
+import type { OwnedDocument, PublicFolder, PublicSet, PublicUser, User } from "$lib/documents";
 import { findDocumentByID } from "$lib/server/utils/document/findByID";
 import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
 import { error, json } from "@sveltejs/kit";
@@ -10,13 +10,17 @@ export async function GET({ params, fetch }) {
 
     const sets: PublicSet[] = await (await fetch(`/api/user/${params.id}/sets`)).json();
     const folders: PublicFolder[] = await (await fetch(`/api/user/${params.id}/folders`)).json();
+    const favorites: OwnedDocument[] = await (
+        await fetch(`/api/user/${params.id}/favorites`)
+    ).json();
+
     return json({
         _id: user._id,
         name: user.name,
         picture: user.picture,
         sets: sets,
         folders: folders,
-        favorites: user.favorites,
+        favorites: favorites,
         created: user.created,
     } satisfies PublicUser);
 }
