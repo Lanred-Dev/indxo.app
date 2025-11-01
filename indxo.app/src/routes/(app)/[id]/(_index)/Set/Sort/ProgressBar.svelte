@@ -27,6 +27,6 @@
 
 <style lang="postcss">
     .progress-bar {
-        @apply h-full rounded-full transition-[width] duration-500;
+        @apply h-full transition-[width] duration-200;
     }
 </style>
