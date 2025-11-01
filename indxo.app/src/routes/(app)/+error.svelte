@@ -54,10 +54,9 @@
     >
         <p class="text-2xl">error code: {page.status}</p>
         <p class="text-lg">
-            backend supplied message:
-            {JSON.stringify(
-                page.error && "message" in page.error ? page.error.message : page.error
-            )}
+            message: {page.error && page.error.message && page.error.message.length > 0
+                ? page.error.message
+                : "no additional information provided"}
         </p>
 
         <div class="flex flex-col gap-y-0.5 pt-3">
