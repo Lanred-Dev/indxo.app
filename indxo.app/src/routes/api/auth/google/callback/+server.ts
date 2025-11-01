@@ -11,7 +11,7 @@ import { type Collection } from "mongodb";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 
-export async function load({ cookies, url }) {
+export async function GET({ cookies, url }) {
     const oauthState = cookies.get("state");
     const oauthVerifier = cookies.get("verifier");
     const code = url.searchParams.get("code");
