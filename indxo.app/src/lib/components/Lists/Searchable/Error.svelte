@@ -23,7 +23,7 @@
 </script>
 
 {#if state !== null}
-    <div class="page-title flex flex-col items-center justify-center space-y-1 py-20 text-center">
+    <div class="page-title flex-center flex-col space-y-1 py-20 text-center">
         <h1 class="title">
             <img src={state.image} alt="Error" />
             {state.title}
