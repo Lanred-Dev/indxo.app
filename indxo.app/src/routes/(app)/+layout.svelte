@@ -83,7 +83,7 @@
     });
 </script>
 
-<!--(`!browser` acts as intial load indicator) Prevent animated layout shifts from happening during first page load-->
+<!--This prevents animated layout shifts from happening during first page load-->
 {#if !browser}
     <style>
         * {
