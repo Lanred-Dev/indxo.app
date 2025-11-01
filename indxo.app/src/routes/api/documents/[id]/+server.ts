@@ -26,7 +26,7 @@ const folders: Collection<Folder> = loadCollection("documents", "folders");
 
 export async function GET({ params, fetch, locals }) {
     const hasPermissionFetch = await fetch(
-        `/api/documents/${params.id}/permissions/${locals.user._id}`,
+        `/api/documents/${params.id}/permissions/${locals.session ? locals.user._id : "0"}`,
         {
             method: "POST",
             body: JSON.stringify(DocumentPermission.view),
