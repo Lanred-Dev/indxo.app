@@ -23,7 +23,6 @@ export async function GET({ cookies }) {
         maxAge: 60000,
         sameSite: "lax",
         secure: !dev,
-        domain: dev ? "localhost" : "indxo.app",
     });
 
     redirect(ResponseCodes.Redirect, url);

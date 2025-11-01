@@ -91,7 +91,6 @@ export async function GET({ cookies, url }) {
         sameSite: "lax",
         secure: !dev,
         expires: new Date(session.expires),
-        domain: dev ? "localhost" : "indxo.app",
     });
 
     redirect(ResponseCodes.Redirect, "/");
