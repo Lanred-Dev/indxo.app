@@ -1,4 +1,3 @@
-import { dev } from "$app/environment";
 import { google } from "$lib/server/auth/oauth";
 import { ResponseCodes } from "$lib/utils/apiResponses";
 import { redirect } from "@sveltejs/kit";
@@ -14,7 +13,6 @@ export async function GET({ cookies }) {
         httpOnly: true,
         maxAge: 60000,
         sameSite: "lax",
-        secure: !dev,
     });
 
     cookies.set("verifier", verifier, {
@@ -22,7 +20,6 @@ export async function GET({ cookies }) {
         httpOnly: true,
         maxAge: 60000,
         sameSite: "lax",
-        secure: !dev,
     });
 
     redirect(ResponseCodes.Redirect, url);
