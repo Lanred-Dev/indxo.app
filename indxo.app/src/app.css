@@ -174,7 +174,7 @@
     @apply mb-10 w-full;
 
     & .title {
-        @apply break-word flex items-center gap-1 text-3xl leading-snug font-bold md:text-4xl;
+        @apply break-word flex items-center gap-1 text-3xl leading-none font-bold md:text-4xl;
 
         & img {
             @apply size-10;
@@ -182,7 +182,7 @@
     }
 
     & .description {
-        @apply text-light break-word text-lg leading-none font-semibold md:text-xl;
+        @apply text-light break-word text-lg leading-snug font-semibold md:text-xl;
     }
 }
 
