@@ -9,15 +9,15 @@
 
     const searchableList: SearchableListContext = getContext(searchableListContextKey);
 
-    let filterID: string = $state.raw(filters[0]?.id ?? "");
+    let currentFilterID: string = $state.raw(filters[0]?.id ?? "");
 
     $effect(() => {
-        searchableList.setFilter(filters.find(({ id }) => id === filterID)!);
+        searchableList.setFilter(filters.find(({ id }) => id === currentFilterID)!);
     });
 </script>
 
 <div class="mb-10 flex w-full flex-wrap items-center gap-2 gap-x-5">
-    <Dropdown bind:value={filterID}>
+    <Dropdown bind:value={currentFilterID}>
         <DropdownTrigger />
 
         <DropdownContent>
