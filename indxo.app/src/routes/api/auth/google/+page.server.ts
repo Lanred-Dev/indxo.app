@@ -4,7 +4,7 @@ import { ResponseCodes } from "$lib/utils/apiResponses";
 import { redirect } from "@sveltejs/kit";
 import { generateCodeVerifier, generateState } from "arctic";
 
-export async function GET({ cookies }) {
+export async function load({ cookies }) {
     const state = generateState();
     const verifier = generateCodeVerifier();
     const url = google.createAuthorizationURL(state, verifier, ["openid", "profile", "email"]);

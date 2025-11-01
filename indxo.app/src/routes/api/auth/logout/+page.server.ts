@@ -3,7 +3,7 @@ import { deleteSession, validateToken } from "$lib/server/auth/session";
 import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
 import { error, redirect } from "@sveltejs/kit";
 
-export async function GET({ cookies }) {
+export async function load({ cookies }) {
     const token = cookies.get("session");
 
     if (!token) error(ResponseCodes.Unauthorized, ResponseMessages.Unauthorized);
