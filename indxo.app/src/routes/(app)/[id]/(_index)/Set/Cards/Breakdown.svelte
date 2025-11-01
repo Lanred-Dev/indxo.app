@@ -31,7 +31,7 @@
         )}
 
         {@render info(
-            "/icons/general/Clock.svg",
+            "/icons/general/Calendar.svg",
             "Created on",
             format(document.created, "dd/MM/yyyy")
         )}
