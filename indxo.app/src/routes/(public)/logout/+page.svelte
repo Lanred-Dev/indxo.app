@@ -6,7 +6,9 @@
     <h1 class="title">Are you sure you want to logout?</h1>
 
     <div class="row w-fit text-xl">
-        <a class="button-attention clay-alert" href="/api/auth/logout">Yes, logout</a>
+        <a class="button-attention clay-alert" href="/api/auth/logout" data-sveltekit-reload
+            >Yes, logout</a
+        >
         <a href="/" class="button-primary">No, take me back</a>
     </div>
 </div>
