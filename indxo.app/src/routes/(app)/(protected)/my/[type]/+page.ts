@@ -1,7 +1,14 @@
 import type { CardDocumentType } from "$lib/components/Card/index";
+import { ResponseCodes } from "$lib/utils/apiResponses";
 import { MyPageType } from "$lib/utils/routing";
+import { error } from "@sveltejs/kit";
 
 export async function load({ params, fetch, parent }) {
+    const { type } = params;
+
+    if (!Object.values(MyPageType).includes(type as MyPageType))
+        error(ResponseCodes.BadRequest, `${type} is not a valid my page type`);
+
     const { user } = await parent();
     let response: Response;
 
@@ -19,5 +26,6 @@ export async function load({ params, fetch, parent }) {
 
     return {
         documents: (await response.json()) as CardDocumentType[],
+        type: params.type as MyPageType,
     };
 }
