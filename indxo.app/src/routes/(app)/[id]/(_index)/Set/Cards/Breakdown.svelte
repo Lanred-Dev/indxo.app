@@ -33,7 +33,7 @@
         {@render info(
             "/icons/general/Calendar.svg",
             "Created on",
-            format(document.created, "dd/MM/yyyy")
+            format(document.created, "MM/dd/yyyy")
         )}
 
         {@render info(document.owner.picture, "Created by", document.owner.name)}
@@ -42,7 +42,7 @@
             {@render info(
                 "/icons/general/Clock.svg",
                 "Last updated",
-                format(document.updated, "dd/MM/yyyy")
+                format(document.updated, "MM/dd/yyyy")
             )}
         {/if}
     </div>
