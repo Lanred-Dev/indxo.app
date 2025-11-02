@@ -19,7 +19,7 @@
 
         switch (documentType) {
             case DocumentType.set:
-            case DocumentType.folder:
+            case DocumentType.folder: {
                 if (session.session)
                     buttons.push({
                         image: {
@@ -30,7 +30,7 @@
                         },
                         text: "Favorite",
                         onclick: async () => {
-                            const response: Response = await fetch(
+                            const response = await fetch(
                                 `/api/documents/${document._id}/favorite`,
                                 {
                                     method: "PUT",
@@ -52,22 +52,35 @@
                         },
                     });
 
+                buttons.push({
+                    image: { url: "/icons/general/Clipboard.svg" },
+                    text: "Copy",
+                    onclick: async () => {
+                        const response = await fetch(`/api/documents/${document._id}/copy`, {
+                            method: "POST",
+                        });
+
+                        if (response.status === ResponseCodes.Success)
+                            goto(`/${await response.json()}`);
+                    },
+                });
+
                 if (isPermissionEqual(document.permission, DocumentPermission.owner))
                     buttons.push({
                         image: { url: "/icons/general/Trash.svg" },
                         text: "Delete",
                         onclick: async () => {
-                            const response: Response = await fetch(
-                                `/api/documents/${document._id}`,
-                                {
-                                    method: "DELETE",
-                                }
-                            );
+                            const response = await fetch(`/api/documents/${document._id}`, {
+                                method: "DELETE",
+                            });
 
                             if (response.status === ResponseCodes.SuccessNoResponse)
                                 goto(`/my/${determineDocumentType(document._id)}`);
                         },
                     });
+
+                break;
+            }
         }
 
         return buttons;
