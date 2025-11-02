@@ -132,7 +132,7 @@
         }}
     >
         <div
-            class="absolute top-0 left-0 h-full w-full"
+            class="break-word absolute top-0 left-0 h-full w-full text-center"
             style:transform-style="preserve-3d"
             bind:this={Card}
         >
@@ -140,7 +140,7 @@
 
             <div>
                 <div class="CardFace" bind:this={CardFront}>
-                    <p class="text-2xl font-medium md:text-3xl" aria-label="Term">
+                    <p class="text-xl font-medium md:text-2xl" aria-label="Term">
                         {currentTerm.term}
                     </p>
                 </div>
@@ -152,7 +152,7 @@
                     bind:this={CardBack}
                 >
                     <p
-                        class="text-light x-center top-3 text-base font-medium transition-opacity"
+                        class="text-light x-center top-3 max-w-3/4 overflow-hidden text-base font-medium text-nowrap text-ellipsis transition-opacity"
                         style:opacity={flashcardScrollY > 0 ? 0 : 1}
                         aria-label="Term"
                     >
@@ -173,7 +173,7 @@
                             />
                         {/if}
 
-                        <p class="break-word text-xl md:text-2xl" aria-label="Definition">
+                        <p class="text-xl md:text-2xl" aria-label="Definition">
                             {currentTerm.definition}
                         </p>
                     </div>
@@ -183,7 +183,7 @@
                     @reference "../../../../../app.css";
 
                     .CardFace {
-                        @apply rounded-container border-primary flex-center absolute top-0 left-0 h-full w-full flex-col overflow-y-auto border bg-[#eaeef0] p-6 shadow-xl inset-shadow-sm;
+                        @apply rounded-container border-primary flex-center absolute top-0 left-0 h-full w-full flex-col overflow-x-hidden overflow-y-auto border bg-[#eaeef0] p-6 shadow-xl inset-shadow-sm;
                     }
                 </style>
             </div>
