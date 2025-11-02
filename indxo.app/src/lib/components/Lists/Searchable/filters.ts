@@ -117,6 +117,36 @@ const sortFunctions: Record<string, SearchableListFilter> = {
             return groups;
         },
     },
+    subject: {
+        id: "s",
+        name: "Subject",
+        apply: (query, documents) => {
+            let groups: ComponentProps<typeof CardGroup>[] = [];
+
+            documents
+                .filter((document) => checkIfDocumentAndQueryMatch(query, document))
+                .forEach((document) => {
+                    let subject: string = "subject" in document ? document.subject : "";
+
+                    if (!groups.find(({ name }) => name?.toLowerCase() === subject.toLowerCase()))
+                        groups.push({ name: subject, documents: [] });
+
+                    let groupIndex: number = groups.findIndex(
+                        ({ name }) => name?.toLowerCase() === subject.toLowerCase()
+                    );
+                    groups[groupIndex].documents.push(document);
+                });
+
+            return groups
+                .sort(({ name: name1 }, { name: name2 }) => name1!.localeCompare(name2!))
+                .map(({ name, documents }) => {
+                    return {
+                        name,
+                        documents: sortGroupByCreated(documents),
+                    };
+                });
+        },
+    },
 };
 
 export default sortFunctions;

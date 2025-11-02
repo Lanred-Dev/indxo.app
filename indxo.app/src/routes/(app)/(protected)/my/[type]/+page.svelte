@@ -6,6 +6,7 @@
         SearchableListError,
         EmptyListState,
     } from "$lib/components/Lists/Searchable";
+    import type { SearchableListFilter } from "$lib/components/Lists/Searchable/filters.js";
     import SearchableList from "$lib/components/Lists/Searchable/SearchableList.svelte";
     import { MyPageType } from "$lib/utils/routing";
 
@@ -30,6 +31,18 @@
                 };
         }
     });
+    let filters: SearchableListFilter[] = $derived.by(() => {
+        let baseFilters: SearchableListFilter[] = [
+            SearchableListFilters.alphabetical,
+            SearchableListFilters.created,
+            SearchableListFilters.none,
+        ];
+
+        if (data.type === MyPageType.sets || data.type === MyPageType.favorites)
+            baseFilters.push(SearchableListFilters.subject);
+
+        return baseFilters;
+    });
 </script>
 
 <svelte:head>
@@ -43,13 +56,7 @@
 </div>
 
 <SearchableList documents={data.documents}>
-    <SearchableListSearchbar
-        filters={[
-            SearchableListFilters.alphabetical,
-            SearchableListFilters.created,
-            SearchableListFilters.none,
-        ]}
-    />
+    <SearchableListSearchbar {filters} />
 
     <SearchableListContent />
 
