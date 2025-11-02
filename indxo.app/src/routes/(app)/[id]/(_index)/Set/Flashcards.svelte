@@ -12,6 +12,7 @@
     import { animate } from "motion";
     import type { Term } from "$lib/documents";
     import { ExpandableImage } from "$lib/components/Image";
+    import MarkdownText from "$lib/components/MarkdownText.svelte";
 
     let {
         cycle,
@@ -140,9 +141,11 @@
 
             <div>
                 <div class="CardFace" bind:this={CardFront}>
-                    <p class="text-xl font-medium md:text-2xl" aria-label="Term">
-                        {currentTerm.term}
-                    </p>
+                    <MarkdownText
+                        text={currentTerm.term}
+                        class="text-xl font-medium md:text-2xl"
+                        aria-label="Term"
+                    />
                 </div>
 
                 <div
@@ -151,13 +154,12 @@
                     style:transform="rotateX(180deg)"
                     bind:this={CardBack}
                 >
-                    <p
+                    <div
                         class="text-light x-center top-3 max-w-3/4 overflow-hidden text-base font-medium text-nowrap text-ellipsis transition-opacity"
                         style:opacity={flashcardScrollY > 0 ? 0 : 1}
-                        aria-label="Term"
                     >
-                        {currentTerm.term}
-                    </p>
+                        <MarkdownText text={currentTerm.term} aria-label="Term" />
+                    </div>
 
                     <div
                         class="flex w-full flex-col items-center overflow-y-auto py-6"
@@ -173,9 +175,11 @@
                             />
                         {/if}
 
-                        <p class="text-xl md:text-2xl" aria-label="Definition">
-                            {currentTerm.definition}
-                        </p>
+                        <MarkdownText
+                            text={currentTerm.definition}
+                            class="text-xl md:text-2xl"
+                            aria-label="Definition"
+                        />
                     </div>
                 </div>
 
