@@ -75,7 +75,9 @@
                             });
 
                             if (response.status === ResponseCodes.SuccessNoResponse)
-                                goto(`/my/${determineDocumentType(document._id)}`);
+                                goto(
+                                    `/my/${determineDocumentType(document._id) === DocumentType.folder ? "folders" : "sets"}`
+                                );
                         },
                     });
 
