@@ -32,6 +32,11 @@
     });
 </script>
 
+<svelte:head>
+    <title>{title}</title>
+    <meta name="description" content={description} />
+</svelte:head>
+
 <div class="page-title">
     <h1 class="title">{title}</h1>
     <p class="description">{description}</p>
