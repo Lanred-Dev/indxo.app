@@ -3,6 +3,7 @@
     import type { DocumentContext } from "../../+page.svelte";
     import { format } from "date-fns";
     import { Wording } from "$lib/utils/wording";
+    import MarkdownText from "$lib/components/MarkdownText.svelte";
 
     let document: DocumentContext = getContext("document");
 </script>
@@ -20,7 +21,7 @@
 
 <div class="mt-15">
     {#if document.description && document.description.length > 0}
-        <p class="break-word mb-8 text-lg">{document.description}</p>
+        <MarkdownText class="break-word mb-8 text-lg" text={document.description} />
     {/if}
 
     <div class="flex w-full flex-col gap-y-3">
