@@ -68,8 +68,6 @@
 </script>
 
 <div in:fade class="space-y-10">
-    <p class="text-2xl font-bold">Here's how you did:</p>
-
     <div class="flex w-full flex-col gap-10 md:flex-row md:items-center">
         <div class="relative aspect-square w-3/5 md:w-2/5 lg:w-1/4">
             <canvas
