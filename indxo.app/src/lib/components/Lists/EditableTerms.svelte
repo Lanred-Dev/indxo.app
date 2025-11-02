@@ -74,7 +74,7 @@
                         Component: ImageSelector,
                         value: value?.image,
                         properties: {
-                            class: "min-w-fit",
+                            class: "min-w-fit size-40",
                             imageProperties: {
                                 class: "size-40 rounded-input object-contain",
                             },
