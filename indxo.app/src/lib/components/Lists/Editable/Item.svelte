@@ -36,6 +36,7 @@
 </script>
 
 <li
+    class="w-full"
     style:cursor={draggable ? "move" : undefined}
     {draggable}
     ondragstart={() => {
