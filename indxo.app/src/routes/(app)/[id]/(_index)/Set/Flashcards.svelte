@@ -133,7 +133,7 @@
         }}
     >
         <div
-            class="break-word absolute top-0 left-0 h-full w-full text-center"
+            class="break-word absolute top-0 left-0 h-full w-full text-center text-xl md:text-2xl"
             style:transform-style="preserve-3d"
             bind:this={Card}
         >
@@ -141,11 +141,7 @@
 
             <div>
                 <div class="CardFace" bind:this={CardFront}>
-                    <MarkdownText
-                        text={currentTerm.term}
-                        class="text-xl font-medium md:text-2xl"
-                        aria-label="Term"
-                    />
+                    <MarkdownText text={currentTerm.term} aria-label="Term" />
                 </div>
 
                 <div
@@ -155,10 +151,14 @@
                     bind:this={CardBack}
                 >
                     <div
-                        class="text-light x-center top-3 max-w-3/4 overflow-hidden text-base font-medium text-nowrap text-ellipsis transition-opacity"
+                        class="x-center top-3 max-w-3/4 transition-opacity"
                         style:opacity={flashcardScrollY > 0 ? 0 : 1}
                     >
-                        <MarkdownText text={currentTerm.term} aria-label="Term" />
+                        <MarkdownText
+                            text={currentTerm.term}
+                            class="text-light overflow-hidden text-base text-nowrap text-ellipsis"
+                            aria-label="Term"
+                        />
                     </div>
 
                     <div
@@ -175,11 +175,7 @@
                             />
                         {/if}
 
-                        <MarkdownText
-                            text={currentTerm.definition}
-                            class="text-xl md:text-2xl"
-                            aria-label="Definition"
-                        />
+                        <MarkdownText text={currentTerm.definition} aria-label="Definition" />
                     </div>
                 </div>
 
