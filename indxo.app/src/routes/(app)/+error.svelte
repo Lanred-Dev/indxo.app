@@ -24,16 +24,26 @@
     };
 
     let showErrorDetails: boolean = $state.raw(false);
+    let { title, message } = $derived.by(() => {
+        return page.status in messages
+            ? messages[page.status]
+            : {
+                  title: "Unexpected Error",
+                  message: "Something went wrong, but we're not sure what.",
+              };
+    });
 </script>
 
 <div class="page-title">
     <p class="text-light font-semibold" style:font-family="GoogleSansCode, monospace;">
         [{page.status}]
     </p>
+
     <h1 class="title">
-        {messages[page.status].title}
+        {title}
     </h1>
-    <p class="description">{messages[page.status].message}</p>
+
+    <p class="description">{message}</p>
 </div>
 
 <button
@@ -52,7 +62,7 @@
         transition:slide={{ axis: "y", duration: 300 }}
         style:font-family="GoogleSansCode, monospace;"
     >
-        <p class="text-2xl">error code: {page.status}</p>
+        <p class="text-2xl">code: {page.status}</p>
         <p class="text-lg">
             message: {page.error && page.error.message && page.error.message.length > 0
                 ? page.error.message
