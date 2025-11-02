@@ -7,7 +7,7 @@ export async function load({ params, fetch, parent }) {
     const { type } = params;
 
     if (!Object.values(MyPageType).includes(type as MyPageType))
-        error(ResponseCodes.NotFound, `${type} is not a valid my page type`);
+        error(ResponseCodes.NotFound, `'${type}' is not a valid my document type`);
 
     const { user } = await parent();
     let response: Response;
