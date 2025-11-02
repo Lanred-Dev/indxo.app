@@ -101,10 +101,13 @@ const sortFunctions: Record<string, SearchableListFilter> = {
                 const previousMinutes: number = createdFilterGroups[index - 1]?.[1] || 0;
 
                 let filteredDocuments: CardDocumentType[] = documents.filter(({ created }) => {
-                    // Adding 0.01 prevents the number from being 0
-                    const minutesSinceCreated: number =
-                        millisecondsToMinutes(Date.now() - created) + 0.01;
-                    return minutesSinceCreated <= minutes && minutesSinceCreated > previousMinutes;
+                    const minutesSinceCreation: number = Math.min(
+                        millisecondsToMinutes(Date.now() - created),
+                        0.01
+                    );
+                    return (
+                        minutesSinceCreation <= minutes && minutesSinceCreation > previousMinutes
+                    );
                 });
 
                 if (filteredDocuments.length > 0)
