@@ -35,10 +35,14 @@
         let currentTypes: Set<TokenType> = new Set();
         let buffer: string = "";
         let wasPreviousCharacterEscaped: boolean = false;
+        let skipNextCharacters: number = 0;
 
         for (let index = 0; index < text.length; index++) {
             if (text[index] === "\\" && !wasPreviousCharacterEscaped) {
                 wasPreviousCharacterEscaped = true;
+                continue;
+            } else if (skipNextCharacters > 0) {
+                skipNextCharacters--;
                 continue;
             }
 
@@ -53,6 +57,8 @@
                     if (!text.startsWith(tag, index)) continue;
 
                     foundType = type as TokenType;
+
+                    if (foundType.length > 1) skipNextCharacters = tag.length - 1;
 
                     if (currentTypes.has(foundType)) {
                         tokens.push({ type: foundType, content: buffer });
