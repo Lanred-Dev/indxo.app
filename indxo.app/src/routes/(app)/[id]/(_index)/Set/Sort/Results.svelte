@@ -2,7 +2,7 @@
     import { getContext, onMount } from "svelte";
     import { fade } from "svelte/transition";
     import type { DocumentContext } from "../../+page.svelte";
-    import type { SvelteMap, SvelteSet } from "svelte/reactivity";
+    import type { SvelteSet } from "svelte/reactivity";
     import { Wording } from "$lib/utils/wording";
     import type { Term } from "$lib/documents";
 
@@ -25,17 +25,18 @@
     let context: CanvasRenderingContext2D;
     let canvasWidth: number = $state.raw(0);
     let canvasHeight: number = $state.raw(0);
+    let lineWidth: number = 7;
 
     function drawCircle(radius: number, color: string, startAngle: number, endAngle: number) {
         context.beginPath();
-        context.arc(canvasWidth / 2, canvasHeight / 2, radius, startAngle, endAngle);
-        context.fillStyle = color;
-        context.fill();
+        context.arc(canvasWidth / 2, canvasHeight / 2, radius - lineWidth, startAngle, endAngle);
+        context.strokeStyle = color;
+        context.lineWidth = lineWidth;
+        context.stroke();
     }
 
     function draw() {
         const bodyStyles = getComputedStyle(window.document.body);
-        const pageColor: string = bodyStyles.getPropertyValue("--background-color-page");
         const successColor: string = bodyStyles.getPropertyValue("--color-success");
         const alertColor: string = bodyStyles.getPropertyValue("--color-alert");
         const maxRadius: number = canvasWidth / 2;
@@ -47,7 +48,6 @@
             (Math.PI * 2 * knowTerms.size) / terms.length,
             (Math.PI * 2 * (knowTerms.size + stillLearningTerms.size)) / terms.length
         );
-        drawCircle(maxRadius - 7, pageColor, 0, Math.PI * 2);
     }
 
     onMount(() => {
