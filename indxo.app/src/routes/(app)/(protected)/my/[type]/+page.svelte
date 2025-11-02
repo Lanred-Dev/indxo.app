@@ -9,6 +9,7 @@
     import type { SearchableListFilter } from "$lib/components/Lists/Searchable/filters.js";
     import SearchableList from "$lib/components/Lists/Searchable/SearchableList.svelte";
     import { MyPageType } from "$lib/utils/routing";
+    import { Wording } from "$lib/utils/wording.js";
 
     let { data } = $props();
 
@@ -16,18 +17,18 @@
         switch (data.type) {
             case MyPageType.favorites:
                 return {
-                    title: "My Favorites",
+                    title: `My ${Wording.favorites}`,
                     description: "A collection of your favorite items.",
                 };
             case MyPageType.folders:
                 return {
-                    title: "My Folders",
-                    description: "All the folders you've created to organize your stuff.",
+                    title: `My ${Wording.folders}`,
+                    description: `All the ${Wording.folders.toLowerCase()} you've created to organize your stuff.`,
                 };
             default:
                 return {
-                    title: "My Sets",
-                    description: "Your own sets—full of terms and study stuff you’ve put together.",
+                    title: `My ${Wording.sets}`,
+                    description: `Your own ${Wording.sets.toLowerCase()}—full of ${Wording.terms.toLowerCase()} and study stuff you’ve put together.`,
                 };
         }
     });
