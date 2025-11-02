@@ -32,7 +32,7 @@
 
     let parsedText: string = $derived.by(() => {
         const tokens: Token[] = [];
-        let currentTypes: Set<TokenType> = new Set();
+        let currentTypes: Map<TokenType, number> = new Map();
         let buffer: string = "";
         let wasPreviousCharacterEscaped: boolean = false;
         let skipNextCharacters: number = 0;
@@ -70,7 +70,7 @@
                             buffer = "";
                         }
 
-                        currentTypes.add(foundType);
+                        currentTypes.set(foundType, buffer.length - 1);
                     }
                 }
             } else {
@@ -80,7 +80,18 @@
             if (foundType == TokenType.Normal) buffer += text[index];
         }
 
-        if (buffer.length > 0) tokens.push({ type: TokenType.Normal, content: buffer });
+        if (buffer.length > 0) {
+            // If there is any entries left in currentTypes, we need to treat them as normal text
+            if (currentTypes.size > 0)
+                currentTypes.forEach((position, type) => {
+                    buffer =
+                        buffer.slice(0, position - 1) +
+                        TOKEN_TYPE_MAP[type] +
+                        buffer.slice(position - 1);
+                });
+
+            tokens.push({ type: TokenType.Normal, content: buffer });
+        }
 
         let result: string = "";
 
