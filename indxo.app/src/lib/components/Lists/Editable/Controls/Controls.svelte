@@ -17,10 +17,10 @@
         const { bottom: parentBottom, height: parentHeight } =
             Controls.parentElement.getBoundingClientRect();
         const { bottom: controlsBottom } = Controls.getBoundingClientRect();
-        // Adding 1 ensures that the controls do hit 100%, without it if there was nothing below the list it would be 99%
+        // Subtracting 2 ensures that the controls do hit 100%, without it if there was nothing below the list it would be 99%
         distanceToBottom = Math.min(
             100,
-            Math.floor(Math.max(((parentBottom - controlsBottom) / parentHeight) * 100 - 1, 0))
+            Math.floor(Math.max(((parentBottom - controlsBottom) / parentHeight) * 100 - 2, 0))
         );
     });
 </script>
