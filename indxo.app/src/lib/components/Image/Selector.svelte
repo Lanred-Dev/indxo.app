@@ -101,7 +101,7 @@
     </PopupContent>
 </Tooltip>
 
-<div class={["group relative", className]} {...properties}>
+<div class={["group rounded-input bg-input relative", className]} {...properties}>
     <Dialog>
         {#if value}
             <div
