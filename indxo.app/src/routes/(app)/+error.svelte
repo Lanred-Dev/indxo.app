@@ -35,9 +35,16 @@
 </script>
 
 <div class="page-title">
-    <p class="text-light font-semibold" style:font-family="GoogleSansCode, monospace;">
+    <a
+        class="text-light font-semibold"
+        style:font-family="GoogleSansCode, monospace;"
+        href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/{page.status}"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Learn more about HTTP status code {page.status}"
+    >
         [{page.status}]
-    </p>
+    </a>
 
     <h1 class="title">
         {title}
