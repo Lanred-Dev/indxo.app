@@ -13,11 +13,13 @@ import {
     type User,
 } from "$lib/documents";
 import { loadCollection } from "$lib/server/mongo";
+import {
+    determineIfDocumentContainsFields,
+    getValidFields,
+} from "$lib/server/utils/document/fields";
 import { findDocumentByID } from "$lib/server/utils/document/findByID";
-import getValidFields from "$lib/server/utils/document/getValidFields.js";
 import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
 import determineDocumentType from "$lib/utils/document/determineType";
-import { determineIfDocumentContainsFields } from "$lib/utils/document/fields";
 import { error, json } from "@sveltejs/kit";
 import type { Collection } from "mongodb";
 

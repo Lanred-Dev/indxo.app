@@ -9,9 +9,8 @@ import {
     type User,
 } from "$lib/documents";
 import { loadCollection } from "$lib/server/mongo.js";
-import getValidFields from "$lib/server/utils/document/getValidFields.js";
+import { getValidFields, resolveMissingDocumentFields } from "$lib/server/utils/document/fields.js";
 import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses.js";
-import { resolveMissingDocumentFields } from "$lib/utils/document/fields.js";
 import generateDocumentID from "$lib/utils/document/generateID.js";
 import { error, json } from "@sveltejs/kit";
 import type { Collection } from "mongodb";

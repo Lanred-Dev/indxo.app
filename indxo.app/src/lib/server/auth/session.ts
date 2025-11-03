@@ -1,6 +1,6 @@
 import { userFields, type Session, type User } from "$lib/documents";
 import { loadCollection } from "$lib/server/mongo";
-import { resolveMissingDocumentFields } from "$lib/utils/document/fields";
+import { resolveMissingDocumentFields } from "$lib/server/utils/document/fields";
 import { sha256 } from "@oslojs/crypto/sha2";
 import { encodeBase32LowerCase, encodeHexLowerCase } from "@oslojs/encoding";
 import { milliseconds } from "date-fns";

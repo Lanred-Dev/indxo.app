@@ -7,7 +7,7 @@ import {
     type User,
 } from "$lib/documents";
 import { loadCollection } from "$lib/server/mongo";
-import getValidFields from "$lib/server/utils/document/getValidFields.js";
+import { getValidFields } from "$lib/server/utils/document/fields";
 import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
 import { error, json } from "@sveltejs/kit";
 import type { Collection } from "mongodb";
