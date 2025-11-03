@@ -9,8 +9,7 @@
         SearchableListSearchbar,
     } from "$lib/components/Lists/Searchable";
     import SearchableList from "$lib/components/Lists/Searchable/SearchableList.svelte";
-    import Dropdown from "$lib/components/Dropdown/Dropdown.svelte";
-    import { DropdownContent, DropdownItem, DropdownTrigger } from "$lib/components/Dropdown";
+    import { SegmentedButton, SegmentedButtonGroup } from "$lib/components/SegmentedButtonGroup";
 
     const document: DocumentContext = getContext("document");
 
@@ -40,17 +39,13 @@
     });
 </script>
 
-<Dropdown bind:value={currentFilterID}>
-    <DropdownTrigger />
-
-    <DropdownContent>
-        {#each Object.values(filters) as { id, text }}
-            <DropdownItem value={id}>
-                {text}
-            </DropdownItem>
-        {/each}
-    </DropdownContent>
-</Dropdown>
+<SegmentedButtonGroup bind:value={currentFilterID} class="mb-6">
+    {#each Object.values(filters) as { id, text }}
+        <SegmentedButton {id}>
+            {text}
+        </SegmentedButton>
+    {/each}
+</SegmentedButtonGroup>
 
 <SearchableList {documents}>
     <SearchableListSearchbar
@@ -61,7 +56,7 @@
         ]}
     />
 
-    <SearchableListContent />
+    <SearchableListContent c />
 
     <SearchableListError
         states={{
