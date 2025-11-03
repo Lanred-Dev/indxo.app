@@ -10,37 +10,53 @@
     } from "$lib/components/Lists/Searchable";
     import SearchableList from "$lib/components/Lists/Searchable/SearchableList.svelte";
     import { SegmentedButton, SegmentedButtonGroup } from "$lib/components/SegmentedButtonGroup";
+    import type { SearchableListFilter } from "$lib/components/Lists/Searchable/filters";
+    import { Wording } from "$lib/utils/wording";
 
     const document: DocumentContext = getContext("document");
 
-    const filters: {
+    enum DocumentPageType {
+        sets = "s",
+        folders = "f",
+    }
+
+    const documentPageFilters: {
         [id: string]: {
             text: string;
-            id: string;
+            id: DocumentPageType;
         };
     } = {
-        sets: { text: "Sets", id: "s" },
-        folders: { text: "Folders", id: "f" },
-        favorites: { text: "Favorites", id: "fav" },
+        sets: { text: "Sets", id: DocumentPageType.sets },
+        folders: { text: "Folders", id: DocumentPageType.folders },
     };
 
-    let currentFilterID: string = $state.raw(filters.sets.id);
+    let currentFilterID: DocumentPageType = $state.raw(documentPageFilters.sets.id);
     let documents: any[] = $derived.by(() => {
         switch (currentFilterID) {
-            case filters.sets.id:
+            case documentPageFilters.sets.id:
                 return document.sets;
-            case filters.folders.id:
+            case documentPageFilters.folders.id:
                 return document.folders;
-            case filters.favorites.id:
-                return document.favorites;
             default:
                 return [];
         }
     });
+    let filters: SearchableListFilter[] = $derived.by(() => {
+        let baseFilters: SearchableListFilter[] = [
+            SearchableListFilters.alphabetical,
+            SearchableListFilters.created,
+            SearchableListFilters.none,
+        ];
+
+        if (currentFilterID === DocumentPageType.sets)
+            baseFilters.push(SearchableListFilters.subject);
+
+        return baseFilters;
+    });
 </script>
 
 <SegmentedButtonGroup bind:value={currentFilterID} class="mb-6">
-    {#each Object.values(filters) as { id, text }}
+    {#each Object.values(documentPageFilters) as { id, text }}
         <SegmentedButton {id}>
             {text}
         </SegmentedButton>
@@ -48,13 +64,7 @@
 </SegmentedButtonGroup>
 
 <SearchableList {documents}>
-    <SearchableListSearchbar
-        filters={[
-            SearchableListFilters.alphabetical,
-            SearchableListFilters.created,
-            SearchableListFilters.none,
-        ]}
-    />
+    <SearchableListSearchbar {filters} />
 
     <SearchableListContent />
 
@@ -63,7 +73,7 @@
             [EmptyListState.noDocuments]: {
                 image: "/icons/general/RaisedHand.svg",
                 title: "Echoes... Just Echoes",
-                message: "Nothing’s here yet. Maybe it’s time to start something awesome?",
+                message: `${document.name} doesnt have any ${currentFilterID === DocumentPageType.sets ? Wording.sets.toLowerCase() : Wording.folders.toLowerCase()} yet.`,
             },
             [EmptyListState.noSearchResults]: {
                 image: "/icons/general/Search.svg",

@@ -31,7 +31,6 @@ export async function GET({ params, fetch }) {
         picture: user.picture,
         sets: sets,
         folders: folders,
-        favorites: favorites,
         created: user.created,
     } satisfies PublicUser);
 }
