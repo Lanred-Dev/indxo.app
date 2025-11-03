@@ -1,5 +1,5 @@
-import type { Session } from "$lib/documents/Session.js";
-import type { SessionUser } from "$lib/documents/User.js";
+import type { Session } from "$lib/documents/Session";
+import type { SessionUser } from "$lib/documents/User";
 
 export function load({ locals }) {
     return {

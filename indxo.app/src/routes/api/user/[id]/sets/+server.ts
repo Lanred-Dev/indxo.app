@@ -1,7 +1,7 @@
-import type { PublicSet } from "$lib/documents/Set.js";
-import type { User } from "$lib/documents/User.js";
-import { findDocumentByID } from "$lib/server/utils/document/findByID.js";
-import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses.js";
+import type { PublicSet } from "$lib/documents/Set";
+import type { User } from "$lib/documents/User";
+import { findDocumentByID } from "$lib/server/utils/document/findByID";
+import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
 import { error, json } from "@sveltejs/kit";
 
 export async function GET({ params, fetch }) {

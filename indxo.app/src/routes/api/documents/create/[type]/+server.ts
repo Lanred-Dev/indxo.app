@@ -8,10 +8,10 @@ import {
     type Set,
     type User,
 } from "$lib/documents";
-import { loadCollection } from "$lib/server/mongo.js";
-import { getValidFields, resolveMissingDocumentFields } from "$lib/server/utils/document/fields.js";
-import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses.js";
-import generateDocumentID from "$lib/utils/document/generateID.js";
+import { loadCollection } from "$lib/server/mongo";
+import { getValidFields, resolveMissingDocumentFields } from "$lib/server/utils/document/fields";
+import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
+import generateDocumentID from "$lib/utils/document/generateID";
 import { error, json } from "@sveltejs/kit";
 import type { Collection } from "mongodb";
 

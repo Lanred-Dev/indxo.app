@@ -1,7 +1,7 @@
 import type { SortedSetMetadata, User } from "$lib/documents";
-import { loadCollection } from "$lib/server/mongo.js";
-import { findDocumentByID } from "$lib/server/utils/document/findByID.js";
-import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses.js";
+import { loadCollection } from "$lib/server/mongo";
+import { findDocumentByID } from "$lib/server/utils/document/findByID";
+import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
 import { error, json } from "@sveltejs/kit";
 import type { Collection } from "mongodb";
 

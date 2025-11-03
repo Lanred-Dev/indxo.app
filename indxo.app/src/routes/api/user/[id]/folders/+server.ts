@@ -1,6 +1,6 @@
 import type { PublicFolder, User } from "$lib/documents";
-import { findDocumentByID } from "$lib/server/utils/document/findByID.js";
-import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses.js";
+import { findDocumentByID } from "$lib/server/utils/document/findByID";
+import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
 import { error, json } from "@sveltejs/kit";
 
 export async function GET({ params, fetch }) {

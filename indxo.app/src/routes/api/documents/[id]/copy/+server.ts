@@ -1,6 +1,6 @@
 import { DocumentPermission, DocumentType } from "$lib/documents";
 import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
-import determineDocumentType from "$lib/utils/document/determineType.js";
+import determineDocumentType from "$lib/utils/document/determineType";
 import { error, json } from "@sveltejs/kit";
 
 export async function POST({ params, locals, fetch }) {

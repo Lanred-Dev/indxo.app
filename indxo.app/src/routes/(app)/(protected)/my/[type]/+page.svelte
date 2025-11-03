@@ -6,10 +6,10 @@
         SearchableListError,
         EmptyListState,
     } from "$lib/components/Lists/Searchable";
-    import type { SearchableListFilter } from "$lib/components/Lists/Searchable/filters.js";
+    import type { SearchableListFilter } from "$lib/components/Lists/Searchable/filters";
     import SearchableList from "$lib/components/Lists/Searchable/SearchableList.svelte";
     import { MyPageType } from "$lib/utils/routing";
-    import { Wording } from "$lib/utils/wording.js";
+    import { Wording } from "$lib/utils/wording";
 
     let { data } = $props();
 
