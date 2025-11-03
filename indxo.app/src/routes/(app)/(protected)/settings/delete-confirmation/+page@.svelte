@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { enhance } from "$app/forms";
     import { goto } from "$app/navigation";
 
     let { data } = $props();
@@ -15,21 +16,9 @@
     </div>
 
     <div class="row w-fit text-xl">
-        <button
-            class="button-attention clay-alert"
-            onclick={async () => {
-                const response = await fetch(`/api/user/${data.user._id}`, {
-                    method: "DELETE",
-                });
-
-                if (!response.ok) {
-                    alert("Failed to delete account.");
-                    return;
-                }
-
-                goto("/login");
-            }}>Yes, delete my account</button
-        >
+        <form method="POST" use:enhance>
+            <button class="button-attention clay-alert">Yes, delete my account</button>
+        </form>
 
         <a href="/settings" class="button-primary">No, take me back</a>
     </div>

@@ -35,27 +35,6 @@ export async function GET({ params, fetch }) {
     } satisfies PublicUser);
 }
 
-export async function DELETE({ params, locals, fetch }) {
-    if (locals.user._id !== params.id)
-        error(ResponseCodes.Unauthorized, "You are not authorized to delete this account.");
-
-    const sets = await (await fetch(`/api/user/${params.id}/sets`)).json();
-    const folders = await (await fetch(`/api/user/${params.id}/folders`)).json();
-
-    for (const { _id } of [...folders, ...sets]) {
-        await fetch(`/api/documents/${_id}`, {
-            method: "DELETE",
-        });
-    }
-
-    const deleteUserResult = await users.deleteOne({ _id: params.id });
-
-    if (deleteUserResult.deletedCount === 0)
-        error(ResponseCodes.ServerError, "Failed to delete user.");
-
-    return new Response(null, { status: ResponseCodes.SuccessNoResponse });
-}
-
 export async function PUT({ params, locals, request }) {
     if (locals.user._id !== params.id)
         error(ResponseCodes.Unauthorized, "You are not authorized to update this account.");
