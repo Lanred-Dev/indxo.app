@@ -1,11 +1,11 @@
 <script lang="ts" module>
     interface Token {
         type: TokenType;
-        content: string;
+        children: (Token | string)[];
     }
 
     enum TokenType {
-        Normal = "",
+        Text = "",
         Bold = "<b>",
         Italic = "<i>",
         Code = "<code>",
@@ -22,84 +22,88 @@
         [key: string]: unknown;
     } = $props();
 
-    const TOKEN_TYPE_MAP: { [key in TokenType]: string } = {
-        [TokenType.Normal]: "",
-        [TokenType.Bold]: "**",
-        [TokenType.Italic]: "*",
-        [TokenType.Code]: "```",
-        [TokenType.Strikethrough]: "--",
-    };
+    const TOKEN_TYPE_MAP: { type: TokenType; tag: string; order: number }[] = [
+        { type: TokenType.Bold, tag: "**", order: 1 },
+        { type: TokenType.Code, tag: "```", order: 2 },
+        { type: TokenType.Strikethrough, tag: "--", order: 3 },
+        { type: TokenType.Italic, tag: "*", order: 4 },
+        { type: TokenType.Text, tag: "", order: 0 },
+    ].sort((a, b) => a.order - b.order);
 
     let parsedText: string = $derived.by(() => {
-        const tokens: Token[] = [];
-        let currentTypes: Map<TokenType, number> = new Map();
+        const root: Token = { type: TokenType.Text, children: [] };
+        const stack: Token[] = [root];
         let buffer: string = "";
         let wasPreviousCharacterEscaped: boolean = false;
-        let skipNextCharacters: number = 0;
+        let skipCharacters: number = 0;
+
+        function flushBuffer() {
+            if (buffer.length == 0) return;
+
+            stack[stack.length - 1].children.push(buffer);
+            buffer = "";
+        }
 
         for (let index = 0; index < text.length; index++) {
             if (text[index] === "\\" && !wasPreviousCharacterEscaped) {
                 wasPreviousCharacterEscaped = true;
                 continue;
-            } else if (skipNextCharacters > 0) {
-                skipNextCharacters--;
+            } else if (skipCharacters > 0) {
+                skipCharacters--;
                 continue;
             }
 
-            let foundType: TokenType = TokenType.Normal;
+            let matchedType: TokenType = TokenType.Text;
 
             if (!wasPreviousCharacterEscaped) {
-                for (const type of Object.values(TokenType)) {
-                    if (type === TokenType.Normal) continue;
+                for (const { tag, type } of TOKEN_TYPE_MAP) {
+                    if (!text.startsWith(tag, index) || type === TokenType.Text) continue;
 
-                    const tag = TOKEN_TYPE_MAP[type];
-
-                    if (!text.startsWith(tag, index)) continue;
-
-                    foundType = type as TokenType;
-
-                    if (foundType.length > 1) skipNextCharacters = tag.length - 1;
-
-                    if (currentTypes.has(foundType)) {
-                        tokens.push({ type: foundType, content: buffer });
-                        currentTypes.delete(foundType);
-                        buffer = "";
-                    } else {
-                        if (buffer.length > 0) {
-                            tokens.push({ type: TokenType.Normal, content: buffer });
-                            buffer = "";
-                        }
-
-                        currentTypes.set(foundType, buffer.length - 1);
-                    }
+                    matchedType = type;
+                    skipCharacters = tag.length - 1;
+                    break;
                 }
             } else {
                 wasPreviousCharacterEscaped = false;
             }
 
-            if (foundType == TokenType.Normal) buffer += text[index];
+            if (matchedType === TokenType.Text) {
+                buffer += text[index];
+            } else {
+                flushBuffer();
+
+                if (stack.findIndex(({ type }) => type === matchedType) !== -1) {
+                    let node: Token;
+
+                    do {
+                        node = stack.pop()!;
+                        stack[stack.length - 1].children.push(node);
+                    } while (node.type !== matchedType && stack.length > 1);
+                } else {
+                    const newNode: Token = { type: matchedType, children: [] };
+                    stack.push(newNode);
+                }
+            }
         }
 
-        if (buffer.length > 0) {
-            // If there is any entries left in currentTypes, we need to treat them as normal text
-            if (currentTypes.size > 0)
-                currentTypes.forEach((position, type) => {
-                    buffer =
-                        buffer.slice(0, position - 1) +
-                        TOKEN_TYPE_MAP[type] +
-                        buffer.slice(position - 1);
-                });
+        flushBuffer();
 
-            tokens.push({ type: TokenType.Normal, content: buffer });
+        while (stack.length > 1) {
+            const node: Token = stack.pop()!;
+            let tag: string = TOKEN_TYPE_MAP.find(({ type }) => type === node.type)!.tag;
+
+            for (const child of node.children) {
+                if (typeof child === "string") {
+                    tag += child;
+                } else {
+                    tag += buildToken(child);
+                }
+            }
+
+            stack[stack.length - 1].children.push(tag);
         }
 
-        let result: string = "";
-
-        tokens.forEach(({ type, content }: Token) => {
-            result += `${type}${escapeHTML(content)}${getClosingTagFromType(type)}`;
-        });
-
-        return result;
+        return buildToken(root);
     });
 
     function escapeHTML(text: string): string {
@@ -110,19 +114,24 @@
             .replace(/"/g, "&quot;");
     }
 
-    function getClosingTagFromType(type: TokenType): string {
-        switch (type) {
-            case TokenType.Bold:
-                return "</b>";
-            case TokenType.Italic:
-                return "</i>";
-            case TokenType.Code:
-                return "</code>";
-            case TokenType.Strikethrough:
-                return "</s>";
-            default:
-                return "";
+    function buildToken({ type, children }: Token): string {
+        if (typeof children === "string") {
+            return `${type}${escapeHTML(children)}${getClosingTagFromType(type)}`;
+        } else {
+            let result: string = "";
+
+            children.forEach((child) => {
+                result += typeof child === "string" ? escapeHTML(child) : buildToken(child);
+            });
+
+            return `${type}${result}${getClosingTagFromType(type)}`;
         }
+    }
+
+    function getClosingTagFromType(type: TokenType): string {
+        if (type === TokenType.Text) return "";
+
+        return type.replace("<", "</");
     }
 </script>
 
