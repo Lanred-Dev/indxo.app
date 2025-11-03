@@ -3,6 +3,7 @@
     import { getContext } from "svelte";
     import type { SettingsPageContext } from "../+page.svelte";
     import { invalidateAll } from "$app/navigation";
+    import Checkbox from "$lib/components/Checkbox.svelte";
 
     let {
         value,
@@ -22,8 +23,8 @@
             return response.ok;
         },
     }: {
-        value: string | number;
-        placeholder?: string;
+        value: string | number | boolean;
+        placeholder?: any;
         updateEndpoint?: {
             url: string;
             id: string;
@@ -40,7 +41,9 @@
 <div class="flex flex-wrap gap-2">
     {#if typeof value === "number"}
         <input bind:value {placeholder} type="number" class="input-primary w-fit min-w-fit" />
-    {:else}
+    {:else if typeof value === "boolean"}
+        <Checkbox bind:value {placeholder} label={placeholder} />
+    {:else if typeof value === "string"}
         <Textbox bind:value {placeholder} class="w-fit! min-w-fit" />
     {/if}
 
