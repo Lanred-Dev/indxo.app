@@ -53,7 +53,7 @@
                     });
 
                 buttons.push({
-                    image: { url: "/icons/general/Clipboard.svg" },
+                    image: { url: "/icons/general/CopyDocument.svg" },
                     text: "Copy",
                     onclick: async () => {
                         const response = await fetch(`/api/documents/${document._id}/copy`, {
