@@ -12,6 +12,7 @@ import type { SortedTerm } from "./Term";
 type UserPreferences = {
     home: any[];
     strugglingTermThreshold: number;
+    showTermOnDefinitionSide: boolean;
 };
 
 export interface BaseUser extends BaseDocument {
@@ -66,6 +67,7 @@ export const emptySessionUser: SessionUser = {
     preferences: {
         home: [],
         strugglingTermThreshold: 3,
+        showTermOnDefinitionSide: true,
     },
     favorites: [],
 };
@@ -127,12 +129,14 @@ export const userFields: DocumentFields = {
         type: {
             home: DocumentFieldType.array,
             strugglingTermThreshold: DocumentFieldType.number,
+            showTermOnDefinitionSide: DocumentFieldType.boolean,
         },
         properties: {
             isUserUpdateable: true,
             defaultValue: {
                 home: [],
                 strugglingTermThreshold: 3,
+                showTermOnDefinitionSide: true,
             },
         },
     },
