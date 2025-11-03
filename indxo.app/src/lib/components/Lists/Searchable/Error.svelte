@@ -29,6 +29,6 @@
             {state.title}
         </h1>
 
-        <p>{state.message}</p>
+        <p class="description">{state.message}</p>
     </div>
 {/if}
