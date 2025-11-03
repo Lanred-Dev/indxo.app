@@ -97,7 +97,7 @@ export function resolveMissingDocumentFields(
  * @param fields The correct set of fields the document should have
  * @returns If the document contains all the fields and no extra fields
  */
-export function determineIfDocumentContainsFields(
+export function doesDocumentContainFields(
     document: UnknownDocument,
     fields: DocumentFields
 ): boolean {

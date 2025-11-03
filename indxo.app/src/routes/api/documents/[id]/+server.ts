@@ -13,10 +13,7 @@ import {
     type User,
 } from "$lib/documents";
 import { loadCollection } from "$lib/server/mongo";
-import {
-    determineIfDocumentContainsFields,
-    getValidFields,
-} from "$lib/server/utils/document/fields";
+import { doesDocumentContainFields, getValidFields } from "$lib/server/utils/document/fields";
 import { findDocumentByID } from "$lib/server/utils/document/findByID";
 import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
 import determineDocumentType from "$lib/utils/document/determineType";
@@ -211,7 +208,7 @@ export async function PUT({ params, locals, request, fetch }) {
             if (determineDocumentType(term._id) !== DocumentType.term)
                 error(ResponseCodes.BadRequest, "Non-term document provided.");
 
-            const isValid = determineIfDocumentContainsFields(term, termFields);
+            const isValid = doesDocumentContainFields(term, termFields);
 
             if (!isValid) error(ResponseCodes.BadRequest, "Invalid term provided.");
         }
