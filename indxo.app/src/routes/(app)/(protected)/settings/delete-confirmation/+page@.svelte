@@ -1,9 +1,7 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
-    import type { SessionContext } from "$lib/utils/global";
-    import { getContext } from "svelte";
 
-    const session: SessionContext = getContext("session");
+    let { data } = $props();
 </script>
 
 <svelte:head>
@@ -20,7 +18,7 @@
         <button
             class="button-attention clay-alert"
             onclick={async () => {
-                const response = await fetch(`/api/user/${session.user._id}`, {
+                const response = await fetch(`/api/user/${data.user._id}`, {
                     method: "DELETE",
                 });
 
