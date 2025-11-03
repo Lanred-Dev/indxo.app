@@ -8,7 +8,7 @@
 </script>
 
 <Section>
-    <SectionTitle>Study</SectionTitle>
+    <SectionTitle>{Wording.sortMode}</SectionTitle>
 
     <SectionContent>
         <SectionEntry
@@ -18,13 +18,42 @@
             <SectionInput
                 value={session.user.preferences.strugglingTermThreshold}
                 placeholder="5"
-                onUpdate={async (newValue: string) => {
+                onUpdate={async (value: number) => {
                     const response = await fetch(`/api/user/${session.user._id}`, {
                         method: "PUT",
                         body: JSON.stringify({
                             preferences: {
                                 ...session.user.preferences,
-                                strugglingTermThreshold: Number(newValue),
+                                strugglingTermThreshold: value,
+                            },
+                        }),
+                    });
+
+                    return response.ok;
+                }}
+            />
+        </SectionEntry>
+    </SectionContent>
+</Section>
+
+<Section>
+    <SectionTitle>{Wording.cards}</SectionTitle>
+
+    <SectionContent>
+        <SectionEntry
+            title="Show {Wording.term} on Definition Side"
+            description="Whether to show the {Wording.term} on the definition side."
+        >
+            <SectionInput
+                value={session.user.preferences.showTermOnDefinitionSide}
+                placeholder="true"
+                onUpdate={async (value: boolean) => {
+                    const response = await fetch(`/api/user/${session.user._id}`, {
+                        method: "PUT",
+                        body: JSON.stringify({
+                            preferences: {
+                                ...session.user.preferences,
+                                showTermOnDefinitionSide: value,
                             },
                         }),
                     });
