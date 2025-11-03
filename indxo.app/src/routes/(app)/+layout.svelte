@@ -102,18 +102,16 @@
     <div
         class="x-center y-center z-40 h-full w-full"
         style:padding-top="{headerHeight}px"
-        style:padding-left="{isMobile.current || !isSidebarVisible ? 0 : sidebarWidth}px"
+        style:padding-left="{!isMobile.current && isSidebarVisible ? sidebarWidth : 0}px"
         transition:fade
     >
-        <div class="bg-page h-full w-full">
-            <Loader class="x-center y-center" />
-        </div>
+        <Loader class="x-center y-center" />
     </div>
 {/if}
 
 <main
     class={[
-        "relative h-dvh w-full overflow-x-hidden overflow-y-auto pr-7 pb-6 transition-[padding-left,padding-right,padding-top,padding-bottom] duration-400 ease-in-out md:pr-22 xl:pr-[15%]",
+        "relative h-dvh w-full overflow-x-hidden overflow-y-auto pr-7 pb-6 transition-[padding-left,padding-right,padding-top,padding-bottom,opacity] duration-400 ease-in-out md:pr-22 xl:pr-[15%]",
         isMobile.current && isSidebarVisible && "pointer-events-none blur-xs",
     ]}
     bind:this={Viewport}
@@ -122,6 +120,7 @@
     }}
     style:--header-height="{headerHeight}px"
     style:--sidebar-width="{!isMobile.current && isSidebarVisible ? sidebarWidth : 0}px"
+    style:opacity="{isLoading ? 0 : 100}%"
 >
     {@render children?.()}
 </main>
