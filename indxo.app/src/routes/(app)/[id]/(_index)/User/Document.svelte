@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { getContext } from "svelte";
-    import type { DocumentContext } from "../+page.svelte";
+    import { getContext, onMount } from "svelte";
+    import type { DocumentContext, DocumentHeaderContext } from "../+page.svelte";
     import {
         EmptyListState,
         SearchableListContent,
@@ -14,6 +14,7 @@
     import { Wording } from "$lib/utils/wording";
 
     const document: DocumentContext = getContext("document");
+    const documentHeader: DocumentHeaderContext = getContext("documentHeader");
 
     enum DocumentPageType {
         sets = "s",
@@ -52,6 +53,10 @@
             baseFilters.push(SearchableListFilters.subject);
 
         return baseFilters;
+    });
+
+    onMount(() => {
+        documentHeader.showActions = false;
     });
 </script>
 
