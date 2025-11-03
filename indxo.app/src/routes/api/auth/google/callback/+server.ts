@@ -69,6 +69,7 @@ export async function GET({ cookies, url }) {
             preferences: {
                 strugglingTermThreshold: 0,
                 home: [],
+                showTermOnDefinitionSide: true,
             },
             created: Date.now(),
             metadata: {
