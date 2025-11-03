@@ -190,6 +190,6 @@
 
 <svelte:window onfocusin={() => (isDraggable = false)} onfocusout={() => (isDraggable = true)} />
 
-<div class="relative">
+<div class="relative w-full">
     {@render children?.()}
 </div>
