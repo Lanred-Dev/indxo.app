@@ -4,6 +4,7 @@
     import type { SettingsPageContext } from "../+page.svelte";
     import { invalidateAll } from "$app/navigation";
     import Checkbox from "$lib/components/Checkbox.svelte";
+    import { fade } from "svelte/transition";
 
     let {
         value,
@@ -35,7 +36,7 @@
     } = $props();
 
     const settingsPage: SettingsPageContext = getContext("settingsPage");
-    let savedValue: any = value;
+    let savedValue: any = $state.raw(value);
 </script>
 
 <div class="flex flex-wrap gap-2">
@@ -47,22 +48,23 @@
         <Textbox bind:value {placeholder} class="w-fit! min-w-fit" />
     {/if}
 
-    <button
-        class="button-primary"
-        onclick={async () => {
-            if (value === savedValue) return;
+    {#if value !== savedValue}
+        <button
+            class="button-primary"
+            onclick={async () => {
+                savedValue = value;
 
-            savedValue = value;
+                const wasSuccessful: boolean = await onUpdate(value);
 
-            const wasSuccessful: boolean = await onUpdate(value);
-
-            if (!wasSuccessful) {
-                settingsPage.showSubmitErrorMessage();
-            } else {
-                invalidateAll();
-            }
-        }}
-    >
-        {updateText}
-    </button>
+                if (!wasSuccessful) {
+                    settingsPage.showSubmitErrorMessage();
+                } else {
+                    invalidateAll();
+                }
+            }}
+            in:fade={{ duration: 200 }}
+        >
+            {updateText}
+        </button>
+    {/if}
 </div>
