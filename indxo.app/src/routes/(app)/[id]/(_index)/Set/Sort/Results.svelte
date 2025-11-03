@@ -10,13 +10,11 @@
         knowTerms,
         stillLearningTerms,
         strugglingTerms,
-        terms,
         restart,
     }: {
         knowTerms: SvelteSet<string>;
         stillLearningTerms: SvelteSet<string>;
         strugglingTerms: SvelteSet<string>;
-        terms: Term[];
         restart: (withTerms: Term[]) => void;
     } = $props();
 
@@ -36,17 +34,34 @@
     }
 
     function draw() {
+        context.clearRect(0, 0, canvasWidth, canvasHeight);
+
         const bodyStyles = getComputedStyle(window.document.body);
         const successColor: string = bodyStyles.getPropertyValue("--color-success");
+        const warningColor: string = bodyStyles.getPropertyValue("--color-warning");
         const alertColor: string = bodyStyles.getPropertyValue("--color-alert");
         const maxRadius: number = canvasWidth / 2;
 
-        drawCircle(maxRadius, successColor, 0, (Math.PI * 2 * knowTerms.size) / terms.length);
+        drawCircle(
+            maxRadius,
+            successColor,
+            0,
+            (Math.PI * 2 * knowTerms.size) / document.terms.length
+        );
+
+        const stillLearningStartAngle: number =
+            (Math.PI * 2 * knowTerms.size) / document.terms.length;
+        drawCircle(
+            maxRadius,
+            warningColor,
+            stillLearningStartAngle,
+            (Math.PI * 2 * (knowTerms.size + stillLearningTerms.size)) / document.terms.length
+        );
         drawCircle(
             maxRadius,
             alertColor,
-            (Math.PI * 2 * knowTerms.size) / terms.length,
-            (Math.PI * 2 * (knowTerms.size + stillLearningTerms.size)) / terms.length
+            stillLearningStartAngle,
+            stillLearningStartAngle + (Math.PI * 2 * strugglingTerms.size) / stillLearningTerms.size
         );
     }
 
@@ -79,7 +94,7 @@
 
             <div class="x-center y-center absolute z-1 w-full text-center">
                 <p class="text-3xl font-bold">
-                    {((knowTerms.size / terms.length) * 100).toFixed(0)}%
+                    {((knowTerms.size / document.terms.length) * 100).toFixed(0)}%
                 </p>
                 <p class="w-full">of the way there</p>
             </div>
@@ -128,12 +143,15 @@
     </div>
 
     <div class="flex flex-wrap gap-4">
-        <button class="button-primary" onclick={() => restart(terms)}>Restart</button>
+        <button class="button-primary" onclick={() => restart(document.terms)}>Restart</button>
 
         {#if stillLearningTerms.size > 0}
             <button
                 class="button-attention clay-alert"
-                onclick={() => restart(terms.filter((term) => stillLearningTerms.has(term._id)))}
+                onclick={() =>
+                    restart(
+                        document.terms.filter((term: Term) => stillLearningTerms.has(term._id))
+                    )}
             >
                 Study still learning terms
             </button>
@@ -142,7 +160,8 @@
         {#if strugglingTerms.size > 0}
             <button
                 class="button-attention clay-alert"
-                onclick={() => restart(terms.filter((term) => strugglingTerms.has(term._id)))}
+                onclick={() =>
+                    restart(document.terms.filter((term: Term) => strugglingTerms.has(term._id)))}
             >
                 Study struggling terms
             </button>
