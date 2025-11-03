@@ -112,11 +112,13 @@ export function getValidFields(
     const validFields: Record<string, unknown> = {};
 
     for (const [id, value] of Object.entries(fields)) {
-        const field = documentFields[id];
+        if (!(id in documentFields)) continue;
 
-        if (!field || !field.properties.isUserUpdateable) continue;
+        const field: DocumentField = documentFields[id];
 
-        const isValid = validateFieldType(value, field.type);
+        if (!field.properties.isUserUpdateable) continue;
+
+        const isValid: boolean = validateFieldType(value, field.type);
 
         if (!isValid)
             return new Response(`Invalid value for field ${id}.`, {
