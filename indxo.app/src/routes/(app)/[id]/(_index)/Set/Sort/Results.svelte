@@ -147,7 +147,7 @@
 
         {#if stillLearningTerms.size > 0}
             <button
-                class="button-attention clay-alert"
+                class="button-attention clay-warning"
                 onclick={() =>
                     restart(
                         document.terms.filter((term: Term) => stillLearningTerms.has(term._id))
