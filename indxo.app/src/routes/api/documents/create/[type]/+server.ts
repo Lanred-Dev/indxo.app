@@ -3,13 +3,15 @@ import {
     DocumentType,
     folderFields,
     setFields,
+    type DocumentFields,
     type Folder,
     type Set,
     type User,
 } from "$lib/documents";
 import { loadCollection } from "$lib/server/mongo.js";
+import getValidFields from "$lib/server/utils/document/getValidFields.js";
 import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses.js";
-import { resolveMissingDocumentFields, validateFieldType } from "$lib/utils/document/fields.js";
+import { resolveMissingDocumentFields } from "$lib/utils/document/fields.js";
 import generateDocumentID from "$lib/utils/document/generateID.js";
 import { error, json } from "@sveltejs/kit";
 import type { Collection } from "mongodb";
@@ -24,21 +26,11 @@ export async function POST({ params, locals, request }) {
     if (params.type !== DocumentType.folder && params.type !== DocumentType.set)
         error(ResponseCodes.BadRequest, ResponseMessages.InvalidDocumentType);
 
-    const validFields: Record<string, unknown> = {};
-    let documentFields = params.type === DocumentType.folder ? folderFields : setFields;
+    const documentFields: DocumentFields =
+        params.type === DocumentType.folder ? folderFields : setFields;
+    const validFields = getValidFields(await request.json(), documentFields);
 
-    for (const [id, value] of Object.entries(await request.json())) {
-        const field = documentFields[id];
-
-        if (!field || !field.properties.isUserUpdateable) continue;
-
-        const isValid = validateFieldType(value, field.type);
-
-        if (!isValid)
-            error(ResponseCodes.BadRequest, `Invalid value for field '${id}' (value: ${value}).`);
-
-        validFields[id] = value;
-    }
+    if (validFields instanceof Response) return validFields;
 
     const documentID: string = generateDocumentID(15, params.type);
     const [actualFields] = resolveMissingDocumentFields(

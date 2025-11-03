@@ -14,9 +14,10 @@ import {
 } from "$lib/documents";
 import { loadCollection } from "$lib/server/mongo";
 import { findDocumentByID } from "$lib/server/utils/document/findByID";
+import getValidFields from "$lib/server/utils/document/getValidFields.js";
 import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
 import determineDocumentType from "$lib/utils/document/determineType";
-import { determineIfDocumentContainsFields, validateFieldType } from "$lib/utils/document/fields";
+import { determineIfDocumentContainsFields } from "$lib/utils/document/fields";
 import { error, json } from "@sveltejs/kit";
 import type { Collection } from "mongodb";
 
@@ -163,26 +164,12 @@ export async function PUT({ params, locals, request, fetch }) {
         error(hasPermissionFetch.status, await hasPermissionFetch.json());
 
     const documentType = determineDocumentType(params.id);
-    const validFields: Record<string, unknown> = {};
-    const documentFields = documentType === DocumentType.folder ? folderFields : setFields;
+    const validFields = getValidFields(
+        await request.json(),
+        documentType === DocumentType.folder ? folderFields : setFields
+    );
 
-    for (const [id, value] of Object.entries(await request.json())) {
-        const field = documentFields[id];
-
-        if (!field || !field.properties.isUserUpdateable) continue;
-
-        const isValid = validateFieldType(value, field.type);
-
-        if (!isValid) error(ResponseCodes.BadRequest, `Invalid value for field ${id}.`);
-
-        validFields[id] = value;
-    }
-
-    // No updates were made
-    if (Object.keys(validFields).length === 0)
-        return new Response(null, {
-            status: ResponseCodes.SuccessNoResponse,
-        });
+    if (validFields instanceof Response) return validFields;
 
     if (documentType === DocumentType.folder && "sets" in validFields) {
         const document: Folder = await findDocumentByID(params.id);
