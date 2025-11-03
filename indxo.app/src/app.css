@@ -171,7 +171,7 @@
 }
 
 @utility page-title {
-    @apply mb-10 w-full;
+    @apply mb-12 w-full;
 
     & .title {
         @apply break-word flex items-center gap-1 text-3xl leading-none font-bold md:text-4xl;
