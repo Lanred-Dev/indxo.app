@@ -1,5 +1,13 @@
-import type { OwnedDocument, PublicFolder, PublicSet, PublicUser, User } from "$lib/documents";
+import {
+    userFields,
+    type OwnedDocument,
+    type PublicFolder,
+    type PublicSet,
+    type PublicUser,
+    type User,
+} from "$lib/documents";
 import { loadCollection } from "$lib/server/mongo";
+import getValidFields from "$lib/server/utils/document/getValidFields.js";
 import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
 import { error, json } from "@sveltejs/kit";
 import type { Collection } from "mongodb";
@@ -45,6 +53,26 @@ export async function DELETE({ params, locals, fetch }) {
 
     if (deleteUserResult.deletedCount === 0)
         error(ResponseCodes.ServerError, "Failed to delete user.");
+
+    return new Response(null, { status: ResponseCodes.SuccessNoResponse });
+}
+
+export async function PUT({ params, locals, request }) {
+    if (locals.user._id !== params.id)
+        error(ResponseCodes.Unauthorized, "You are not authorized to update this account.");
+
+    const validFields = getValidFields(await request.json(), userFields);
+
+    if (validFields instanceof Response) return validFields;
+
+    await users.updateOne(
+        {
+            _id: params.id,
+        },
+        {
+            $set: validFields,
+        }
+    );
 
     return new Response(null, { status: ResponseCodes.SuccessNoResponse });
 }
