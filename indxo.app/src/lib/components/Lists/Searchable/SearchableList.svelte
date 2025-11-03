@@ -39,4 +39,6 @@
     } satisfies SearchableListContext);
 </script>
 
-{@render children()}
+<div class="w-full">
+    {@render children()}
+</div>
