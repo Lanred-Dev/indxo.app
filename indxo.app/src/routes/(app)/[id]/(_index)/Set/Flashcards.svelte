@@ -170,7 +170,7 @@
                         {#if currentTerm.image}
                             <ExpandableImage
                                 src={currentTerm.image}
-                                alt={currentTerm.term}
+                                alt="Term Image"
                                 class="mb-2 h-30 w-auto"
                             />
                         {/if}
