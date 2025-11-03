@@ -7,12 +7,13 @@
 
 <script lang="ts">
     import ActionButton from "$lib/components/ActionButton.svelte";
-    import type { ComponentProps, Snippet } from "svelte";
+    import { getContext, type ComponentProps, type Snippet } from "svelte";
     import { fade } from "svelte/transition";
     import { animate } from "motion";
     import type { Term } from "$lib/documents";
     import { ExpandableImage } from "$lib/components/Image";
     import MarkdownText from "$lib/components/MarkdownText.svelte";
+    import type { SessionContext } from "$lib/utils/global";
 
     let {
         cycle,
@@ -41,6 +42,7 @@
         Overlay?: Snippet<[]>;
     } = $props();
 
+    const session: SessionContext = getContext("session");
     let flashcardScrollY: number = $state.raw(0);
     let isFlipped: boolean = $state.raw(false);
     let CardFront: HTMLDivElement;
@@ -150,16 +152,18 @@
                     style:transform="rotateX(180deg)"
                     bind:this={CardBack}
                 >
-                    <div
-                        class="x-center top-3 max-w-3/4 transition-opacity"
-                        style:opacity={flashcardScrollY > 0 ? 0 : 1}
-                    >
-                        <MarkdownText
-                            text={currentTerm.term}
-                            class="text-light overflow-hidden text-base text-nowrap text-ellipsis"
-                            aria-label="Term"
-                        />
-                    </div>
+                    {#if session.user.preferences.showTermOnDefinitionSide}
+                        <div
+                            class="x-center top-3 max-w-3/4 transition-opacity"
+                            style:opacity={flashcardScrollY > 0 ? 0 : 1}
+                        >
+                            <MarkdownText
+                                text={currentTerm.term}
+                                class="text-light overflow-hidden text-base text-nowrap text-ellipsis"
+                                aria-label="Term"
+                            />
+                        </div>
+                    {/if}
 
                     <div
                         class="flex w-full flex-col items-center overflow-y-auto py-6"
