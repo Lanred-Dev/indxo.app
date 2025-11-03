@@ -1,8 +1,5 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
-    import { goto } from "$app/navigation";
-
-    let { data } = $props();
 </script>
 
 <svelte:head>
