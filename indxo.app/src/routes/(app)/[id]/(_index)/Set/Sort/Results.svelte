@@ -57,12 +57,16 @@
             stillLearningStartAngle,
             (Math.PI * 2 * (knowTerms.size + stillLearningTerms.size)) / document.terms.length
         );
-        drawCircle(
-            maxRadius,
-            alertColor,
-            stillLearningStartAngle,
-            stillLearningStartAngle + (Math.PI * 2 * strugglingTerms.size) / stillLearningTerms.size
-        );
+
+        if (strugglingTerms.size > 0) {
+            drawCircle(
+                maxRadius,
+                alertColor,
+                stillLearningStartAngle,
+                stillLearningStartAngle +
+                    (Math.PI * 2 * strugglingTerms.size) / document.terms.length
+            );
+        }
     }
 
     onMount(() => {
