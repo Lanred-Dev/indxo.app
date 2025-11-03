@@ -26,6 +26,12 @@
     let terms: Term[] = $state.raw("terms" in data.document ? data.document.terms : []);
     setContext("document", {
         ...data.document,
+        get name() {
+            return data.document.name;
+        },
+        get _id() {
+            return data.document._id;
+        },
         get terms() {
             return terms;
         },
