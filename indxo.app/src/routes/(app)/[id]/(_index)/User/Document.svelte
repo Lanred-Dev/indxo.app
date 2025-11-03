@@ -56,7 +56,7 @@
         ]}
     />
 
-    <SearchableListContent c />
+    <SearchableListContent />
 
     <SearchableListError
         states={{
