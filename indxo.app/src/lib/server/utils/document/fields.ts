@@ -51,9 +51,11 @@ function getMissingFields(
     fields: DocumentFields
 ): [string, DocumentField][] {
     return Object.entries(fields).filter(([id, { type, properties = { isRequired: false } }]) => {
+        if (!(id in document)) return properties.isRequired === true;
+
         const value: unknown = document[id];
 
-        if (value === undefined || value === null) return properties?.isRequired;
+        if (value === undefined || value === null) return properties.isRequired === true;
 
         return !validateFieldType(value, type);
     });
