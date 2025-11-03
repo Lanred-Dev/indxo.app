@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Snippet } from "svelte";
+    import { onDestroy, type Snippet } from "svelte";
     import { Popup } from "./Popup";
 
     let {
@@ -9,6 +9,10 @@
     }: { isVisible: boolean; duration: number; children: Snippet<[]> } = $props();
 
     let visibilityTimeout: number | null;
+
+    onDestroy(() => {
+        if (visibilityTimeout) clearTimeout(visibilityTimeout);
+    });
 
     $effect(() => {
         if (visibilityTimeout) {
