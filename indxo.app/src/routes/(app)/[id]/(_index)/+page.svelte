@@ -63,10 +63,6 @@
     });
 </script>
 
-<svelte:head>
-    <title>{data.document.name}</title>
-</svelte:head>
-
 {#if data.isEmpty}
     <EmptyError />
 {:else}

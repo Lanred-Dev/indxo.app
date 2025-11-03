@@ -112,6 +112,22 @@
     });
 </script>
 
+<svelte:head>
+    <title>{document.name}</title>
+
+    {#if image}
+        <link rel="icon" href={image} />
+    {/if}
+
+    {#if description}
+        {#if typeof description === "string"}
+            <meta name="description" content={description} />
+        {:else}
+            <meta name="description" content={description.text} />
+        {/if}
+    {/if}
+</svelte:head>
+
 <div class="page-title">
     {#if description}
         {#if typeof description === "string"}
