@@ -171,7 +171,7 @@
                             <ExpandableImage
                                 src={currentTerm.image}
                                 alt="Term Image"
-                                class="mb-2 h-30 w-auto"
+                                class="mb-3 h-30 w-auto"
                             />
                         {/if}
 
