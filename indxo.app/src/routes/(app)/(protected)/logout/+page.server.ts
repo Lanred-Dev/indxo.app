@@ -25,7 +25,3 @@ export const actions = {
         redirect(ResponseCodes.Redirect, "/");
     },
 };
-
-export function load({ locals }) {
-    if (!locals.session) redirect(ResponseCodes.Redirect, "/login");
-}
