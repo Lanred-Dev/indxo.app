@@ -141,17 +141,20 @@
             return; // `canCycle` will be false if there are no more unsorted terms
         }
 
-        // If we are not at the end of the sorting then we need to show the next term
-        const alreadySortedNextTerm: boolean = !unsortedTerms.has(
-            document.terms[currentTermIndex + 1]?._id
-        );
-
-        if (currentTermIndex + 1 < document.terms.length - 1 && !alreadySortedNextTerm) {
+        if (
+            currentTermIndex + 1 < document.terms.length - 1 &&
+            !unsortedTerms.has(document.terms[currentTermIndex + 1]?._id)
+        ) {
             currentTermIndex++;
-        } else if (alreadySortedNextTerm || unsortedTerms.size > 0) {
-            currentTermIndex = document.terms.findIndex(
-                ({ _id }: Term) => _id === unsortedTerms.values().next().value
-            );
+        } else {
+            for (let index = 0; index < document.terms.length; index++) {
+                const term: Term = document.terms[index];
+
+                if (!unsortedTerms.has(term._id)) continue;
+
+                currentTermIndex = index;
+                break;
+            }
         }
     }
 
@@ -164,13 +167,13 @@
         restart(
             document.terms.filter(({ _id }: Term) => {
                 if (_id in sortedSetMetadata.terms) {
-                    const sortedTerm = sortedSetMetadata.terms[_id];
+                    const sortedTerm: SortedTerm = sortedSetMetadata.terms[_id];
 
                     if (sortedTerm.sorted) {
                         if (sortedTerm.knows) {
-                            stillLearningTerms.add(_id);
-                        } else {
                             knowTerms.add(_id);
+                        } else {
+                            stillLearningTerms.add(_id);
                         }
                     }
 
@@ -198,7 +201,7 @@
                             term._id,
                             {
                                 timesMissed: timesMissed.get(term._id) ?? 0,
-                                sorted: knowTerms.has(term._id) || stillLearningTerms.has(term._id),
+                                sorted: !unsortedTerms.has(term._id),
                                 knows: knowTerms.has(term._id),
                             } satisfies SortedTerm,
                         ];
@@ -213,11 +216,10 @@
     <ProgressBar
         knowTerms={knowTerms.size}
         stillLearningTerms={stillLearningTerms.size}
-        strugglingTerms={strugglingTerms.size}
-        terms={terms.length}
+        strugglingTerms={strugglingTerms.intersection(stillLearningTerms).size}
     />
 
-    {@const term: Term = terms[currentTermIndex]}
+    {@const term: Term = document.terms[currentTermIndex]}
     <Flashcards
         {cycle}
         termCount={terms.length}
@@ -268,5 +270,5 @@
         {/snippet}
     </Flashcards>
 {:else if isLoaded}
-    <Results {knowTerms} {stillLearningTerms} {strugglingTerms} {terms} {restart} />
+    <Results {knowTerms} {stillLearningTerms} {strugglingTerms} {restart} />
 {/if}
