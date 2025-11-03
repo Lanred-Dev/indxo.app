@@ -1,8 +1,7 @@
-import { DocumentType } from "$lib/documents";
+import type { DocumentType } from "$lib/documents";
 import randomArrayEntry from "../randomArrayEntry";
 
 const CHARACTERS: string = "abcdefghijklmnopqrstuvwxyz0123456789";
-let startingCharacters: string[]; // A prefix is used to determine the type, so this prevents documents from being mislabeled if no prefix is provided
 
 /**
  * Generates a random id consisting of uppercase letters and digits.
@@ -11,17 +10,11 @@ let startingCharacters: string[]; // A prefix is used to determine the type, so 
  * @param documentType
  * @returns The generated id
  */
-export default function generateDocumentID(length: number, documentType?: string): string {
-    // The DocumentType enum may not first be available on runtime
-    if (!startingCharacters)
-        startingCharacters = CHARACTERS.split("").filter(
-            (character: string) => !Object.values(DocumentType).includes(character as DocumentType)
-        );
-
+export default function generateDocumentID(length: number, documentType: DocumentType): string {
     let id: string = "";
 
     for (let index: number = 0; index < length - (documentType ? 1 : 0); index++)
-        id += randomArrayEntry(index === 0 ? startingCharacters : CHARACTERS);
+        id += randomArrayEntry(CHARACTERS);
 
-    return `${documentType ?? ""}${id}`;
+    return `${documentType}${id}`;
 }
