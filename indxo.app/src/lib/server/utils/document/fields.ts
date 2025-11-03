@@ -18,8 +18,14 @@ export function validateFieldType(value: unknown, type: DocumentField["type"]): 
             // An array can passed with a list of valid strings or numbers
             return (typeof value === "string" || typeof value === "number") && type.includes(value);
         } else {
+            if (typeof value !== "object" || Array.isArray(value) || value === null) return false;
+
             // An object can be passed for nested types
-            return Object.values(type).some((type) => validateFieldType(value, type));
+            return Object.entries(type).some(([key, type]) => {
+                if (!(key in value)) return false;
+
+                return validateFieldType((value as any)[key], type);
+            });
         }
     } else {
         switch (type) {
