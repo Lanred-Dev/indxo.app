@@ -113,7 +113,7 @@
 
 <main
     class={[
-        "relative h-dvh w-full overflow-y-auto pr-7 pb-6 transition-[padding-left,padding-right,padding-top,padding-bottom] duration-400 ease-in-out md:pr-22 xl:pr-[15%]",
+        "relative h-dvh w-full overflow-x-hidden overflow-y-auto pr-7 pb-6 transition-[padding-left,padding-right,padding-top,padding-bottom] duration-400 ease-in-out md:pr-22 xl:pr-[15%]",
         isMobile.current && isSidebarVisible && "pointer-events-none blur-xs",
     ]}
     bind:this={Viewport}
