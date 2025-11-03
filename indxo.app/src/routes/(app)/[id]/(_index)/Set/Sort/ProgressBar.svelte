@@ -1,27 +1,36 @@
 <script lang="ts">
+    import { getContext } from "svelte";
+    import type { DocumentContext } from "../../+page.svelte";
+
     let {
         knowTerms,
         stillLearningTerms,
         strugglingTerms,
-        terms,
     }: {
         knowTerms: number;
         stillLearningTerms: number;
         strugglingTerms: number;
-        terms: number;
     } = $props();
+
+    const document: DocumentContext = getContext("document");
 </script>
 
 <div class="flex-center mb-5 w-full gap-2">
     <div class="bg-input flex h-2 w-3/4 overflow-hidden rounded-full">
-        <div class="bg-alert progress-bar" style:width="{(stillLearningTerms / terms) * 100}%">
+        <div
+            class="bg-warning progress-bar"
+            style:width="{(stillLearningTerms / document.terms.length) * 100}%"
+        >
             <div
-                class="progress-bar bg-amber-400"
-                style:width="{(strugglingTerms / terms) * 100}%"
+                class="progress-bar bg-alert"
+                style:width="{(strugglingTerms / stillLearningTerms) * 100}%"
             ></div>
         </div>
 
-        <div class="bg-success progress-bar" style:width="{(knowTerms / terms) * 100}%"></div>
+        <div
+            class="bg-success progress-bar"
+            style:width="{(knowTerms / document.terms.length) * 100}%"
+        ></div>
     </div>
 </div>
 
