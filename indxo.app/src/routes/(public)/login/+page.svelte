@@ -7,7 +7,10 @@
 </svelte:head>
 
 <div class="cover-screen flex-center page-title mb-0 flex-col gap-6">
-    <h1 class="title">Welcome to indxo.app</h1>
+    <div>
+        <h1 class="title justify-center">Welcome to indxo.app</h1>
+        <p class="description">A completely free, open-source platform for studying.</p>
+    </div>
 
     <div class="row w-fit text-xl">
         <form method="POST" use:enhance>
@@ -18,3 +21,5 @@
         </form>
     </div>
 </div>
+
+<p class="text-light x-center absolute bottom-12">© 2025 Landon Redmond</p>
