@@ -16,7 +16,7 @@
         <form method="POST" use:enhance>
             <button class="button-primary">
                 <img class="size-7" src="/icons/Google.svg" alt="Google" />
-                Sign in with Google
+                Login with Google
             </button>
         </form>
     </div>
