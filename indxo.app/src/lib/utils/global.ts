@@ -3,7 +3,7 @@ import type { Session, SessionUser } from "$lib/documents";
 export interface ViewportContext {
     scrollY: number;
     isMobile: boolean;
-    isLoading: boolean;
+    isNavigating: boolean;
     Content: HTMLElement | undefined;
 }
 

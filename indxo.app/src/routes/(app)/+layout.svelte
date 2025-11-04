@@ -50,7 +50,7 @@
 
     let Viewport: ViewportContext["Content"] = $state.raw(undefined);
     let viewportScrollY: number = $state.raw(0);
-    let isLoading: boolean = $state.raw(false);
+    let isNavigating: boolean = $state.raw(false);
     // 768px is the same sizing used for md: in tailwind
     const isMobile: MediaQuery = new MediaQuery("(max-width: 768px)", true);
     setContext("viewport", {
@@ -60,8 +60,8 @@
         get isMobile() {
             return isMobile.current;
         },
-        get isLoading() {
-            return isLoading;
+        get isNavigating() {
+            return isNavigating;
         },
         get Content() {
             return Viewport ?? (document.querySelector("main") as HTMLDivElement) ?? undefined;
@@ -69,12 +69,14 @@
     } satisfies ViewportContext);
 
     beforeNavigate(() => {
-        isLoading = true;
+        isNavigating = true;
+
         if (isMobile.current) isSidebarVisible = false;
     });
 
     afterNavigate(() => {
-        isLoading = false;
+        isNavigating = false;
+
         if (Viewport) Viewport.scrollTop = 0;
     });
 
@@ -98,7 +100,7 @@
     <Sidebar />
 {/if}
 
-{#if isLoading}
+{#if isNavigating}
     <div
         class="x-center y-center z-40 h-full w-full"
         style:padding-top="{headerHeight}px"
@@ -120,7 +122,7 @@
     }}
     style:--header-height="{headerHeight}px"
     style:--sidebar-width="{!isMobile.current && isSidebarVisible ? sidebarWidth : 0}px"
-    style:opacity="{isLoading ? 0 : 100}%"
+    style:opacity="{isNavigating ? 0 : 100}%"
 >
     {@render children?.()}
 </main>
