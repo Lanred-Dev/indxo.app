@@ -61,35 +61,41 @@
         transition:fly={{ x: -10, duration: 300 }}
     >
         <nav class="min-w-fit space-y-10">
-            {@render group([
-                { icon: "/icons/navigation/Home.svg", text: "Home", url: "/" },
-                {
-                    icon: "/icons/navigation/Account.svg",
-                    text: "Account",
-                    url: `/${session.user._id}`,
-                },
-            ])}
-
             {@render group(
                 [
-                    {
-                        icon: "/icons/navigation/Stars.svg",
-                        text: Wording.favorites,
-                        url: `/my/${MyPageType.favorites}`,
-                    },
-                    {
-                        icon: "/icons/navigation/Folder.svg",
-                        text: Wording.folders,
-                        url: `/my/${MyPageType.folders}`,
-                    },
-                    {
-                        icon: "/icons/navigation/Document.svg",
-                        text: Wording.sets,
-                        url: `/my/${MyPageType.sets}`,
-                    },
-                ],
-                "Your library"
+                    { icon: "/icons/navigation/Home.svg", text: "Home", url: "/" },
+                    session.session
+                        ? {
+                              icon: "/icons/navigation/Account.svg",
+                              text: "Account",
+                              url: `/${session.user._id}`,
+                          }
+                        : null,
+                ].filter((entry) => entry !== null)
             )}
+
+            {#if session.session}
+                {@render group(
+                    [
+                        {
+                            icon: "/icons/navigation/Stars.svg",
+                            text: Wording.favorites,
+                            url: `/my/${MyPageType.favorites}`,
+                        },
+                        {
+                            icon: "/icons/navigation/Folder.svg",
+                            text: Wording.folders,
+                            url: `/my/${MyPageType.folders}`,
+                        },
+                        {
+                            icon: "/icons/navigation/Document.svg",
+                            text: Wording.sets,
+                            url: `/my/${MyPageType.sets}`,
+                        },
+                    ],
+                    "Your library"
+                )}
+            {/if}
 
             {@render group(
                 [

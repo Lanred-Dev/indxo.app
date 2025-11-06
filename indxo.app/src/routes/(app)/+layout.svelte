@@ -96,9 +96,7 @@
 
 <Header />
 
-{#if data.session}
-    <Sidebar />
-{/if}
+<Sidebar />
 
 {#if isNavigating}
     <div

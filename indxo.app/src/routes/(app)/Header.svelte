@@ -3,7 +3,7 @@
     import { Popup, PopupContent, PopupTrigger, PopupXAlignment } from "$lib/components/Popup";
     import type { HeaderContext, SessionContext, SidebarContext } from "$lib/utils/global";
 
-    const { session, user }: SessionContext = getContext("session");
+    const session: SessionContext = getContext("session");
     const header: HeaderContext = getContext("header");
     const sidebar: SidebarContext = getContext("sidebar");
 </script>
@@ -16,26 +16,20 @@
         class="bg-attention-bright relative flex w-full items-center justify-between rounded-full px-2 py-2"
     >
         <div class="flex-center gap-3 pl-3">
-            {#if session}
-                <button id="sidebarToggle" onclick={() => (sidebar.isVisible = !sidebar.isVisible)}>
-                    <img
-                        class="size-7"
-                        src="/icons/navigation/Hamburger.svg"
-                        alt="Sidebar toggle"
-                    />
-                </button>
-            {/if}
+            <button id="sidebarToggle" onclick={() => (sidebar.isVisible = !sidebar.isVisible)}>
+                <img class="size-7" src="/icons/navigation/Hamburger.svg" alt="Sidebar toggle" />
+            </button>
 
             <img class="size-7" src="/favicon.png" alt="Logo" />
         </div>
 
-        {#if session}
+        {#if session.session}
             <Popup>
                 <PopupTrigger>
                     <img
                         class="border-primary size-10 rounded-full border"
-                        src={user.picture}
-                        alt={user.name}
+                        src={session.user.picture}
+                        alt={session.user.name}
                     />
                 </PopupTrigger>
 
@@ -43,13 +37,13 @@
                     <div class="flex-center w-full gap-2 px-3 pb-1">
                         <img
                             class="border-primary size-10 rounded-full border"
-                            src={user.picture}
-                            alt={user.name}
+                            src={session.user.picture}
+                            alt={session.user.name}
                         />
 
                         <div class="space-y-0.5 [&>p]:leading-none">
-                            <p class="text-lg font-bold">{user.name}</p>
-                            <p>{user.email}</p>
+                            <p class="text-lg font-bold">{session.user.name}</p>
+                            <p>{session.user.email}</p>
                         </div>
                     </div>
 
