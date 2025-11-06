@@ -7,8 +7,8 @@
 </svelte:head>
 
 <div class="cover-screen flex-center page-title mb-0 flex-col gap-6">
-    <div>
-        <h1 class="title justify-center">Welcome to indxo.app</h1>
+    <div class="text-center *:justify-center">
+        <h1 class="title">Welcome to indxo.app</h1>
         <p class="description">A completely free, open-source platform for studying.</p>
     </div>
 
