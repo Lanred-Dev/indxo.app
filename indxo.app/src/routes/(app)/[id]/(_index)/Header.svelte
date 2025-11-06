@@ -146,7 +146,9 @@
                 <img src={image} class="size-14 rounded-full" alt={document.name} />
             {/if}
 
-            <h1 class="title">{document.name}</h1>
+            <h1 class="title">
+                <a href="/{document._id}">{document.name}</a>
+            </h1>
         </div>
 
         {#if documentHeader.showActions}
