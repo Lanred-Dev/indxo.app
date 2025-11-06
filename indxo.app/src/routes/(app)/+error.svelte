@@ -14,8 +14,9 @@
             message: "Something went kaboom 💥 behind the scenes.",
         },
         [ResponseCodes.Unauthorized]: {
-            title: "You're not on the list 📋",
-            message: "This area’s VIP only. Flash your login credentials at the door.",
+            title: "Login Required 🔒",
+            message:
+                "You need to sign in to access this area. Show your credentials to get past the door.",
         },
         [ResponseCodes.UserUnauthorized]: {
             title: "Whoa there, Scholar!",
