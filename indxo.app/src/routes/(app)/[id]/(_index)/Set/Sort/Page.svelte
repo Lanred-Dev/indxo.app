@@ -161,30 +161,36 @@
     onMount(async () => {
         documentHeader.showActions = false;
 
-        const response = await fetch(`/api/user/${session.user._id}/metadata/sort/${document._id}`);
-        const sortedSetMetadata: SortedSetMetadata = await response.json();
+        if (session.session) {
+            const response = await fetch(
+                `/api/user/${session.user._id}/metadata/sort/${document._id}`
+            );
+            const sortedSetMetadata: SortedSetMetadata = await response.json();
 
-        restart(
-            document.terms.filter(({ _id }: Term) => {
-                if (_id in sortedSetMetadata.terms) {
-                    const sortedTerm: SortedTerm = sortedSetMetadata.terms[_id];
+            restart(
+                document.terms.filter(({ _id }: Term) => {
+                    if (_id in sortedSetMetadata.terms) {
+                        const sortedTerm: SortedTerm = sortedSetMetadata.terms[_id];
 
-                    if (sortedTerm.sorted) {
-                        if (sortedTerm.knows) {
-                            knowTerms.add(_id);
-                        } else {
-                            stillLearningTerms.add(_id);
+                        if (sortedTerm.sorted) {
+                            if (sortedTerm.knows) {
+                                knowTerms.add(_id);
+                            } else {
+                                stillLearningTerms.add(_id);
+                            }
                         }
-                    }
 
-                    timesMissed.set(_id, sortedTerm.timesMissed);
-                    return sortedTerm.sorted === false;
-                } else {
-                    // If the term is not in the saved array, it means it is not sorted yet
-                    return true;
-                }
-            })
-        );
+                        timesMissed.set(_id, sortedTerm.timesMissed);
+                        return sortedTerm.sorted === false;
+                    } else {
+                        // If the term is not in the saved array, it means it is not sorted yet
+                        return true;
+                    }
+                })
+            );
+        } else {
+            restart(document.terms);
+        }
 
         isLoaded = true;
     });
