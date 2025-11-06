@@ -1,7 +1,7 @@
 import { DocumentType } from "$lib/documents";
-import { ResponseCodes } from "$lib/utils/apiResponses";
+import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
 import determineDocumentType from "$lib/utils/document/determineType";
-import { redirect } from "@sveltejs/kit";
+import { error } from "@sveltejs/kit";
 
 export function load({ params }) {
     const documentType = determineDocumentType(params.id);
@@ -11,7 +11,7 @@ export function load({ params }) {
         documentType !== DocumentType.set &&
         documentType !== DocumentType.user
     )
-        redirect(ResponseCodes.Redirect, "/");
+        error(ResponseCodes.NotFound, ResponseMessages.NotFound);
 
     return {
         documentType,
