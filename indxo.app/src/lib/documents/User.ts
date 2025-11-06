@@ -58,7 +58,7 @@ export interface SessionUser {
 }
 
 export const emptySessionUser: SessionUser = {
-    _id: "",
+    _id: "null",
     name: "",
     picture: "",
     email: "",
