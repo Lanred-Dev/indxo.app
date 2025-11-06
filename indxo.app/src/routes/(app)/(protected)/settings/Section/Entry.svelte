@@ -12,7 +12,7 @@
     } = $props();
 </script>
 
-<div class="flex items-center justify-between gap-2">
+<div class="flex flex-col justify-start gap-4 md:flex-row md:items-center md:justify-between">
     <div class="md:max-w-3/5">
         <p class="text-lg leading-snug font-semibold">
             {title}

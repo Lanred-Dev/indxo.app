@@ -35,7 +35,7 @@
             title="Delete Account"
             description="Permanently delete your account and all associated data. This action cannot be undone."
         >
-            <a class="button-attention clay-alert" href="/settings/delete-confirmation">
+            <a class="button-attention clay-alert w-fit" href="/settings/delete-confirmation">
                 Delete Account
             </a>
         </SectionEntry>
