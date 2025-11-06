@@ -4,8 +4,10 @@ import determineDocumentType from "$lib/utils/document/determineType";
 import { error, json } from "@sveltejs/kit";
 
 export async function POST({ params, locals, fetch }) {
+    if (!locals.session) error(ResponseCodes.Unauthorized, ResponseMessages.Unauthorized);
+
     const hasPermissionFetch = await fetch(
-        `/api/documents/${params.id}/permissions/${locals.session ? locals.user._id : "0"}`,
+        `/api/documents/${params.id}/permissions/${locals.user._id}`,
         {
             method: "POST",
             body: JSON.stringify(DocumentPermission.view),

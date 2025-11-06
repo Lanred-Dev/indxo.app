@@ -20,7 +20,7 @@
         switch (documentType) {
             case DocumentType.set:
             case DocumentType.folder: {
-                if (session.session)
+                if (session.session) {
                     buttons.push({
                         image: {
                             Component: Star,
@@ -43,6 +43,20 @@
                         },
                     });
 
+                    buttons.push({
+                        image: { url: "/icons/general/CopyDocument.svg" },
+                        text: "Copy",
+                        onclick: async () => {
+                            const response = await fetch(`/api/documents/${document._id}/copy`, {
+                                method: "POST",
+                            });
+
+                            if (response.status === ResponseCodes.Success)
+                                goto(`/${await response.json()}`);
+                        },
+                    });
+                }
+
                 if (isPermissionEqual(document.permission, DocumentPermission.edit))
                     buttons.push({
                         image: { url: "/icons/general/Pencil.svg" },
@@ -51,19 +65,6 @@
                             goto(`${document._id}/edit`);
                         },
                     });
-
-                buttons.push({
-                    image: { url: "/icons/general/CopyDocument.svg" },
-                    text: "Copy",
-                    onclick: async () => {
-                        const response = await fetch(`/api/documents/${document._id}/copy`, {
-                            method: "POST",
-                        });
-
-                        if (response.status === ResponseCodes.Success)
-                            goto(`/${await response.json()}`);
-                    },
-                });
 
                 if (isPermissionEqual(document.permission, DocumentPermission.owner))
                     buttons.push({
