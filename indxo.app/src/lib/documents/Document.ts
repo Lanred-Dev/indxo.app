@@ -21,6 +21,13 @@ export enum DocumentVisibility {
     public,
 }
 
+export const DocumentVisibilityPermissionMap: { [key in DocumentVisibility]: DocumentPermission } =
+    {
+        [DocumentVisibility.link]: DocumentPermission.none,
+        [DocumentVisibility.private]: DocumentPermission.view,
+        [DocumentVisibility.public]: DocumentPermission.none,
+    };
+
 export enum DocumentFieldType {
     // string, number, and boolean are all checked using typeof
     string = "string",

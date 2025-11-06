@@ -25,20 +25,19 @@ const sets: Collection<Set> = loadCollection("documents", "sets");
 const folders: Collection<Folder> = loadCollection("documents", "folders");
 
 export async function GET({ params, fetch, locals }) {
+    const document: Set | Folder | null = await findDocumentByID(params.id);
+
+    if (!document) error(ResponseCodes.NotFound, ResponseMessages.NotFound);
+
     const hasPermissionFetch = await fetch(
-        `/api/documents/${params.id}/permissions/${locals.session ? locals.user._id : "0"}`,
+        `/api/documents/${params.id}/permissions/${locals.user._id}`,
         {
             method: "POST",
-            body: JSON.stringify(DocumentPermission.view),
         }
     );
 
     if (hasPermissionFetch.status !== ResponseCodes.Success)
         error(hasPermissionFetch.status, hasPermissionFetch.statusText);
-
-    const document: Set | Folder | null = await findDocumentByID(params.id);
-
-    if (!document) error(ResponseCodes.NotFound, ResponseMessages.NotFound);
 
     const owner: BaseUser = await (await fetch(`/api/user/${document.owner}/base`)).json();
     const documentType = determineDocumentType(params.id);

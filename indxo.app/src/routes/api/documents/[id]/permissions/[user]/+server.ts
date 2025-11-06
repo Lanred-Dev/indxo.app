@@ -1,13 +1,17 @@
-import { DocumentPermission, DocumentType, type Folder, type Set } from "$lib/documents";
+import {
+    DocumentPermission,
+    DocumentType,
+    DocumentVisibilityPermissionMap,
+    type Folder,
+    type Set,
+} from "$lib/documents";
 import { findDocumentByID } from "$lib/server/utils/document/findByID";
 import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
 import determineDocumentType from "$lib/utils/document/determineType";
 import isPermissionEqual from "$lib/utils/document/isPermissionEqual";
 import { error, json } from "@sveltejs/kit";
 
-export async function GET({ params, locals }) {
-    if (!locals.session) error(ResponseCodes.Unauthorized, ResponseMessages.Unauthorized);
-
+export async function GET({ params }) {
     const documentType = determineDocumentType(params.id);
 
     if (documentType !== DocumentType.folder && documentType !== DocumentType.set)
@@ -17,12 +21,14 @@ export async function GET({ params, locals }) {
 
     if (!document) error(ResponseCodes.NotFound, ResponseMessages.NotFound);
 
-    return json(document.permissions[params.user] ?? DocumentPermission.none);
+    return json(
+        params.user in document.permissions
+            ? document.permissions[params.user]
+            : DocumentPermission.none
+    );
 }
 
-export async function POST({ params, locals, request }) {
-    if (!locals.session) error(ResponseCodes.Unauthorized, ResponseMessages.Unauthorized);
-
+export async function POST({ params, request }) {
     const documentType = determineDocumentType(params.id);
 
     if (documentType !== DocumentType.folder && documentType !== DocumentType.set)
@@ -36,7 +42,13 @@ export async function POST({ params, locals, request }) {
         params.user in document.permissions
             ? document.permissions[params.user]
             : DocumentPermission.none;
-    const requiredPermission: DocumentPermission = await request.json();
+    let requiredPermission: DocumentPermission;
+
+    if (request.body) {
+        requiredPermission = await request.json();
+    } else {
+        requiredPermission = DocumentVisibilityPermissionMap[document.visibility];
+    }
 
     if (!isPermissionEqual(userPermission, requiredPermission)) {
         error(ResponseCodes.UserUnauthorized, `User does not have ${requiredPermission}.`);
