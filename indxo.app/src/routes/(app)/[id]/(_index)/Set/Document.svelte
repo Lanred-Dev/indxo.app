@@ -5,8 +5,10 @@
     import CardsPage from "./Cards/Page.svelte";
     import SortPage from "./Sort/Page.svelte";
 
+    let mode: string = $derived(page.url.searchParams.get("m") ?? "");
+
     const PageComponent: Component<any> = $derived.by(() => {
-        switch (page.url.searchParams.get("m")) {
+        switch (mode) {
             case StudyMode.sort:
                 return SortPage;
             default:
