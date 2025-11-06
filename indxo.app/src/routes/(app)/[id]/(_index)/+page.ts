@@ -9,7 +9,7 @@ import { ResponseCodes } from "$lib/utils/apiResponses";
 import { error } from "@sveltejs/kit";
 
 export async function load({ params, fetch, parent }) {
-    const { documentType, user } = await parent();
+    const { documentType, user, session } = await parent();
     const documentResponse: Response = await fetch(
         `/api/${documentType === DocumentType.user ? "user" : "documents"}/${params.id}`
     );
@@ -33,20 +33,22 @@ export async function load({ params, fetch, parent }) {
         }
 
         const permissionResponse: Response = await fetch(
-            `/api/documents/${document._id}/permissions/${user._id}`,
-            {
-                method: "POST",
-                body: JSON.stringify(DocumentPermission.view),
-            }
+            `/api/documents/${document._id}/permissions/${user._id}`
         );
 
         if (permissionResponse.status === ResponseCodes.Success)
             permission = await permissionResponse.json();
 
-        const favoriteResponse: Response = await fetch(`/api/documents/${document._id}/favorite`);
+        if (session) {
+            const favoriteResponse: Response = await fetch(
+                `/api/documents/${document._id}/favorite`
+            );
 
-        if (favoriteResponse.status === ResponseCodes.Success)
-            isFavorite = await favoriteResponse.json();
+            if (favoriteResponse.status === ResponseCodes.Success)
+                isFavorite = await favoriteResponse.json();
+        } else {
+            isFavorite = false;
+        }
     }
 
     return {
