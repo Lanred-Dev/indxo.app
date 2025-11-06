@@ -11,7 +11,9 @@ import determineDocumentType from "$lib/utils/document/determineType";
 import isPermissionEqual from "$lib/utils/document/isPermissionEqual";
 import { error, json } from "@sveltejs/kit";
 
-export async function GET({ params }) {
+export async function GET({ params, locals }) {
+    if (!locals.session) json(DocumentPermission.none);
+
     const documentType = determineDocumentType(params.id);
 
     if (documentType !== DocumentType.folder && documentType !== DocumentType.set)
