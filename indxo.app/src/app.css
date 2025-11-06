@@ -190,7 +190,7 @@
         @apply break-word flex flex-wrap items-center justify-center gap-x-1 gap-y-2 text-3xl leading-none font-bold;
 
         & img {
-            @apply size-8;
+            @apply size-9;
         }
     }
 
