@@ -1,6 +1,5 @@
 import {
     userFields,
-    type OwnedDocument,
     type PublicFolder,
     type PublicSet,
     type PublicUser,
@@ -21,9 +20,6 @@ export async function GET({ params, fetch }) {
 
     const sets: PublicSet[] = await (await fetch(`/api/user/${params.id}/sets`)).json();
     const folders: PublicFolder[] = await (await fetch(`/api/user/${params.id}/folders`)).json();
-    const favorites: OwnedDocument[] = await (
-        await fetch(`/api/user/${params.id}/favorites`)
-    ).json();
 
     return json({
         _id: user._id,
