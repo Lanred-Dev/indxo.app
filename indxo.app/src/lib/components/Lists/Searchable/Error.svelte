@@ -23,12 +23,12 @@
 </script>
 
 {#if state !== null}
-    <div class="page-title flex-center flex-col space-y-1 py-20 text-center">
+    <div class="page-message flex-center flex-col space-y-1 py-20 text-center">
         <h1 class="title">
             <img src={state.image} alt="Error" />
             {state.title}
         </h1>
 
-        <p class="description">{state.message}</p>
+        <p class="message">{state.message}</p>
     </div>
 {/if}

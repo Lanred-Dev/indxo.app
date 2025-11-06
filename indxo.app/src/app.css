@@ -175,15 +175,27 @@
     @apply mb-12 w-full;
 
     & .title {
-        @apply break-word flex items-center gap-1 text-3xl leading-none font-bold md:text-4xl;
-
-        & img {
-            @apply size-10;
-        }
+        @apply break-word text-3xl leading-none font-bold md:text-4xl;
     }
 
     & .description {
         @apply text-light break-word text-lg leading-snug font-semibold md:text-xl;
+    }
+}
+
+@utility page-message {
+    @apply mb-12 w-full;
+
+    & .title {
+        @apply break-word flex flex-wrap items-center justify-center gap-x-1 gap-y-2 text-3xl leading-none font-bold;
+
+        & img {
+            @apply size-8;
+        }
+    }
+
+    & .message {
+        @apply text-light break-word text-lg leading-snug font-semibold;
     }
 }
 
