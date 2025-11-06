@@ -63,7 +63,7 @@
                 </PopupContent>
             </Popup>
         {:else}
-            <a class="button-primary rounded-full" href="/login">
+            <a class="button-attention rounded-full" href="/login">
                 <img class="size-5" src="/icons/navigation/Account.svg" alt="Login" />
                 <span>Login</span>
             </a>
