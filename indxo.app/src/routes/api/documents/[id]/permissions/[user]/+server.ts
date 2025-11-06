@@ -30,7 +30,7 @@ export async function GET({ params, locals }) {
     );
 }
 
-export async function POST({ params, request }) {
+export async function POST({ params, locals, request }) {
     const documentType = determineDocumentType(params.id);
 
     if (documentType !== DocumentType.folder && documentType !== DocumentType.set)
@@ -53,7 +53,10 @@ export async function POST({ params, request }) {
     }
 
     if (!isPermissionEqual(userPermission, requiredPermission)) {
-        error(ResponseCodes.UserUnauthorized, `User does not have ${requiredPermission}.`);
+        error(
+            locals.session ? ResponseCodes.UserUnauthorized : ResponseCodes.Unauthorized,
+            `User does not have ${requiredPermission}.`
+        );
     } else {
         return json(document.permissions[params.user] ?? DocumentPermission.none);
     }

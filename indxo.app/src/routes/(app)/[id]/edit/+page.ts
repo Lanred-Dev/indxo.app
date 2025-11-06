@@ -5,7 +5,7 @@ import {
     type PublicSet,
     type PublicUser,
 } from "$lib/documents";
-import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
+import { ResponseCodes } from "$lib/utils/apiResponses";
 import { error, redirect } from "@sveltejs/kit";
 
 export async function load({ params, fetch, parent }) {
@@ -32,7 +32,7 @@ export async function load({ params, fetch, parent }) {
     );
 
     if (permissionResponse.status !== ResponseCodes.Success)
-        error(ResponseCodes.UserUnauthorized, ResponseMessages.UserUnauthorized);
+        error(permissionResponse.status, permissionResponse.statusText);
 
     return {
         document,
