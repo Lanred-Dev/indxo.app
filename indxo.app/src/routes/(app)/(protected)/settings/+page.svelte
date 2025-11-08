@@ -1,6 +1,6 @@
 <script lang="ts" module>
     export interface SettingsPageContext {
-        showSubmitErrorMessage: () => void;
+        showSubmitMessage: (isError: boolean) => void;
     }
 </script>
 
@@ -38,10 +38,12 @@
         }
     });
     let isSubmitMessageVisible: boolean = $state.raw(false);
+    let isSubmitError: boolean = $state.raw(false);
 
     setContext("settingsPage", {
-        showSubmitErrorMessage() {
+        showSubmitMessage(isError: boolean) {
             isSubmitMessageVisible = true;
+            isSubmitError = isError;
         },
     } satisfies SettingsPageContext);
 </script>
@@ -53,13 +55,17 @@
 
 <Tooltip bind:isVisible={isSubmitMessageVisible} duration={5}>
     <PopupContent
-        class="bg-alert"
+        class={isSubmitError ? "clay-alert" : "clay-success"}
         xAlignment={PopupXAlignment.center}
         yAlignment={PopupYAlignment.bottom}
         positionRelativity={PopupRelativity.page}
         offset={15}
     >
-        An error occurred while saving your changes.
+        {#if isSubmitError}
+            An error occurred while saving your changes.
+        {:else}
+            Your changes have been saved successfully.
+        {/if}
     </PopupContent>
 </Tooltip>
 

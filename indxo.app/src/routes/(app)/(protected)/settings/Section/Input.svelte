@@ -56,11 +56,9 @@
 
                 const wasSuccessful: boolean = await onUpdate(value);
 
-                if (!wasSuccessful) {
-                    settingsPage.showSubmitErrorMessage();
-                } else {
-                    invalidateAll();
-                }
+                if (wasSuccessful) invalidateAll();
+
+                settingsPage.showSubmitMessage(!wasSuccessful);
             }}
             in:fade={{ duration: 200 }}
         >
