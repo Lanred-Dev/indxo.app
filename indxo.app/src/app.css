@@ -48,6 +48,11 @@
         font-display: swap;
     }
 
+    html,
+    body {
+        @apply overscroll-none;
+    }
+
     body {
         font-family: PlusJakartaSans, sans-serif;
         @apply bg-page text-primary;
