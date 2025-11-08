@@ -184,7 +184,7 @@
 }
 
 @utility page-message {
-    @apply mb-12 w-full;
+    @apply w-full;
 
     & .title {
         @apply break-word flex flex-wrap items-center justify-center gap-x-1 gap-y-2 text-3xl leading-none font-bold;
