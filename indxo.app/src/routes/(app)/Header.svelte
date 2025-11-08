@@ -20,7 +20,7 @@
                 <img class="size-7" src="/icons/navigation/Hamburger.svg" alt="Sidebar toggle" />
             </button>
 
-            <img class="size-7" src="/favicon.png" alt="Logo" />
+            <img class="size-7" src="/favicon.svg" alt="Logo" />
         </div>
 
         {#if session.session}

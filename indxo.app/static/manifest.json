@@ -1,0 +1,22 @@
+{
+    "theme_color": "#7c9edd",
+    "background_color": "#ffffff",
+    "icons": [
+        {
+            "purpose": "maskable",
+            "sizes": "512x512",
+            "src": "icon512_maskable.png",
+            "type": "image/png"
+        },
+        { "purpose": "any", "sizes": "512x512", "src": "icon512_rounded.png", "type": "image/png" }
+    ],
+    "orientation": "portrait",
+    "display": "standalone",
+    "dir": "auto",
+    "lang": "en-US",
+    "short_name": "indxo",
+    "name": "indxo",
+    "start_url": "https://indxo.app",
+    "description": "A completely free, open-source platform for studying.",
+    "id": "indxo.app"
+}
