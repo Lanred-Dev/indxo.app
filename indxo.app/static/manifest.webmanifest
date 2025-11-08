@@ -16,7 +16,7 @@
     "lang": "en-US",
     "short_name": "indxo",
     "name": "indxo",
-    "start_url": "https://indxo.app",
+    "start_url": "./",
     "description": "A completely free, open-source platform for studying.",
     "id": "indxo.app"
 }
