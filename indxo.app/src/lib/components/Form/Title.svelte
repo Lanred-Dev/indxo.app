@@ -19,11 +19,11 @@
     let { title: currentTitle, description: currentDescription }: Title = $derived.by(() => {
         if (title) {
             return title;
-        } else if (titles && form.stage && form.stage in titles) {
+        } else if (titles && "stage" in form && form.stage && form.stage in titles) {
             return titles[form.stage];
+        } else {
+            return { title: "", description: "" };
         }
-
-        return { title: "", description: "" };
     });
 </script>
 
