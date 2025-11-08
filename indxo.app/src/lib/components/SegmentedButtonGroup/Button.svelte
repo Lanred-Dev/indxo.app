@@ -33,9 +33,9 @@
     });
 </script>
 
-<li class="z-1 min-w-fit grow">
+<li class={["z-1 min-w-fit grow", className]}>
     <button
-        class={["flex-center w-full gap-0.5 bg-transparent px-5 py-2", className]}
+        class="flex-center w-full gap-0.5 bg-transparent px-5 py-2"
         {...properties}
         role="option"
         type="button"
