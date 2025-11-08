@@ -77,7 +77,7 @@
 <div class="list-primary">
     {#if typeof name === "string" && name.length > 0}
         <button
-            class="flex-center list-title gap-1 {!isCollapsible ? 'pointer-events-none' : ''}"
+            class="flex-center title gap-1 {!isCollapsible ? 'pointer-events-none' : ''}"
             onclick={() => (visible = !visible)}
             aria-label="Collapse {name}"
         >
@@ -90,7 +90,7 @@
     {/if}
 
     {#if visible}
-        <ul class="list-container" transition:slide>
+        <ul class="container" transition:slide>
             {#each documents as document}
                 {@const { type, breadcrumbs } = getDocumentInfo(document)}
 

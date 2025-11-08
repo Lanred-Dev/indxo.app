@@ -41,7 +41,7 @@
 
 <div class="list-primary mt-20">
     <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
-        <p class="list-title mb-0!">{Wording.terms}</p>
+        <p class="title mb-0!">{Wording.terms}</p>
 
         {#if hasEditPermission}
             <SegmentedButtonGroup bind:value={currentViewID} class="w-fit! min-w-fit!">
