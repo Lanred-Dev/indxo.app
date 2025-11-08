@@ -9,11 +9,23 @@
     import Form from "$lib/components/Form/Form.svelte";
     import EditableTerms from "$lib/components/Lists/EditableTerms.svelte";
     import { EditableListAddItemButton } from "$lib/components/Lists/Editable";
+    import { SegmentedButton, SegmentedButtonGroup } from "$lib/components/SegmentedButtonGroup";
+
+    enum TermView {
+        preview = "Preview",
+        editable = "Editable",
+    }
 
     const document: DocumentContext = getContext("document");
     let areChangesMade: boolean = $state.raw(false);
     let termsValue: Term[] = $state(document.terms);
     let savedTermsValue: Term[] | null = $state.raw(null);
+    let hasEditPermission: boolean = $derived(
+        isPermissionEqual(document.permission, DocumentPermission.edit)
+    );
+    let currentViewID: TermView = $derived(
+        hasEditPermission ? TermView.editable : TermView.preview
+    );
 
     function updateSavedValue() {
         savedTermsValue = JSON.parse(JSON.stringify(termsValue.filter((term) => term !== null)));
@@ -28,9 +40,19 @@
 </script>
 
 <div class="list-primary mt-20">
-    <p class="list-title">{Wording.terms}</p>
+    <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
+        <p class="list-title mb-0!">{Wording.terms}</p>
 
-    {#if isPermissionEqual(document.permission, DocumentPermission.edit)}
+        {#if hasEditPermission}
+            <SegmentedButtonGroup bind:value={currentViewID} class="w-fit! min-w-fit!">
+                {#each Object.values(TermView) as id}
+                    <SegmentedButton {id} class="grow-0">{id}</SegmentedButton>
+                {/each}
+            </SegmentedButtonGroup>
+        {/if}
+    </div>
+
+    {#if currentViewID === TermView.editable}
         <Form
             class="w-full"
             method={FormSubmitMethods.put}
@@ -53,7 +75,7 @@
                 </EditableTerms>
             </FormContent>
         </Form>
-    {:else}
+    {:else if currentViewID === TermView.preview}
         <ol class="flex flex-col gap-4">
             {#each document.terms as term, index}
                 <TermCard {...term} {index} />
