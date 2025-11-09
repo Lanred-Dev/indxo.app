@@ -3,17 +3,22 @@
     import type { Term } from "$lib/documents";
     import { animate } from "motion";
     import Flashcards, { CycleDirection } from "../Flashcards.svelte";
-    import { getContext, onMount } from "svelte";
-    import type { DocumentContext, DocumentHeaderContext } from "../../+page.svelte";
+    import { getContext } from "svelte";
+    import type { DocumentContext } from "../../+page.svelte";
+    import Terms from "./Terms.svelte";
+    import Breakdown from "../Home/Breakdown.svelte";
+    import Modes from "./Modes.svelte";
 
     const document: DocumentContext = getContext("document");
-    const documentHeader: DocumentHeaderContext = getContext("documentHeader");
     let FlashcardsComponent: Flashcards;
     let Card: HTMLDivElement;
     let canCycle: boolean = $state.raw(true);
     let canFlip: boolean = $state.raw(true);
     let currentTermIndex: number = $state.raw(0);
-    let term: Term = $derived(document.terms[currentTermIndex]);
+    // In most cases current term index should be in range, but due to hot reloading while the user is editing the set, it might go out of bounds
+    let term: Term = $derived.by(() =>
+        currentTermIndex in document.terms ? document.terms[currentTermIndex] : document.terms[0]
+    );
 
     /**
      * Cycle through the terms in the set.
@@ -72,8 +77,13 @@
         document.terms = [...document.terms].sort(() => Math.random() - 0.5);
     }
 
-    onMount(() => {
-        documentHeader.showActions = false;
+    // Resets the progress during hot reloading if a term is deleted or added
+    let lastTermsLength: number = document.terms.length;
+    $effect.pre(() => {
+        if (lastTermsLength <= document.terms.length) return;
+
+        lastTermsLength = document.terms.length;
+        restart();
     });
 </script>
 
@@ -119,3 +129,9 @@
         },
     ]}
 />
+
+<Breakdown />
+
+<Modes />
+
+<Terms />

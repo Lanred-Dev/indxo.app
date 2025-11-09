@@ -1,6 +1,11 @@
 <script lang="ts">
     import { getContext, onMount } from "svelte";
-    import { DocumentPermission, type Term } from "$lib/documents";
+    import {
+        DocumentPermission,
+        type SortedSetMetadata,
+        type SortedTerm,
+        type Term,
+    } from "$lib/documents";
     import TermCard from "../TermCard.svelte";
     import { Wording } from "$lib/utils/wording";
     import type { DocumentContext } from "../../+page.svelte";
@@ -11,12 +16,14 @@
     import { EditableListAddItemButton } from "$lib/components/Lists/Editable";
     import { SegmentedButton, SegmentedButtonGroup } from "$lib/components/SegmentedButtonGroup";
     import { json } from "@sveltejs/kit";
+    import type { SessionContext } from "$lib/utils/global";
 
     enum TermView {
         preview = "Preview",
         editable = "Editable",
     }
 
+    const session: SessionContext = getContext("session");
     const document: DocumentContext = getContext("document");
     let areChangesMade: boolean = $state.raw(false);
     let termsValue: Term[] = $state(document.terms);
@@ -27,13 +34,34 @@
     let currentViewID: TermView = $derived(
         hasEditPermission ? TermView.editable : TermView.preview
     );
+    let timesMissed: Map<string, number> = new Map();
+    let strugglingTerms: Set<string> = new Set();
 
     function updateSavedValue() {
         savedTermsValue = JSON.parse(JSON.stringify(termsValue.filter((term) => term !== null)));
         document.terms = savedTermsValue;
     }
 
-    onMount(updateSavedValue);
+    onMount(async () => {
+        updateSavedValue();
+
+        if (session.session) {
+            const sortedSetMetadata: SortedSetMetadata = await (
+                await fetch(`/api/user/${session.user._id}/metadata/sort/${document._id}`)
+            ).json();
+
+            Object.entries(sortedSetMetadata.terms).forEach(([_id, term]: [string, SortedTerm]) => {
+                const termIndex = termsValue.findIndex((term) => term._id === _id);
+
+                if (termIndex === -1) return;
+
+                timesMissed.set(_id, term.timesMissed);
+
+                if (term.timesMissed >= session.user.preferences.strugglingTermThreshold)
+                    strugglingTerms.add(_id);
+            });
+        }
+    });
 
     $effect(() => {
         areChangesMade = JSON.stringify(termsValue) != JSON.stringify(savedTermsValue);
@@ -79,7 +107,12 @@
     {:else if currentViewID === TermView.preview}
         <ol class="flex flex-col gap-4">
             {#each document.terms as term, index}
-                <TermCard {...term} {index} />
+                <TermCard
+                    {...term}
+                    {index}
+                    timesMissed={timesMissed.get(term._id)}
+                    isStrugglingTerm={strugglingTerms.has(term._id)}
+                />
             {/each}
         </ol>
     {/if}

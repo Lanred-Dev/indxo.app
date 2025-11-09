@@ -4,6 +4,7 @@
     import type { Component } from "svelte";
     import CardsPage from "./Cards/Page.svelte";
     import SortPage from "./Sort/Page.svelte";
+    import HomePage from "./Home/Page.svelte";
 
     let mode: string = $derived(page.url.searchParams.get("m") ?? "");
 
@@ -11,8 +12,10 @@
         switch (mode) {
             case StudyMode.sort:
                 return SortPage;
-            default:
+            case StudyMode.cards:
                 return CardsPage;
+            default:
+                return HomePage;
         }
     });
 </script>
