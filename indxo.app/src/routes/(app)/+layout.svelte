@@ -17,8 +17,12 @@
     let { data, children } = $props();
 
     setContext("session", {
-        session: data.session,
-        user: data.user,
+        get user() {
+            return data.user;
+        },
+        get session() {
+            return data.session;
+        },
     } satisfies SessionContext);
 
     let headerHeight: number = $state.raw(0);
