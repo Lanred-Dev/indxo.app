@@ -39,18 +39,18 @@
             DefaultEditableListItemButton.moveDown,
             DefaultEditableListItemButton.delete,
         ],
-        addItem: (index, value) => {
+        addItem: (index, term) => {
             const placeholders: { term: string; definition: string } =
                 randomArrayEntry(termPlaceholders);
 
             return {
                 index,
-                _id: (value?.id as string) ?? generateDocumentID(5, DocumentType.term),
+                _id: (term?._id as string) ?? generateDocumentID(5, DocumentType.term),
                 fields: [
                     {
                         _id: "term",
                         Component: Textbox,
-                        value: value?.term,
+                        value: term?.term,
                         properties: {
                             placeholder: placeholders.term,
                             maxlength: termFields.term.properties.maxlength,
@@ -60,7 +60,7 @@
                     {
                         _id: "definition",
                         Component: Textbox,
-                        value: value?.definition,
+                        value: term?.definition,
                         properties: {
                             class: "w-full",
                             placeholder: placeholders.definition,
@@ -72,7 +72,7 @@
                     {
                         _id: "image",
                         Component: ImageSelector,
-                        value: value?.image,
+                        value: term?.image,
                         properties: {
                             class: "min-w-fit size-40",
                             imageProperties: {
