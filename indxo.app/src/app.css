@@ -180,7 +180,7 @@
     @apply mb-12 w-full;
 
     & .title {
-        @apply break-word text-3xl leading-none font-bold md:text-4xl;
+        @apply break-word text-3xl leading-snug font-bold md:text-4xl;
     }
 
     & .description {
@@ -192,7 +192,7 @@
     @apply w-full;
 
     & .title {
-        @apply break-word flex flex-wrap items-center justify-center gap-x-1 gap-y-2 text-3xl leading-none font-bold;
+        @apply break-word flex flex-wrap items-center justify-center gap-x-1 gap-y-2 text-3xl leading-snug font-bold;
 
         & img {
             @apply size-9;
