@@ -67,7 +67,7 @@ export async function GET({ cookies, url }) {
             folders: [],
             favorites: [],
             preferences: {
-                strugglingTermThreshold: 0,
+                strugglingTermThreshold: 3,
                 home: [],
                 showTermOnDefinitionSide: true,
             },
