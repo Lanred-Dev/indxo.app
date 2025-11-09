@@ -5,6 +5,7 @@ import Fastify from "fastify";
 import { hook as authHook } from "./auth";
 import deleteRoute from "./routes/delete";
 import getRoute from "./routes/get";
+import indexRoute from "./routes/index";
 import uploadRoute from "./routes/upload";
 
 const app = Fastify();
@@ -21,6 +22,7 @@ app.decorateRequest("user", null);
 
 app.addHook("onRequest", authHook);
 
+app.route(indexRoute);
 app.route(uploadRoute);
 app.route(getRoute);
 app.route(deleteRoute);
