@@ -7,20 +7,27 @@
         term,
         definition,
         image,
-        missed = 0,
+        timesMissed = 0,
+        isStrugglingTerm = false,
         index,
-    }: Term & { missed?: number; index: number } = $props();
+    }: Term & { timesMissed?: number; index: number; isStrugglingTerm?: boolean } = $props();
 </script>
 
-<li class={["container-primary flex gap-3", missed > 0 && "border-alert shadow-alert shadow/40"]}>
+<li
+    class={[
+        "container-primary flex gap-3",
+        timesMissed > 0 && isStrugglingTerm && "border-alert shadow-alert shadow/40",
+        timesMissed > 0 && !isStrugglingTerm && "border-warning shadow-warning shadow/40",
+    ]}
+>
     <p class="text-lg font-semibold">#{index + 1}</p>
 
     <div class="break-word w-full space-y-2 text-xl">
         <div class="flex w-full justify-between gap-3">
             <MarkdownText class="" text={term} />
 
-            {#if missed > 0}
-                <p>missed {missed} times</p>
+            {#if timesMissed > 0}
+                <p class="text-base">missed {timesMissed} times</p>
             {/if}
         </div>
 
