@@ -72,19 +72,23 @@
         canFlip = false;
 
         const { _id } = terms[currentTermIndex];
+        let overlayColor: string;
 
         switch (direction) {
             case CycleDirection.previous:
                 stillLearningTerms.add(_id);
                 timesMissed.set(_id, (timesMissed.get(_id) ?? 0) + 1);
+                overlayColor = "var(--color-warning)";
                 break;
             case CycleDirection.next:
                 knowTerms.add(_id);
                 timesMissed.set(_id, 0);
+                overlayColor = "var(--color-success)";
                 break;
         }
 
         if (timesMissed.get(_id)! >= session.user.preferences.strugglingTermThreshold) {
+            overlayColor = "var(--color-alert)";
             strugglingTerms.add(_id);
         } else {
             strugglingTerms.delete(_id);
@@ -92,9 +96,8 @@
 
         unsortedTerms.delete(_id);
 
-        // Apply a color overlay to the card to indicate the direction of the cycle and then animate it in
-        CardOverlay.style.backgroundColor =
-            direction === CycleDirection.next ? "var(--color-success)" : "var(--color-alert)";
+        CardOverlay.style.backgroundColor = overlayColor;
+
         animate(
             CardOverlay,
             {
