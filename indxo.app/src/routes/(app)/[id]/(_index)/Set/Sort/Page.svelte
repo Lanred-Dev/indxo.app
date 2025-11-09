@@ -165,10 +165,9 @@
         documentHeader.showActions = false;
 
         if (session.session) {
-            const response = await fetch(
-                `/api/user/${session.user._id}/metadata/sort/${document._id}`
-            );
-            const sortedSetMetadata: SortedSetMetadata = await response.json();
+            const sortedSetMetadata: SortedSetMetadata = await (
+                await fetch(`/api/user/${session.user._id}/metadata/sort/${document._id}`)
+            ).json();
 
             restart(
                 document.terms.filter(({ _id }: Term) => {
