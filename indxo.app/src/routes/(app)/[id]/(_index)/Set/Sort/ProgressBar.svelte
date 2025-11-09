@@ -15,7 +15,9 @@
     const document: DocumentContext = getContext("document");
 </script>
 
-<div class="flex-center mb-5 w-full gap-2">
+<div class="flex-center mb-5 w-full gap-5 text-lg font-semibold">
+    <p class="text-warning">{stillLearningTerms}</p>
+
     <div class="bg-input flex h-2 w-3/4 overflow-hidden rounded-full">
         <div
             class="bg-warning progress-bar"
@@ -32,6 +34,8 @@
             style:width="{(knowTerms / document.terms.length) * 100}%"
         ></div>
     </div>
+
+    <p class="text-success">{knowTerms}</p>
 </div>
 
 <style lang="postcss">
