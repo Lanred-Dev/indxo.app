@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { getContext } from "svelte";
+    import { getContext, onMount } from "svelte";
     import { DocumentPermission, type Term } from "$lib/documents";
     import TermCard from "../TermCard.svelte";
     import { Wording } from "$lib/utils/wording";
@@ -10,6 +10,7 @@
     import EditableTerms from "$lib/components/Lists/EditableTerms.svelte";
     import { EditableListAddItemButton } from "$lib/components/Lists/Editable";
     import { SegmentedButton, SegmentedButtonGroup } from "$lib/components/SegmentedButtonGroup";
+    import { json } from "@sveltejs/kit";
 
     enum TermView {
         preview = "Preview",
@@ -19,7 +20,7 @@
     const document: DocumentContext = getContext("document");
     let areChangesMade: boolean = $state.raw(false);
     let termsValue: Term[] = $state(document.terms);
-    let savedTermsValue: Term[] | null = $state.raw(null);
+    let savedTermsValue: Term[] = $state.raw([]);
     let hasEditPermission: boolean = $derived(
         isPermissionEqual(document.permission, DocumentPermission.edit)
     );
@@ -32,10 +33,10 @@
         document.terms = savedTermsValue;
     }
 
-    $effect(() => {
-        if (savedTermsValue === null) updateSavedValue();
+    onMount(updateSavedValue);
 
-        areChangesMade = JSON.stringify(termsValue) !== JSON.stringify(savedTermsValue);
+    $effect(() => {
+        areChangesMade = JSON.stringify(termsValue) != JSON.stringify(savedTermsValue);
     });
 </script>
 
