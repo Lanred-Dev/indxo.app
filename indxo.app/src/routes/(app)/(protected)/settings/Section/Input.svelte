@@ -5,6 +5,7 @@
     import { invalidateAll } from "$app/navigation";
     import Checkbox from "$lib/components/Checkbox.svelte";
     import { fade } from "svelte/transition";
+    import NumberInput from "$lib/components/NumberInput.svelte";
 
     let {
         value,
@@ -23,6 +24,7 @@
 
             return response.ok;
         },
+        properties = {},
     }: {
         value: string | number | boolean;
         placeholder?: any;
@@ -33,6 +35,7 @@
         };
         updateText?: string;
         onUpdate?: (value: any) => Promise<boolean>;
+        properties?: { [key: string]: any };
     } = $props();
 
     const settingsPage: SettingsPageContext = getContext("settingsPage");
@@ -41,11 +44,11 @@
 
 <div class="flex flex-wrap gap-2">
     {#if typeof value === "number"}
-        <input bind:value {placeholder} type="number" class="input-primary w-fit min-w-fit" />
+        <NumberInput bind:value class="w-fit! min-w-fit" {...properties} />
     {:else if typeof value === "boolean"}
-        <Checkbox bind:value {placeholder} label={placeholder} />
+        <Checkbox bind:value {placeholder} label={placeholder} {...properties} />
     {:else if typeof value === "string"}
-        <Textbox bind:value {placeholder} class="w-fit! min-w-fit" />
+        <Textbox bind:value {placeholder} class="w-fit! min-w-fit" {...properties} />
     {/if}
 
     {#if value !== savedValue}
