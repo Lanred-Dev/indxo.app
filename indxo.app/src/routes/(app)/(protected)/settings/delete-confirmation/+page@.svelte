@@ -1,5 +1,8 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
+    import Loader from "$lib/components/Icons/Loader.svelte";
+
+    let isSubmitting: boolean = $state.raw(false);
 </script>
 
 <svelte:head>
@@ -13,8 +16,14 @@
     </div>
 
     <div class="row justify-center text-xl">
-        <form method="POST" use:enhance>
-            <button class="button-attention clay-alert">Yes, delete my account</button>
+        <form method="POST" use:enhance onsubmit={() => (isSubmitting = true)}>
+            <button class="button-attention clay-alert" disabled={isSubmitting}>
+                {#if isSubmitting}
+                    <Loader size={1.75} color="black" />
+                {:else}
+                    Yes, delete my account
+                {/if}
+            </button>
         </form>
 
         <a href="/settings" class="button-primary">No, take me back</a>
