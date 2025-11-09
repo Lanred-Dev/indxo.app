@@ -36,7 +36,7 @@
     function draw() {
         context.clearRect(0, 0, canvasWidth, canvasHeight);
 
-        const bodyStyles = getComputedStyle(window.document.body);
+        const bodyStyles = getComputedStyle(window.document.documentElement);
         const successColor: string = bodyStyles.getPropertyValue("--color-success");
         const warningColor: string = bodyStyles.getPropertyValue("--color-warning");
         const alertColor: string = bodyStyles.getPropertyValue("--color-alert");
