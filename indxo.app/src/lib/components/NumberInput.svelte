@@ -27,13 +27,13 @@
 >
     <p>{value}</p>
 
-    <div class="flex md:flex-col">
+    <div class="flex gap-x-2 md:flex-col">
         <button onclick={() => (value = Math.min(value + 1, max))} class="size-3">
-            <Chevron state={ChevronState.up} class="h-full w-full md:scale-150" />
+            <Chevron state={ChevronState.up} class="h-full w-full scale-150" />
         </button>
 
         <button onclick={() => (value = Math.max(value - 1, min))} class="size-3">
-            <Chevron state={ChevronState.down} class="h-full w-full md:scale-150" />
+            <Chevron state={ChevronState.down} class="h-full w-full scale-150" />
         </button>
     </div>
 </div>
