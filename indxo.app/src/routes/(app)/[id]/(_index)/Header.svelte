@@ -47,12 +47,15 @@
                         image: { url: "/icons/general/CopyDocument.svg" },
                         text: "Copy",
                         onclick: async () => {
-                            const response = await fetch(`/api/documents/${document._id}/copy`, {
+                            const response = await fetch("?/copyDocument", {
                                 method: "POST",
+                                body: new FormData(),
                             });
 
-                            if (response.status === ResponseCodes.Success)
-                                goto(`/${await response.json()}`);
+                            if (response.status !== ResponseCodes.Success) return;
+
+                            const [_, raw] = JSON.parse((await response.json()).data);
+                            goto(`/${JSON.parse(raw)}`);
                         },
                     });
                 }
