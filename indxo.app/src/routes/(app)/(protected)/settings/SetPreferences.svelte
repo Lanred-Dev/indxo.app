@@ -17,7 +17,11 @@
         >
             <SectionInput
                 value={session.user.preferences.strugglingTermThreshold}
-                placeholder="5"
+                placeholder="3"
+                properties={{
+                    min: 1,
+                    max: 10,
+                }}
                 onUpdate={async (value: number) => {
                     const response = await fetch(`/api/user/${session.user._id}`, {
                         method: "PUT",
