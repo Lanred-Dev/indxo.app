@@ -27,7 +27,7 @@
 
 <div class="flex-center sticky bottom-2 z-20 w-full pt-4" {...properties} bind:this={Controls}>
     <div
-        class="container-primary flex justify-between gap-2 p-2 transition-[width] duration-300"
+        class="container-primary flex justify-between gap-2 p-2"
         style:width="{distanceToBottom < 25 ? 100 - distanceToBottom : 75}%"
     >
         {@render children()}
