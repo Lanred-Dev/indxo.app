@@ -38,9 +38,8 @@
                         alt={session.user.name}
                     />
 
-                    <div class="space-y-0.5 [&>p]:leading-none">
+                    <div class="max-w-svw min-w-48 space-y-0.5 [&>p]:leading-none">
                         <p class="text-lg font-bold">{session.user.name}</p>
-                        <p>{session.user.email}</p>
                     </div>
                 </div>
 
