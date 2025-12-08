@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onDestroy, setContext, type Snippet } from "svelte";
+    import { setContext, type Snippet } from "svelte";
     import { type DialogContext, dialogContextKey } from ".";
 
     let {
