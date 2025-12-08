@@ -7,6 +7,13 @@
         SidebarContext,
         ViewportContext,
     } from "$lib/utils/global";
+    import {
+        ConfirmationPrompt,
+        ConfirmationPromptButton,
+        ConfirmationPromptContent,
+        ConfirmationPromptTrigger,
+    } from "$lib/components/ConfirmationPrompt";
+    import { goto } from "$app/navigation";
 
     const session: SessionContext = getContext("session");
     const header: HeaderContext = getContext("header");
@@ -63,10 +70,29 @@
                     </li>
                 </ul>
 
-                <a class="button-navigation" href="/logout">
-                    <img src="/icons/navigation/Logout.svg" alt="Log out" />
-                    <span>Logout</span>
-                </a>
+                <ConfirmationPrompt>
+                    <ConfirmationPromptTrigger class="button-navigation">
+                        <img src="/icons/navigation/Logout.svg" alt="Log out" />
+                        <span>Logout</span>
+                    </ConfirmationPromptTrigger>
+
+                    <ConfirmationPromptContent
+                        title="Confirm Logout"
+                        message="Are you sure you want to log out?"
+                    >
+                        <ConfirmationPromptButton
+                            class="button-attention clay-alert"
+                            onClick={async () => {
+                                await fetch("/api/auth/logout");
+                                window.location.reload();
+                            }}>Yes, log out</ConfirmationPromptButton
+                        >
+
+                        <ConfirmationPromptButton class="button-primary"
+                            >No, take me back</ConfirmationPromptButton
+                        >
+                    </ConfirmationPromptContent>
+                </ConfirmationPrompt>
             </PopupContent>
         </Popup>
     {:else}
