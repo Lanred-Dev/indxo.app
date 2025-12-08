@@ -1,15 +1,26 @@
 <script lang="ts">
     import { getContext } from "svelte";
     import { Popup, PopupContent, PopupTrigger, PopupXAlignment } from "$lib/components/Popup";
-    import type { HeaderContext, SessionContext, SidebarContext } from "$lib/utils/global";
+    import type {
+        HeaderContext,
+        SessionContext,
+        SidebarContext,
+        ViewportContext,
+    } from "$lib/utils/global";
 
     const session: SessionContext = getContext("session");
     const header: HeaderContext = getContext("header");
     const sidebar: SidebarContext = getContext("sidebar");
+    const viewport: ViewportContext = getContext("viewport");
 </script>
 
 <header
-    class="bg-light border-b-primary fixed top-0 left-0 z-40 flex w-full items-center justify-between border-b px-4 pt-6 pb-3 md:px-8 md:pt-3"
+    class={[
+        "fixed top-0 left-0 z-40 flex w-full items-center justify-between border-b px-4 pt-6 pb-3 transition-all duration-500 md:px-8 md:pt-3",
+        viewport.scrollY > 5
+            ? "bg-light/50 border-b-primary shadow-sm backdrop-blur-sm"
+            : "border-transparent bg-transparent shadow-none",
+    ]}
     bind:clientHeight={header.height}
 >
     <div class="flex-center gap-3 pl-3">
