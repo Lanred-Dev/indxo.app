@@ -62,12 +62,12 @@
             <p class="text-lg font-semibold">#{index + 1}</p>
 
             <div class="flex-center gap-3">
-                {#each editableList.buttons as { text, image, onclick }}
+                {#each editableList.buttons as { text, image, onClick }}
                     <ActionButton
                         {text}
                         {image}
-                        onclick={() => {
-                            onclick({ index, _id, fields, isDraggable });
+                        onClick={() => {
+                            onClick({ index, _id, fields, isDraggable });
                         }}
                     />
                 {/each}

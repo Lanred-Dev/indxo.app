@@ -29,7 +29,7 @@
                             },
                         },
                         text: "Favorite",
-                        onclick: async () => {
+                        onClick: async () => {
                             const response = await fetch(
                                 `/api/documents/${document._id}/favorite`,
                                 {
@@ -46,7 +46,7 @@
                     buttons.push({
                         image: { url: "/icons/general/CopyDocument.svg" },
                         text: "Copy",
-                        onclick: async () => {
+                        onClick: async () => {
                             const response = await fetch("?/copyDocument", {
                                 method: "POST",
                                 body: new FormData(),
@@ -64,7 +64,7 @@
                     buttons.push({
                         image: { url: "/icons/general/Pencil.svg" },
                         text: "Edit",
-                        onclick: () => {
+                        onClick: () => {
                             goto(`${document._id}/edit`);
                         },
                     });
@@ -73,7 +73,7 @@
                     buttons.push({
                         image: { url: "/icons/general/Trash.svg" },
                         text: "Delete",
-                        onclick: async () => {
+                        onClick: async () => {
                             const response = await fetch(`/api/documents/${document._id}`, {
                                 method: "DELETE",
                             });

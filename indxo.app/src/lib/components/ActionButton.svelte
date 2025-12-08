@@ -10,7 +10,7 @@
         image: { properties?: ComponentProps<C>; Component?: C; url?: string };
         text: string;
         showText?: boolean;
-        onclick: (...args: any[]) => void;
+        onClick: (...args: any[]) => void;
         [key: string]: unknown;
     } = $props();
 
