@@ -8,7 +8,7 @@
         ...properties
     }: {
         children: Snippet<[]>;
-        onClick: () => void;
+        onClick?: () => void;
         [key: string]: any;
     } = $props();
 
@@ -20,7 +20,8 @@
     onclick={(event) => {
         event.stopPropagation();
         dialog.isVisible = !dialog.isVisible;
-        onClick();
+
+        if (onClick) onClick();
     }}
     {...properties}
 >
