@@ -18,7 +18,7 @@
     class={[
         "fixed top-0 left-0 z-40 flex w-full items-center justify-between border-b px-4 pt-6 pb-3 transition-all duration-500 md:px-8 md:pt-3",
         viewport.scrollY > 5
-            ? "bg-light/50 border-b-primary shadow-sm backdrop-blur-sm"
+            ? "bg-light border-b-primary shadow-sm "
             : "border-transparent bg-transparent shadow-none",
     ]}
     bind:clientHeight={header.height}
