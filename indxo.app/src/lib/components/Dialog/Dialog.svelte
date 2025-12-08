@@ -3,11 +3,11 @@
     import { type DialogContext, dialogContextKey } from ".";
 
     let {
-        onclose,
+        onClose,
         isVisible = $bindable(false),
         children,
     }: {
-        onclose?: () => void;
+        onClose?: () => void;
         isVisible?: boolean;
         children: Snippet<[]>;
     } = $props();
@@ -21,7 +21,7 @@
         if (newValue === isVisible) return;
 
         isVisible = newValue;
-        if (!newValue && onclose) onclose();
+        if (!newValue && onClose) onClose();
     }
 
     setContext(dialogContextKey, {
