@@ -135,6 +135,6 @@
     }
 </script>
 
-<p {...properties}>
+<p {...properties} style:white-space="pre-wrap">
     {@html parsedText}
 </p>
