@@ -22,7 +22,6 @@
 
     let { data } = $props();
 
-    let isFavorite = $state.raw(data.isFavorite);
     let terms: Term[] = $state.raw("terms" in data.document ? data.document.terms : []);
     setContext("document", {
         ...data.document,
@@ -40,10 +39,10 @@
         },
         permission: data.permission ?? DocumentPermission.none,
         get isFavorite() {
-            return isFavorite;
+            return data.isFavorite;
         },
         set isFavorite(newValue) {
-            isFavorite = newValue;
+            data.isFavorite = newValue;
         },
     } satisfies DocumentContext);
 
