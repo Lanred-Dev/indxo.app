@@ -8,10 +8,10 @@
     let document: DocumentContext = getContext("document");
 </script>
 
-{#snippet info(icon: string, title: string, text: string)}
+{#snippet info(icon: string, alt: string, title: string, text: string)}
     <div class="flex flex-wrap items-center justify-between gap-x-5 gap-y-1.5">
         <div class="flex items-center gap-2">
-            <img class="size-6 rounded-full" src={icon} alt={title} />
+            <img class="size-6 rounded-full" src={icon} {alt} />
             <p>{title}</p>
         </div>
 
@@ -28,20 +28,28 @@
         {@render info(
             "/icons/general/Terms.svg",
             "Terms",
+            "Terms",
             `${document.terms.length} ${document.terms.length === 1 ? Wording.term : Wording.terms}`
         )}
 
         {@render info(
             "/icons/general/Calendar.svg",
+            "Calendar",
             "Created on",
             format(document.created, "MM/dd/yyyy")
         )}
 
-        {@render info(document.owner.picture, "Created by", document.owner.name)}
+        {@render info(
+            document.owner.picture,
+            document.owner.name,
+            "Created by",
+            document.owner.name
+        )}
 
         {#if document.updated}
             {@render info(
                 "/icons/general/Clock.svg",
+                "Clock",
                 "Last updated",
                 format(document.updated, "MM/dd/yyyy")
             )}
