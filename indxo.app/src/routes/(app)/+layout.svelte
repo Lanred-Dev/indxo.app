@@ -67,6 +67,9 @@
         get isNavigating() {
             return isNavigating;
         },
+        set isNavigating(newValue) {
+            isNavigating = newValue;
+        },
         get Content() {
             return Viewport ?? (document.querySelector("main") as HTMLDivElement) ?? undefined;
         },
