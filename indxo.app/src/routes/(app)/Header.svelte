@@ -82,7 +82,7 @@
                     >
                         <ConfirmationPromptButton
                             class="button-attention clay-alert"
-                            onClick={async () => {
+                            onclick={async () => {
                                 await fetch("/api/auth/logout");
                                 window.location.reload();
                             }}>Yes, log out</ConfirmationPromptButton

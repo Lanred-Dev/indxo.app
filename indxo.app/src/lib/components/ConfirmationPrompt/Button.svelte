@@ -5,15 +5,15 @@
 
     let {
         class: className,
-        onClick,
+        onclick,
         children,
     }: {
         class?: ClassValue;
-        onClick?: () => void;
+        onclick?: () => void;
         children: Snippet<[]>;
     } = $props();
 </script>
 
-<DialogTrigger {onClick} class={className}>
+<DialogTrigger {onclick} class={className}>
     {@render children()}
 </DialogTrigger>

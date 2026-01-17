@@ -30,7 +30,7 @@
                             },
                         },
                         text: "Favorite",
-                        onClick: async () => {
+                        onclick: async () => {
                             const response = await fetch(
                                 `/api/documents/${document._id}/favorite`,
                                 {
@@ -47,7 +47,7 @@
                     buttons.push({
                         image: { url: "/icons/general/CopyDocument.svg" },
                         text: "Copy",
-                        onClick: async () => {
+                        onclick: async () => {
                             viewport.isNavigating = true;
 
                             const response = await fetch("?/copyDocument", {
@@ -71,7 +71,7 @@
                     buttons.push({
                         image: { url: "/icons/general/Pencil.svg" },
                         text: "Edit",
-                        onClick: () => {
+                        onclick: () => {
                             goto(`${document._id}/edit`);
                         },
                     });
@@ -80,7 +80,7 @@
                     buttons.push({
                         image: { url: "/icons/general/Trash.svg" },
                         text: "Delete",
-                        onClick: async () => {
+                        onclick: async () => {
                             const response = await fetch(`/api/documents/${document._id}`, {
                                 method: "DELETE",
                             });

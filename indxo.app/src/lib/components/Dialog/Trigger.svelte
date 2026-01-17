@@ -4,11 +4,11 @@
 
     let {
         children,
-        onClick,
+        onclick,
         ...properties
     }: {
         children: Snippet<[]>;
-        onClick?: () => void;
+        onclick?: () => void;
         [key: string]: any;
     } = $props();
 
@@ -21,7 +21,7 @@
         event.stopPropagation();
         dialog.isVisible = !dialog.isVisible;
 
-        if (onClick) onClick();
+        if (onclick) onclick();
     }}
     {...properties}
 >
