@@ -8,10 +8,11 @@
     import { ResponseCodes } from "$lib/utils/apiResponses";
     import isPermissionEqual from "$lib/utils/document/isPermissionEqual";
     import { goto } from "$app/navigation";
-    import type { SessionContext } from "$lib/utils/global";
+    import type { SessionContext, ViewportContext } from "$lib/utils/global";
 
     const document: DocumentContext = getContext("document");
     const documentHeader: DocumentHeaderContext = getContext("documentHeader");
+    const viewport: ViewportContext = getContext("viewport");
     const session: SessionContext = getContext("session");
     const documentType: DocumentType = determineDocumentType(document._id)!;
     const buttons: ComponentProps<typeof ActionButton>[] = $derived.by(() => {
@@ -47,15 +48,21 @@
                         image: { url: "/icons/general/CopyDocument.svg" },
                         text: "Copy",
                         onClick: async () => {
+                            viewport.isNavigating = true;
+
                             const response = await fetch("?/copyDocument", {
                                 method: "POST",
                                 body: new FormData(),
                             });
 
-                            if (response.status !== ResponseCodes.Success) return;
+                            if (response.status !== ResponseCodes.Success) {
+                                // TODO: Implement error handling
+                            } else {
+                                const [_, raw] = JSON.parse((await response.json()).data);
+                                goto(`/${JSON.parse(raw)}`);
+                            }
 
-                            const [_, raw] = JSON.parse((await response.json()).data);
-                            goto(`/${JSON.parse(raw)}`);
+                            viewport.isNavigating = false;
                         },
                     });
                 }
