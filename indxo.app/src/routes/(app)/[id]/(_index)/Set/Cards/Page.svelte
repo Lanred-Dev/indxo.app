@@ -4,16 +4,15 @@
     import { animate } from "motion";
     import Flashcards, { CycleDirection } from "../Flashcards.svelte";
     import { getContext, onMount } from "svelte";
-    import type { DocumentContext, DocumentHeaderContext } from "../../+page.svelte";
+    import type { DocumentContext } from "../../+page.svelte";
 
     const document: DocumentContext = getContext("document");
-    const documentHeader: DocumentHeaderContext = getContext("documentHeader");
     let FlashcardsComponent: Flashcards;
     let Card: HTMLDivElement;
     let canCycle: boolean = $state.raw(true);
     let canFlip: boolean = $state.raw(true);
     let currentTermIndex: number = $state.raw(0);
-    let term: Term = $derived(document.terms[currentTermIndex]);
+    let term: Term = $derived(document.data.terms[currentTermIndex]);
 
     /**
      * Cycle through the terms in the set.
@@ -24,7 +23,7 @@
     async function cycle(direction: -1 | 1) {
         if (
             currentTermIndex + direction < 0 ||
-            currentTermIndex + direction > document.terms.length - 1
+            currentTermIndex + direction > document.data.terms.length - 1
         )
             return;
 
@@ -69,17 +68,17 @@
      */
     function shuffle() {
         restart();
-        document.terms = [...document.terms].sort(() => Math.random() - 0.5);
+        document.data.terms = [...document.data.terms].sort(() => Math.random() - 0.5);
     }
 
     onMount(() => {
-        documentHeader.showActions = false;
+        document.header.showActions = false;
     });
 </script>
 
 <Flashcards
     {cycle}
-    termCount={document.terms.length}
+    termCount={document.data.terms.length}
     currentTerm={{
         index: currentTermIndex + 1,
         ...term,
@@ -103,7 +102,7 @@
             onclick: () => {
                 cycle(CycleDirection.next);
             },
-            disabled: currentTermIndex >= document.terms.length - 1,
+            disabled: currentTermIndex >= document.data.terms.length - 1,
         },
     }}
     actionButtons={[

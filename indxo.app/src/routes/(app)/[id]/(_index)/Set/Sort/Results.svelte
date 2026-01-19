@@ -46,16 +46,16 @@
             maxRadius,
             successColor,
             0,
-            (Math.PI * 2 * knowTerms.size) / document.terms.length
+            (Math.PI * 2 * knowTerms.size) / document.data.terms.length
         );
 
         const stillLearningStartAngle: number =
-            (Math.PI * 2 * knowTerms.size) / document.terms.length;
+            (Math.PI * 2 * knowTerms.size) / document.data.terms.length;
         drawCircle(
             maxRadius,
             warningColor,
             stillLearningStartAngle,
-            (Math.PI * 2 * (knowTerms.size + stillLearningTerms.size)) / document.terms.length
+            (Math.PI * 2 * (knowTerms.size + stillLearningTerms.size)) / document.data.terms.length
         );
 
         if (strugglingTerms.size > 0) {
@@ -64,7 +64,7 @@
                 alertColor,
                 stillLearningStartAngle,
                 stillLearningStartAngle +
-                    (Math.PI * 2 * strugglingTerms.size) / document.terms.length
+                    (Math.PI * 2 * strugglingTerms.size) / document.data.terms.length
             );
         }
     }
@@ -98,7 +98,7 @@
 
             <div class="x-center y-center absolute z-1 w-full text-center">
                 <p class="text-3xl font-bold">
-                    {((knowTerms.size / document.terms.length) * 100).toFixed(0)}%
+                    {((knowTerms.size / document.data.terms.length) * 100).toFixed(0)}%
                 </p>
                 <p class="w-full">of the way there</p>
             </div>
@@ -111,7 +111,7 @@
                     {knowTerms.size === 1
                         ? Wording.term.toLowerCase()
                         : Wording.terms.toLowerCase()}
-                {:else if knowTerms.size === document.terms.length}
+                {:else if knowTerms.size === document.data.terms.length}
                     every {Wording.term.toLowerCase()}
                 {:else}
                     no {Wording.terms.toLowerCase()}
@@ -124,7 +124,7 @@
                     {stillLearningTerms.size === 1
                         ? Wording.term.toLowerCase()
                         : Wording.terms.toLowerCase()}
-                {:else if stillLearningTerms.size === document.terms.length}
+                {:else if stillLearningTerms.size === document.data.terms.length}
                     every {Wording.term.toLowerCase()}
                 {:else}
                     no {Wording.terms.toLowerCase()}
@@ -137,7 +137,7 @@
                     {strugglingTerms.size === 1
                         ? Wording.term.toLowerCase()
                         : Wording.terms.toLowerCase()}
-                {:else if strugglingTerms.size === document.terms.length}
+                {:else if strugglingTerms.size === document.data.terms.length}
                     every {Wording.term.toLowerCase()}
                 {:else}
                     no {Wording.terms.toLowerCase()}
@@ -147,14 +147,14 @@
     </div>
 
     <div class="flex flex-wrap gap-4">
-        <button class="button-primary" onclick={() => restart(document.terms)}>Restart</button>
+        <button class="button-primary" onclick={() => restart(document.data.terms)}>Restart</button>
 
         {#if stillLearningTerms.size > 0}
             <button
                 class="button-attention clay-warning"
                 onclick={() =>
                     restart(
-                        document.terms.filter((term: Term) => stillLearningTerms.has(term._id))
+                        document.data.terms.filter((term: Term) => stillLearningTerms.has(term._id))
                     )}
             >
                 Study still learning terms
@@ -165,7 +165,7 @@
             <button
                 class="button-attention clay-alert"
                 onclick={() =>
-                    restart(document.terms.filter((term: Term) => strugglingTerms.has(term._id)))}
+                    restart(document.data.terms.filter((term: Term) => strugglingTerms.has(term._id)))}
             >
                 Study struggling terms
             </button>

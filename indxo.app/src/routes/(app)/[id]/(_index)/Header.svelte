@@ -3,7 +3,7 @@
     import Star from "$lib/components/Icons/Star.svelte";
     import { DocumentPermission, DocumentType } from "$lib/documents";
     import { getContext, type ComponentProps } from "svelte";
-    import type { DocumentContext, DocumentHeaderContext } from "./+page.svelte";
+    import type { DocumentContext } from "./+page.svelte";
     import determineDocumentType from "$lib/utils/document/determineType";
     import { ResponseCodes } from "$lib/utils/apiResponses";
     import isPermissionEqual from "$lib/utils/document/isPermissionEqual";
@@ -11,10 +11,9 @@
     import type { SessionContext, ViewportContext } from "$lib/utils/global";
 
     const document: DocumentContext = getContext("document");
-    const documentHeader: DocumentHeaderContext = getContext("documentHeader");
     const viewport: ViewportContext = getContext("viewport");
     const session: SessionContext = getContext("session");
-    const documentType: DocumentType = determineDocumentType(document._id)!;
+    const documentType: DocumentType = $derived.by(() => determineDocumentType(document.data._id) ?? DocumentType.set);
     const buttons: ComponentProps<typeof ActionButton>[] = $derived.by(() => {
         const buttons: ComponentProps<typeof ActionButton>[] = [];
 
@@ -26,21 +25,21 @@
                         image: {
                             Component: Star,
                             properties: {
-                                fill: document.isFavorite ? "var(--color-attention)" : "#000000",
+                                fill: document.data.isFavorite ? "var(--color-attention)" : "#000000",
                             },
                         },
                         text: "Favorite",
                         onclick: async () => {
                             const response = await fetch(
-                                `/api/documents/${document._id}/favorite`,
+                                `/api/documents/${document.data._id}/favorite`,
                                 {
                                     method: "PUT",
-                                    body: JSON.stringify(!document.isFavorite),
+                                    body: JSON.stringify(!document.data.isFavorite),
                                 }
                             );
 
                             if (response.status === ResponseCodes.SuccessNoResponse)
-                                document.isFavorite = !document.isFavorite;
+                                document.data.isFavorite = !document.data.isFavorite;
                         },
                     });
 
@@ -72,7 +71,7 @@
                         image: { url: "/icons/general/Pencil.svg" },
                         text: "Edit",
                         onclick: () => {
-                            goto(`${document._id}/edit`);
+                            goto(`${document.data._id}/edit`);
                         },
                     });
 
@@ -81,13 +80,13 @@
                         image: { url: "/icons/general/Trash.svg" },
                         text: "Delete",
                         onclick: async () => {
-                            const response = await fetch(`/api/documents/${document._id}`, {
+                            const response = await fetch(`/api/documents/${document.data._id}`, {
                                 method: "DELETE",
                             });
 
                             if (response.status === ResponseCodes.SuccessNoResponse)
                                 goto(
-                                    `/my/${determineDocumentType(document._id) === DocumentType.folder ? "folders" : "sets"}`
+                                    `/my/${determineDocumentType(document.data._id) === DocumentType.folder ? "folders" : "sets"}`
                                 );
                         },
                     });
@@ -101,9 +100,9 @@
     const image: string | undefined = $derived.by(() => {
         switch (documentType) {
             case DocumentType.folder:
-                return document.icon;
+                return document.data.icon;
             case DocumentType.user:
-                return document.picture;
+                return document.data.picture;
             default:
                 return undefined;
         }
@@ -111,11 +110,11 @@
     const description: string | { url: string; text: string } | undefined = $derived.by(() => {
         switch (documentType) {
             case DocumentType.folder:
-                return document.description;
+                return document.data.description;
             case DocumentType.set:
                 return {
-                    url: `/search?query=${document.subject}&filter=${DocumentType.set}`,
-                    text: document.subject,
+                    url: `/search?query=${document.data.subject}&filter=${DocumentType.set}`,
+                    text: document.data.subject,
                 };
             default:
                 return undefined;
@@ -124,7 +123,7 @@
 </script>
 
 <svelte:head>
-    <title>{document.name}</title>
+    <title>{document.data.name}</title>
 
     {#if image}
         <link rel="icon" href={image} />
@@ -153,15 +152,15 @@
     >
         <div class="flex max-w-full grow basis-full items-center gap-2">
             {#if image}
-                <img src={image} class="size-14 rounded-full" alt={document.name} />
+                <img src={image} class="size-14 rounded-full" alt={document.data.name} />
             {/if}
 
             <h1 class="title">
-                <a href="/{document._id}">{document.name}</a>
+                <a href="/{document.data._id}">{document.data.name}</a>
             </h1>
         </div>
 
-        {#if documentHeader.showActions}
+        {#if document.header.showActions}
             <div class="flex-center min-w-fit -translate-x-2 gap-2 lg:translate-x-2">
                 {#each buttons as button}
                     <ActionButton class="button-icon" {...button} />

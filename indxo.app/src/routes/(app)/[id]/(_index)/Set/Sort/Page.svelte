@@ -1,7 +1,7 @@
 <!--svelte-ignore non_reactive_update-->
 <script lang="ts">
     import { getContext, onMount } from "svelte";
-    import type { DocumentContext, DocumentHeaderContext } from "../../+page.svelte";
+    import type { DocumentContext } from "../../+page.svelte";
     import { beforeNavigate } from "$app/navigation";
     import type { Term, SortedSetMetadata, SortedTerm } from "$lib/documents";
     import Flashcards, { CycleDirection } from "../Flashcards.svelte";
@@ -13,7 +13,6 @@
 
     const session: SessionContext = getContext("session");
     const document: DocumentContext = getContext("document");
-    const documentHeader: DocumentHeaderContext = getContext("documentHeader");
     let currentTermIndex: number = $state.raw(0);
     let canCycle: boolean = $state.raw(true);
     let canFlip: boolean = $state.raw(true);
@@ -145,13 +144,13 @@
         }
 
         if (
-            currentTermIndex + 1 < document.terms.length - 1 &&
-            !unsortedTerms.has(document.terms[currentTermIndex + 1]?._id)
+            currentTermIndex + 1 < document.data.terms.length - 1 &&
+            !unsortedTerms.has(document.data.terms[currentTermIndex + 1]?._id)
         ) {
             currentTermIndex++;
         } else {
-            for (let index = 0; index < document.terms.length; index++) {
-                const term: Term = document.terms[index];
+            for (let index = 0; index < document.data.terms.length; index++) {
+                const term: Term = document.data.terms[index];
 
                 if (!unsortedTerms.has(term._id)) continue;
 
@@ -162,15 +161,15 @@
     }
 
     onMount(async () => {
-        documentHeader.showActions = false;
+        document.header.showActions = false;
 
         if (session.session) {
             const sortedSetMetadata: SortedSetMetadata = await (
-                await fetch(`/api/user/${session.user._id}/metadata/sort/${document._id}`)
+                await fetch(`/api/user/${session.user._id}/metadata/sort/${document.data._id}`)
             ).json();
 
             restart(
-                document.terms.filter(({ _id }: Term) => {
+                document.data.terms.filter(({ _id }: Term) => {
                     if (_id in sortedSetMetadata.terms) {
                         const sortedTerm: SortedTerm = sortedSetMetadata.terms[_id];
 
@@ -191,7 +190,7 @@
                 })
             );
         } else {
-            restart(document.terms);
+            restart(document.data.terms);
         }
 
         isLoaded = true;
@@ -200,11 +199,11 @@
     beforeNavigate(async () => {
         if (!session.session) return;
 
-        await fetch(`/api/user/${session.user._id}/metadata/sort/${document._id}`, {
+        await fetch(`/api/user/${session.user._id}/metadata/sort/${document.data._id}`, {
             method: "PUT",
             body: JSON.stringify(
                 Object.fromEntries(
-                    document.terms.map((term: Term) => {
+                    document.data.terms.map((term: Term) => {
                         return [
                             term._id,
                             {
@@ -227,7 +226,7 @@
         strugglingTerms={strugglingTerms.intersection(stillLearningTerms).size}
     />
 
-    {@const term: Term = document.terms[currentTermIndex]}
+    {@const term: Term = document.data.terms[currentTermIndex]}
     <Flashcards
         {cycle}
         termCount={terms.length}

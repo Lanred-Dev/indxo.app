@@ -20,8 +20,8 @@
 {/snippet}
 
 <div class="mt-15">
-    {#if document.description && document.description.length > 0}
-        <MarkdownText class="break-word mb-8 text-lg" text={document.description} />
+    {#if document.data.description && document.data.description.length > 0}
+        <MarkdownText class="break-word mb-8 text-lg" text={document.data.description} />
     {/if}
 
     <div class="flex w-full flex-col gap-y-3">
@@ -29,29 +29,29 @@
             "/icons/general/Terms.svg",
             "Terms",
             "Terms",
-            `${document.terms.length} ${document.terms.length === 1 ? Wording.term : Wording.terms}`
+            `${document.data.terms.length} ${document.data.terms.length === 1 ? Wording.term : Wording.terms}`
         )}
 
         {@render info(
             "/icons/general/Calendar.svg",
             "Calendar",
             "Created on",
-            format(document.created, "MM/dd/yyyy")
+            format(document.data.created, "MM/dd/yyyy")
         )}
 
         {@render info(
-            document.owner.picture,
-            document.owner.name,
+            document.data.owner.picture,
+            document.data.owner.name,
             "Created by",
-            document.owner.name
+            document.data.owner.name
         )}
 
-        {#if document.updated}
+        {#if document.data.updated}
             {@render info(
                 "/icons/general/Clock.svg",
                 "Clock",
                 "Last updated",
-                format(document.updated, "MM/dd/yyyy")
+                format(document.data.updated, "MM/dd/yyyy")
             )}
         {/if}
     </div>
