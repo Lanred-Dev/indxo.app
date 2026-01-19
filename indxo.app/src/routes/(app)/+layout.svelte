@@ -55,7 +55,7 @@
     let Viewport: ViewportContext["Content"] = $state.raw(undefined);
     let viewportScrollY: number = $state.raw(0);
     let isNavigating: boolean = $state.raw(false);
-    // 768px is the same sizing used for md: in tailwind
+    // NOTE: 768px is used because its the same breakpoint as "md" for tailwind
     const isMobile: MediaQuery = new MediaQuery("(max-width: 768px)", true);
     setContext("viewport", {
         get scrollY() {
