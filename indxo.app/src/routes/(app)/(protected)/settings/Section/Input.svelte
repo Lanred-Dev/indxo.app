@@ -42,15 +42,7 @@
     let savedValue: any = $state.raw(value);
 </script>
 
-<div class="flex flex-wrap gap-2">
-    {#if typeof value === "number"}
-        <NumberInput bind:value class="w-fit! min-w-fit" {...properties} />
-    {:else if typeof value === "boolean"}
-        <Checkbox bind:value {placeholder} label={placeholder} {...properties} />
-    {:else if typeof value === "string"}
-        <Textbox bind:value {placeholder} class="w-fit! min-w-fit" {...properties} />
-    {/if}
-
+<div class="flex flex-col-reverse items-start justify-start gap-2 md:flex-row md:flex-wrap">
     {#if value !== savedValue}
         <button
             class="button-primary"
@@ -67,5 +59,19 @@
         >
             {updateText}
         </button>
+    {/if}
+
+    {#if typeof value === "number"}
+        <NumberInput bind:value class="w-fit! min-w-fit" {...properties} />
+    {:else if typeof value === "boolean"}
+        <Checkbox
+            bind:value
+            {placeholder}
+            label={placeholder}
+            {...properties}
+            class="w-fit! min-w-fit"
+        />
+    {:else if typeof value === "string"}
+        <Textbox bind:value {placeholder} class="w-fit! min-w-fit" {...properties} />
     {/if}
 </div>
