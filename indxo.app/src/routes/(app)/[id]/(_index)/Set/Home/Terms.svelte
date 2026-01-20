@@ -15,7 +15,6 @@
     import EditableTerms from "$lib/components/Lists/EditableTerms.svelte";
     import { EditableListAddItemButton } from "$lib/components/Lists/Editable";
     import { SegmentedButton, SegmentedButtonGroup } from "$lib/components/SegmentedButtonGroup";
-    import { json } from "@sveltejs/kit";
     import type { SessionContext } from "$lib/utils/global";
 
     enum TermView {
@@ -26,7 +25,7 @@
     const session: SessionContext = getContext("session");
     const document: DocumentContext = getContext("document");
     let areChangesMade: boolean = $state.raw(false);
-    let termsValue: Term[] = $state(document.terms);
+    let termsValue: Term[] = $state(document.data.terms);
     let savedTermsValue: Term[] = $state.raw([]);
     let hasEditPermission: boolean = $derived(
         isPermissionEqual(document.permission, DocumentPermission.edit)
@@ -39,7 +38,7 @@
 
     function updateSavedValue() {
         savedTermsValue = JSON.parse(JSON.stringify(termsValue.filter((term) => term !== null)));
-        document.terms = savedTermsValue;
+        document.data.terms = savedTermsValue;
     }
 
     onMount(async () => {
@@ -47,7 +46,7 @@
 
         if (session.session) {
             const sortedSetMetadata: SortedSetMetadata = await (
-                await fetch(`/api/user/${session.user._id}/metadata/sort/${document._id}`)
+                await fetch(`/api/user/${session.user._id}/metadata/sort/${document.data._id}`)
             ).json();
 
             Object.entries(sortedSetMetadata.terms).forEach(([_id, term]: [string, SortedTerm]) => {
@@ -85,7 +84,7 @@
         <Form
             class="w-full"
             method={FormSubmitMethods.put}
-            endpoint="/api/documents/{document._id}"
+            endpoint="/api/documents/{document.data._id}"
             afterSubmit={updateSavedValue}
         >
             <FormContent>
@@ -106,7 +105,7 @@
         </Form>
     {:else if currentViewID === TermView.preview}
         <ol class="flex flex-col gap-4">
-            {#each document.terms as term, index}
+            {#each document.data.terms as term, index}
                 <TermCard
                     {...term}
                     {index}

@@ -1,12 +1,14 @@
 <script lang="ts">
-    import { getContext, onMount, type Snippet } from "svelte";
+    import { getContext, type Snippet } from "svelte";
     import { type DialogContext, dialogContextKey } from ".";
 
     let {
         children,
+        onclick,
         ...properties
     }: {
         children: Snippet<[]>;
+        onclick?: () => void;
         [key: string]: any;
     } = $props();
 
@@ -18,6 +20,8 @@
     onclick={(event) => {
         event.stopPropagation();
         dialog.isVisible = !dialog.isVisible;
+
+        if (onclick) onclick();
     }}
     {...properties}
 >

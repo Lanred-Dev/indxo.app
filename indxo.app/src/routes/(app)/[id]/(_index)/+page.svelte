@@ -1,17 +1,21 @@
 <script lang="ts" module>
     export interface DocumentContext {
-        [key: string]: any;
+        data: BaseDocument & { [key: string]: any };
         permission: DocumentPermission;
-        isFavorite: boolean;
-    }
-
-    export interface DocumentHeaderContext {
-        showActions: boolean;
+        header: {
+            showActions: boolean;
+        };
     }
 </script>
 
 <script lang="ts">
-    import { DocumentPermission, DocumentType, type PublicSet, type Term } from "$lib/documents";
+    import {
+        DocumentPermission,
+        DocumentType,
+        type BaseDocument,
+        type PublicSet,
+        type Term,
+    } from "$lib/documents";
     import { setContext, type Component } from "svelte";
     import Header from "./Header.svelte";
     import FolderDocument from "./Folder/Document.svelte";
@@ -22,40 +26,26 @@
 
     let { data } = $props();
 
-    let isFavorite = $state.raw(data.isFavorite);
-    let terms: Term[] = $state.raw("terms" in data.document ? data.document.terms : []);
+    let showActions: boolean = $state.raw(true);
+    let permission: DocumentPermission = $derived.by(
+        () => data.permission ?? DocumentPermission.none
+    );
     setContext("document", {
-        ...data.document,
-        get name() {
-            return data.document.name;
+        get permission() {
+            return permission;
         },
-        get _id() {
-            return data.document._id;
+        get data() {
+            return data.document;
         },
-        get terms() {
-            return terms;
-        },
-        set terms(newValue) {
-            terms = newValue;
-        },
-        permission: data.permission ?? DocumentPermission.none,
-        get isFavorite() {
-            return isFavorite;
-        },
-        set isFavorite(newValue) {
-            isFavorite = newValue;
+        header: {
+            get showActions() {
+                return showActions;
+            },
+            set showActions(newValue) {
+                showActions = newValue;
+            },
         },
     } satisfies DocumentContext);
-
-    let showActions: boolean = $state.raw(true);
-    setContext("documentHeader", {
-        get showActions() {
-            return showActions;
-        },
-        set showActions(newValue) {
-            showActions = newValue;
-        },
-    } satisfies DocumentHeaderContext);
 
     const DocumentComponent: Component<any> = $derived.by(() => {
         switch (determineDocumentType(data.document._id)) {

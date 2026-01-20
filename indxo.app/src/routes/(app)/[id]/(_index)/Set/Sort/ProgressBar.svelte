@@ -21,7 +21,7 @@
     <div class="bg-input flex h-2 w-3/4 overflow-hidden rounded-full">
         <div
             class="bg-warning progress-bar"
-            style:width="{(stillLearningTerms / document.terms.length) * 100}%"
+            style:width="{(stillLearningTerms / document.data.terms.length) * 100}%"
         >
             <div
                 class="progress-bar bg-alert"
@@ -31,7 +31,7 @@
 
         <div
             class="bg-success progress-bar"
-            style:width="{(knowTerms / document.terms.length) * 100}%"
+            style:width="{(knowTerms / document.data.terms.length) * 100}%"
         ></div>
     </div>
 

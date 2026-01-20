@@ -67,6 +67,9 @@
         get isNavigating() {
             return isNavigating;
         },
+        set isNavigating(newValue) {
+            isNavigating = newValue;
+        },
         get Content() {
             return Viewport ?? (document.querySelector("main") as HTMLDivElement) ?? undefined;
         },
@@ -104,12 +107,13 @@
 
 {#if isNavigating}
     <div
-        class="x-center y-center z-40 h-full w-full"
-        style:padding-top="{headerHeight}px"
+        class="x-center y-center pointer-events-none z-40 h-full w-full"
         style:padding-left="{!isMobile.current && isSidebarVisible ? sidebarWidth : 0}px"
         transition:fade
     >
-        <Loader class="x-center y-center" />
+        <div class="relative h-full w-full">
+            <Loader class="x-center y-center" />
+        </div>
     </div>
 {/if}
 

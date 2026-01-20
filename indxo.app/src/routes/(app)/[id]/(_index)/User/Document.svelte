@@ -1,6 +1,6 @@
 <script lang="ts">
     import { getContext, onMount } from "svelte";
-    import type { DocumentContext, DocumentHeaderContext } from "../+page.svelte";
+    import type { DocumentContext } from "../+page.svelte";
     import {
         EmptyListState,
         SearchableListContent,
@@ -14,7 +14,6 @@
     import { Wording } from "$lib/utils/wording";
 
     const document: DocumentContext = getContext("document");
-    const documentHeader: DocumentHeaderContext = getContext("documentHeader");
 
     enum DocumentPageType {
         sets = "s",
@@ -35,9 +34,9 @@
     let documents: any[] = $derived.by(() => {
         switch (currentFilterID) {
             case documentPageFilters.sets.id:
-                return document.sets;
+                return document.data.sets;
             case documentPageFilters.folders.id:
-                return document.folders;
+                return document.data.folders;
             default:
                 return [];
         }
@@ -56,7 +55,7 @@
     });
 
     onMount(() => {
-        documentHeader.showActions = false;
+        document.header.showActions = false;
     });
 </script>
 
@@ -78,7 +77,7 @@
             [EmptyListState.noDocuments]: {
                 image: "/icons/general/RaisedHand.svg",
                 title: "Echoes... Just Echoes",
-                message: `${document.name} doesnt have any ${currentFilterID === DocumentPageType.sets ? Wording.sets.toLowerCase() : Wording.folders.toLowerCase()} yet.`,
+                message: `${document.data.name} doesnt have any ${currentFilterID === DocumentPageType.sets ? Wording.sets.toLowerCase() : Wording.folders.toLowerCase()} yet.`,
             },
             [EmptyListState.noSearchResults]: {
                 image: "/icons/general/Search.svg",

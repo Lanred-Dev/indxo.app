@@ -3,7 +3,7 @@
     import type { Term } from "$lib/documents";
     import { animate } from "motion";
     import Flashcards, { CycleDirection } from "../Flashcards.svelte";
-    import { getContext } from "svelte";
+    import { getContext, onMount } from "svelte";
     import type { DocumentContext } from "../../+page.svelte";
     import Terms from "./Terms.svelte";
     import Breakdown from "../Home/Breakdown.svelte";
@@ -17,7 +17,7 @@
     let currentTermIndex: number = $state.raw(0);
     // In most cases current term index should be in range, but due to hot reloading while the user is editing the set, it might go out of bounds
     let term: Term = $derived.by(() =>
-        currentTermIndex in document.terms ? document.terms[currentTermIndex] : document.terms[0]
+        currentTermIndex in document.data.terms ? document.data.terms[currentTermIndex] : document.data.terms[0]
     );
 
     /**
@@ -29,7 +29,7 @@
     async function cycle(direction: -1 | 1) {
         if (
             currentTermIndex + direction < 0 ||
-            currentTermIndex + direction > document.terms.length - 1
+            currentTermIndex + direction > document.data.terms.length - 1
         )
             return;
 
@@ -74,22 +74,26 @@
      */
     function shuffle() {
         restart();
-        document.terms = [...document.terms].sort(() => Math.random() - 0.5);
+        document.data.terms = [...document.data.terms].sort(() => Math.random() - 0.5);
     }
 
-    // Resets the progress during hot reloading if a term is deleted or added
-    let lastTermsLength: number = document.terms.length;
-    $effect.pre(() => {
-        if (lastTermsLength <= document.terms.length) return;
+    onMount(() => {
+        document.header.showActions = true;
+    });
 
-        lastTermsLength = document.terms.length;
+    // Resets the progress during hot reloading if a term is deleted or added
+    let lastTermsLength: number = document.data.terms.length;
+    $effect.pre(() => {
+        if (lastTermsLength <= document.data.terms.length) return;
+
+        lastTermsLength = document.data.terms.length;
         restart();
     });
 </script>
 
 <Flashcards
     {cycle}
-    termCount={document.terms.length}
+    termCount={document.data.terms.length}
     currentTerm={{
         index: currentTermIndex + 1,
         ...term,
@@ -113,7 +117,7 @@
             onclick: () => {
                 cycle(CycleDirection.next);
             },
-            disabled: currentTermIndex >= document.terms.length - 1,
+            disabled: currentTermIndex >= document.data.terms.length - 1,
         },
     }}
     actionButtons={[
