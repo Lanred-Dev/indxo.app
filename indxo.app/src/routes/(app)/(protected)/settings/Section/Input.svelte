@@ -64,13 +64,7 @@
     {#if typeof value === "number"}
         <NumberInput bind:value class="w-fit! min-w-fit" {...properties} />
     {:else if typeof value === "boolean"}
-        <Checkbox
-            bind:value
-            {placeholder}
-            label={placeholder}
-            {...properties}
-            class="w-fit! min-w-fit"
-        />
+        <Checkbox bind:value {placeholder} label={placeholder} {...properties} />
     {:else if typeof value === "string"}
         <Textbox bind:value {placeholder} class="w-fit! min-w-fit" {...properties} />
     {/if}
