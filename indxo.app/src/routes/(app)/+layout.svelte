@@ -106,11 +106,7 @@
 <Sidebar />
 
 {#if isNavigating}
-    <div
-        class="x-center y-center pointer-events-none z-40 h-full w-full"
-        style:padding-left="{!isMobile.current && isSidebarVisible ? sidebarWidth : 0}px"
-        transition:fade
-    >
+    <div class="x-center y-center pointer-events-none z-40 h-full w-full" transition:fade>
         <div class="relative h-full w-full">
             <Loader class="x-center y-center" />
         </div>
