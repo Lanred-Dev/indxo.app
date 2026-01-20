@@ -18,7 +18,7 @@
             {title}
         </p>
 
-        <p class="mt-1 leading-none">
+        <p class="text-light mt-1 leading-none">
             {description}
         </p>
     </div>
