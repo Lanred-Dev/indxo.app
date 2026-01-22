@@ -14,7 +14,7 @@
     --color-alert: #f26a63;
     --color-success: #4caf50;
     --color-warning: #ff9800;
-    --color-input: #e5eaef;
+    --color-input: #f8fafc;
     --color-container: #ffffff;
 
     --background-color-light: #eaeded;
@@ -27,6 +27,7 @@
     --text-color-primary: #000000;
 
     --border-color-primary: #e7e7e7;
+    --border-color-input: #d1d5db;
 
     --radius-container: 20px;
     --radius-input: 15px;
@@ -208,7 +209,6 @@
     .button-attention,
     .button-primary,
     .input-primary,
-    .input-secondary,
     .button-navigation {
         @apply text-primary rounded-button flex items-center gap-2 px-4 py-2 text-lg transition-all duration-200 disabled:pointer-events-none disabled:opacity-50;
 
@@ -245,17 +245,8 @@
         }
     }
 
-    .input-primary,
-    .input-secondary {
-        @apply focus:ring-attention rounded-input data-max:border-alert flex items-center gap-1 border-none! outline-none!;
-    }
-
     .input-primary {
-        @apply bg-input;
-    }
-
-    .input-secondary {
-        @apply bg-attention;
+        @apply focus:border-attention rounded-input data-max:border-alert border-input bg-input flex items-center gap-1 border inset-shadow-xs outline-none! focus:inset-shadow-none;
     }
 
     .container-primary {
