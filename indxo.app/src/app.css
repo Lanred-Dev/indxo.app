@@ -246,7 +246,7 @@
     }
 
     .input-primary {
-        @apply focus:border-attention rounded-input data-max:border-alert border-input bg-input flex items-center gap-1 border inset-shadow-xs inset-shadow-black/15 outline-none! focus:inset-shadow-none;
+        @apply focus:border-attention rounded-input data-max:border-alert border-input bg-input flex items-center gap-1 border inset-shadow-sm inset-shadow-black/10 outline-none! focus:inset-shadow-none;
     }
 
     .container-primary {
