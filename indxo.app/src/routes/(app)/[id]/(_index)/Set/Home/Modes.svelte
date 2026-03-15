@@ -10,7 +10,7 @@
 <div class="list-primary mt-16">
     <p class="title">{Wording.modes}</p>
 
-    <ul class="container">
+    <ul class="content">
         {#each Object.values(StudyModes) as { icon, text, url }}
             <li class="grow">
                 <a class="button-primary" href={url.replace("[id]", document.data._id)}>

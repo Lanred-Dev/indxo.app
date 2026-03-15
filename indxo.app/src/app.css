@@ -26,7 +26,7 @@
     --text-color-dark: #131313;
     --text-color-primary: #000000;
 
-    --border-color-primary: #e7e7e7;
+    --border-color-primary: #d1d5db;
     --border-color-input: #d1d5db;
 
     --radius-container: 20px;
@@ -172,7 +172,7 @@
         @apply text-dark mb-3 text-2xl font-semibold;
     }
 
-    & .container {
+    & .content {
         @apply flex flex-wrap gap-x-4 gap-y-2.5;
     }
 }

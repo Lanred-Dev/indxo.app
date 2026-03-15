@@ -90,7 +90,7 @@
     {/if}
 
     {#if visible}
-        <ul class="container" transition:slide>
+        <ul class="content" transition:slide>
             {#each documents as document}
                 {@const { type, breadcrumbs } = getDocumentInfo(document)}
 

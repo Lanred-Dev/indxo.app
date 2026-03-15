@@ -17,7 +17,7 @@
 </script>
 
 <a
-    class="container-primary clay-attention-bright block w-full px-6 py-5"
+    class="container-primary block w-full px-6 py-5"
     style:--clay-color-dark-percentage="90%"
     href={url}
 >
