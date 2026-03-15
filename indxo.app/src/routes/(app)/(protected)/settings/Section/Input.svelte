@@ -42,30 +42,32 @@
     let savedValue: any = $state.raw(value);
 </script>
 
-<div class="flex flex-col-reverse items-start justify-start gap-2 md:flex-row md:flex-wrap">
-    {#if value !== savedValue}
-        <button
-            class="button-primary"
-            onclick={async () => {
-                savedValue = value;
+<div>
+    <div class="flex w-fit flex-row-reverse flex-wrap items-start justify-start gap-2 md:flex-row">
+        {#if value !== savedValue}
+            <button
+                class="button-primary"
+                onclick={async () => {
+                    savedValue = value;
 
-                const wasSuccessful: boolean = await onUpdate(value);
+                    const wasSuccessful: boolean = await onUpdate(value);
 
-                if (wasSuccessful) invalidateAll();
+                    if (wasSuccessful) invalidateAll();
 
-                settingsPage.showSubmitMessage(!wasSuccessful);
-            }}
-            in:fade={{ duration: 200 }}
-        >
-            {updateText}
-        </button>
-    {/if}
+                    settingsPage.showSubmitMessage(!wasSuccessful);
+                }}
+                in:fade={{ duration: 200 }}
+            >
+                {updateText}
+            </button>
+        {/if}
 
-    {#if typeof value === "number"}
-        <NumberInput bind:value class="w-fit! min-w-fit" {...properties} />
-    {:else if typeof value === "boolean"}
-        <Checkbox bind:value {placeholder} label={placeholder} {...properties} />
-    {:else if typeof value === "string"}
-        <Textbox bind:value {placeholder} class="w-fit! min-w-fit" {...properties} />
-    {/if}
+        {#if typeof value === "number"}
+            <NumberInput bind:value class="w-fit! min-w-fit" {...properties} />
+        {:else if typeof value === "boolean"}
+            <Checkbox bind:value {placeholder} label={placeholder} {...properties} />
+        {:else if typeof value === "string"}
+            <Textbox bind:value {placeholder} class="w-fit! min-w-fit" {...properties} />
+        {/if}
+    </div>
 </div>
