@@ -1,6 +1,7 @@
 <script lang="ts" module>
     export interface DocumentContext {
         data: BaseDocument & { [key: string]: any };
+        isFavorite: boolean;
         permission: DocumentPermission;
         header: {
             showActions: boolean;
@@ -30,12 +31,19 @@
     let permission: DocumentPermission = $derived.by(
         () => data.permission ?? DocumentPermission.none
     );
+    let isFavorite: boolean = $derived.by(() => data.isFavorite ?? false);
     setContext("document", {
         get permission() {
             return permission;
         },
         get data() {
             return data.document;
+        },
+        get isFavorite() {
+            return isFavorite;
+        },
+        set isFavorite(newValue: boolean) {
+            isFavorite = newValue;
         },
         header: {
             get showActions() {

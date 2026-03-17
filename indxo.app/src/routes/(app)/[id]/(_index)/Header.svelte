@@ -13,7 +13,9 @@
     const document: DocumentContext = getContext("document");
     const viewport: ViewportContext = getContext("viewport");
     const session: SessionContext = getContext("session");
-    const documentType: DocumentType = $derived.by(() => determineDocumentType(document.data._id) ?? DocumentType.set);
+    const documentType: DocumentType = $derived.by(
+        () => determineDocumentType(document.data._id) ?? DocumentType.set
+    );
     const buttons: ComponentProps<typeof ActionButton>[] = $derived.by(() => {
         const buttons: ComponentProps<typeof ActionButton>[] = [];
 
@@ -25,7 +27,7 @@
                         image: {
                             Component: Star,
                             properties: {
-                                fill: document.data.isFavorite ? "var(--color-attention)" : "#000000",
+                                fill: document.isFavorite ? "var(--color-attention)" : "#000000",
                             },
                         },
                         text: "Favorite",
@@ -34,12 +36,12 @@
                                 `/api/documents/${document.data._id}/favorite`,
                                 {
                                     method: "PUT",
-                                    body: JSON.stringify(!document.data.isFavorite),
+                                    body: JSON.stringify(!document.isFavorite),
                                 }
                             );
 
                             if (response.status === ResponseCodes.SuccessNoResponse)
-                                document.data.isFavorite = !document.data.isFavorite;
+                                document.isFavorite = !document.isFavorite;
                         },
                     });
 
