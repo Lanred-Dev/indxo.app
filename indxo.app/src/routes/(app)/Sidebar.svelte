@@ -42,7 +42,7 @@
         <button
             class="cover-screen fixed top-0 left-0 z-20"
             aria-label="Close sidebar"
-            on:click={() => {
+            onclick={() => {
                 sidebar.isVisible = false;
             }}
         >
