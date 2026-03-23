@@ -30,12 +30,12 @@
 
         if (!button) return;
 
-        const buttonRect: DOMRect = button.getBoundingClientRect();
-        const containerRect: DOMRect = Container.getBoundingClientRect();
-        selectorWidth = buttonRect.width;
-        selectorHeight = buttonRect.height;
-        selectorLeft = buttonRect.left - containerRect.left + Container.scrollLeft;
-        selectorTop = buttonRect.top - containerRect.top + Container.scrollTop;
+        const buttonBounding: DOMRect = button.getBoundingClientRect();
+        const containerBounding: DOMRect = Container.getBoundingClientRect();
+        selectorWidth = buttonBounding.width;
+        selectorHeight = buttonBounding.height;
+        selectorLeft = buttonBounding.left - containerBounding.left + Container.scrollLeft;
+        selectorTop = buttonBounding.top - containerBounding.top + Container.scrollTop;
         selectorOpacity = id !== null && id !== value ? 50 : 100;
     }
 
