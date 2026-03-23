@@ -1,7 +1,6 @@
 <script lang="ts">
     import { getContext } from "svelte";
-    import { editableListContextKey, type EditableListContext } from ".";
-    import { EditableListItem } from ".";
+    import { editableListContextKey, type EditableListContext, EditableListItem } from ".";
 
     let editableList: EditableListContext = getContext(editableListContextKey);
 </script>
