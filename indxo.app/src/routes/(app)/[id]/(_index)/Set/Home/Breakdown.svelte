@@ -9,13 +9,15 @@
 </script>
 
 {#snippet info(icon: string, alt: string, title: string, text: string)}
-    <div class="flex flex-wrap items-center justify-between gap-x-5 gap-y-1.5">
-        <div class="flex items-center gap-2">
-            <img class="size-6 rounded-full" src={icon} {alt} />
-            <p>{title}</p>
-        </div>
+    <div class="container-primary flex w-full gap-x-3">
+        <img class="size-6 rounded-full" src={icon} {alt} />
 
-        <p class="font-semibold">{text}</p>
+        <div
+            class="flex grow flex-col flex-wrap items-start justify-between gap-x-5 lg:flex-row lg:items-center"
+        >
+            <p>{title}</p>
+            <p class="font-semibold">{text}</p>
+        </div>
     </div>
 {/snippet}
 
@@ -24,7 +26,7 @@
         <MarkdownText class="break-word mb-8 text-lg" text={document.data.description} />
     {/if}
 
-    <div class="flex w-full flex-col gap-y-3">
+    <div class="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
         {@render info(
             "/icons/general/Terms.svg",
             "Terms",
