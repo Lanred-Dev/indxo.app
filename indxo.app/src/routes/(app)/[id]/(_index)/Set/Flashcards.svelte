@@ -129,7 +129,11 @@
         aria-label="Flip card"
         role="button"
         tabindex="0"
-        onclick={() => flipCard()}
+        onclick={(event) => {
+            const selection: Selection | null = window.getSelection();
+
+            if (!selection || selection.toString().length === 0) flipCard();
+        }}
         onkeydown={(event) => {
             if (event.key === "Enter" || event.key === " ") flipCard();
         }}
