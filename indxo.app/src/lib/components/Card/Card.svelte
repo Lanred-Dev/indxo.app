@@ -18,7 +18,7 @@
 
 <a class="container-primary block w-full px-6 py-5" href={url}>
     {#if breadcrumbs.length > 0}
-        <ol class="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+        <ol class="mb-1 flex flex-wrap items-center gap-x-3 gap-y-1.5">
             {#each breadcrumbs as { text, icon }}
                 <li
                     class="flex-center container-primary bg-attention-dark gap-1 rounded-full border-0 shadow-xs {icon
