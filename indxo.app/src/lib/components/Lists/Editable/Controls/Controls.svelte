@@ -27,7 +27,7 @@
 </script>
 
 <div class="flex-center sticky bottom-2 z-20 w-full pt-4" {...properties} bind:this={Controls}>
-    <div class="container-primary flex justify-between gap-2 p-2" style:width="{width}%">
+    <div class="flex justify-between gap-2" style:width="{width}%">
         {@render children()}
     </div>
 </div>
