@@ -100,7 +100,7 @@
     {draggable}
     ondragstart={(event) => {
         editableList.dragging.current = index;
-        event.dataTransfer?.setDragImage(new Image(), 0, 0); // I just learned what this did but for future reference it hides the default drag image that the browser shows
+        event.dataTransfer?.setDragImage(new Image(), 0, 0); // Hide the default drag image
     }}
     ondragend={() => {
         editableList.dragging.current = null;
