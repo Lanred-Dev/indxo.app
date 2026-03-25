@@ -16,11 +16,7 @@
     } = $props();
 </script>
 
-<a
-    class="container-primary block w-full px-6 py-5"
-    style:--clay-color-dark-percentage="90%"
-    href={url}
->
+<a class="container-primary block w-full px-6 py-5" href={url}>
     {#if breadcrumbs.length > 0}
         <ol class="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
             {#each breadcrumbs as { text, icon }}
