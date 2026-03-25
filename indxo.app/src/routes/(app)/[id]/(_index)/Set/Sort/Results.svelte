@@ -151,7 +151,7 @@
 
         {#if stillLearningTerms.size > 0}
             <button
-                class="button-attention clay-warning"
+                class="button-warning"
                 onclick={() =>
                     restart(
                         document.data.terms.filter((term: Term) => stillLearningTerms.has(term._id))
@@ -163,9 +163,11 @@
 
         {#if strugglingTerms.size > 0}
             <button
-                class="button-attention clay-alert"
+                class="button-alert"
                 onclick={() =>
-                    restart(document.data.terms.filter((term: Term) => strugglingTerms.has(term._id)))}
+                    restart(
+                        document.data.terms.filter((term: Term) => strugglingTerms.has(term._id))
+                    )}
             >
                 Study struggling terms
             </button>

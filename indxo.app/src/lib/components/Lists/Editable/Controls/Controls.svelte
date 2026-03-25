@@ -5,7 +5,7 @@
     let { children, ...properties }: { [key: string]: unknown; children: Snippet<[]> } = $props();
 
     const viewport: ViewportContext = getContext("viewport");
-    let Controls: HTMLDivElement;
+    let Controls: HTMLUListElement;
     let width: number = $state.raw(0);
 
     $effect(() => {
@@ -26,8 +26,8 @@
     });
 </script>
 
-<div class="flex-center sticky bottom-2 z-20 w-full pt-4" {...properties} bind:this={Controls}>
-    <div class="flex justify-between gap-2" style:width="{width}%">
+<ul class="flex-center sticky bottom-2 z-20 w-full pt-4" {...properties} bind:this={Controls}>
+    <li class="flex justify-between gap-2 [&>button]:shadow-xl" style:width="{width}%">
         {@render children()}
-    </div>
-</div>
+    </li>
+</ul>

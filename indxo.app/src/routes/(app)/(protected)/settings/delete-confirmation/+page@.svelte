@@ -17,7 +17,7 @@
 
     <div class="row justify-center text-xl">
         <form method="POST" use:enhance onsubmit={() => (isSubmitting = true)}>
-            <button class="button-attention clay-alert" disabled={isSubmitting}>
+            <button class="button-alert" disabled={isSubmitting}>
                 {#if isSubmitting}
                     <Loader size={1.75} color="black" />
                 {:else}

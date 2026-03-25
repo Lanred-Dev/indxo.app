@@ -55,7 +55,7 @@
 
 <Tooltip bind:isVisible={isSubmitMessageVisible} duration={5}>
     <PopupContent
-        class={isSubmitError ? "clay-alert" : "clay-success"}
+        class={isSubmitError ? "bg-alert" : "bg-success"}
         xAlignment={PopupXAlignment.center}
         yAlignment={PopupYAlignment.bottom}
         positionRelativity={PopupRelativity.page}

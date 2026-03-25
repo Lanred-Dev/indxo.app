@@ -81,7 +81,7 @@
                         message="Are you sure you want to log out?"
                     >
                         <ConfirmationPromptButton
-                            class="button-attention clay-alert"
+                            class="button-alert"
                             onclick={async () => {
                                 await fetch("/api/auth/logout");
                                 window.location.reload();

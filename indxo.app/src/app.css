@@ -8,10 +8,10 @@
     --background-color-page: #f9fafe;
     --color-scrollbar: #d4d7d8;
 
-    --color-attention: #7c9edd;
-    --color-attention-bright: #dde4f0;
-    --color-attention-dark: #bccbe4;
+    --color-attention: #4e7ed7;
+    --color-attention-dark: #6394e8;
     --color-alert: #f26a63;
+    --color-alert-dark: #f57c77;
     --color-success: #4caf50;
     --color-warning: #ff9800;
     --color-input: #f8fafc;
@@ -131,36 +131,6 @@
     @apply hyphens-auto;
 }
 
-@utility container-clay {
-    --clay-color-shadow-percentage: 50%;
-    --clay-color-light-percentage: 60%;
-    --clay-color-dark-percentage: 88%;
-    --clay-shadow: 0px 2px 15px 0px;
-    box-shadow: var(--clay-shadow)
-        color-mix(in srgb, var(--clay-color) var(--clay-color-shadow-percentage), transparent);
-    background-color: var(--clay-color);
-    background: linear-gradient(
-        170deg,
-        color-mix(in srgb, var(--clay-color) var(--clay-color-light-percentage), #ffffff) -10%,
-        var(--clay-color) 45%,
-        color-mix(in srgb, var(--clay-color) var(--clay-color-dark-percentage), #000000) 110%
-    );
-}
-
-@utility clay-* {
-    --clay-color: --value(--color-*);
-    @apply container-clay;
-}
-
-@utility clay-sm-* {
-    --clay-color: --value(--color-*);
-    --clay-color-shadow-percentage: 50%;
-    --clay-color-light-percentage: 75%;
-    --clay-color-dark-percentage: 95%;
-    --clay-shadow: 1px 2px 8px 0px;
-    @apply container-clay;
-}
-
 @utility row {
     @apply flex w-full flex-wrap items-center gap-5;
 }
@@ -207,10 +177,11 @@
 
 @layer components {
     .button-attention,
+    .button-alert,
     .button-primary,
     .input-primary,
     .button-navigation {
-        @apply text-primary rounded-button flex items-center gap-2 px-4 py-2 text-lg transition-all duration-200 disabled:pointer-events-none disabled:opacity-50;
+        @apply text-primary rounded-button flex items-center justify-center gap-2 px-4 py-2 text-lg transition-all duration-200 disabled:pointer-events-none disabled:opacity-50;
 
         & img {
             @apply size-7;
@@ -218,15 +189,19 @@
     }
 
     .button-attention {
-        @apply clay-attention justify-center;
+        @apply bg-attention hover:bg-attention-dark;
+    }
+
+    .button-alert {
+        @apply bg-alert hover:bg-alert-dark;
     }
 
     .button-primary {
-        @apply bg-dark hover:bg-light justify-center border-none!;
+        @apply bg-dark hover:bg-light;
     }
 
     .button-navigation {
-        @apply hover:bg-light flex w-full items-center gap-2 border-none! text-nowrap;
+        @apply hover:bg-light flex w-full justify-start gap-2 text-nowrap;
     }
 
     .button-icon {
