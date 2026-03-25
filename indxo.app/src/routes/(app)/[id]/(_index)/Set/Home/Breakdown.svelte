@@ -8,8 +8,12 @@
     let document: DocumentContext = getContext("document");
 </script>
 
-{#snippet info(icon: string, alt: string, title: string, text: string)}
-    <div class="container-primary flex w-full gap-x-3">
+{#snippet info(icon: string, alt: string, title: string, text: string, href: string = "")}
+    <svelte:element
+        this={href.length > 0 ? "a" : "div"}
+        {href}
+        class="container-primary flex w-full gap-x-3"
+    >
         <img class="size-6 rounded-full" src={icon} {alt} />
 
         <div
@@ -18,7 +22,7 @@
             <p>{title}</p>
             <p class="font-semibold">{text}</p>
         </div>
-    </div>
+    </svelte:element>
 {/snippet}
 
 <div class="mt-15">
@@ -45,14 +49,15 @@
             document.data.owner.picture,
             document.data.owner.name,
             "Created by",
-            document.data.owner.name
+            document.data.owner.name,
+            `/${document.data.owner._id}`
         )}
 
         {#if document.data.updated}
             {@render info(
                 "/icons/general/Clock.svg",
                 "Clock",
-                "Last updated",
+                "Last updated on",
                 format(document.data.updated, "MM/dd/yyyy")
             )}
         {/if}
