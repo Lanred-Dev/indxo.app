@@ -18,24 +18,28 @@
     const segmentedButtonGroup: SegmentedButtonGroupContext = getContext(
         segmentedButtonGroupContextKey
     );
-    let contentRect: DOMRect | undefined = $state.raw();
+    let contentBounding: DOMRect | undefined = $state.raw();
 
     onMount(() => {
-        if (segmentedButtonGroup.value === "") segmentedButtonGroup.value = id;
+        // If this button is the first one in the group and no default value is set, select it
+        if (segmentedButtonGroup.value.length === 0) segmentedButtonGroup.value = id;
     });
 
     $effect(() => {
-        contentRect;
+        contentBounding;
 
-        if (segmentedButtonGroup.value !== id || !contentRect) return;
+        if (segmentedButtonGroup.value !== id || !contentBounding) return;
 
-        segmentedButtonGroup.updateSelectorStyles();
+        segmentedButtonGroup.forceUpdateSelector();
     });
 </script>
 
 <li class={["z-1 min-w-fit grow", className]}>
     <button
-        class="flex-center w-full gap-0.5 bg-transparent px-5 py-2"
+        class={[
+            "flex-center w-full gap-0.5 bg-transparent px-5 py-2",
+            segmentedButtonGroup.hovering === id ? "text-primary" : "text-light",
+        ]}
         {...properties}
         role="option"
         type="button"
@@ -44,7 +48,7 @@
         onmouseover={() => (segmentedButtonGroup.hovering = id)}
         onmouseout={() => (segmentedButtonGroup.hovering = null)}
         data-id={id}
-        bind:contentRect
+        bind:contentRect={contentBounding}
     >
         {@render children()}
     </button>

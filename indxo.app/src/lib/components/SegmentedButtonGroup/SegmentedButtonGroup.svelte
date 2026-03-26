@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { setContext, type Snippet } from "svelte";
+    import { onMount, setContext, type Snippet } from "svelte";
     import type { ClassValue } from "svelte/elements";
     import { segmentedButtonGroupContextKey, type SegmentedButtonGroupContext } from ".";
 
@@ -22,6 +22,7 @@
     let selectorLeft: number = $state.raw(0);
     let selectorTop: number = $state.raw(0);
     let selectorOpacity: number = $state.raw(100);
+    let hovering: string | null = $state.raw(null);
 
     function moveSelectorTo(id: string | null) {
         const button: HTMLButtonElement | null = Container.querySelector(
@@ -45,15 +46,28 @@
         },
         set value(newValue: string) {
             value = newValue;
+            hovering = newValue;
             moveSelectorTo(newValue);
         },
         set hovering(newValue: string | null) {
+            hovering = newValue === null ? value : newValue;
             moveSelectorTo(newValue);
         },
-        updateSelectorStyles: () => {
+        get hovering() {
+            return hovering;
+        },
+        // This method is used for when a buttons position or size changes while it's selected, so the selector can move to match it
+        forceUpdateSelector: () => {
             moveSelectorTo(value);
         },
     } satisfies SegmentedButtonGroupContext);
+
+    onMount(() => {
+        if (value.length > 0) {
+            hovering = value;
+            moveSelectorTo(value);
+        }
+    });
 </script>
 
 <ul
@@ -63,7 +77,7 @@
 >
     <div
         bind:this={Selector}
-        class="rounded-input bg-dark pointer-events-none absolute transition-all duration-200"
+        class="rounded-input bg-attention pointer-events-none absolute transition-all duration-200"
         style:width="{selectorWidth}px"
         style:height="{selectorHeight}px"
         style:left="{selectorLeft}px"
