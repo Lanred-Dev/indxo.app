@@ -138,7 +138,7 @@
     @apply w-full;
 
     & .title {
-        @apply text-light mb-3 text-2xl font-semibold;
+        @apply mb-3 text-2xl font-semibold;
     }
 
     & .content {
