@@ -51,28 +51,36 @@
     <meta name="description" content={description} />
 </svelte:head>
 
-<div class="page-title">
-    <h1 class="title">{title}</h1>
-    <p class="description">{description}</p>
-</div>
+{#if data.documents.length === 0}
+    <div class="page-title">
+        <h1 class="title">Echoes... Just Echoes</h1>
+        <p class="description">Nothing’s here yet. Maybe it’s time to start something awesome?</p>
+    </div>
+{:else}
+    <div class="page-title">
+        <h1 class="title">{title}</h1>
+        <p class="description">{description}</p>
+    </div>
 
-<SearchableList documents={data.documents}>
-    <SearchableListSearchbar {filters} />
+    <SearchableList documents={data.documents}>
+        <SearchableListSearchbar {filters} />
 
-    <SearchableListContent />
+        <SearchableListContent />
 
-    <SearchableListError
-        states={{
-            [EmptyListState.noDocuments]: {
-                image: "/icons/general/RaisedHand.svg",
-                title: "Echoes... Just Echoes",
-                message: "Nothing’s here yet. Maybe it’s time to start something awesome?",
-            },
-            [EmptyListState.noSearchResults]: {
-                image: "/icons/general/Search.svg",
-                title: "No Matches in Sight",
-                message: "You’ve outsmarted the search bar. Try a different word or two?",
-            },
-        }}
-    />
-</SearchableList>
+        <!-- Even though the `EmptyListState.noDocuments` state will never be used in this context it is required by the component -->
+        <SearchableListError
+            states={{
+                [EmptyListState.noDocuments]: {
+                    image: "/icons/general/RaisedHand.svg",
+                    title: "Congratulations youre seeing something you shouldn't be seeing",
+                    message: "So lowkey cooked chat",
+                },
+                [EmptyListState.noSearchResults]: {
+                    image: "/icons/general/Search.svg",
+                    title: "No Matches in Sight",
+                    message: "You’ve outsmarted the search bar. Try a different word or two?",
+                },
+            }}
+        />
+    </SearchableList>
+{/if}
