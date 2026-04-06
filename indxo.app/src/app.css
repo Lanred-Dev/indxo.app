@@ -5,17 +5,17 @@
 @plugin "@tailwindcss/aspect-ratio";
 
 @theme {
-    --background-color-page: #f9fafe;
+    --background-color-page: #ffffff;
     --color-scrollbar: #d4d7d8;
 
-    --color-attention: #4e7ed7;
-    --color-attention-dark: #6394e8;
-    --color-alert: #f26a63;
-    --color-alert-dark: #f57c77;
-    --color-success: #4caf50;
-    --color-warning: #ff9800;
+    --color-attention: #699cde;
+    --color-attention-light: #c3d7f2;
+    --color-alert: #fe5f55;
+    --color-alert-light: #ffbfbb;
+    --color-success: #629677;
+    --color-warning: #de9e36;
     --color-input: #f8fafc;
-    --color-container: #ffffff;
+    --color-container: #fbfcff;
 
     --background-color-light: #eaeded;
     --background-color-dark: #e0e2e3;
@@ -23,8 +23,7 @@
 
     --text-color-placeholder: #737373;
     --text-color-light: #393939;
-    --text-color-dark: #131313;
-    --text-color-primary: #000000;
+    --text-color-primary: #090c08;
 
     --border-color-primary: #d1d5db;
     --border-color-input: #d1d5db;
@@ -139,7 +138,7 @@
     @apply w-full;
 
     & .title {
-        @apply text-dark mb-3 text-2xl font-semibold;
+        @apply mb-3 text-2xl font-semibold;
     }
 
     & .content {
@@ -189,11 +188,11 @@
     }
 
     .button-attention {
-        @apply bg-attention hover:bg-attention-dark;
+        @apply bg-attention hover:bg-attention-light;
     }
 
     .button-alert {
-        @apply bg-alert hover:bg-alert-dark;
+        @apply bg-alert hover:bg-alert-light;
     }
 
     .button-primary {
@@ -221,7 +220,7 @@
     }
 
     .input-primary {
-        @apply focus-within:border-attention rounded-input data-max:border-alert border-input bg-input flex items-center gap-1 border inset-shadow-sm inset-shadow-black/10 outline-none! focus-within:inset-shadow-none;
+        @apply focus-within:border-attention rounded-input data-max:border-alert border-input bg-input flex items-center gap-1 border inset-shadow-sm inset-shadow-black/5 outline-none! focus-within:inset-shadow-none;
     }
 
     .container-primary {

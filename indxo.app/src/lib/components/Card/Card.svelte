@@ -21,7 +21,7 @@
         <ol class="mb-1 flex flex-wrap items-center gap-x-3 gap-y-1.5">
             {#each breadcrumbs as { text, icon }}
                 <li
-                    class="flex-center container-primary bg-attention-dark gap-1 rounded-full border-0 shadow-xs {icon
+                    class="flex-center container-primary bg-attention-light gap-1 rounded-full border-0 shadow-xs {icon
                         ? 'pr-2 pl-1'
                         : 'px-2'} py-1"
                 >

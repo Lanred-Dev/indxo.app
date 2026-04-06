@@ -4,7 +4,7 @@ export { default as SegmentedButtonGroup } from "./SegmentedButtonGroup.svelte";
 export interface SegmentedButtonGroupContext {
     value: string;
     hovering: string | null;
-    updateSelectorStyles: () => void;
+    forceUpdateSelector: () => void;
 }
 
 export let segmentedButtonGroupContextKey: Symbol = Symbol("segmentedButtonGroupContextKey");
