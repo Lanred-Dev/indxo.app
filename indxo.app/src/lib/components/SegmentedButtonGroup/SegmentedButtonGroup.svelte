@@ -17,11 +17,6 @@
 
     let Container: HTMLUListElement;
     let Selector: HTMLDivElement;
-    let selectorWidth: number = $state.raw(0);
-    let selectorHeight: number = $state.raw(0);
-    let selectorLeft: number = $state.raw(0);
-    let selectorTop: number = $state.raw(0);
-    let selectorOpacity: number = $state.raw(100);
     let hovering: string | null = $state.raw(null);
 
     function moveSelectorTo(id: string | null) {
@@ -33,11 +28,14 @@
 
         const buttonBounding: DOMRect = button.getBoundingClientRect();
         const containerBounding: DOMRect = Container.getBoundingClientRect();
-        selectorWidth = buttonBounding.width;
-        selectorHeight = buttonBounding.height;
-        selectorLeft = buttonBounding.left - containerBounding.left + Container.scrollLeft;
-        selectorTop = buttonBounding.top - containerBounding.top + Container.scrollTop;
-        selectorOpacity = id !== null && id !== value ? 50 : 100;
+        Selector.style.width = `${buttonBounding.width}px`;
+        Selector.style.height = `${buttonBounding.height}px`;
+        Selector.style.left = `${buttonBounding.left - containerBounding.left + Container.scrollLeft}px`;
+        Selector.style.top = `${buttonBounding.top - containerBounding.top + Container.scrollTop}px`;
+        Selector.style.backgroundColor =
+            id !== null && id !== value
+                ? "var(--background-color-dark)"
+                : "var(--color-attention-light)";
     }
 
     setContext(segmentedButtonGroupContextKey, {
@@ -77,12 +75,7 @@
 >
     <div
         bind:this={Selector}
-        class="rounded-input bg-attention pointer-events-none absolute transition-all duration-200"
-        style:width="{selectorWidth}px"
-        style:height="{selectorHeight}px"
-        style:left="{selectorLeft}px"
-        style:top="{selectorTop}px"
-        style:opacity="{selectorOpacity}%"
+        class="rounded-input bg-attention-light pointer-events-none absolute transition-all duration-200"
     ></div>
 
     {@render children()}
