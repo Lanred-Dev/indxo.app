@@ -8,11 +8,11 @@
     --background-color-page: #ffffff;
     --color-scrollbar: #d4d7d8;
 
-    --color-attention: #699cde;
-    --color-attention-light: #c3d7f2;
-    --color-alert: #fe5f55;
+    --color-attention: #0b4294;
+    --color-attention-light: #98adda;
+    --color-alert: #e2584e;
     --color-alert-light: #ffbfbb;
-    --color-success: #95ccab;
+    --color-success: #81b496;
     --color-warning: #de9e36;
     --color-input: #f0f1f4;
     --color-container: #fbfcff;
@@ -24,13 +24,14 @@
     --text-color-placeholder: #737373;
     --text-color-light: #393939;
     --text-color-primary: #090c08;
+    --text-color-input: #7b7c81;
 
     --border-color-primary: #d1d5db;
-    --border-color-input: #d1d5db;
+    --border-color-input: #dedfe3;
 
     --radius-container: 20px;
     --radius-input: 15px;
-    --radius-button: 15px;
+    --radius-button: 9999px;
 }
 
 @layer base {
@@ -180,7 +181,7 @@
     .button-primary,
     .input-primary,
     .button-navigation {
-        @apply text-primary rounded-button flex items-center justify-center gap-2 px-4 py-2 text-lg transition-all duration-200 disabled:pointer-events-none disabled:opacity-50;
+        @apply text-primary rounded-button flex items-center justify-center gap-2 px-5 py-2 text-lg font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50;
 
         & img {
             @apply size-7;
@@ -188,7 +189,7 @@
     }
 
     .button-attention {
-        @apply bg-attention hover:bg-attention-light;
+        @apply bg-attention hover:bg-attention-light text-container;
     }
 
     .button-alert {
@@ -196,7 +197,7 @@
     }
 
     .button-primary {
-        @apply bg-dark hover:bg-light;
+        @apply bg-input text-input border-input hover:bg-light hover:text-primary border;
     }
 
     .button-navigation {
