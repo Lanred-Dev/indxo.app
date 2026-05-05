@@ -6,20 +6,34 @@
     <title>Login</title>
 </svelte:head>
 
+<header class="flex-center x-center fixed top-12 z-40">
+    <p class="flex items-center gap-1">
+        <img class="size-7" src="/favicon.svg" alt="Logo" />
+        <span class="text-xl">indxo</span>
+    </p>
+</header>
+
 <div class="cover-screen flex-center page-title mb-0 flex-col gap-6">
     <div class="text-center *:justify-center">
-        <h1 class="title">Welcome to indxo.app</h1>
-        <p class="description">A completely free, open-source platform for studying.</p>
+        <h1 class="title">Welcome back 👋</h1>
+        <p class="description">Log in to your indxo account</p>
     </div>
 
     <div class="row w-fit text-xl">
         <form method="POST" use:enhance>
             <button class="button-primary">
                 <img class="size-7" src="/icons/Google.svg" alt="Google" />
-                Login with Google
+                Continue with Google
             </button>
         </form>
     </div>
 </div>
 
-<p class="text-light x-center absolute bottom-12">© 2025 Landon Redmond</p>
+<footer class="x-center absolute bottom-12 space-y-2">
+    <ul class="flex-center gap-4">
+        <li><a href="/support" class="button-link">Support</a></li>
+        <li><a href="/terms" class="button-link">Terms</a></li>
+    </ul>
+
+    <p class="text-light">© 2026 Landon Redmond</p>
+</footer>
