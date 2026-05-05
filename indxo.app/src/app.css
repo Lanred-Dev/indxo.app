@@ -14,7 +14,7 @@
     --color-alert-light: #ffbfbb;
     --color-success: #629677;
     --color-warning: #de9e36;
-    --color-input: #f8fafc;
+    --color-input: #f0f1f4;
     --color-container: #fbfcff;
 
     --background-color-light: #eaeded;
@@ -224,7 +224,7 @@
     }
 
     .input-primary {
-        @apply focus-within:border-attention rounded-input data-max:border-alert border-input bg-input flex items-center gap-1 border inset-shadow-sm inset-shadow-black/5 outline-none! focus-within:inset-shadow-none;
+        @apply focus-within:border-attention rounded-input data-max:border-alert border-input bg-input flex items-center gap-1 border outline-none!;
     }
 
     .container-primary {
