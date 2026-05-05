@@ -19,7 +19,7 @@
     };
 </script>
 
-<button type="button" aria-label={text} {...properties}>
+<button class="button-icon" type="button" aria-label={text} {...properties}>
     {#if "url" in image}
         <img class={["size-6", imageClassName]} src={image.url} alt={text} {...imageProperties} />
     {:else}
