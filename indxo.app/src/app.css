@@ -219,6 +219,10 @@
         }
     }
 
+    .button-link {
+        @apply text-light hover:text-primary transition-colors duration-200;
+    }
+
     .input-primary {
         @apply focus-within:border-attention rounded-input data-max:border-alert border-input bg-input flex items-center gap-1 border inset-shadow-sm inset-shadow-black/5 outline-none! focus-within:inset-shadow-none;
     }
