@@ -1,5 +1,7 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
+    import GoogleIcon from "$lib/assets/icons/Google.svg?raw";
+    import Icon from "$lib/components/Icon.svelte";
 </script>
 
 <svelte:head>
@@ -9,7 +11,7 @@
 <header class="flex-center x-center fixed top-12 z-40">
     <p class="flex items-center gap-1">
         <img class="size-7" src="/favicon.svg" alt="Logo" />
-        <span class="text-xl">indxo</span>
+        <span class="text-xl font-medium">indxo</span>
     </p>
 </header>
 
@@ -22,7 +24,7 @@
     <div class="row w-fit text-xl">
         <form method="POST" use:enhance>
             <button class="button-primary">
-                <img class="size-7" src="/icons/Google.svg" alt="Google" />
+                <Icon icon={GoogleIcon} class="size-7" />
                 Continue with Google
             </button>
         </form>
