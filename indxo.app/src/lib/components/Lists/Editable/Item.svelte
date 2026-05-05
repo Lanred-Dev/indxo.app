@@ -121,18 +121,21 @@
         ]}
         bind:this={Content}
     >
-        <div class="flex items-center justify-between px-3">
+        <div class="flex items-center justify-between pr-1 pl-3">
+            <!--The padding on the left and right of this container are different because the action buttons use p-2-->
             <p class="text-lg font-semibold">#{index + 1}</p>
 
-            <div class="flex-center gap-3">
+            <ul class="flex-center">
                 {#each editableList.buttons as { text, image, onclick }}
-                    <ActionButton
-                        {text}
-                        {image}
-                        onclick={() => onclick({ index, _id, fields, isDraggable })}
-                    />
+                    <li>
+                        <ActionButton
+                            {text}
+                            {image}
+                            onclick={() => onclick({ index, _id, fields, isDraggable })}
+                        />
+                    </li>
                 {/each}
-            </div>
+            </ul>
         </div>
 
         <div class="flex-center w-full grow flex-wrap gap-3">
