@@ -102,7 +102,7 @@
     onkeydown={(event: KeyboardEvent) => {
         const target = event.target as HTMLElement | null;
 
-        if (target && target !== document.body && !target.closest("#flashcards")) return;
+        if (target && target !== document.body && !target.closest("#flashcard")) return;
 
         event.preventDefault();
         target?.blur();
@@ -121,7 +121,7 @@
     }}
 />
 
-<div id="flashcards">
+<div id="flashcard">
     <div
         class="md:aspect-2 relative aspect-[1.25] max-h-96 w-full cursor-pointer outline-none sm:aspect-[1.45]"
         style:perspective="1000px"
@@ -191,7 +191,7 @@
                     @reference "../../../../../app.css";
 
                     .CardFace {
-                        @apply rounded-container border-primary flex-center absolute top-0 left-0 h-full w-full flex-col overflow-x-hidden overflow-y-auto border bg-[#eaeef0] p-6 shadow-xl inset-shadow-sm;
+                        @apply rounded-container border-primary flex-center bg-input absolute top-0 left-0 h-full w-full flex-col overflow-x-hidden overflow-y-auto border p-6 shadow-xl inset-shadow-sm;
                     }
                 </style>
             </div>

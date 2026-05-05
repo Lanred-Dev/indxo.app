@@ -2,7 +2,7 @@
 <script lang="ts">
     import type { Term } from "$lib/documents";
     import { animate } from "motion";
-    import Flashcards, { CycleDirection } from "../Flashcards.svelte";
+    import Flashcards, { CycleDirection } from "../Flashcard.svelte";
     import { getContext, onMount } from "svelte";
     import type { DocumentContext } from "../../+page.svelte";
 

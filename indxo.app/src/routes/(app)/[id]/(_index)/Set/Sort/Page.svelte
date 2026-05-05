@@ -4,7 +4,7 @@
     import type { DocumentContext } from "../../+page.svelte";
     import { beforeNavigate } from "$app/navigation";
     import type { Term, SortedSetMetadata, SortedTerm } from "$lib/documents";
-    import Flashcards, { CycleDirection } from "../Flashcards.svelte";
+    import Flashcards, { CycleDirection } from "../Flashcard.svelte";
     import { SvelteMap, SvelteSet } from "svelte/reactivity";
     import { animate } from "motion";
     import type { SessionContext } from "$lib/utils/global";
