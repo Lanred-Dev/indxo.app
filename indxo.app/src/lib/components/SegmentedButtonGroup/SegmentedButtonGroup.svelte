@@ -28,10 +28,11 @@
 
         const buttonBounding: DOMRect = button.getBoundingClientRect();
         const containerBounding: DOMRect = Container.getBoundingClientRect();
+        const computedContainerStyle: CSSStyleDeclaration = getComputedStyle(Container);
         Selector.style.width = `${buttonBounding.width}px`;
         Selector.style.height = `${buttonBounding.height}px`;
-        Selector.style.left = `${buttonBounding.left - containerBounding.left + Container.scrollLeft}px`;
-        Selector.style.top = `${buttonBounding.top - containerBounding.top + Container.scrollTop}px`;
+        Selector.style.left = `${buttonBounding.left - containerBounding.left + Container.scrollLeft - parseFloat(computedContainerStyle.borderLeftWidth)}px`;
+        Selector.style.top = `${buttonBounding.top - containerBounding.top + Container.scrollTop - parseFloat(computedContainerStyle.borderTopWidth)}px`;
         Selector.style.backgroundColor =
             id !== null && id !== value
                 ? "var(--background-color-dark)"
@@ -69,7 +70,10 @@
 </script>
 
 <ul
-    class={["rounded-input bg-light relative flex w-full flex-wrap overflow-hidden", className]}
+    class={[
+        "rounded-input bg-input text-input border-input hover:bg-light hover:text-primary relative flex w-full flex-wrap overflow-hidden border",
+        className,
+    ]}
     {...properties}
     bind:this={Container}
 >
