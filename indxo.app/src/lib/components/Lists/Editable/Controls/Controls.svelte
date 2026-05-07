@@ -2,15 +2,18 @@
     import type { ViewportContext } from "$lib/utils/global";
     import { getContext, type Snippet } from "svelte";
 
-    let { children, ...properties }: { [key: string]: unknown; children: Snippet<[]> } = $props();
+    let {
+        children,
+        startingWidth = 70,
+        ...properties
+    }: { startingWidth: number; [key: string]: unknown; children: Snippet<[]> } = $props();
 
     const viewport: ViewportContext = getContext("viewport");
     let Controls: HTMLUListElement;
     let width: number = $state.raw(0);
 
     $effect(() => {
-        // Force recalculation on scroll
-        viewport.scrollY;
+        viewport.scrollY; // This forces a recalculation on scroll
 
         if (!Controls || !Controls.parentElement) return;
 
@@ -22,7 +25,7 @@
             100,
             Math.max(((parentBottom - controlsBottom) / parentHeight) * 100 - 2, 0)
         );
-        width = distanceToBottom < 25 ? 100 - distanceToBottom : 75;
+        width = distanceToBottom < 25 ? 100 - distanceToBottom : startingWidth;
     });
 </script>
 
