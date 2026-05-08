@@ -13,7 +13,7 @@
     import { formatDate } from "date-fns";
     import determineDocumentType from "$lib/utils/document/determineType";
     import type { CardBreadcrumb, CardDocumentType } from ".";
-    import Chevron, { ChevronState } from "../Icons/Chevron.svelte";
+    import Icon from "../Icon.svelte";
 
     let {
         isCollapsible = true,
@@ -84,7 +84,7 @@
             {name}
 
             {#if isCollapsible}
-                <Chevron class="size-5" state={visible ? ChevronState.up : ChevronState.down} />
+                <Icon class="size-5" icon={visible ? "general/ChevronUp" : "general/ChevronDown"} />
             {/if}
         </button>
     {/if}

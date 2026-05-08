@@ -4,6 +4,7 @@
     import { getContext } from "svelte";
     import { searchableListContextKey, type SearchableListContext } from ".";
     import type { SearchableListFilter } from "./filters";
+    import Icon from "$lib/components/Icon.svelte";
 
     let { filters }: { filters: SearchableListFilter[] } = $props();
 
@@ -30,7 +31,7 @@
     </Dropdown>
 
     <div class="input-primary flex-center grow gap-2">
-        <img class="size-6" src="/icons/general/Search.svg" alt="Search" />
+        <Icon icon="general/Search" />
 
         <input
             class="field-sizing-content w-full border-0 bg-transparent p-0 text-lg outline-none focus:ring-0"
