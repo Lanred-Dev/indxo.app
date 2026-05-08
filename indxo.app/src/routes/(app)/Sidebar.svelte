@@ -11,6 +11,7 @@
         ViewportContext,
     } from "$lib/utils/global";
     import { MyPageType } from "$lib/utils/routing";
+    import Icon from "$lib/components/Icon.svelte";
 
     const header: HeaderContext = getContext("header");
     const sidebar: SidebarContext = getContext("sidebar");
@@ -28,7 +29,7 @@
             {#each links as { url, text, icon }}
                 <li>
                     <a class="button-navigation" href={url}>
-                        <img src={icon} alt={text} />
+                        <Icon {icon} />
                         <span>{text}</span>
                     </a>
                 </li>
@@ -63,10 +64,10 @@
         <nav class="min-w-fit space-y-10">
             {@render group(
                 [
-                    { icon: "/icons/navigation/Home.svg", text: "Home", url: "/" },
+                    { icon: "navigation/Home", text: "Home", url: "/" },
                     session.session
                         ? {
-                              icon: "/icons/navigation/Account.svg",
+                              icon: "navigation/Account",
                               text: "Account",
                               url: `/${session.user._id}`,
                           }
@@ -78,17 +79,17 @@
                 {@render group(
                     [
                         {
-                            icon: "/icons/navigation/Stars.svg",
+                            icon: "navigation/Stars",
                             text: Wording.favorites,
                             url: `/my/${MyPageType.favorites}`,
                         },
                         {
-                            icon: "/icons/navigation/Folder.svg",
+                            icon: "navigation/Folder",
                             text: Wording.folders,
                             url: `/my/${MyPageType.folders}`,
                         },
                         {
-                            icon: "/icons/navigation/Document.svg",
+                            icon: "navigation/Document",
                             text: Wording.sets,
                             url: `/my/${MyPageType.sets}`,
                         },
@@ -100,12 +101,12 @@
             {@render group(
                 [
                     {
-                        icon: "/icons/navigation/FolderPlus.svg",
+                        icon: "navigation/CreateFolder",
                         text: Wording.folder,
                         url: "/create/folder",
                     },
                     {
-                        icon: "/icons/navigation/DocumentPlus.svg",
+                        icon: "navigation/CreateDocument",
                         text: Wording.set,
                         url: "/create/set",
                     },

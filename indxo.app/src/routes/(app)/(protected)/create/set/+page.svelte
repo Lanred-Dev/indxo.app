@@ -10,7 +10,6 @@
     import { goto } from "$app/navigation";
     import { ResponseCodes } from "$lib/utils/apiResponses";
     import { Wording } from "$lib/utils/wording";
-    import Arrow, { ArrowState } from "$lib/components/Icons/Arrow.svelte";
     import Textbox from "$lib/components/Textbox.svelte";
     import { DocumentType, DocumentVisibility, setFields } from "$lib/documents";
     import {
@@ -20,6 +19,7 @@
         DropdownTrigger,
     } from "$lib/components/Dropdown";
     import EditableTermsList from "$lib/components/Lists/EditableTerms.svelte";
+    import Icon from "$lib/components/Icon.svelte";
 
     enum CreationStage {
         info = "i",
@@ -103,15 +103,15 @@
 
                     <DropdownContent>
                         <DropdownItem value={DocumentVisibility.public}>
-                            <img src="/icons/general/Web.svg" alt="Public" />
+                            <Icon icon="general/Web" />
                             Public
                         </DropdownItem>
                         <DropdownItem value={DocumentVisibility.private}>
-                            <img src="/icons/general/Lock.svg" alt="Public" />
+                            <Icon icon="general/Lock" />
                             Private
                         </DropdownItem>
                         <DropdownItem value={DocumentVisibility.link}>
-                            <img src="/icons/general/Link.svg" alt="Public" />
+                            <Icon icon="general/Link" />
                             Link
                         </DropdownItem>
                     </DropdownContent>
@@ -163,7 +163,7 @@
         {#if stage == CreationStage.permissions}
             Create
         {:else}
-            Next <Arrow class="size-4" state={ArrowState.right} />
+            Next <Icon class="size-4" icon="general/Arrows/Right" />
         {/if}
     </FormSubmit>
 </Form>

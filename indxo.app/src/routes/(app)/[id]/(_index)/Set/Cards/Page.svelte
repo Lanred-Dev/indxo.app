@@ -89,7 +89,7 @@
     bind:canFlip
     cycleButtons={{
         previous: {
-            image: { properties: { class: "size-9" }, url: "/icons/general/LeftArrow.svg" },
+            image: { properties: { class: "size-9" }, icon: "general/LeftArrow" },
             text: "Previous",
             onclick: () => {
                 cycle(CycleDirection.previous);
@@ -97,7 +97,7 @@
             disabled: currentTermIndex === 0,
         },
         next: {
-            image: { properties: { class: "size-9" }, url: "/icons/general/RightArrow.svg" },
+            image: { properties: { class: "size-9" }, icon: "general/RightArrow" },
             text: "Next",
             onclick: () => {
                 cycle(CycleDirection.next);
@@ -107,12 +107,12 @@
     }}
     actionButtons={[
         {
-            image: { url: "/icons/general/Restart.svg" },
+            image: { icon: "general/Restart" },
             text: "Restart",
             onclick: restart,
         },
         {
-            image: { url: "/icons/general/Shuffle.svg" },
+            image: { icon: "general/Shuffle" },
             text: "Shuffle",
             onclick: shuffle,
         },

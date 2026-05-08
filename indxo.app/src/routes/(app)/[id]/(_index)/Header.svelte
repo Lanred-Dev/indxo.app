@@ -1,6 +1,5 @@
 <script lang="ts">
     import ActionButton from "$lib/components/ActionButton.svelte";
-    import Star from "$lib/components/Icons/Star.svelte";
     import { DocumentPermission, DocumentType } from "$lib/documents";
     import { getContext, type ComponentProps } from "svelte";
     import type { DocumentContext } from "./+page.svelte";
@@ -25,9 +24,10 @@
                 if (session.session) {
                     buttons.push({
                         image: {
-                            Component: Star,
+                            icon: "general/Star",
                             properties: {
-                                fill: document.isFavorite ? "var(--color-attention)" : "#000000",
+                                class: "transition-colors duration-200",
+                                style: `color: ${document.isFavorite ? "var(--color-attention)" : "#000000"}`,
                             },
                         },
                         text: "Favorite",
@@ -46,7 +46,7 @@
                     });
 
                     buttons.push({
-                        image: { url: "/icons/general/CopyDocument.svg" },
+                        image: { icon: "general/CopyDocument" },
                         text: "Copy",
                         onclick: async () => {
                             viewport.isNavigating = true;
@@ -70,7 +70,7 @@
 
                 if (isPermissionEqual(document.permission, DocumentPermission.edit))
                     buttons.push({
-                        image: { url: "/icons/general/Pencil.svg" },
+                        image: { icon: "general/Pencil" },
                         text: "Edit",
                         onclick: () => {
                             goto(`${document.data._id}/edit`);
@@ -79,7 +79,7 @@
 
                 if (isPermissionEqual(document.permission, DocumentPermission.owner))
                     buttons.push({
-                        image: { url: "/icons/general/Trash.svg" },
+                        image: { icon: "general/Trash" },
                         text: "Delete",
                         onclick: async () => {
                             const response = await fetch(`/api/documents/${document.data._id}`, {

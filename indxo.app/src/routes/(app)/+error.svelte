@@ -1,6 +1,6 @@
 <script lang="ts">
     import { page } from "$app/state";
-    import Chevron, { ChevronState } from "$lib/components/Icons/Chevron.svelte";
+    import Icon from "$lib/components/Icon.svelte";
     import { ResponseCodes } from "$lib/utils/apiResponses";
     import { slide } from "svelte/transition";
 
@@ -60,7 +60,10 @@
         showErrorDetails = !showErrorDetails;
     }}
 >
-    <Chevron class="size-6" state={showErrorDetails ? ChevronState.up : ChevronState.down} />
+    <Icon
+        icon={showErrorDetails ? "general/Chevrons/Up" : "general/Chevrons/Down"}
+    />
+    
     Show error details
 </button>
 

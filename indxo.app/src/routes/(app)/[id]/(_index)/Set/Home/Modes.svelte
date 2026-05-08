@@ -3,6 +3,7 @@
     import { getContext } from "svelte";
     import type { DocumentContext } from "../../+page.svelte";
     import { StudyModes } from "$lib/documents";
+    import Icon from "$lib/components/Icon.svelte";
 
     const document: DocumentContext = getContext("document");
 </script>
@@ -14,7 +15,7 @@
         {#each Object.values(StudyModes) as { icon, text, url }}
             <li class="grow">
                 <a class="button-primary" href={url.replace("[id]", document.data._id)}>
-                    <img class="size-7" src={icon} alt={text} />
+                    <Icon {icon} />
                     <p>{text}</p>
                 </a>
             </li>

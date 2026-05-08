@@ -2,6 +2,7 @@
     import { getContext, type Snippet } from "svelte";
     import { dropdownContextKey, type DropdownContext } from ".";
     import { goto } from "$app/navigation";
+    import Icon from "../Icon.svelte";
 
     let {
         value,
@@ -41,7 +42,7 @@
         </div>
 
         {#if href}
-            <img class="size-4" src="/icons/general/Link.svg" alt="Link" />
+            <Icon class="size-4" icon="general/Link" />
         {/if}
     </button>
 </li>

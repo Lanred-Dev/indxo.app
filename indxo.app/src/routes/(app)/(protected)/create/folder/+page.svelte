@@ -10,7 +10,6 @@
     import { goto } from "$app/navigation";
     import { ResponseCodes } from "$lib/utils/apiResponses";
     import { Wording } from "$lib/utils/wording";
-    import Arrow, { ArrowState } from "$lib/components/Icons/Arrow.svelte";
     import Textbox from "$lib/components/Textbox.svelte";
     import { DocumentType, DocumentVisibility, folderFields } from "$lib/documents";
     import {
@@ -19,6 +18,7 @@
         DropdownItem,
         DropdownTrigger,
     } from "$lib/components/Dropdown";
+    import Icon from "$lib/components/Icon.svelte";
 
     enum CreationStage {
         info = "i",
@@ -102,15 +102,15 @@
 
                     <DropdownContent>
                         <DropdownItem value={DocumentVisibility.public}>
-                            <img src="/icons/general/Web.svg" alt="Public" />
+                            <Icon icon="general/Web" />
                             Public
                         </DropdownItem>
                         <DropdownItem value={DocumentVisibility.private}>
-                            <img src="/icons/general/Lock.svg" alt="Public" />
+                            <Icon icon="general/Lock" />
                             Private
                         </DropdownItem>
                         <DropdownItem value={DocumentVisibility.link}>
-                            <img src="/icons/general/Link.svg" alt="Public" />
+                            <Icon icon="general/Link" />
                             Link
                         </DropdownItem>
                     </DropdownContent>
@@ -127,15 +127,15 @@
 
                     <DropdownContent>
                         <DropdownItem value="/icons/folder/Folder.svg">
-                            <img src="/icons/folder/Folder.svg" alt="Folder" />
+                            <Icon icon="folder/Folder" />
                             Folder
                         </DropdownItem>
                         <DropdownItem value="/icons/folder/Camera.svg">
-                            <img src="/icons/folder/Camera.svg" alt="Camera" />
+                            <Icon icon="folder/Camera" />
                             Camera
                         </DropdownItem>
                         <DropdownItem value="/icons/folder/Briefcase.svg">
-                            <img src="/icons/folder/Briefcase.svg" alt="Briefcase" />
+                            <Icon icon="folder/Briefcase" />
                             Briefcase
                         </DropdownItem>
                     </DropdownContent>
@@ -175,7 +175,7 @@
         {#if stage == CreationStage.permissions}
             Create
         {:else}
-            Next <Arrow class="size-4" state={ArrowState.right} />
+            Next <Icon class="size-4" icon="general/Arrows/Right" />
         {/if}
     </FormSubmit>
 </Form>

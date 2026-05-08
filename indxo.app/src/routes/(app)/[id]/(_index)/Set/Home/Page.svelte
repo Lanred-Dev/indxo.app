@@ -17,7 +17,9 @@
     let currentTermIndex: number = $state.raw(0);
     // In most cases current term index should be in range, but due to hot reloading while the user is editing the set, it might go out of bounds
     let term: Term = $derived.by(() =>
-        currentTermIndex in document.data.terms ? document.data.terms[currentTermIndex] : document.data.terms[0]
+        currentTermIndex in document.data.terms
+            ? document.data.terms[currentTermIndex]
+            : document.data.terms[0]
     );
 
     /**
@@ -104,7 +106,7 @@
     bind:canFlip
     cycleButtons={{
         previous: {
-            image: { properties: { class: "size-9" }, url: "/icons/general/LeftArrow.svg" },
+            image: { properties: { class: "size-9" }, icon: "general/Arrows/Left" },
             text: "Previous",
             onclick: () => {
                 cycle(CycleDirection.previous);
@@ -112,7 +114,7 @@
             disabled: currentTermIndex === 0,
         },
         next: {
-            image: { properties: { class: "size-9" }, url: "/icons/general/RightArrow.svg" },
+            image: { properties: { class: "size-9" }, icon: "general/Arrows/Right" },
             text: "Next",
             onclick: () => {
                 cycle(CycleDirection.next);
@@ -122,12 +124,12 @@
     }}
     actionButtons={[
         {
-            image: { url: "/icons/general/Restart.svg" },
+            image: { icon: "general/Restart" },
             text: "Restart",
             onclick: restart,
         },
         {
-            image: { url: "/icons/general/Shuffle.svg" },
+            image: { icon: "general/Shuffle" },
             text: "Shuffle",
             onclick: shuffle,
         },

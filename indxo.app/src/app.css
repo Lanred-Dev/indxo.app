@@ -29,7 +29,7 @@
     --border-color-primary: #d1d5db;
     --border-color-input: #dedfe3;
 
-    --radius-container: 20px;
+    --radius-container: 22px;
     --radius-input: 15px;
     --radius-button: 9999px;
 }
@@ -183,13 +183,20 @@
     .button-navigation {
         @apply text-primary rounded-button flex items-center justify-center gap-2 px-5 py-2 text-lg font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50;
 
-        & img {
+        & img,
+        & svg,
+        & [role="img"] {
             @apply size-7;
         }
     }
 
     .button-attention {
         @apply bg-attention hover:bg-attention-light text-container;
+
+        & svg,
+        & [role="img"] {
+            color: var(--color-container);
+        }
     }
 
     .button-alert {
@@ -207,7 +214,9 @@
     .button-icon {
         @apply hover:bg-light rounded-full bg-transparent p-2 transition-[background-color,scale] duration-200 active:scale-75;
 
-        & img {
+        & img,
+        & svg,
+        & [role="img"] {
             @apply size-7;
         }
     }
@@ -215,7 +224,9 @@
     .button-basic {
         @apply flex-center gap-px text-lg hover:[&>img]:-translate-x-0.5;
 
-        & img {
+        & img,
+        & svg,
+        & [role="img"] {
             @apply transition-transform duration-100;
         }
     }

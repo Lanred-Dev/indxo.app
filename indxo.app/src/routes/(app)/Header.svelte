@@ -13,7 +13,7 @@
         ConfirmationPromptContent,
         ConfirmationPromptTrigger,
     } from "$lib/components/ConfirmationPrompt";
-    import { goto } from "$app/navigation";
+    import Icon from "$lib/components/Icon.svelte";
 
     const session: SessionContext = getContext("session");
     const header: HeaderContext = getContext("header");
@@ -25,14 +25,14 @@
     class={[
         "fixed top-0 left-0 z-40 flex w-full items-center justify-between border-b px-4 pt-6 pb-3 transition-all duration-500 md:px-8 md:pt-3",
         viewport.scrollY > 5
-            ? "bg-light border-b-primary shadow-sm "
+            ? "bg-light/20 border-b-primary backdrop-blur-sm"
             : "border-transparent bg-transparent shadow-none",
     ]}
     bind:clientHeight={header.height}
 >
     <div class="flex-center gap-3 pl-3">
         <button id="sidebarToggle" onclick={() => (sidebar.isVisible = !sidebar.isVisible)}>
-            <img class="size-7" src="/icons/navigation/Hamburger.svg" alt="Sidebar toggle" />
+            <Icon class="size-7" icon="navigation/Hamburger" />
         </button>
 
         <img class="size-7" src="/favicon.svg" alt="Logo" />
@@ -64,7 +64,7 @@
                 <ul>
                     <li>
                         <a class="button-navigation" href="/settings">
-                            <img src="/icons/navigation/Settings.svg" alt="Settings" />
+                            <Icon icon="navigation/Settings" />
                             <span>Settings</span>
                         </a>
                     </li>
@@ -72,7 +72,7 @@
 
                 <ConfirmationPrompt>
                     <ConfirmationPromptTrigger class="button-navigation">
-                        <img src="/icons/navigation/Logout.svg" alt="Log out" />
+                        <Icon icon="navigation/Logout" />
                         <span>Logout</span>
                     </ConfirmationPromptTrigger>
 
@@ -97,7 +97,7 @@
         </Popup>
     {:else}
         <a class="button-attention rounded-full" href="/login">
-            <img class="size-5" src="/icons/navigation/Account.svg" alt="Login" />
+            <Icon icon="navigation/Account" />
             <span>Login</span>
         </a>
     {/if}

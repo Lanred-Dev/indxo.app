@@ -240,7 +240,7 @@
         bind:canFlip
         cycleButtons={{
             previous: {
-                image: { properties: { class: "size-9" }, url: "/icons/general/X.svg" },
+                image: { properties: { class: "size-9" }, icon: "general/X" },
                 text: "Still learning",
                 onclick: () => {
                     cycle(CycleDirection.previous);
@@ -248,7 +248,7 @@
                 disabled: unsortedTerms.size === 0,
             },
             next: {
-                image: { properties: { class: "size-9" }, url: "/icons/general/Check.svg" },
+                image: { properties: { class: "size-9" }, icon: "general/Check" },
                 text: "Know",
                 onclick: () => {
                     cycle(CycleDirection.next);
@@ -258,12 +258,12 @@
         }}
         actionButtons={[
             {
-                image: { url: "/icons/general/Restart.svg" },
+                image: { icon: "general/Restart" },
                 text: "Restart",
                 onclick: () => restart(terms),
             },
             {
-                image: { url: "/icons/general/Shuffle.svg" },
+                image: { icon: "general/Shuffle" },
                 text: "Shuffle",
                 onclick: shuffle,
             },

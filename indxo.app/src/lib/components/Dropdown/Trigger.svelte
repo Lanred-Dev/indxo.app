@@ -2,7 +2,7 @@
     import { getContext } from "svelte";
     import { dropdownContextKey, type DropdownContext } from ".";
     import { PopupTrigger } from "../Popup";
-    import Chevron, { ChevronState } from "../Icons/Chevron.svelte";
+    import Icon from "../Icon.svelte";
 
     const dropdown: DropdownContext = getContext(dropdownContextKey);
 </script>
@@ -12,5 +12,8 @@
         {@render dropdown.value.children()}
     </div>
 
-    <Chevron class="size-4" state={dropdown.isVisible ? ChevronState.up : ChevronState.down} />
+    <Icon
+        class="size-4"
+        icon={dropdown.isVisible ? "general/Chevrons/Up" : "general/Chevrons/Down"}
+    />
 </PopupTrigger>

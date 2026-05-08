@@ -18,17 +18,17 @@ export const StudyModes: { [mode in StudyMode]: { text: string; url: string; ico
     [StudyMode.quiz]: {
         text: Wording.quizMode,
         url: `/quiz/[id]`,
-        icon: "/icons/general/Quiz.svg",
+        icon: "general/Quiz",
     },
     [StudyMode.cards]: {
         text: Wording.cards,
         url: `/[id]?m=${StudyMode.cards}`,
-        icon: "/icons/general/Cards.svg",
+        icon: "general/Cards",
     },
     [StudyMode.sort]: {
         text: Wording.sortMode,
         url: `/[id]?m=${StudyMode.sort}`,
-        icon: "/icons/general/Sort.svg",
+        icon: "general/Sort",
     },
 };
 

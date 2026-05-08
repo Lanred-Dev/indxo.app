@@ -6,7 +6,6 @@
         EditableListItem,
         type EditableListContext,
     } from ".";
-    import Chevron, { ChevronState } from "$lib/components/Icons/Chevron.svelte";
     import ActionButton from "$lib/components/ActionButton.svelte";
 
     let {
@@ -39,7 +38,7 @@
         [key in DefaultEditableListItemButton]: ComponentProps<typeof ActionButton>;
     } = {
         [DefaultEditableListItemButton.delete]: {
-            image: { url: "/icons/general/Trash.svg" },
+            image: { icon: "general/Trash" },
             text: "Delete",
             onclick: ({ index }) => {
                 deleteItem(index);
@@ -47,10 +46,7 @@
         },
         [DefaultEditableListItemButton.moveUp]: {
             image: {
-                Component: Chevron,
-                properties: {
-                    state: ChevronState.up,
-                },
+                icon: "general/Chevrons/Up",
             },
             text: "Move Up",
             onclick: ({ index }) => {
@@ -59,10 +55,7 @@
         },
         [DefaultEditableListItemButton.moveDown]: {
             image: {
-                Component: Chevron,
-                properties: {
-                    state: ChevronState.down,
-                },
+                icon: "general/Chevrons/Down",
             },
             text: "Move Down",
             onclick: ({ index }) => {
