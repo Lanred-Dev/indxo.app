@@ -15,12 +15,14 @@
     let canCycle: boolean = $state.raw(true);
     let canFlip: boolean = $state.raw(true);
     let currentTermIndex: number = $state.raw(0);
-    // In most cases current term index should be in range, but due to hot reloading while the user is editing the set, it might go out of bounds
-    let term: Term = $derived.by(() =>
-        currentTermIndex in document.data.terms
+    let termStateInvalidator: number = $state.raw(0); // This is used to trigger a term state update
+    let term: Term = $derived.by(() => {
+        termStateInvalidator;
+        // In most cases current term index should be in range, but due to hot reloading while the user is editing the set, it might go out of bounds
+        return currentTermIndex in document.data.terms
             ? document.data.terms[currentTermIndex]
-            : document.data.terms[0]
-    );
+            : document.data.terms[0];
+    });
 
     /**
      * Cycle through the terms in the set.
@@ -77,6 +79,7 @@
     function shuffle() {
         restart();
         document.data.terms = [...document.data.terms].sort(() => Math.random() - 0.5);
+        termStateInvalidator += 1;
     }
 
     onMount(() => {

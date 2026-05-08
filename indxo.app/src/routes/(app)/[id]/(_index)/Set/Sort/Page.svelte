@@ -26,6 +26,12 @@
     let timesMissed: SvelteMap<string, number> = new SvelteMap();
     let strugglingTerms: SvelteSet<string> = new SvelteSet();
     let isLoaded: boolean = $state.raw(false);
+    let termStateInvalidator: number = $state.raw(0); // This is used to trigger a term state update
+    // In most cases current term index should be in range, but due to hot reloading while the user is editing the set, it might go out of bounds
+    let term: Term = $derived.by(() => {
+        termStateInvalidator;
+        return document.data.terms[currentTermIndex];
+    });
 
     /**
      * Restarts the study session by resetting all the state variables.
@@ -226,7 +232,6 @@
         strugglingTerms={strugglingTerms.intersection(stillLearningTerms).size}
     />
 
-    {@const term: Term = document.data.terms[currentTermIndex]}
     <Flashcards
         {cycle}
         termCount={terms.length}
