@@ -1,14 +1,15 @@
 <script lang="ts">
     import measureText from "$lib/utils/measureText";
     import { onMount } from "svelte";
+    import Icon from "./Icon.svelte";
 
     let {
         states = {
             true: {
-                icon: "/icons/general/Check.svg",
+                icon: "general/Check",
             },
             false: {
-                icon: "/icons/general/X.svg",
+                icon: "general/X",
             },
         },
         value = $bindable(false),
@@ -43,11 +44,7 @@
     aria-checked={value}
     {...properties}
 >
-    <img
-        class="size-7"
-        src={value ? states.true.icon : states.false.icon}
-        alt={value ? states.true.text : states.false.text}
-    />
+    <Icon icon={value ? states.true.icon : states.false.icon} />
 
     {#if states.true.text || states.false.text}
         <span class="text-left select-none" style:width="{longestTextWidth}px"

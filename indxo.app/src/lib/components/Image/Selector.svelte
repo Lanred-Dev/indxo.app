@@ -8,10 +8,11 @@
     import Tooltip from "../Tooltip.svelte";
     import type { ComponentProps } from "svelte";
     import ActionButton from "../ActionButton.svelte";
+    import Icon from "../Icon.svelte";
 
     let {
         value = $bindable(),
-        placeholder = "/icons/general/Image.svg",
+        placeholder = "general/Image",
         imageProperties = {},
         onUpload = upload,
         onDelete = deleteImage,
@@ -108,11 +109,11 @@
                 class="absolute top-2 right-2 flex translate-y-2 gap-2 opacity-0 transition-[translate,opacity] group-hover:translate-y-0 group-hover:opacity-100"
             >
                 <DialogTrigger>
-                    <img class="size-8" src="/icons/general/Expand.svg" alt="Expand" />
+                    <Icon class="size-8" icon="general/Expand" />
                 </DialogTrigger>
 
                 <button onclick={() => onDelete(imageServerFilename!)} type="button">
-                    <img class="size-8" src="/icons/general/Trash.svg" alt="Delete" />
+                    <Icon class="size-8" icon="general/Trash" />
                 </button>
             </div>
         {/if}
@@ -121,7 +122,7 @@
             <DialogTrigger
                 class="button-primary absolute top-3 right-3 rounded-full p-1.5! shadow-md"
             >
-                <img class="size-8" src="/icons/general/X.svg" alt="Close" />
+                <Icon class="size-8" icon="general/X" />
             </DialogTrigger>
 
             <img class="h-[200%] max-h-[80vh] w-auto max-w-[80vw]" src={value} alt="Expanded" />
@@ -129,13 +130,15 @@
     </Dialog>
 
     <button onclick={() => fileInput.click()} type="button">
-        <img
-            src={value ?? placeholder}
-            alt="Selected"
-            {...imageProperties}
-            style:transform={value ? undefined : "scale(0.3)"}
-            style:opacity={value ? undefined : "0.8"}
-        />
+        {#if value}
+            <img src={value} alt="Selected" {...imageProperties} />
+        {:else}
+            <Icon
+                icon={placeholder}
+                style="color: var(--text-color-placeholder); scale: 0.3;"
+                {...imageProperties}
+            />
+        {/if}
 
         <input
             bind:this={fileInput}

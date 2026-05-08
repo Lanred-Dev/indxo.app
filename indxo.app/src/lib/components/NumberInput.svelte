@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { ClassValue } from "svelte/elements";
-    import Chevron, { ChevronState } from "./Icons/Chevron.svelte";
+    import Icon from "./Icon.svelte";
 
     let {
         value = $bindable(0),
@@ -34,11 +34,11 @@
 
     <div class="flex gap-x-2 md:flex-col">
         <button onclick={() => increment(1)} class="size-3">
-            <Chevron state={ChevronState.up} class="h-full w-full scale-150" />
+            <Icon icon="general/Chevrons/Up" class="h-full w-full scale-150" />
         </button>
 
         <button onclick={() => increment(-1)} class="size-3">
-            <Chevron state={ChevronState.down} class="h-full w-full scale-150" />
+            <Icon icon="general/Chevrons/Down" class="h-full w-full scale-150" />
         </button>
     </div>
 </div>
