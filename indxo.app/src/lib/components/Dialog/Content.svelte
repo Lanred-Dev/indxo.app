@@ -43,7 +43,7 @@
         <div class="x-center y-center flex-center z-10 w-full px-5 md:px-0">
             <div
                 class={[
-                    "container-primary flex-center relative w-fit min-w-[20%] flex-col p-5 text-lg md:px-8 md:py-10",
+                    "container-primary flex-center relative w-fit min-w-[20%] flex-col p-5 text-lg md:p-8",
                     className,
                 ]}
                 in:fly={{ y: 20, duration: 200 }}
