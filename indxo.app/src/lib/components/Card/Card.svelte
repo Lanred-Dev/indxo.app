@@ -1,5 +1,6 @@
 <script lang="ts">
     import type { CardBreadcrumb } from ".";
+    import Icon from "../Icon.svelte";
 
     let {
         name,
@@ -21,12 +22,10 @@
         <ol class="mb-1 flex flex-wrap items-center gap-x-3 gap-y-1.5">
             {#each breadcrumbs as { text, icon }}
                 <li
-                    class="flex-center container-primary bg-attention-light gap-1 rounded-full border-0 shadow-xs {icon
-                        ? 'pr-2 pl-1'
-                        : 'px-2'} py-1"
+                    class="flex-center container-primary bg-attention-light gap-1 rounded-full border-0 px-2 py-1 shadow-xs"
                 >
                     {#if icon}
-                        <img class="size-5 rounded-full" src={icon} alt={text} />
+                        <Icon class="size-5 rounded-full" {icon} />
                     {/if}
 
                     <p

@@ -126,15 +126,15 @@
                     <DropdownTrigger />
 
                     <DropdownContent>
-                        <DropdownItem value="/icons/folder/Folder.svg">
+                        <DropdownItem value="/folder/Folder">
                             <Icon icon="folder/Folder" />
                             Folder
                         </DropdownItem>
-                        <DropdownItem value="/icons/folder/Camera.svg">
+                        <DropdownItem value="/folder/Camera">
                             <Icon icon="folder/Camera" />
                             Camera
                         </DropdownItem>
-                        <DropdownItem value="/icons/folder/Briefcase.svg">
+                        <DropdownItem value="/folder/Briefcase">
                             <Icon icon="folder/Briefcase" />
                             Briefcase
                         </DropdownItem>

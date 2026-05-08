@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { ClassValue } from "svelte/elements";
     import { Dialog, DialogContent, DialogTrigger } from "../Dialog";
+    import Icon from "../Icon.svelte";
 
     let {
         class: className,
@@ -18,22 +19,21 @@
         <DialogTrigger class="group relative">
             <img class={className} {...properties} onerror={() => (didImageFailToLoad = true)} />
 
-            <img
+            <Icon
                 class="absolute top-2 right-2 size-8 translate-y-2 opacity-0 transition-[translate,opacity] group-hover:translate-y-0 group-hover:opacity-100"
-                src="/icons/general/Expand.svg"
-                alt="Expand"
+                icon="general/Expand"
             />
         </DialogTrigger>
     {:else}
         <div class={["flex-center flex-col", className]} {...properties}>
-            <img class="size-8" src="/icons/general/Error.svg" alt="Error" />
+            <Icon class="size-8" icon="general/Error" />
             <p class="text-sm">Failed to load image.</p>
         </div>
     {/if}
 
     <DialogContent class="min-h-30! rounded-none! p-0!">
         <DialogTrigger class="button-primary absolute top-3 right-3 rounded-full p-1.5! shadow-md">
-            <img class="size-8" src="/icons/general/X.svg" alt="Close" />
+            <Icon icon="general/X" />
         </DialogTrigger>
 
         <img class={["h-[200%] max-h-[80vh] w-auto max-w-[80vw]", className]} {...properties} />

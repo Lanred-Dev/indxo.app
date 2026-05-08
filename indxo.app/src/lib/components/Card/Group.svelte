@@ -37,7 +37,7 @@
 
         breadcrumbs.push({
             text: formatDate(document.created, "MM/dd/yyyy"),
-            icon: "/icons/general/Calendar.svg",
+            icon: "general/Calendar",
         });
 
         if ("owner" in document && session.user._id !== document.owner._id)
@@ -84,7 +84,10 @@
             {name}
 
             {#if isCollapsible}
-                <Icon class="size-5" icon={visible ? "general/ChevronUp" : "general/ChevronDown"} />
+                <Icon
+                    class="size-5"
+                    icon={visible ? "general/Chevrons/Up" : "general/Chevrons/Down"}
+                />
             {/if}
         </button>
     {/if}

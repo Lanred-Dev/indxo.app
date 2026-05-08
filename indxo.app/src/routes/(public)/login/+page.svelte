@@ -1,6 +1,5 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
-    import GoogleIcon from "$lib/assets/icons/Google.svg?raw";
     import Icon from "$lib/components/Icon.svelte";
 </script>
 
@@ -24,7 +23,7 @@
     <div class="row w-fit text-xl">
         <form method="POST" use:enhance>
             <button class="button-primary">
-                <Icon icon={GoogleIcon} class="size-7" />
+                <Icon icon="Google" />
                 Continue with Google
             </button>
         </form>

@@ -1,4 +1,5 @@
 <script lang="ts">
+    import Icon from "../Icon.svelte";
     import Trigger from "./Trigger.svelte";
 
     let {
@@ -15,7 +16,7 @@
 
     {#if includeCloseButton}
         <Trigger class="button-icon y-center right-0">
-            <img src="/icons/general/X.svg" alt="Close dialog" />
+            <Icon icon="general/X" />
         </Trigger>
     {/if}
 </div>

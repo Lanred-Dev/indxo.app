@@ -10,6 +10,7 @@
     import { DocumentVisibility, setFields } from "$lib/documents";
     import { getContext } from "svelte";
     import type { DocumentEditContext } from "../+page.svelte";
+    import Icon from "$lib/components/Icon.svelte";
 
     const document: DocumentEditContext = getContext("documentEdit");
 </script>
@@ -25,18 +26,20 @@
         <DropdownTrigger />
 
         <DropdownContent>
-            <DropdownItem value={DocumentVisibility.public}>
-                <img src="/icons/general/Web.svg" alt="Public" />
-                Public
-            </DropdownItem>
-            <DropdownItem value={DocumentVisibility.private}>
-                <img src="/icons/general/Lock.svg" alt="Public" />
-                Private
-            </DropdownItem>
-            <DropdownItem value={DocumentVisibility.link}>
-                <img src="/icons/general/Link.svg" alt="Public" />
-                Link
-            </DropdownItem>
+            <DropdownContent>
+                <DropdownItem value={DocumentVisibility.public}>
+                    <Icon icon="general/Web" />
+                    Public
+                </DropdownItem>
+                <DropdownItem value={DocumentVisibility.private}>
+                    <Icon icon="general/Lock" />
+                    Private
+                </DropdownItem>
+                <DropdownItem value={DocumentVisibility.link}>
+                    <Icon icon="general/Link" />
+                    Link
+                </DropdownItem>
+            </DropdownContent>
         </DropdownContent>
     </FormInput>
 
