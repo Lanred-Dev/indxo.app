@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { setContext, type ComponentProps, type Snippet } from "svelte";
+    import { getContext, setContext, tick, type ComponentProps, type Snippet } from "svelte";
     import {
         DefaultEditableListItemButton,
         editableListContextKey,
@@ -7,6 +7,7 @@
         type EditableListContext,
     } from ".";
     import ActionButton from "$lib/components/ActionButton.svelte";
+    import type { ViewportContext } from "$lib/utils/global";
 
     let {
         placeholderItems = 0,
@@ -33,6 +34,8 @@
     let currentDraggingID: number | null = $state.raw(null);
     let draggingOverID: number | null = $state.raw(null);
     let isDraggable: boolean = $state.raw(true);
+    let Container: HTMLDivElement;
+    const viewport: ViewportContext = getContext("viewport");
 
     const defaultButtons: {
         [key in DefaultEditableListItemButton]: ComponentProps<typeof ActionButton>;
@@ -119,7 +122,16 @@
         get items() {
             return items;
         },
-        addItem: () => items.push(addItem(items.length)),
+        addItem: async () => {
+            items.push(addItem(items.length));
+
+            setTimeout(() => {
+                viewport.Content?.scrollTo({
+                    top: Container.scrollHeight + 500, // A better way to do this? Probably
+                    behavior: "smooth",
+                });
+            }, 10);
+        },
         deleteItem,
         moveItem,
     } satisfies EditableListContext);
@@ -183,6 +195,6 @@
 
 <svelte:window onfocusin={() => (isDraggable = false)} onfocusout={() => (isDraggable = true)} />
 
-<div class="relative w-full">
+<div class="relative w-full" bind:this={Container}>
     {@render children?.()}
 </div>

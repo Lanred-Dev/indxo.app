@@ -5,7 +5,6 @@
         type EditableListContext,
         type EditableListItemField,
     } from ".";
-    import { slide } from "svelte/transition";
     import ActionButton from "$lib/components/ActionButton.svelte";
 
     let {
@@ -110,7 +109,6 @@
         event.preventDefault();
         editableList.dragging.over = index;
     }}
-    in:slide={{ axis: "y" }}
     bind:this={Container}
 >
     <div
