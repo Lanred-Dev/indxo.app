@@ -8,6 +8,6 @@
     } = $props();
 </script>
 
-<h2 class="mb-3 text-2xl leading-snug font-bold md:text-3xl">
+<h2 class="mb-3 text-2xl leading-snug font-bold">
     {@render children()}
 </h2>
