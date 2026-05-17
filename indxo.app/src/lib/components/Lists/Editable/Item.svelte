@@ -141,7 +141,9 @@
                 <div class="row items-start md:flex-nowrap">
                     {#each group as field}
                         <field.Component
-                            bind:value={fields[fields.findIndex((f) => f._id === field._id)].value}
+                            bind:value={
+                                fields[fields.findIndex(({ _id }) => _id === field._id)].value
+                            }
                             {...field.properties}
                         />
                     {/each}
