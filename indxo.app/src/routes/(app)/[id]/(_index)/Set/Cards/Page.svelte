@@ -19,40 +19,6 @@
     });
 
     /**
-     * Cycle through the terms in the set.
-     *
-     * @param direction The direction to cycle in. -1 for previous and 1 for next or during sort mode, 1 for knows term and -1 for still learning term
-     * @returns never
-     */
-    async function cycle(direction: -1 | 1) {
-        if (
-            currentTermIndex + direction < 0 ||
-            currentTermIndex + direction > document.data.terms.length - 1
-        )
-            return;
-
-        currentTermIndex += direction;
-        FlashcardsComponent!.flipCard(false, false);
-        canFlip = false;
-
-        await animate(
-            Card!,
-            {
-                opacity: [0, 1],
-                rotateX: [0, 0],
-                rotateY: [direction === 1 ? -15 : 15, 0],
-                translate: [direction === 1 ? "8%" : "-8%", "0%"],
-            },
-            {
-                duration: 0.3,
-                ease: "easeInOut",
-            }
-        );
-
-        canFlip = true;
-    }
-
-    /**
      * Restarts the study session by resetting all the state variables.
      *
      * @returns never
@@ -82,7 +48,7 @@
 </script>
 
 <Flashcards
-    {cycle}
+    bind:currentTermIndex
     termCount={document.data.terms.length}
     currentTerm={{
         index: currentTermIndex + 1,
@@ -96,17 +62,11 @@
         previous: {
             image: { properties: { class: "size-9" }, icon: "general/Arrows/Left" },
             text: "Previous",
-            onclick: () => {
-                cycle(CycleDirection.previous);
-            },
             disabled: currentTermIndex === 0,
         },
         next: {
             image: { properties: { class: "size-9" }, icon: "general/Arrows/Right" },
             text: "Next",
-            onclick: () => {
-                cycle(CycleDirection.next);
-            },
             disabled: currentTermIndex >= document.data.terms.length - 1,
         },
     }}
