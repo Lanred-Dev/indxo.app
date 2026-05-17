@@ -12,7 +12,11 @@
     let canCycle: boolean = $state.raw(true);
     let canFlip: boolean = $state.raw(true);
     let currentTermIndex: number = $state.raw(0);
-    let term: Term = $derived(document.data.terms[currentTermIndex]);
+    let termStateInvalidator: number = $state.raw(0); // This is used to trigger a term state update
+    let term: Term = $derived.by(() => {
+        termStateInvalidator;
+        return document.data.terms[currentTermIndex];
+    });
 
     /**
      * Cycle through the terms in the set.
@@ -69,6 +73,7 @@
     function shuffle() {
         restart();
         document.data.terms = [...document.data.terms].sort(() => Math.random() - 0.5);
+        termStateInvalidator += 1;
     }
 
     onMount(() => {
