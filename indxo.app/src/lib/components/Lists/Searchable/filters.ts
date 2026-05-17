@@ -91,30 +91,24 @@ const sortFunctions: Record<string, SearchableListFilter> = {
         id: "c",
         name: "Created",
         apply: (query, documents) => {
-            documents = documents.filter((document) =>
-                checkIfDocumentAndQueryMatch(query, document)
-            );
+            const matchedDocs = documents.filter((doc) => checkIfDocumentAndQueryMatch(query, doc));
+            const now = Date.now();
+            const groups: ComponentProps<typeof CardGroup>[] = [];
 
-            let groups: ComponentProps<typeof CardGroup>[] = [];
+            createdFilterGroups.forEach(([label, maxMinutes], index) => {
+                const minMinutes = createdFilterGroups[index - 1]?.[1] || 0;
 
-            createdFilterGroups.forEach(([label, minutes], index) => {
-                const previousMinutes: number = createdFilterGroups[index - 1]?.[1] || 0;
-
-                let filteredDocuments: CardDocumentType[] = documents.filter(({ created }) => {
-                    const minutesSinceCreation: number = Math.min(
-                        millisecondsToMinutes(Date.now() - created),
-                        0.01
-                    );
-                    return (
-                        minutesSinceCreation <= minutes && minutesSinceCreation > previousMinutes
-                    );
+                const filteredDocuments = matchedDocs.filter(({ created }) => {
+                    const minutesSinceCreation = millisecondsToMinutes(now - created);
+                    return minutesSinceCreation <= maxMinutes && minutesSinceCreation > minMinutes;
                 });
 
-                if (filteredDocuments.length > 0)
+                if (filteredDocuments.length > 0) {
                     groups.push({
                         name: label,
                         documents: sortGroupByCreated(filteredDocuments),
                     });
+                }
             });
 
             return groups;
