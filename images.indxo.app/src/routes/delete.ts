@@ -14,7 +14,7 @@ export const route: RouteOptions = {
         if (!request.user)
             return reply
                 .code(ResponseCodes.Unauthorized)
-                .send(new Error(ResponseMessages.Unauthorized));
+                .send(new Error("You do not have permission to delete this file."));
 
         const { filename } = request.params as {
             filename: string;
@@ -27,7 +27,7 @@ export const route: RouteOptions = {
         } catch {
             return reply
                 .code(ResponseCodes.NotFound)
-                .send(new Error("Failed to delete image or image does not exist"));
+                .send(new Error("File not found or could not be deleted."));
         }
     },
 };

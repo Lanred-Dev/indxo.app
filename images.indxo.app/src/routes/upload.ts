@@ -3,7 +3,7 @@ import { fileTypeFromBuffer } from "file-type";
 import fs from "fs";
 import path from "path";
 import sharp from "sharp";
-import { ResponseCodes, ResponseMessages } from "../utils/apiResponses";
+import { ResponseCodes } from "../utils/apiResponses";
 import generateDocumentID from "../utils/generateID";
 
 const MAX_FILE_SIZE: number = parseInt(process.env.MAX_FILE_SIZE!);
@@ -19,11 +19,11 @@ export const route: RouteOptions = {
         if (!request.user)
             return reply
                 .code(ResponseCodes.Unauthorized)
-                .send(new Error(ResponseMessages.Unauthorized));
+                .send(new Error("You do not have permission to upload files."));
 
         const data = await request.file();
 
-        if (!data) return reply.code(ResponseCodes.BadRequest).send(new Error("No image provided"));
+        if (!data) return reply.code(ResponseCodes.BadRequest).send(new Error("No file provided."));
 
         const buffer = await data.toBuffer();
         const fileType = await fileTypeFromBuffer(buffer);
@@ -31,7 +31,7 @@ export const route: RouteOptions = {
         if (!fileType || !ALLOWED_FILE_TYPES.includes(fileType.ext.toLowerCase())) {
             return reply
                 .code(ResponseCodes.InvalidMediaType)
-                .send(new Error(`Allowed file types are ${ALLOWED_FILE_TYPES.join(", ")}`));
+                .send(new Error(`Allowed file types are ${ALLOWED_FILE_TYPES.join(", ")}.`));
         }
 
         const sizeInMB: number = buffer.length / (1024 * 1024);
@@ -39,7 +39,7 @@ export const route: RouteOptions = {
         if (sizeInMB > MAX_FILE_SIZE)
             return reply
                 .code(ResponseCodes.ContentTooLarge)
-                .send(new Error(`Max file size is ${MAX_FILE_SIZE}MB`));
+                .send(new Error(`Max file size is ${MAX_FILE_SIZE}MB.`));
 
         try {
             const filename: string = `${request.user._id}-${generateDocumentID(15)}.webp`;
@@ -47,7 +47,9 @@ export const route: RouteOptions = {
             await sharp(buffer).webp({ quality: 50 }).toFile(filepath);
             return reply.send(filename);
         } catch {
-            return reply.code(ResponseCodes.ServerError).send(new Error("Failed to save image"));
+            return reply
+                .code(ResponseCodes.ServerError)
+                .send(new Error("Failed to process image file."));
         }
     },
 };
