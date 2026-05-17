@@ -152,6 +152,12 @@
 
     & .title {
         @apply break-word text-3xl leading-snug font-bold md:text-4xl;
+
+        & img,
+        & svg,
+        & [role="img"] {
+            @apply size-8;
+        }
     }
 
     & .description {
@@ -165,8 +171,10 @@
     & .title {
         @apply break-word flex flex-wrap items-center justify-center gap-x-1 gap-y-2 text-3xl leading-snug font-bold;
 
-        & img {
-            @apply size-9;
+        & img,
+        & svg,
+        & [role="img"] {
+            @apply size-8;
         }
     }
 
