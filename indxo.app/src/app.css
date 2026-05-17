@@ -150,8 +150,20 @@
 @utility page-title {
     @apply mb-12 w-full;
 
+    &:has(.image) {
+        @apply flex items-center gap-4;
+
+        & .title {
+            @apply mt-1 leading-tight;
+        }
+    }
+
+    & .image {
+        @apply size-12 rounded-full;
+    }
+
     & .title {
-        @apply break-word text-3xl leading-snug font-bold md:text-4xl;
+        @apply break-word text-3xl leading-snug font-bold;
 
         & img,
         & svg,
@@ -161,7 +173,7 @@
     }
 
     & .description {
-        @apply text-light break-word text-lg leading-snug font-semibold md:text-xl;
+        @apply text-light break-word text-lg leading-none font-semibold md:text-xl;
     }
 }
 
