@@ -127,8 +127,9 @@
 }
 
 @utility break-word {
-    word-break: break-word;
-    @apply hyphens-auto;
+    word-break: normal;
+    overflow-wrap: break-word;
+    hyphens: none;
 }
 
 @utility row {
@@ -236,7 +237,7 @@
     }
 
     .input-primary {
-        @apply focus-within:border-attention rounded-input data-max:border-alert border-input bg-input flex items-center gap-1 border outline-none!;
+        @apply focus-within:border-attention rounded-input data-max:border-alert border-input bg-input break-word flex items-center gap-1 border outline-none!;
     }
 
     .container-primary {
