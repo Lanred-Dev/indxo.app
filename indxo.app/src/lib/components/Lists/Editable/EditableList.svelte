@@ -127,7 +127,7 @@
 
             setTimeout(() => {
                 viewport.Content?.scrollTo({
-                    top: Container.scrollHeight + 500, // A better way to do this? Probably
+                    top: Container.getBoundingClientRect().bottom + viewport.scrollY,
                     behavior: "smooth",
                 });
             }, 10);
