@@ -8,6 +8,6 @@
     } = $props();
 </script>
 
-<div>
+<div class="space-y-3">
     {@render children()}
 </div>
