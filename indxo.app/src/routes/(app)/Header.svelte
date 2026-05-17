@@ -23,14 +23,14 @@
 
 <header
     class={[
-        "fixed top-0 left-0 z-40 flex w-full items-center justify-between border-b px-4 pt-6 pb-3 transition-all duration-500 md:px-8 md:pt-3",
+        "fixed top-0 left-0 z-40 flex w-full items-center justify-between border-b px-8 pt-6 pb-3 transition-all duration-500 md:px-11 md:pt-3",
         viewport.scrollY > 5
             ? "bg-light/30 border-b-primary backdrop-blur-sm"
             : "border-transparent bg-transparent shadow-none",
     ]}
     bind:clientHeight={header.height}
 >
-    <div class="flex-center gap-3 pl-3">
+    <div class="flex-center gap-3">
         <button id="sidebarToggle" onclick={() => (sidebar.isVisible = !sidebar.isVisible)}>
             <Icon class="size-7" icon="navigation/Hamburger" />
         </button>
