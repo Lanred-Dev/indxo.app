@@ -76,7 +76,10 @@
 
         if (lastFlippedState === isFlipped) return;
 
-        if (typeof animateFlip !== "boolean" || animateFlip) {
+        if (
+            (typeof animateFlip !== "boolean" || animateFlip) &&
+            session.user.preferences.animatedTermCards
+        ) {
             canFlip = false;
             canCycle = false;
 
@@ -91,7 +94,7 @@
                     rotateX: [isFlipped ? 0 : 180, isFlipped ? 180 : 0],
                 },
                 {
-                    duration: session.user.preferences.animatedTermCards ? 0.25 : 0,
+                    duration: 0.25,
                     ease: "easeInOut",
                 }
             );
@@ -119,19 +122,20 @@
         flipCard(false, false);
         canFlip = false;
 
-        await animate(
-            Card!,
-            {
-                opacity: [0, 1],
-                rotateX: [0, 0],
-                rotateY: [direction === 1 ? -15 : 15, 0],
-                translate: [direction === 1 ? "8%" : "-8%", "0%"],
-            },
-            {
-                duration: 0.3,
-                ease: "easeInOut",
-            }
-        );
+        if (session.user.preferences.animatedTermCards) {
+            await animate(
+                Card!,
+                {
+                    translateX: [direction === 1 ? "8%" : "-8%", "0%"],
+                    rotateY: [direction === 1 ? -15 : 15, 0],
+                    opacity: [0, 1],
+                },
+                {
+                    duration: 0.3,
+                    ease: "easeInOut",
+                }
+            );
+        }
 
         canFlip = true;
     }
