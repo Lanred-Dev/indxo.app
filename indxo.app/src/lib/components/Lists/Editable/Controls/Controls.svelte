@@ -25,7 +25,7 @@
             100,
             Math.max(((parentBottom - controlsBottom) / parentHeight) * 100 - 2, 0)
         );
-        width = distanceToBottom < 25 ? 100 - distanceToBottom : startingWidth;
+        width = distanceToBottom < 100 - startingWidth ? 100 - distanceToBottom : startingWidth;
     });
 </script>
 
