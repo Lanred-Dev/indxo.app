@@ -68,6 +68,13 @@
                             <span>Settings</span>
                         </a>
                     </li>
+
+                    <li>
+                        <a class="button-navigation" href="/settings">
+                            <Icon icon="navigation/Appearance" />
+                            <span>Appearance</span>
+                        </a>
+                    </li>
                 </ul>
 
                 <ConfirmationPrompt>
