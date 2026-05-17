@@ -111,47 +111,17 @@
         >
             <p>
                 <Icon icon="general/CheckBadge" style="color: var(--color-success);" />
-
-                You know {#if knowTerms.size > 0}
-                    {knowTerms.size}
-                    {knowTerms.size === 1
-                        ? Wording.term.toLowerCase()
-                        : Wording.terms.toLowerCase()}
-                {:else if knowTerms.size === document.data.terms.length}
-                    every {Wording.term.toLowerCase()}
-                {:else}
-                    no {Wording.terms.toLowerCase()}
-                {/if},
+                You know {knowTerms.size},
             </p>
 
             <p>
-                <Icon icon="general/Alert" style="color: var(--color-warning);" />
-
-                You are still learning {#if stillLearningTerms.size > 0}
-                    {stillLearningTerms.size}
-                    {stillLearningTerms.size === 1
-                        ? Wording.term.toLowerCase()
-                        : Wording.terms.toLowerCase()}
-                {:else if stillLearningTerms.size === document.data.terms.length}
-                    every {Wording.term.toLowerCase()}
-                {:else}
-                    no {Wording.terms.toLowerCase()}
-                {/if},
+                <Icon icon="general/Book" style="color: var(--color-warning);" />
+                are still learning {stillLearningTerms.size},
             </p>
 
             <p>
                 <Icon icon="general/Alert" style="color: var(--color-alert);" />
-
-                And you're struggling with {#if strugglingTerms.size > 0}
-                    {strugglingTerms.size}
-                    {strugglingTerms.size === 1
-                        ? Wording.term.toLowerCase()
-                        : Wording.terms.toLowerCase()}
-                {:else if strugglingTerms.size === document.data.terms.length}
-                    every {Wording.term.toLowerCase()}
-                {:else}
-                    no {Wording.terms.toLowerCase()}
-                {/if}
+                and are struggling with {strugglingTerms.size}.
             </p>
         </div>
     </div>
