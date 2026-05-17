@@ -29,9 +29,7 @@ function encodeToken(token: string): string {
 export async function validateToken(token: string): Promise<User | null> {
     const session: Session | null = await sessions.findOne({ _id: encodeToken(token) });
 
-    if (!session) return null;
-
-    if (Date.now() >= session.expires) return null;
+    if (!session || Date.now() >= session.expires) return null;
 
     // If the session is within 10 days of expiration, extend it by 30, because this session is still in use.
     if (Date.now() >= session.expires - milliseconds({ days: 10 })) {
