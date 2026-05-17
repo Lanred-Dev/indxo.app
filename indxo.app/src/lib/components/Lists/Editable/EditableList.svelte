@@ -26,7 +26,7 @@
         ) => ComponentProps<typeof EditableListItem>;
     } = $props();
 
-    let items: ComponentProps<typeof EditableListItem>[] = $state(
+    let items: ComponentProps<typeof EditableListItem>[] = $derived(
         value.length > 0
             ? value.map((value, index) => addItem(index, value))
             : [...Array(placeholderItems)].map((_value, index) => addItem(index))
@@ -111,14 +111,17 @@
                 draggingOverID = newValue;
             },
         },
-        buttons:
-            buttons?.map((button) => {
-                if (typeof button === "string") {
-                    return defaultButtons[button as DefaultEditableListItemButton];
-                }
+        get buttons() {
+            return (
+                buttons?.map((button) => {
+                    if (typeof button === "string") {
+                        return defaultButtons[button as DefaultEditableListItemButton];
+                    }
 
-                return button;
-            }) ?? [],
+                    return button;
+                }) ?? []
+            );
+        },
         get items() {
             return items;
         },
