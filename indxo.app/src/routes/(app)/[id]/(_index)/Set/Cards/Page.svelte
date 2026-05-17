@@ -89,7 +89,7 @@
     bind:canFlip
     cycleButtons={{
         previous: {
-            image: { properties: { class: "size-9" }, icon: "general/LeftArrow" },
+            image: { properties: { class: "size-9" }, icon: "general/Arrows/Left" },
             text: "Previous",
             onclick: () => {
                 cycle(CycleDirection.previous);
@@ -97,7 +97,7 @@
             disabled: currentTermIndex === 0,
         },
         next: {
-            image: { properties: { class: "size-9" }, icon: "general/RightArrow" },
+            image: { properties: { class: "size-9" }, icon: "general/Arrows/Right" },
             text: "Next",
             onclick: () => {
                 cycle(CycleDirection.next);
