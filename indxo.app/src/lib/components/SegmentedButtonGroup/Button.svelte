@@ -37,8 +37,8 @@
 <li class={["z-1 min-w-fit grow", className]}>
     <button
         class={[
-            "flex-center w-full gap-0.5 bg-transparent px-5 py-2",
-            segmentedButtonGroup.hovering === id ? "text-primary" : "text-light",
+            "flex-center w-full gap-0.5 bg-transparent px-5 py-2 transition-colors duration-100",
+            segmentedButtonGroup.hovering === id ? "text-primary" : "text-input",
         ]}
         {...properties}
         role="option"

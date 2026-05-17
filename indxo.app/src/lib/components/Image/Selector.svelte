@@ -69,14 +69,10 @@
         });
 
         if (response.status !== ResponseCodes.Success) {
-            switch (response.status) {
-                case ResponseCodes.InvalidMediaType:
-                case ResponseCodes.ContentTooLarge:
-                case ResponseCodes.BadRequest:
-                    uploadError = (await response.json()).message;
-                    break;
-                default:
-                    uploadError = "An unknown error occurred when uploading your image.";
+            try {
+                uploadError = (await response.json()).message;
+            } catch {
+                uploadError = "An unknown error occurred when uploading your image.";
             }
 
             value = null;

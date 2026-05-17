@@ -151,12 +151,30 @@
 @utility page-title {
     @apply mb-12 w-full;
 
+    &:has(.image) {
+        @apply flex items-center gap-4;
+
+        & .title {
+            @apply mt-1 leading-tight;
+        }
+    }
+
+    & .image {
+        @apply size-12 rounded-full;
+    }
+
     & .title {
-        @apply break-word text-3xl leading-snug font-bold md:text-4xl;
+        @apply break-word text-3xl leading-snug font-bold;
+
+        & img,
+        & svg,
+        & [role="img"] {
+            @apply size-8;
+        }
     }
 
     & .description {
-        @apply text-light break-word text-lg leading-snug font-semibold md:text-xl;
+        @apply text-light break-word text-lg leading-none font-semibold md:text-xl;
     }
 }
 
@@ -166,8 +184,10 @@
     & .title {
         @apply break-word flex flex-wrap items-center justify-center gap-x-1 gap-y-2 text-3xl leading-snug font-bold;
 
-        & img {
-            @apply size-9;
+        & img,
+        & svg,
+        & [role="img"] {
+            @apply size-8;
         }
     }
 

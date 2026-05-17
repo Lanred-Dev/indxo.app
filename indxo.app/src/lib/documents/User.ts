@@ -12,6 +12,7 @@ type UserPreferences = {
     home: any[];
     strugglingTermThreshold: number;
     showTermOnDefinitionSide: boolean;
+    animatedTermCards: boolean;
 };
 
 export interface BaseUser extends BaseDocument {
@@ -66,6 +67,7 @@ export const emptySessionUser: SessionUser = {
         home: [],
         strugglingTermThreshold: 3,
         showTermOnDefinitionSide: true,
+        animatedTermCards: true,
     },
     favorites: [],
 };
@@ -128,6 +130,7 @@ export const userFields: DocumentFields = {
             home: DocumentFieldType.array,
             strugglingTermThreshold: DocumentFieldType.number,
             showTermOnDefinitionSide: DocumentFieldType.boolean,
+            animatedTermCards: DocumentFieldType.boolean,
         },
         properties: {
             isUserUpdateable: true,
@@ -135,6 +138,7 @@ export const userFields: DocumentFields = {
                 home: [],
                 strugglingTermThreshold: 3,
                 showTermOnDefinitionSide: true,
+                animatedTermCards: true,
             },
         },
     },

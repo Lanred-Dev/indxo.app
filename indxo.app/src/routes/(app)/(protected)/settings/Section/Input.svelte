@@ -1,3 +1,11 @@
+<script lang="ts" module>
+    export enum SettingInputType {
+        string = "string",
+        number = "number",
+        boolean = "boolean",
+    }
+</script>
+
 <script lang="ts">
     import Textbox from "$lib/components/Textbox.svelte";
     import { getContext } from "svelte";
@@ -8,7 +16,8 @@
     import NumberInput from "$lib/components/NumberInput.svelte";
 
     let {
-        value,
+        value = $bindable(),
+        type,
         placeholder,
         updateEndpoint = {
             url: "",
@@ -26,7 +35,8 @@
         },
         properties = {},
     }: {
-        value: string | number | boolean;
+        value: any;
+        type: SettingInputType;
         placeholder?: any;
         updateEndpoint?: {
             url: string;
@@ -39,6 +49,11 @@
     } = $props();
 
     const settingsPage: SettingsPageContext = getContext("settingsPage");
+
+    if (value === undefined && placeholder !== undefined) {
+        value = placeholder;
+    }
+
     let savedValue: any = $state.raw(value);
 </script>
 
@@ -62,11 +77,11 @@
             </button>
         {/if}
 
-        {#if typeof value === "number"}
+        {#if type === SettingInputType.number}
             <NumberInput bind:value class="w-fit! min-w-fit" {...properties} />
-        {:else if typeof value === "boolean"}
+        {:else if type === SettingInputType.boolean}
             <Checkbox bind:value {placeholder} label={placeholder} {...properties} />
-        {:else if typeof value === "string"}
+        {:else if type === SettingInputType.string}
             <Textbox bind:value {placeholder} class="w-fit! min-w-fit" {...properties} />
         {/if}
     </div>

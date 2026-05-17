@@ -24,7 +24,7 @@
             100,
             Math.max(((parentBottom - controlsBottom) / parentHeight) * 100 - 2, 0) // Subtracting 2% ensures that the position does hit 100%, without it if there was no content below the list it can get stuck at 99% or 98% and never reach the bottom
         );
-        width = distanceToBottom < 25 ? 100 - distanceToBottom : startingWidth;
+        width = distanceToBottom < 100 - startingWidth ? 100 - distanceToBottom : startingWidth;
     });
 </script>
 

@@ -18,7 +18,7 @@ export const route: RouteOptions = {
             const data = await readFile(filepath);
             return reply.send(data);
         } catch {
-            return reply.code(ResponseCodes.NotFound).send(new Error("Image does not exist"));
+            return reply.code(ResponseCodes.NotFound).send(new Error("File not found."));
         }
     },
     schema: {

@@ -16,7 +16,7 @@
     import type { SessionContext } from "$lib/utils/global";
 
     let {
-        cycle,
+        currentTermIndex = $bindable(0),
         Card = $bindable(),
         canCycle = $bindable(true),
         canFlip = $bindable(true),
@@ -26,7 +26,7 @@
         actionButtons = [],
         Overlay,
     }: {
-        cycle: (direction: CycleDirection) => void;
+        currentTermIndex: number;
         Card: HTMLDivElement | undefined;
         canCycle: boolean;
         canFlip: boolean;
@@ -35,8 +35,16 @@
             index: number;
         };
         cycleButtons: {
-            previous: ComponentProps<typeof ActionButton>;
-            next: ComponentProps<typeof ActionButton>;
+            previous: {
+                image: { properties?: { class?: string }; icon: string };
+                text: string;
+                disabled: boolean;
+            };
+            next: {
+                image: { properties?: { class?: string }; icon: string };
+                text: string;
+                disabled: boolean;
+            };
         };
         actionButtons?: ComponentProps<typeof ActionButton>[];
         Overlay?: Snippet<[]>;
@@ -68,7 +76,10 @@
 
         if (lastFlippedState === isFlipped) return;
 
-        if (typeof animateFlip !== "boolean" || animateFlip) {
+        if (
+            (typeof animateFlip !== "boolean" || animateFlip) &&
+            session.user.preferences.animatedTermCards
+        ) {
             canFlip = false;
             canCycle = false;
 
@@ -95,6 +106,38 @@
             CardFront.style.display = isFlipped ? "none" : "flex";
             CardBack.style.display = isFlipped ? "flex" : "none";
         }
+    }
+
+    /**
+     * Cycle through the terms in the set.
+     *
+     * @param direction The direction to cycle in. -1 for previous and 1 for next or during sort mode, 1 for knows term and -1 for still learning term
+     * @returns never
+     */
+    export async function cycle(direction: -1 | 1) {
+        if (currentTermIndex + direction < 0 || currentTermIndex + direction > termCount - 1)
+            return;
+
+        currentTermIndex += direction;
+        flipCard(false, false);
+        canFlip = false;
+
+        if (session.user.preferences.animatedTermCards) {
+            await animate(
+                Card!,
+                {
+                    translateX: [direction === 1 ? "8%" : "-8%", "0%"],
+                    rotateY: [direction === 1 ? -15 : 15, 0],
+                    opacity: [0, 1],
+                },
+                {
+                    duration: 0.3,
+                    ease: "easeInOut",
+                }
+            );
+        }
+
+        canFlip = true;
     }
 </script>
 
@@ -200,13 +243,21 @@
 
     <div class="relative mt-4 w-full" in:fade={{ duration: 200 }}>
         <div class="flex-center gap-1">
-            <ActionButton class="button-primary rounded-full p-3.5" {...cycleButtons.previous} />
+            <ActionButton
+                class="button-primary rounded-full p-3.5"
+                {...cycleButtons.previous}
+                onclick={() => cycle(CycleDirection.previous)}
+            />
 
             <p class="w-20 text-center text-lg font-semibold">
                 {Math.min(currentTerm.index, termCount)}/{termCount}
             </p>
 
-            <ActionButton class="button-primary rounded-full p-3.5" {...cycleButtons.next} />
+            <ActionButton
+                class="button-primary rounded-full p-3.5"
+                {...cycleButtons.next}
+                onclick={() => cycle(CycleDirection.next)}
+            />
         </div>
 
         <div class="flex-center sm:y-center mt-4 gap-2 sm:right-8 sm:mt-0">
