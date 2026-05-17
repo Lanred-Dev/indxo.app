@@ -2,6 +2,7 @@
     import type { SessionContext } from "$lib/utils/global";
     import { getContext } from "svelte";
     import { Section, SectionContent, SectionEntry, SectionInput, SectionTitle } from "./Section";
+    import { SettingInputType } from "./Section/Input.svelte";
 
     const session: SessionContext = getContext("session");
 </script>
@@ -16,6 +17,7 @@
         >
             <SectionInput
                 value={session.user.name}
+                type={SettingInputType.string}
                 placeholder="abc so cool"
                 updateEndpoint={{
                     url: `/api/user/${session.user._id}`,
