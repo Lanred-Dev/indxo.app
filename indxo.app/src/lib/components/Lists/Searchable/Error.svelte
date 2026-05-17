@@ -1,9 +1,10 @@
 <script lang="ts">
     import { getContext } from "svelte";
     import { searchableListContextKey, EmptyListState, type SearchableListContext } from ".";
+    import Icon from "$lib/components/Icon.svelte";
 
     type State = {
-        image: string;
+        icon: string;
         title: string;
         message: string;
     };
@@ -25,7 +26,7 @@
 {#if state !== null}
     <div class="page-message flex-center flex-col space-y-1 py-20 text-center">
         <h1 class="title">
-            <img src={state.image} alt="Error" />
+            <Icon icon={state.icon} />
             {state.title}
         </h1>
 

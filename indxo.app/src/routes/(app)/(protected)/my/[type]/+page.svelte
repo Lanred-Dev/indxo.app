@@ -71,12 +71,12 @@
         <SearchableListError
             states={{
                 [EmptyListState.noDocuments]: {
-                    image: "/icons/general/RaisedHand.svg",
+                    icon: "general/RaisedHand",
                     title: "Congratulations youre seeing something you shouldn't be seeing",
                     message: "So lowkey cooked chat",
                 },
                 [EmptyListState.noSearchResults]: {
-                    image: "/icons/general/Search.svg",
+                    icon: "general/Search",
                     title: "No Matches in Sight",
                     message: "You’ve outsmarted the search bar. Try a different word or two?",
                 },
