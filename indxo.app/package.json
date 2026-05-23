@@ -24,16 +24,16 @@
         "@tailwindcss/postcss": "^4.1.16",
         "@tailwindcss/typography": "^0.5.15",
         "@tailwindcss/vite": "^4.1.16",
-        "date-fns": "^4.1.0",
+        "date-fns": "^4.3.0",
         "eslint": "^9.7.0",
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-svelte": "^3.12.5",
         "motion": "^12.6.3",
         "node-cron": "^4.0.7",
         "prettier": "^3.3.2",
-        "prettier-plugin-organize-imports": "^4.1.0",
+        "prettier-plugin-organize-imports": "^4.3.0",
         "prettier-plugin-svelte": "^3.2.6",
-        "prettier-plugin-tailwindcss": "^0.7.1",
+        "prettier-plugin-tailwindcss": "^0.8.1",
         "svelte": "^5.43.2",
         "svelte-check": "^4.0.0",
         "tailwindcss": "^4.1.16",
@@ -43,6 +43,6 @@
     },
     "dependencies": {
         "arctic": "^3.6.0",
-        "mongodb": "^6.16.0"
+        "mongodb": "^7.2.0"
     }
 }
