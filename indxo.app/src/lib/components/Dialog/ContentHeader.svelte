@@ -11,7 +11,7 @@
     } = $props();
 </script>
 
-<div class="flex-center relative mb-2 px-2 sm:px-5 md:px-11">
+<div class="flex-center relative mb-2 w-full px-2 sm:px-5 md:px-11">
     <p class="text-center text-3xl font-bold">{title}</p>
 
     {#if includeCloseButton}
