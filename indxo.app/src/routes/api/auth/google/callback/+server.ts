@@ -1,5 +1,5 @@
 import { dev } from "$app/environment";
-import { DocumentType, type User } from "$lib/documents";
+import { DocumentType, emptySessionUser, type User } from "$lib/documents";
 import { google } from "$lib/server/auth/oauth";
 import { createSession, generateToken } from "$lib/server/auth/session";
 import { loadCollection } from "$lib/server/mongo";
@@ -66,11 +66,7 @@ export async function GET({ cookies, url }) {
             sets: [],
             folders: [],
             favorites: [],
-            preferences: {
-                strugglingTermThreshold: 3,
-                home: [],
-                showTermOnDefinitionSide: true,
-            },
+            preferences: emptySessionUser.preferences,
             created: Date.now(),
             metadata: {
                 documentsOpenedAt: {},
@@ -88,6 +84,7 @@ export async function GET({ cookies, url }) {
         httpOnly: true,
         path: "/",
         sameSite: "lax",
+        domain: dev ? "localhost" : ".indxo.app",
         secure: !dev,
         expires: new Date(session.expires),
     });
