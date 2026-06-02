@@ -2,15 +2,19 @@ import { RouteOptions } from "fastify";
 import { fileTypeFromBuffer } from "file-type";
 import fs from "fs";
 import path from "path";
-import sharp from "sharp";
 import { ResponseCodes } from "../utils/apiResponses";
 import generateDocumentID from "../utils/generateID";
+import Piscina from "piscina";
 
 const MAX_FILE_SIZE: number = parseInt(process.env.MAX_FILE_SIZE!);
 const ALLOWED_FILE_TYPES: string[] = process.env.ALLOWED_FILE_TYPES!.split(",");
 const UPLOAD_DIRECTORY: string = path.join(".", process.env.UPLOAD_DIRECTORY!);
 
 if (!fs.existsSync(UPLOAD_DIRECTORY)) fs.mkdirSync(UPLOAD_DIRECTORY, { recursive: true });
+
+const piscina = new Piscina({
+    filename: path.resolve(__dirname, "../workers/processImage.js"),
+});
 
 export const route: RouteOptions = {
     method: "POST",
@@ -44,7 +48,13 @@ export const route: RouteOptions = {
         try {
             const filename: string = `${request.user._id}-${generateDocumentID(15)}.webp`;
             const filepath: string = path.join(UPLOAD_DIRECTORY, path.basename(filename));
-            await sharp(buffer).webp({ quality: 50 }).toFile(filepath);
+
+            await piscina.run({
+                buffer: new Uint8Array(buffer),
+                filepath,
+                fileType: fileType.ext.toLowerCase(),
+            });
+
             return reply.send(filename);
         } catch {
             return reply
