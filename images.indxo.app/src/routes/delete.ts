@@ -1,10 +1,8 @@
 import { RouteOptions } from "fastify";
 import { unlink } from "fs/promises";
 import path from "path";
-import { ResponseCodes, ResponseMessages } from "../utils/apiResponses";
+import { ResponseCodes } from "../utils/apiResponses";
 
-const MAX_FILE_SIZE: number = parseInt(process.env.MAX_FILE_SIZE!);
-const ALLOWED_FILE_TYPES: string[] = process.env.ALLOWED_FILE_TYPES!.split(",");
 const UPLOAD_DIRECTORY: string = process.env.UPLOAD_DIRECTORY!;
 
 export const route: RouteOptions = {
