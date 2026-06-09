@@ -25,7 +25,6 @@
         },
     };
 
-    let showErrorDetails: boolean = $state.raw(false);
     let { title, message } = $derived.by(() => {
         return page.status in messages
             ? messages[page.status]
@@ -57,7 +56,7 @@
 
 <Dialog>
     <DialogContent>
-        <DialogContentHeader title="code: {page.status}" includeCloseButton={true} />
+        <DialogContentHeader title={page.status.toString()} includeCloseButton={true} />
 
         <p class="text-lg">
             {page.error && page.error.message && page.error.message.length > 0
@@ -66,9 +65,9 @@
         </p>
 
         <div class="flex-center flex-col gap-y-0.5 pt-3 text-center">
-            <p>user agent: {navigator.userAgent}</p>
-            <p>occured at: {new Date().toISOString()}</p>
-            <p>url: {location.href}</p>
+            <p><span class="font-bold">User Agent:</span> {navigator.userAgent}</p>
+            <p><span class="font-bold">Occurred at:</span> {new Date().toISOString()}</p>
+            <p><span class="font-bold">URL:</span> {location.href}</p>
         </div>
     </DialogContent>
 
