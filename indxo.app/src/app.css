@@ -95,7 +95,7 @@
         @apply cursor-pointer select-none;
     }
 
-    /* NOTE: Prevents characters like y and g from being cut off */
+    /* NOTE: Having overflow-y-visible prevents characters that extend below the line from being cut off */
     button,
     a,
     p,
