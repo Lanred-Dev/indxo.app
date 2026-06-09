@@ -1,8 +1,7 @@
 <!--svelte-ignore non_reactive_update-->
 <script lang="ts">
     import type { Term } from "$lib/documents";
-    import { animate } from "motion";
-    import Flashcards, { CycleDirection } from "../Flashcard.svelte";
+    import Flashcard from "../Flashcard.svelte";
     import { getContext, onMount } from "svelte";
     import type { DocumentContext } from "../../+page.svelte";
     import Terms from "./Terms.svelte";
@@ -10,7 +9,7 @@
     import Modes from "./Modes.svelte";
 
     const document: DocumentContext = getContext("document");
-    let FlashcardsComponent: Flashcards;
+    let FlashcardComponent: Flashcard;
     let Card: HTMLDivElement;
     let canCycle: boolean = $state.raw(true);
     let canFlip: boolean = $state.raw(true);
@@ -34,7 +33,7 @@
         canFlip = true;
         currentTermIndex = 0;
 
-        if (FlashcardsComponent) FlashcardsComponent.flipCard(false, false);
+        if (FlashcardComponent) FlashcardComponent.flipCard(false, false);
     }
 
     /**
@@ -62,14 +61,14 @@
     });
 </script>
 
-<Flashcards
+<Flashcard
     bind:currentTermIndex
     termCount={document.data.terms.length}
     currentTerm={{
         index: currentTermIndex + 1,
         ...term,
     }}
-    bind:this={FlashcardsComponent}
+    bind:this={FlashcardComponent}
     bind:Card
     bind:canCycle
     bind:canFlip

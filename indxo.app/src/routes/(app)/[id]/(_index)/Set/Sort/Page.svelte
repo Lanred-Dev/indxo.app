@@ -4,7 +4,7 @@
     import type { DocumentContext } from "../../+page.svelte";
     import { beforeNavigate } from "$app/navigation";
     import type { Term, SortedSetMetadata, SortedTerm } from "$lib/documents";
-    import Flashcards, { CycleDirection } from "../Flashcard.svelte";
+    import Flashcard, { CycleDirection } from "../Flashcard.svelte";
     import { SvelteMap, SvelteSet } from "svelte/reactivity";
     import { animate } from "motion";
     import type { SessionContext } from "$lib/utils/global";
@@ -16,7 +16,7 @@
     let currentTermIndex: number = $state.raw(0);
     let canCycle: boolean = $state.raw(true);
     let canFlip: boolean = $state.raw(true);
-    let FlashcardsComponent: Flashcards;
+    let FlashcardComponent: Flashcard;
     let Card: HTMLDivElement;
     let CardOverlay: HTMLDivElement;
     let terms: Term[] = $state.raw([]);
@@ -51,7 +51,7 @@
             if (stillLearningTerms.has(_id)) stillLearningTerms.delete(_id);
         });
 
-        if (FlashcardsComponent) FlashcardsComponent.flipCard(false, false);
+        if (FlashcardComponent) FlashcardComponent.flipCard(false, false);
     }
 
     /**
@@ -130,7 +130,7 @@
 
         if (canCycle) {
             canFlip = true;
-            FlashcardsComponent.flipCard(false, false);
+            FlashcardComponent.flipCard(false, false);
 
             CardOverlay.style.opacity = "0";
             animate(
@@ -232,14 +232,15 @@
         strugglingTerms={strugglingTerms.intersection(stillLearningTerms).size}
     />
 
-    <Flashcards
+    <Flashcard
         {cycle}
+        bind:currentTermIndex
         termCount={terms.length}
         currentTerm={{
             index: currentTermIndex + 1,
             ...term,
         }}
-        bind:this={FlashcardsComponent}
+        bind:this={FlashcardComponent}
         bind:Card
         bind:canCycle
         bind:canFlip
@@ -247,17 +248,11 @@
             previous: {
                 image: { properties: { class: "size-9" }, icon: "general/X" },
                 text: "Still learning",
-                onclick: () => {
-                    cycle(CycleDirection.previous);
-                },
                 disabled: unsortedTerms.size === 0,
             },
             next: {
                 image: { properties: { class: "size-9" }, icon: "general/Check" },
                 text: "Know",
-                onclick: () => {
-                    cycle(CycleDirection.next);
-                },
                 disabled: unsortedTerms.size === 0,
             },
         }}
@@ -280,7 +275,7 @@
                 bind:this={CardOverlay}
             ></div>
         {/snippet}
-    </Flashcards>
+    </Flashcard>
 {:else if isLoaded}
     <Results {knowTerms} {stillLearningTerms} {strugglingTerms} {restart} />
 {/if}

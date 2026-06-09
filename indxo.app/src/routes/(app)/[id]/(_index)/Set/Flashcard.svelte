@@ -24,6 +24,7 @@
         currentTerm,
         cycleButtons,
         actionButtons = [],
+        cycle = defaultCycle,
         Overlay,
     }: {
         currentTermIndex: number;
@@ -47,6 +48,7 @@
             };
         };
         actionButtons?: ComponentProps<typeof ActionButton>[];
+        cycle?: (direction: CycleDirection) => void;
         Overlay?: Snippet<[]>;
     } = $props();
 
@@ -114,7 +116,7 @@
      * @param direction The direction to cycle in. -1 for previous and 1 for next or during sort mode, 1 for knows term and -1 for still learning term
      * @returns never
      */
-    export async function cycle(direction: -1 | 1) {
+    async function defaultCycle(direction: -1 | 1) {
         if (currentTermIndex + direction < 0 || currentTermIndex + direction > termCount - 1)
             return;
 
