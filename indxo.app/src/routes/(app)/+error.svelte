@@ -64,7 +64,7 @@
                 : "no additional information provided"}
         </p>
 
-        <div class="flex-center flex-col gap-y-0.5 pt-3 text-center">
+        <div class="gap-y-0.5 pt-3 text-left">
             <p><span class="font-bold">User Agent:</span> {navigator.userAgent}</p>
             <p><span class="font-bold">Occurred at:</span> {new Date().toISOString()}</p>
             <p><span class="font-bold">URL:</span> {location.href}</p>
