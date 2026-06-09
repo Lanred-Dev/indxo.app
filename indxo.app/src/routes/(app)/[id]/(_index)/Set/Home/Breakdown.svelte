@@ -15,7 +15,11 @@
         {href}
         class="container-primary flex w-full gap-x-3"
     >
-        <Icon class="size-6 rounded-full" {icon} />
+        {#if icon.startsWith("http")}
+            <img src={icon} alt="Icon" class="size-6 rounded-full" />
+        {:else}
+            <Icon class="size-6" {icon} />
+        {/if}
 
         <div
             class="flex grow flex-col flex-wrap items-start justify-between gap-x-5 lg:flex-row lg:items-center"
