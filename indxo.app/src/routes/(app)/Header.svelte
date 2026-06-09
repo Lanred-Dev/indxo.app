@@ -48,19 +48,7 @@
                 />
             </PopupTrigger>
 
-            <PopupContent class="space-y-1 px-1! pb-1!" xAlignment={PopupXAlignment.right}>
-                <div class="flex-center w-full gap-2 px-3 pb-1">
-                    <img
-                        class="border-primary size-10 rounded-full border"
-                        src={session.user.picture}
-                        alt={session.user.name}
-                    />
-
-                    <div class="max-w-svw min-w-48 space-y-0.5 [&>p]:leading-none">
-                        <p class="text-lg font-bold">{session.user.name}</p>
-                    </div>
-                </div>
-
+            <PopupContent class="p-1!" xAlignment={PopupXAlignment.right}>
                 <ul>
                     <li>
                         <a class="button-navigation" href="/settings">
