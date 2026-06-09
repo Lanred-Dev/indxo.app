@@ -18,7 +18,7 @@
 
     <p>{message}</p>
 
-    <div class="row mt-5">
+    <div class="row mt-5 justify-center">
         {@render children()}
     </div>
 </DialogContent>

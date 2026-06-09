@@ -4,6 +4,9 @@
         "module": "commonjs",
         "declaration": false,
         "outDir": "./build",
+        "rootDir": "./src",
+        "resolveJsonModule": true,
+        "allowSyntheticDefaultImports": true,
         "strict": true,
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true

@@ -1,5 +1,5 @@
 services:
-  app:
+  indxo.app:
     build: .
     container_name: indxo.app
     ports:

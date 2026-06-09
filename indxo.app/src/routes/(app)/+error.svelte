@@ -1,8 +1,9 @@
 <script lang="ts">
     import { page } from "$app/state";
+    import { DialogContent, DialogContentHeader, DialogTrigger } from "$lib/components/Dialog";
+    import Dialog from "$lib/components/Dialog/Dialog.svelte";
     import Icon from "$lib/components/Icon.svelte";
     import { ResponseCodes } from "$lib/utils/apiResponses";
-    import { slide } from "svelte/transition";
 
     const messages: Record<number, { title: string; message: string }> = {
         [ResponseCodes.NotFound]: {
@@ -54,36 +55,25 @@
     <p class="description">{message}</p>
 </div>
 
-<button
-    class="button-attention"
-    onclick={() => {
-        showErrorDetails = !showErrorDetails;
-    }}
->
-    <Icon
-        icon={showErrorDetails ? "general/Chevrons/Up" : "general/Chevrons/Down"}
-    />
-    
-    Show error details
-</button>
+<Dialog>
+    <DialogContent>
+        <DialogContentHeader title="code: {page.status}" includeCloseButton={true} />
 
-{#if showErrorDetails}
-    <div
-        class="mt-5 w-full"
-        transition:slide={{ axis: "y", duration: 300 }}
-        style:font-family="GoogleSansCode, monospace;"
-    >
-        <p class="text-2xl">code: {page.status}</p>
         <p class="text-lg">
-            message: {page.error && page.error.message && page.error.message.length > 0
+            {page.error && page.error.message && page.error.message.length > 0
                 ? page.error.message
                 : "no additional information provided"}
         </p>
 
-        <div class="flex flex-col gap-y-0.5 pt-3">
+        <div class="flex-center flex-col gap-y-0.5 pt-3 text-center">
             <p>user agent: {navigator.userAgent}</p>
             <p>occured at: {new Date().toISOString()}</p>
             <p>url: {location.href}</p>
         </div>
-    </div>
-{/if}
+    </DialogContent>
+
+    <DialogTrigger class="button-attention">
+        <Icon icon="general/Expand" />
+        View error details
+    </DialogTrigger>
+</Dialog>
