@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { ViewportContext } from "$lib/utils/global";
-    import { getContext, type Snippet } from "svelte";
+    import { getContext, onMount, type Snippet } from "svelte";
 
     let {
         children,
@@ -12,8 +12,13 @@
     let Controls: HTMLUListElement;
     let width: number = $state.raw(0);
 
+    onMount(() => {
+        width = startingWidth;
+    });
+
     $effect(() => {
-        viewport.scrollY; // This forces a recalculation on scroll
+        viewport.scrollY;
+        width;
 
         if (!Controls || !Controls.parentElement) return;
 
