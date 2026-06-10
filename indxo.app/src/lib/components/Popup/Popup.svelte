@@ -51,7 +51,8 @@
         if (trigger) OpeningTrigger = trigger;
 
         if (isVisible) {
-            if (dismissCurrentPopup) dismissCurrentPopup();
+            if (dismissCurrentPopup && dismissCurrentPopup !== handleLightDismiss)
+                dismissCurrentPopup();
 
             setCurrentDismissalMethod(handleLightDismiss);
         } else {
