@@ -35,7 +35,12 @@
             return isSubmitting;
         },
         fields,
-        stage,
+        get stage() {
+            return stage;
+        },
+        set stage(newValue) {
+            stage = newValue;
+        },
         registerField: (id, value, isRequired, label) => {
             fields.set(id, { value, label });
 
