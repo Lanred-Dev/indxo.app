@@ -34,7 +34,10 @@
 </script>
 
 <ul class="flex-center sticky bottom-2 z-20 w-full pt-4" {...properties} bind:this={Controls}>
-    <li class="flex flex-wrap justify-between gap-2 [&>button]:shadow-xl" style:width="{width}%">
+    <li
+        class="flex flex-col justify-between gap-2 md:flex-row [&>button]:shadow-xl"
+        style:width="{width}%"
+    >
         {@render children()}
     </li>
 </ul>
