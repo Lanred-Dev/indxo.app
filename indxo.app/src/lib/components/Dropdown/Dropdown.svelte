@@ -44,8 +44,7 @@
             return largestContentWidth;
         },
         set largestContentWidth(newValue) {
-            // Adding 1 ensures that rounding wont cause issues with the width
-            largestContentWidth = newValue + 1;
+            largestContentWidth = newValue;
         },
         registerItem: (item) => {
             items.push(item);
