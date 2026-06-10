@@ -3,7 +3,6 @@
     import { getContext, setContext, type Snippet, onMount } from "svelte";
     import { popupContextKey, type PopupContext } from ".";
     import type { ViewportContext } from "$lib/utils/global";
-    import { browser } from "$app/environment";
 
     let {
         isVisible = $bindable(false),
