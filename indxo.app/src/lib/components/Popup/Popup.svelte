@@ -1,6 +1,6 @@
 <script lang="ts">
     import { beforeNavigate } from "$app/navigation";
-    import { getContext, setContext, type Snippet } from "svelte";
+    import { getContext, setContext, type Snippet, onMount } from "svelte";
     import { popupContextKey, type PopupContext } from ".";
     import type { ViewportContext } from "$lib/utils/global";
     import { browser } from "$app/environment";
@@ -20,12 +20,7 @@
     let isInViewport: boolean = $derived(
         OpeningTrigger ? viewport.Content!.contains(OpeningTrigger) : false
     );
-    let body: HTMLElement;
-    let main: HTMLElement | undefined = $derived.by(() => {
-        if (!browser) return undefined;
-
-        return isInViewport ? viewport.Content! : body;
-    });
+    let main: HTMLElement;
 
     setContext(popupContextKey, {
         get isInViewport() {
@@ -48,31 +43,23 @@
         },
     } satisfies PopupContext);
 
-    /**
-     * Gets the `scrollTop` of the current main element.
-     */
     function getScrollY() {
-        scrollY = main!.scrollTop;
+        scrollY = main.scrollTop;
     }
 
     beforeNavigate(() => {
         isVisible = false;
     });
 
-    $effect(() => {
-        if (isInViewport) {
-            scrollY = viewport.scrollY;
-        } else if (main) {
-            getScrollY();
-            main.addEventListener("scroll", getScrollY);
+    onMount(() => {
+        main = isInViewport ? viewport.Content! : document.body;
+        getScrollY();
+        main.addEventListener("scroll", getScrollY);
 
-            return () => {
-                main.removeEventListener("scroll", getScrollY);
-            };
-        }
+        return () => {
+            main.removeEventListener("scroll", getScrollY);
+        };
     });
 </script>
-
-<svelte:body bind:this={body} />
 
 {@render children()}

@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onDestroy, type Snippet } from "svelte";
-    import { Popup } from "./Popup";
+    import { Popup } from "../Popup";
 
     let {
         isVisible = $bindable(false),

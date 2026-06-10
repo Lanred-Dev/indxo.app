@@ -10,13 +10,7 @@
     import SetPreferences from "./SetPreferences.svelte";
     import { SegmentedButton, SegmentedButtonGroup } from "$lib/components/SegmentedButtonGroup";
     import { Wording } from "$lib/utils/wording";
-    import Tooltip from "$lib/components/Tooltip.svelte";
-    import {
-        PopupContent,
-        PopupRelativity,
-        PopupXAlignment,
-        PopupYAlignment,
-    } from "$lib/components/Popup";
+    import { Tooltip, TooltipContent } from "$lib/components/Tooltip";
     import type { SessionContext } from "$lib/utils/global";
     import Appearance from "./Appearance.svelte";
 
@@ -60,19 +54,13 @@
 </svelte:head>
 
 <Tooltip bind:isVisible={isSubmitMessageVisible} duration={5}>
-    <PopupContent
-        class={isSubmitError ? "bg-alert" : "bg-success"}
-        xAlignment={PopupXAlignment.center}
-        yAlignment={PopupYAlignment.bottom}
-        positionRelativity={PopupRelativity.page}
-        offset={15}
-    >
+    <TooltipContent class={isSubmitError ? "bg-alert" : "bg-success"}>
         {#if isSubmitError}
             An error occurred while saving your changes.
         {:else}
             Your changes have been saved successfully.
         {/if}
-    </PopupContent>
+    </TooltipContent>
 </Tooltip>
 
 <div class="page-title flex-wrap justify-between">

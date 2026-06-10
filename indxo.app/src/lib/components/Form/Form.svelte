@@ -2,8 +2,7 @@
     import { setContext, type Snippet } from "svelte";
     import { formContextKey, FormSubmitMethods, type FormContext } from ".";
     import { ResponseCodes } from "$lib/utils/apiResponses";
-    import Tooltip from "../Tooltip.svelte";
-    import { PopupContent, PopupRelativity, PopupXAlignment, PopupYAlignment } from "../Popup";
+    import { Tooltip, TooltipContent } from "../Tooltip";
     import type { ClassValue } from "svelte/elements";
 
     let {
@@ -108,15 +107,9 @@
 </script>
 
 <Tooltip bind:isVisible={isSubmitErrorVisible} duration={5}>
-    <PopupContent
-        class="bg-alert"
-        xAlignment={PopupXAlignment.center}
-        yAlignment={PopupYAlignment.bottom}
-        positionRelativity={PopupRelativity.page}
-        offset={15}
-    >
+    <TooltipContent class="bg-alert">
         {submitError}
-    </PopupContent>
+    </TooltipContent>
 </Tooltip>
 
 <form

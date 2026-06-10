@@ -13,13 +13,7 @@
     import Form from "$lib/components/Form/Form.svelte";
     import determineDocumentType from "$lib/utils/document/determineType";
     import SetForm from "./Set/Form.svelte";
-    import {
-        PopupContent,
-        PopupRelativity,
-        PopupXAlignment,
-        PopupYAlignment,
-    } from "$lib/components/Popup";
-    import Tooltip from "$lib/components/Tooltip.svelte";
+    import { Tooltip, TooltipContent } from "$lib/components/Tooltip";
 
     let { data } = $props();
 
@@ -46,19 +40,13 @@
 </svelte:head>
 
 <Tooltip bind:isVisible={isSubmitMessageVisible} duration={5}>
-    <PopupContent
-        class={wasSubmitSuccessful ? "bg-success" : "bg-alert"}
-        xAlignment={PopupXAlignment.center}
-        yAlignment={PopupYAlignment.bottom}
-        positionRelativity={PopupRelativity.page}
-        offset={15}
-    >
+    <TooltipContent class={wasSubmitSuccessful ? "bg-success" : "bg-alert"}>
         {#if wasSubmitSuccessful}
             Changes saved successfully.
         {:else}
             An error occurred while saving your changes.
         {/if}
-    </PopupContent>
+    </TooltipContent>
 </Tooltip>
 
 <Form

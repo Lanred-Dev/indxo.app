@@ -4,8 +4,7 @@
     import type { ClassValue } from "svelte/elements";
     import { DialogContent, DialogTrigger } from "../Dialog";
     import Dialog from "../Dialog/Dialog.svelte";
-    import { PopupContent, PopupRelativity, PopupXAlignment, PopupYAlignment } from "../Popup";
-    import Tooltip from "../Tooltip.svelte";
+    import { Tooltip, TooltipContent } from "../Tooltip";
     import type { ComponentProps } from "svelte";
     import ActionButton from "../ActionButton.svelte";
     import Icon from "../Icon.svelte";
@@ -87,15 +86,9 @@
 </script>
 
 <Tooltip bind:isVisible={isUploadErrorVisible} duration={5}>
-    <PopupContent
-        class="bg-alert"
-        xAlignment={PopupXAlignment.center}
-        yAlignment={PopupYAlignment.bottom}
-        positionRelativity={PopupRelativity.page}
-        offset={15}
-    >
+    <TooltipContent class="bg-alert">
         {uploadError}
-    </PopupContent>
+    </TooltipContent>
 </Tooltip>
 
 <div class={["group input-primary relative p-0!", className]} {...properties}>
