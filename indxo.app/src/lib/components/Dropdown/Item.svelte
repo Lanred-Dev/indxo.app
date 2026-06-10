@@ -15,13 +15,15 @@
     } = $props();
 
     const dropdown: DropdownContext = getContext(dropdownContextKey);
-    dropdown.registerItem({ value, href, children });
-
     let contentWidth: number = $state.raw(0);
 
     $effect(() => {
         if (contentWidth > dropdown.largestContentWidth)
             dropdown.largestContentWidth = contentWidth;
+    });
+
+    $effect.pre(() => {
+        dropdown.registerItem({ value, href, children });
     });
 </script>
 
