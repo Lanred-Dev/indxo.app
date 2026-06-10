@@ -8,6 +8,7 @@
 <script lang="ts">
     import ActionButton from "$lib/components/ActionButton.svelte";
     import { getContext, type ComponentProps, type Snippet } from "svelte";
+    import { afterNavigate } from "$app/navigation";
     import { fade } from "svelte/transition";
     import { animate } from "motion";
     import type { Term } from "$lib/documents";
@@ -141,6 +142,11 @@
 
         canFlip = true;
     }
+
+    afterNavigate(() => {
+        currentTermIndex = 0;
+        flipCard(false, false);
+    });
 </script>
 
 <svelte:window
