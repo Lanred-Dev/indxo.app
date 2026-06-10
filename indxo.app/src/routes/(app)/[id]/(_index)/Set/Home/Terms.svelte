@@ -89,16 +89,10 @@
         >
             <FormContent>
                 <EditableTerms bind:value={termsValue}>
-                    <EditableListAddItemButton
-                        class="transition-[background-color,width]"
-                        style="width: {areChangesMade ? '50%' : '100%'}"
-                        >Add term</EditableListAddItemButton
-                    >
+                    <EditableListAddItemButton>Add term</EditableListAddItemButton>
 
                     {#if areChangesMade}
-                        <div class="w-1/2">
-                            <FormSubmit>Update</FormSubmit>
-                        </div>
+                        <FormSubmit>Update</FormSubmit>
                     {/if}
                 </EditableTerms>
             </FormContent>
