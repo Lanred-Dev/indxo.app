@@ -42,10 +42,14 @@ export async function GET({ params, fetch, locals }) {
 
     const owner: BaseUser = await (await fetch(`/api/user/${document.owner}/base`)).json();
     const documentType = determineDocumentType(params.id);
-    const actualCopiedFromDocument: PublicOwnedDocument | undefined =
-        "copiedFrom" in document
-            ? await (await fetch(`/api/documents/${document.copiedFrom}`)).json()
-            : undefined;
+    let actualCopiedFromDocument: PublicOwnedDocument | undefined = undefined;
+
+    if ("copiedFrom" in document) {
+        const documentResponse = await fetch(`/api/documents/${document.copiedFrom}`);
+
+        if (documentResponse.status === ResponseCodes.Success)
+            actualCopiedFromDocument = await documentResponse.json();
+    }
 
     switch (documentType) {
         case DocumentType.folder: {
