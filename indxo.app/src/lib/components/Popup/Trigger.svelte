@@ -1,7 +1,6 @@
 <script lang="ts">
     import { getContext, onMount, type Snippet } from "svelte";
     import { type PopupContext, popupContextKey, PopupTriggerType } from ".";
-    import type { ViewportContext } from "$lib/utils/global";
 
     let {
         children,
@@ -13,7 +12,6 @@
         [key: string]: any;
     } = $props();
 
-    const viewport: ViewportContext = getContext("viewport");
     const popup: PopupContext = getContext(popupContextKey);
     let Trigger: HTMLElement | undefined = $state.raw();
 
@@ -34,8 +32,6 @@
                     popup.setVisible(true, Trigger);
                 });
                 break;
-            default:
-                return;
         }
 
         return () => {

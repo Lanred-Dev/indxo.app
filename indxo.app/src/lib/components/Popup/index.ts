@@ -33,3 +33,10 @@ export interface PopupContext {
 }
 
 export let popupContextKey: Symbol = Symbol("popupContextKey");
+
+// Used for light dissmissal of popups
+export let dismissCurrentPopup: (() => void) | undefined = undefined;
+
+export function setCurrentDismissalMethod(method: (() => void) | undefined) {
+    dismissCurrentPopup = method;
+}
