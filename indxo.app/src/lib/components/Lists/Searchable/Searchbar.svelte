@@ -1,7 +1,7 @@
 <script lang="ts">
     import { DropdownContent, DropdownItem, DropdownTrigger } from "$lib/components/Dropdown";
     import Dropdown from "$lib/components/Dropdown/Dropdown.svelte";
-    import { getContext } from "svelte";
+    import { getContext, onMount } from "svelte";
     import { searchableListContextKey, type SearchableListContext } from ".";
     import type { SearchableListFilter } from "./filters";
     import Icon from "$lib/components/Icon.svelte";
@@ -9,8 +9,11 @@
     let { filters }: { filters: SearchableListFilter[] } = $props();
 
     const searchableList: SearchableListContext = getContext(searchableListContextKey);
-    // svelte-ignore state_referenced_locally
-    let currentFilterID: string = $state.raw(filters[0]?.id ?? "");
+    let currentFilterID: string = $state.raw("");
+
+    onMount(() => {
+        if (filters.length > 0) currentFilterID = filters[0].id;
+    });
 
     $effect(() => {
         searchableList.setFilter(filters.find(({ id }) => id === currentFilterID)!);
