@@ -73,7 +73,7 @@ export interface PublicOwnedDocument extends BaseDocument {
     owner: BaseUser;
     updated?: number;
     visibility: DocumentVisibility;
-    copiedFrom?: string;
+    copiedFrom?: PublicOwnedDocument;
 }
 
 export interface SimpleOwnedDocument extends PublicOwnedDocument {
@@ -146,7 +146,7 @@ export const ownedDocumentFields: DocumentFields = {
     copiedFrom: {
         type: DocumentFieldType.string,
         properties: {
-            isUserUpdateable: false,
+            isUserUpdateable: true,
         },
     },
 };
