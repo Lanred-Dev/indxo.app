@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { getContext } from "svelte";
+    import { getContext, onMount } from "svelte";
     import {
         editableListContextKey,
         type EditableListContext,
@@ -10,7 +10,7 @@
     let {
         index,
         _id,
-        fields = $bindable(),
+        fields: startingFields,
         isDraggable = false,
     }: {
         index: number;
@@ -20,7 +20,6 @@
     } = $props();
 
     const editableList: EditableListContext = getContext(editableListContextKey);
-
     let fieldGroups: EditableListItemField<any>[][] = $derived.by(() => {
         const groups: EditableListItemField<any>[][] = [];
         fields.forEach((field) => {
@@ -29,12 +28,12 @@
         });
         return groups;
     });
-
     let draggable: boolean = $derived(isDraggable && editableList.dragging.isDraggable);
     let Content: HTMLDivElement;
     let Container: HTMLLIElement;
     let mousePosition: { x: number; y: number } = { x: 0, y: 0 };
     let isTrackingMovement: boolean = false;
+    let fields: EditableListItemField<any>[] = $state([]);
 
     function handleMouseMove(event: MouseEvent) {
         event.preventDefault();
@@ -53,6 +52,14 @@
 
         requestAnimationFrame(updateContentPosition);
     }
+
+    onMount(() => {
+        fields = [...startingFields];
+    });
+
+    $effect(() => {
+        editableList.items[index].fields = fields;
+    });
 
     // There is most definitely a better way to do this but honestly it works and doesnt hurt anything so who cares
     $effect(() => {
@@ -140,10 +147,9 @@
             {#each fieldGroups as group}
                 <div class="row items-start md:flex-nowrap">
                     {#each group as field}
+                        {@const fieldIndex: number = fields.findIndex(({ _id }) => _id === field._id)}
                         <field.Component
-                            bind:value={
-                                fields[fields.findIndex(({ _id }) => _id === field._id)].value
-                            }
+                            bind:value={fields[fieldIndex].value}
                             {...field.properties}
                         />
                     {/each}

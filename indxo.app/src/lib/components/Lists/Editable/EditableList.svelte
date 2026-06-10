@@ -1,5 +1,12 @@
 <script lang="ts">
-    import { getContext, setContext, tick, type ComponentProps, type Snippet } from "svelte";
+    import {
+        getContext,
+        onMount,
+        setContext,
+        tick,
+        type ComponentProps,
+        type Snippet,
+    } from "svelte";
     import {
         DefaultEditableListItemButton,
         editableListContextKey,
@@ -26,11 +33,7 @@
         ) => ComponentProps<typeof EditableListItem>;
     } = $props();
 
-    let items: ComponentProps<typeof EditableListItem>[] = $derived(
-        value.length > 0
-            ? value.map((value, index) => addItem(index, value))
-            : [...Array(placeholderItems)].map((_value, index) => addItem(index))
-    );
+    let items: ComponentProps<typeof EditableListItem>[] = $state([]);
     let currentDraggingID: number | null = $state.raw(null);
     let draggingOverID: number | null = $state.raw(null);
     let isDraggable: boolean = $state.raw(true);
@@ -128,16 +131,24 @@
         addItem: async () => {
             items.push(addItem(items.length));
 
-            setTimeout(() => {
-                viewport.Content?.scrollTo({
-                    top: Container.getBoundingClientRect().bottom + viewport.scrollY,
-                    behavior: "smooth",
-                });
-            }, 10);
+            await tick();
+
+            viewport.Content?.scrollTo({
+                top: Container.getBoundingClientRect().bottom + viewport.scrollY,
+                behavior: "smooth",
+            });
         },
         deleteItem,
         moveItem,
     } satisfies EditableListContext);
+
+    onMount(() => {
+        if (value.length > 0) {
+            items = value.map((value, index) => addItem(index, value));
+        } else {
+            items = [...Array(placeholderItems)].map((_value, index) => addItem(index));
+        }
+    });
 
     $effect(() => {
         if (
