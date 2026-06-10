@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { fade, fly } from "svelte/transition";
     import {
         popupContextKey,
         PopupRelativity,
@@ -34,6 +33,7 @@
     const header: HeaderContext = getContext("header");
     const sidebar: SidebarContext = getContext("sidebar");
     const popup: PopupContext = getContext(popupContextKey);
+    let Content: HTMLElement;
     let contentWidth: number = $state.raw(0);
     let contentHeight: number = $state.raw(0);
     let position: { x: number; y: number } = $derived.by(() => {
@@ -138,22 +138,19 @@
     }}
 />
 
-{#if popup.isVisible}
-    <div
-        use:portal
-        class={[
-            "container-primary fixed z-50 shadow-xl! transition-[opacity,translate]",
-            className,
-        ]}
-        style:left="{position.x}px"
-        style:top="{position.y}px"
-        style:max-width="calc(100vw - {offset * 2}px)"
-        in:fly={{ y: 10, duration: 100 }}
-        out:fade={{ duration: 100 }}
-        bind:clientWidth={contentWidth}
-        bind:clientHeight={contentHeight}
-        {...properties}
-    >
-        {@render children()}
-    </div>
-{/if}
+<div
+    use:portal
+    class={["container-primary fixed z-50 shadow-xl! transition-[opacity,translate]", className]}
+    style:left="{position.x}px"
+    style:top="{position.y}px"
+    style:opacity="{popup.isVisible ? 100 : 0}%"
+    style:translate={popup.isVisible ? undefined : "0px 10px"}
+    style:pointer-events={popup.isVisible ? "auto" : "none"}
+    style:max-width="calc(100vw - {offset * 2}px)"
+    bind:clientWidth={contentWidth}
+    bind:clientHeight={contentHeight}
+    bind:this={Content}
+    {...properties}
+>
+    {@render children()}
+</div>
