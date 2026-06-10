@@ -75,12 +75,12 @@
     <SearchableListError
         states={{
             [EmptyListState.noDocuments]: {
-                image: "/icons/general/RaisedHand.svg",
+                icon: "/icons/general/RaisedHand.svg",
                 title: "Echoes... Just Echoes",
                 message: `${document.data.name} doesnt have any ${currentFilterID === DocumentPageType.sets ? Wording.sets.toLowerCase() : Wording.folders.toLowerCase()} yet.`,
             },
             [EmptyListState.noSearchResults]: {
-                image: "/icons/general/Search.svg",
+                icon: "/icons/general/Search.svg",
                 title: "No Matches in Sight",
                 message: "You’ve outsmarted the search bar. Try a different word or two?",
             },
