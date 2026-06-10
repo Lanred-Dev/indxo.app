@@ -8,6 +8,7 @@
     import isPermissionEqual from "$lib/utils/document/isPermissionEqual";
     import { goto } from "$app/navigation";
     import type { SessionContext, ViewportContext } from "$lib/utils/global";
+    import Icon from "$lib/components/Icon.svelte";
 
     const document: DocumentContext = getContext("document");
     const viewport: ViewportContext = getContext("viewport");
@@ -61,8 +62,8 @@
                             if (response.status !== ResponseCodes.Success) {
                                 // TODO: Implement error handling
                             } else {
-                                const [_, raw] = JSON.parse((await response.json()).data);
-                                goto(`/${JSON.parse(raw)}`);
+                                const id: string = await response.json();
+                                goto(`/${id}`);
                             }
 
                             viewport.isNavigating = false;
@@ -167,9 +168,16 @@
         {#if document.header.showActions}
             <div class="flex-center min-w-fit -translate-x-2 gap-2 lg:translate-x-2">
                 {#each buttons as button}
-                    <ActionButton class="button-icon" {...button} />
+                    <ActionButton {...button} />
                 {/each}
             </div>
         {/if}
     </div>
+
+    {#if document.data.copiedFrom}
+        <a href="/{document.data.copiedFrom._id}" class="flex items-center gap-1 text-sm">
+            <Icon icon="general/Return" class="size-4" />
+            Copied from {document.data.copiedFrom.name}
+        </a>
+    {/if}
 </div>
