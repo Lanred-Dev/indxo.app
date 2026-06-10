@@ -9,7 +9,7 @@
     let { filters }: { filters: SearchableListFilter[] } = $props();
 
     const searchableList: SearchableListContext = getContext(searchableListContextKey);
-
+    // svelte-ignore state_referenced_locally
     let currentFilterID: string = $state.raw(filters[0]?.id ?? "");
 
     $effect(() => {
