@@ -1,10 +1,10 @@
 import { DocumentPermission, DocumentType } from "$lib/documents";
 import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
 import determineDocumentType from "$lib/utils/document/determineType";
-import { fail } from "@sveltejs/kit";
+import { error, json } from "@sveltejs/kit";
 
 export async function POST({ fetch, params, locals }) {
-    if (!locals.session) fail(ResponseCodes.Unauthorized, ResponseMessages.Unauthorized);
+    if (!locals.session) error(ResponseCodes.Unauthorized, ResponseMessages.Unauthorized);
 
     const hasPermissionFetch = await fetch(
         `/api/documents/${params.id}/permissions/${locals.user._id}`,
@@ -15,7 +15,7 @@ export async function POST({ fetch, params, locals }) {
     );
 
     if (hasPermissionFetch.status !== ResponseCodes.Success)
-        fail(hasPermissionFetch.status, hasPermissionFetch.statusText);
+        error(hasPermissionFetch.status, hasPermissionFetch.statusText);
 
     // Easier to cast type to any here since we don't need strict typing for copying
     const document: any = await (await fetch(`/api/documents/${params.id}`)).json();
@@ -24,12 +24,12 @@ export async function POST({ fetch, params, locals }) {
     switch (type) {
         case DocumentType.set:
         case DocumentType.folder: {
+            document.copiedFrom = params.id;
             delete document._id;
             delete document.permissions;
             delete document.created;
             delete document.updated;
             delete document.owner;
-            document.copiedFrom = params.id;
 
             const createResponse = await fetch(`/api/documents/create/${type}`, {
                 method: "POST",
@@ -37,11 +37,11 @@ export async function POST({ fetch, params, locals }) {
             });
 
             if (createResponse.status !== ResponseCodes.Success)
-                fail(createResponse.status, createResponse.statusText);
+                error(createResponse.status, createResponse.statusText);
 
-            return { id: await createResponse.text() };
+            return json(await createResponse.json());
         }
         default:
-            fail(ResponseCodes.BadRequest, ResponseMessages.InvalidDocumentType);
+            error(ResponseCodes.BadRequest, ResponseMessages.InvalidDocumentType);
     }
 }
