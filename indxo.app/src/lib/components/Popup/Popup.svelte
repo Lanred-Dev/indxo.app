@@ -20,7 +20,7 @@
     let isInViewport: boolean = $derived(
         OpeningTrigger ? viewport.Content!.contains(OpeningTrigger) : false
     );
-    let main: HTMLElement;
+    let ScrollingContainer: HTMLElement;
 
     setContext(popupContextKey, {
         get isInViewport() {
@@ -44,7 +44,7 @@
     } satisfies PopupContext);
 
     function getScrollY() {
-        scrollY = main.scrollTop;
+        scrollY = ScrollingContainer.scrollTop;
     }
 
     beforeNavigate(() => {
@@ -52,12 +52,12 @@
     });
 
     onMount(() => {
-        main = isInViewport ? viewport.Content! : document.body;
+        ScrollingContainer = isInViewport ? viewport.Content! : document.body;
         getScrollY();
-        main.addEventListener("scroll", getScrollY);
+        ScrollingContainer.addEventListener("scroll", getScrollY);
 
         return () => {
-            main.removeEventListener("scroll", getScrollY);
+            ScrollingContainer.removeEventListener("scroll", getScrollY);
         };
     });
 </script>
