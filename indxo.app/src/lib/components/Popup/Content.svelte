@@ -144,7 +144,7 @@
     style:left="{position.x}px"
     style:top="{position.y}px"
     style:opacity="{popup.isVisible ? 100 : 0}%"
-    style:translate={popup.isVisible ? undefined : "0px 10px"}
+    style:translate={popup.isVisible ? "0px 0px" : "0px 10px"}
     style:pointer-events={popup.isVisible ? "auto" : "none"}
     style:max-width="calc(100vw - {offset * 2}px)"
     bind:clientWidth={contentWidth}
