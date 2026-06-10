@@ -151,6 +151,7 @@
     style:opacity="{popup.isVisible ? 100 : 0}%"
     style:translate={popup.isVisible ? undefined : "0px 10px"}
     style:pointer-events={popup.isVisible ? "auto" : "none"}
+    style:max-width="calc(100vw - {offset * 2}px)"
     in:fly={{ y: 10, duration: 100 }}
     out:fade={{ duration: 100 }}
     bind:clientWidth={contentWidth}
