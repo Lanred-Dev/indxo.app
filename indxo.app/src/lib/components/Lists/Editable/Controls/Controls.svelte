@@ -6,7 +6,7 @@
         children,
         startingWidth = 70,
         ...properties
-    }: { startingWidth: number; [key: string]: unknown; children: Snippet<[]> } = $props();
+    }: { startingWidth?: number; [key: string]: unknown; children: Snippet<[]> } = $props();
 
     const viewport: ViewportContext = getContext("viewport");
     let Controls: HTMLUListElement;
