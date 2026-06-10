@@ -7,6 +7,7 @@ import {
     type BaseUser,
     type Folder,
     type PublicFolder,
+    type PublicOwnedDocument,
     type PublicSet,
     type Set,
     type Term,
@@ -41,6 +42,10 @@ export async function GET({ params, fetch, locals }) {
 
     const owner: BaseUser = await (await fetch(`/api/user/${document.owner}/base`)).json();
     const documentType = determineDocumentType(params.id);
+    const actualCopiedFromDocument: PublicOwnedDocument | undefined =
+        "copiedFrom" in document
+            ? await (await fetch(`/api/documents/${document.copiedFrom}`)).json()
+            : undefined;
 
     switch (documentType) {
         case DocumentType.folder: {
@@ -49,11 +54,11 @@ export async function GET({ params, fetch, locals }) {
             const actualSets: PublicSet[] = [];
 
             for (const id of sets) {
-                const setFetch = await fetch(`/api/documents/${id}`);
+                const setResponse = await fetch(`/api/documents/${id}`);
 
-                if (setFetch.status !== ResponseCodes.Success) continue;
+                if (setResponse.status !== ResponseCodes.Success) continue;
 
-                actualSets.push((await setFetch.json()) as PublicSet);
+                actualSets.push((await setResponse.json()) as PublicSet);
             }
 
             return json({
@@ -66,6 +71,7 @@ export async function GET({ params, fetch, locals }) {
                 owner,
                 visibility,
                 updated,
+                copiedFrom: actualCopiedFromDocument,
             } satisfies PublicFolder);
         }
         case DocumentType.set: {
@@ -91,6 +97,7 @@ export async function GET({ params, fetch, locals }) {
                 owner,
                 visibility,
                 updated,
+                copiedFrom: actualCopiedFromDocument,
             } satisfies PublicSet);
         }
         default:
