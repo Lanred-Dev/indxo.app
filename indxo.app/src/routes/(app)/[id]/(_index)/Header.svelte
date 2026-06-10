@@ -51,10 +51,12 @@
                         onclick: async () => {
                             viewport.isNavigating = true;
 
-                            const response = await fetch("?/copyDocument", {
-                                method: "POST",
-                                body: new FormData(),
-                            });
+                            const response = await fetch(
+                                `/api/documents/${document.data._id}/copy`,
+                                {
+                                    method: "POST",
+                                }
+                            );
 
                             if (response.status !== ResponseCodes.Success) {
                                 // TODO: Implement error handling
