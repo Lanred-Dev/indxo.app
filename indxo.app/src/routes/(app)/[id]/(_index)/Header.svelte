@@ -125,6 +125,7 @@
                 return undefined;
         }
     });
+    let copiedFromContentHeight: number = $state.raw(0);
 </script>
 
 <svelte:head>
@@ -155,14 +156,33 @@
     <div
         class="flex flex-col items-start justify-between gap-x-12 gap-y-3 lg:flex-row lg:items-center"
     >
-        <div class="flex max-w-full grow basis-full items-center gap-2">
-            {#if image}
-                <img src={image} class="size-14 rounded-full" alt={document.data.name} />
-            {/if}
+        <div
+            class="relative w-full max-w-full grow"
+            style:padding-bottom="{copiedFromContentHeight}px"
+        >
+            <div class="flex items-center gap-2">
+                {#if image}
+                    <img src={image} class="size-14 rounded-full" alt={document.data.name} />
+                {/if}
 
-            <h1 class="title">
-                <a href="/{document.data._id}">{document.data.name}</a>
-            </h1>
+                <h1 class="title">
+                    <a href="/{document.data._id}">{document.data.name}</a>
+                </h1>
+            </div>
+
+            {#if document.data.copiedFrom}
+                <a
+                    href="/{document.data.copiedFrom._id}"
+                    class="absolute bottom-0 left-0 flex w-full items-center gap-1 text-sm"
+                    bind:clientHeight={copiedFromContentHeight}
+                >
+                    <Icon icon="general/Return" class="size-4" />
+
+                    <span class="overflow-hidden text-nowrap text-ellipsis">
+                        Copied from {document.data.copiedFrom.name}
+                    </span>
+                </a>
+            {/if}
         </div>
 
         {#if document.header.showActions}
@@ -173,11 +193,4 @@
             </div>
         {/if}
     </div>
-
-    {#if document.data.copiedFrom}
-        <a href="/{document.data.copiedFrom._id}" class="flex items-center gap-1 text-sm">
-            <Icon icon="general/Return" class="size-4" />
-            Copied from {document.data.copiedFrom.name}
-        </a>
-    {/if}
 </div>
