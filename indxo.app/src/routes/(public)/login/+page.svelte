@@ -9,7 +9,7 @@
 
 <header class="flex-center x-center fixed top-12 z-40">
     <p class="flex items-center gap-1">
-        <img class="size-7" src="/favicon.svg" alt="Logo" />
+        <img class="size-7" src="/images/Logo512x512.png" alt="Logo" />
         <span class="text-xl font-medium">indxo</span>
     </p>
 </header>

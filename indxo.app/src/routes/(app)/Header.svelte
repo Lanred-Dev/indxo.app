@@ -35,7 +35,7 @@
             <Icon class="size-7" icon="navigation/Hamburger" />
         </button>
 
-        <img class="size-7" src="/favicon.svg" alt="Logo" />
+        <img class="size-7" src="/images/Logo512x512.png" alt="Logo" />
     </div>
 
     {#if session.session}

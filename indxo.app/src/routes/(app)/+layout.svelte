@@ -2,7 +2,6 @@
     import { afterNavigate, beforeNavigate } from "$app/navigation";
     import { setContext } from "svelte";
     import { fade } from "svelte/transition";
-    import Loader from "$lib/components/Icons/Loader.svelte";
     import { browser } from "$app/environment";
     import Header from "./Header.svelte";
     import { MediaQuery } from "svelte/reactivity";
@@ -108,7 +107,7 @@
 {#if isNavigating}
     <div class="x-center y-center pointer-events-none z-40 h-full w-full" transition:fade>
         <div class="relative h-full w-full">
-            <Loader class="x-center y-center" />
+            <img src="/images/Loader.gif" alt="Loader" class="x-center y-center" />
         </div>
     </div>
 {/if}
