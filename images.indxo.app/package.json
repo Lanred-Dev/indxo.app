@@ -9,14 +9,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Lanred-Dev/images.indxo.app.git"
+        "url": "git+https://github.com/Lanred-Dev/indxo.app.git"
     },
     "author": "Landon Redmond",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/Lanred-Dev/images.indxo.app/issues"
+        "url": "https://github.com/Lanred-Dev/indxo.app/issues"
     },
-    "homepage": "https://github.com/Lanred-Dev/images.indxo.app#readme",
+    "homepage": "https://github.com/Lanred-Dev/indxo.app#readme",
     "files": [
         "build/**/*"
     ],
