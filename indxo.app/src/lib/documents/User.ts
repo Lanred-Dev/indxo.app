@@ -8,7 +8,7 @@ import type { PublicFolder } from "./Folder";
 import type { PublicSet } from "./Set";
 import type { SortedTerm } from "./Term";
 
-type UserPreferences = {
+export type UserPreferences = {
     home: any[];
     strugglingTermThreshold: number;
     showTermOnDefinitionSide: boolean;
