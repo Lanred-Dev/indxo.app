@@ -11,7 +11,4 @@ export enum ResponseCodes {
     ContentTooLarge = 413,
 }
 
-// NOTE: These are generic responses and dont always have to be used.
-export enum ResponseMessages {
-    Unauthorized = "Unauthorized.",
-}
+export default ResponseCodes;

@@ -1,5 +1,5 @@
 import { RouteOptions } from "fastify";
-import { ResponseCodes } from "../utils/apiResponses";
+import ResponseCodes from "../utils/ResponseCodes";
 
 export const route: RouteOptions = {
     method: "GET",

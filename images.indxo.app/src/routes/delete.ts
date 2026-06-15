@@ -1,7 +1,7 @@
 import { RouteOptions } from "fastify";
 import { unlink } from "fs/promises";
 import path from "path";
-import { ResponseCodes } from "../utils/apiResponses";
+import ResponseCodes from "../utils/ResponseCodes";
 
 const UPLOAD_DIRECTORY: string = process.env.UPLOAD_DIRECTORY!;
 

@@ -2,9 +2,9 @@ import { RouteOptions } from "fastify";
 import { fileTypeFromBuffer } from "file-type";
 import fs from "fs";
 import path from "path";
-import { ResponseCodes } from "../utils/apiResponses";
-import generateDocumentID from "../utils/generateID";
 import Piscina from "piscina";
+import ResponseCodes from "../utils/ResponseCodes";
+import generateDocumentID from "../utils/generateID";
 
 const MAX_FILE_SIZE: number = parseInt(process.env.MAX_FILE_SIZE!);
 const ALLOWED_FILE_TYPES: string[] = process.env.ALLOWED_FILE_TYPES!.split(",");
