@@ -79,17 +79,14 @@
         const { _id } = terms[currentTermIndex];
         let overlayColor: string;
 
-        switch (direction) {
-            case CycleDirection.previous:
-                stillLearningTerms.add(_id);
-                timesMissed.set(_id, (timesMissed.get(_id) ?? 0) + 1);
-                overlayColor = "var(--color-warning)";
-                break;
-            case CycleDirection.next:
-                knowTerms.add(_id);
-                timesMissed.set(_id, 0);
-                overlayColor = "var(--color-success)";
-                break;
+        if (direction === CycleDirection.previous) {
+            stillLearningTerms.add(_id);
+            timesMissed.set(_id, (timesMissed.get(_id) ?? 0) + 1);
+            overlayColor = "var(--color-warning)";
+        } else {
+            knowTerms.add(_id);
+            timesMissed.set(_id, 0);
+            overlayColor = "var(--color-success)";
         }
 
         if (timesMissed.get(_id)! >= session.user.preferences.strugglingTermThreshold) {
