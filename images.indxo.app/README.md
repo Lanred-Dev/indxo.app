@@ -5,6 +5,7 @@ Handles all image-related functionality for indxo.app.
 ### Requirements
 
 * Docker 28 (or newer)
+* NodeJS 24 (or newer)
 * Disk space for image files
 
 ### Setup
