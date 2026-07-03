@@ -74,10 +74,7 @@
 
         if (lastFlippedState === isFlipped) return;
 
-        if (
-            (typeof isAnimated !== "boolean" || isAnimated) &&
-            session.user.preferences.animatedTermCards
-        ) {
+        if (isAnimated && session.user.preferences.animatedTermCards) {
             canFlip = false;
             canCycle = false;
 
