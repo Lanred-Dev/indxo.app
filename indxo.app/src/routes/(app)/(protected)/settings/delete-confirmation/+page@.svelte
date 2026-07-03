@@ -1,6 +1,6 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
-    import Loader from "$lib/components/Icons/Loader.svelte";
+    import Loader from "$lib/components/Loader.svelte";
     import { Wording } from "$lib/utils/wording";
 
     let isSubmitting: boolean = $state.raw(false);
