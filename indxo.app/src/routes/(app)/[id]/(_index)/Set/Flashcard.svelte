@@ -117,7 +117,7 @@
             return;
 
         currentTermIndex += direction;
-        await setCardFace(false, false);
+        setCardFace(false, false);
         canFlip = false;
 
         if (session.user.preferences.animatedTermCards) {
