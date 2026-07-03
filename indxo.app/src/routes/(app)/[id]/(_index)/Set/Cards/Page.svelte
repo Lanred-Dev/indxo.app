@@ -27,7 +27,7 @@
         canFlip = true;
         currentTermIndex = 0;
 
-        if (FlashcardComponent) FlashcardComponent.flipCard(false, false);
+        if (FlashcardComponent) FlashcardComponent.setCardFace(false, false);
     }
 
     /**

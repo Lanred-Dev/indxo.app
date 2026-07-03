@@ -62,25 +62,20 @@
     /**
      * Flips the card.
      *
-     * @param flipped Whether to flip the card or not. If null, it will flip the card to the opposite side.
-     * @param animateFlip Whether to animate the flip or not. Defaults to true.
+     * @param isBack Whether the card should be facing the back.
+     * @param isAnimated Whether to animate the flip or not. Defaults to true.
      * @returns never
      */
-    export async function flipCard(flipped?: boolean, animateFlip?: boolean) {
+    export async function setCardFace(isBack: boolean, isAnimated: boolean = true) {
         if (!canFlip) return;
 
         const lastFlippedState: boolean = isFlipped;
-
-        if (typeof flipped === "boolean") {
-            isFlipped = flipped;
-        } else {
-            isFlipped = !isFlipped;
-        }
+        isFlipped = isBack;
 
         if (lastFlippedState === isFlipped) return;
 
         if (
-            (typeof animateFlip !== "boolean" || animateFlip) &&
+            (typeof isAnimated !== "boolean" || isAnimated) &&
             session.user.preferences.animatedTermCards
         ) {
             canFlip = false;
@@ -122,7 +117,7 @@
             return;
 
         currentTermIndex += direction;
-        flipCard(false, false);
+        await setCardFace(false, false);
         canFlip = false;
 
         if (session.user.preferences.animatedTermCards) {
@@ -145,7 +140,7 @@
 
     afterNavigate(() => {
         currentTermIndex = 0;
-        flipCard(false, false);
+        setCardFace(false, false);
     });
 </script>
 
@@ -166,7 +161,7 @@
                 cycle(CycleDirection.next);
                 break;
             case " ":
-                flipCard();
+                setCardFace(!isFlipped);
                 break;
         }
     }}
@@ -183,10 +178,10 @@
         onclick={() => {
             const selection: Selection | null = window.getSelection();
 
-            if (!selection || selection.toString().length === 0) flipCard();
+            if (!selection || selection.toString().length === 0) setCardFace(!isFlipped);
         }}
         onkeydown={(event) => {
-            if (event.key === "Enter" || event.key === " ") flipCard();
+            if (event.key === "Enter" || event.key === " ") setCardFace(!isFlipped);
         }}
     >
         <div

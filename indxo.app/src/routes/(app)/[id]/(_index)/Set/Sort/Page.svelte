@@ -51,7 +51,7 @@
             if (stillLearningTerms.has(_id)) stillLearningTerms.delete(_id);
         });
 
-        if (FlashcardComponent) FlashcardComponent.flipCard(false, false);
+        if (FlashcardComponent) FlashcardComponent.setCardFace(false, false);
     }
 
     /**
@@ -130,7 +130,7 @@
 
         if (canCycle) {
             canFlip = true;
-            FlashcardComponent.flipCard(false, false);
+            FlashcardComponent.setCardFace(false, false);
 
             CardOverlay.style.opacity = "0";
             animate(
