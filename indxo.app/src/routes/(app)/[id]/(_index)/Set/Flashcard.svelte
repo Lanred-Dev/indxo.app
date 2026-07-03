@@ -67,12 +67,9 @@
      * @returns never
      */
     export async function setCardFace(isBack: boolean, isAnimated: boolean = true) {
-        if (!canFlip) return;
+        if (!canFlip || isFlipped === isBack) return;
 
-        const lastFlippedState: boolean = isFlipped;
         isFlipped = isBack;
-
-        if (lastFlippedState === isFlipped) return;
 
         if (isAnimated && session.user.preferences.animatedTermCards) {
             canFlip = false;
