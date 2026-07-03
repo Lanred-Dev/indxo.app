@@ -1,6 +1,6 @@
 <script lang="ts">
     import { getContext, type Snippet } from "svelte";
-    import Loader from "../Icons/Loader.svelte";
+    import Loader from "../Loader.svelte";
     import { formContextKey, type FormContext } from ".";
     import type { ClassValue } from "svelte/elements";
 
