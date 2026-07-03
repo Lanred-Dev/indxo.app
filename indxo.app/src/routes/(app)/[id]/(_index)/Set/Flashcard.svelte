@@ -118,9 +118,10 @@
 
         currentTermIndex += direction;
         setCardFace(false, false);
-        canFlip = false;
 
         if (session.user.preferences.animatedTermCards) {
+            canFlip = false;
+
             await animate(
                 Card!,
                 {
@@ -133,9 +134,9 @@
                     ease: "easeInOut",
                 }
             );
-        }
 
-        canFlip = true;
+            canFlip = true;
+        }
     }
 
     afterNavigate(() => {
