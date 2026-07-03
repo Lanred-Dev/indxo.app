@@ -13,8 +13,8 @@
     const document: DocumentContext = getContext("document");
     const viewport: ViewportContext = getContext("viewport");
     const session: SessionContext = getContext("session");
-    const documentType: DocumentType = $derived.by(
-        () => determineDocumentType(document.data._id) ?? DocumentType.set
+    const documentType: DocumentType = $derived(
+        determineDocumentType(document.data._id) ?? DocumentType.set
     );
     const buttons: ComponentProps<typeof ActionButton>[] = $derived.by(() => {
         const buttons: ComponentProps<typeof ActionButton>[] = [];
