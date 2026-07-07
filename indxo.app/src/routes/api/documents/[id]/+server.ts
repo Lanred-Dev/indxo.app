@@ -20,16 +20,13 @@ import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
 import determineDocumentType from "$lib/utils/document/determineType";
 import { error, json } from "@sveltejs/kit";
 import type { Collection } from "mongodb";
+import type { RequestEvent } from "./$types";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 const sets: Collection<Set> = loadCollection("documents", "sets");
 const folders: Collection<Folder> = loadCollection("documents", "folders");
 
-export async function GET({ params, fetch, locals }) {
-    const document: Set | Folder | null = await findDocumentByID(params.id);
-
-    if (!document) error(ResponseCodes.NotFound, ResponseMessages.NotFound);
-
+export async function GET({ params, fetch, locals }: RequestEvent) {
     const hasPermissionFetch = await fetch(
         `/api/documents/${params.id}/permissions/${locals.user._id}`,
         {
@@ -39,6 +36,10 @@ export async function GET({ params, fetch, locals }) {
 
     if (hasPermissionFetch.status !== ResponseCodes.Success)
         error(hasPermissionFetch.status, hasPermissionFetch.statusText);
+
+    const document: Set | Folder | null = await findDocumentByID(params.id);
+
+    if (!document) error(ResponseCodes.NotFound, ResponseMessages.NotFound);
 
     const owner: BaseUser = await (await fetch(`/api/user/${document.owner}/base`)).json();
     const documentType = determineDocumentType(params.id);
@@ -53,7 +54,7 @@ export async function GET({ params, fetch, locals }) {
 
     switch (documentType) {
         case DocumentType.folder: {
-            const { name, icon, description, created, _id, sets, visibility, updated } =
+            const { name, icon, description, created, _id, sets, visibility, updated, rating } =
                 document as Folder;
             const actualSets: PublicSet[] = [];
 
@@ -75,6 +76,7 @@ export async function GET({ params, fetch, locals }) {
                 owner,
                 visibility,
                 updated,
+                rating,
                 copiedFrom: actualCopiedFromDocument,
             } satisfies PublicFolder);
         }
@@ -89,6 +91,7 @@ export async function GET({ params, fetch, locals }) {
                 folders,
                 visibility,
                 updated,
+                rating,
             } = document as Set;
             return json({
                 name,
@@ -101,6 +104,7 @@ export async function GET({ params, fetch, locals }) {
                 owner,
                 visibility,
                 updated,
+                rating,
                 copiedFrom: actualCopiedFromDocument,
             } satisfies PublicSet);
         }
@@ -109,7 +113,7 @@ export async function GET({ params, fetch, locals }) {
     }
 }
 
-export async function DELETE({ params, locals, fetch }) {
+export async function DELETE({ params, locals, fetch }: RequestEvent) {
     if (!locals.session) error(ResponseCodes.Unauthorized, ResponseMessages.Unauthorized);
 
     const hasPermissionFetch: Response = await fetch(
@@ -158,7 +162,7 @@ export async function DELETE({ params, locals, fetch }) {
     });
 }
 
-export async function PUT({ params, locals, request, fetch }) {
+export async function PUT({ params, locals, request, fetch }: RequestEvent) {
     if (!locals.session) error(ResponseCodes.Unauthorized, ResponseMessages.Unauthorized);
 
     const hasPermissionFetch = await fetch(
