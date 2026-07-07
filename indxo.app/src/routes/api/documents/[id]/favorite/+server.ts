@@ -3,10 +3,11 @@ import { loadCollection } from "$lib/server/mongo";
 import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
 import { error, json } from "@sveltejs/kit";
 import type { Collection } from "mongodb";
+import type { RequestEvent } from "../$types";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 
-export async function GET({ params, locals, fetch }) {
+export async function GET({ params, locals, fetch }: RequestEvent) {
     if (!locals.session) error(ResponseCodes.Unauthorized, ResponseMessages.Unauthorized);
 
     const hasPermissionFetch = await fetch(
@@ -23,7 +24,7 @@ export async function GET({ params, locals, fetch }) {
     return json(locals.user.favorites.includes(params.id));
 }
 
-export async function PUT({ params, locals, fetch, request }) {
+export async function PUT({ params, locals, fetch, request }: RequestEvent) {
     if (!locals.session) error(ResponseCodes.Unauthorized, ResponseMessages.Unauthorized);
 
     const hasPermissionFetch = await fetch(

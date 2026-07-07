@@ -10,10 +10,11 @@ import { getValidFields } from "$lib/server/utils/document/fields";
 import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
 import { error, json } from "@sveltejs/kit";
 import type { Collection } from "mongodb";
+import type { RequestEvent } from "./$types";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 
-export async function GET({ params, fetch }) {
+export async function GET({ params, fetch }: RequestEvent) {
     const user: User | null = await users.findOne({ _id: params.id });
 
     if (!user) error(ResponseCodes.NotFound, ResponseMessages.NotFound);
@@ -31,7 +32,7 @@ export async function GET({ params, fetch }) {
     } satisfies PublicUser);
 }
 
-export async function PUT({ params, locals, request }) {
+export async function PUT({ params, locals, request }: RequestEvent) {
     if (locals.user._id !== params.id)
         error(ResponseCodes.Unauthorized, "You are not authorized to update this account.");
 

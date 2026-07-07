@@ -2,8 +2,9 @@ import { DocumentPermission, DocumentType } from "$lib/documents";
 import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
 import determineDocumentType from "$lib/utils/document/determineType";
 import { error, json } from "@sveltejs/kit";
+import type { RequestEvent } from "../$types";
 
-export async function POST({ fetch, params, locals }) {
+export async function POST({ fetch, params, locals }: RequestEvent) {
     if (!locals.session) error(ResponseCodes.Unauthorized, ResponseMessages.Unauthorized);
 
     const hasPermissionFetch = await fetch(
@@ -15,7 +16,7 @@ export async function POST({ fetch, params, locals }) {
     );
 
     if (hasPermissionFetch.status !== ResponseCodes.Success)
-        error(hasPermissionFetch.status, hasPermissionFetch.statusText);
+        error(hasPermissionFetch.status, await hasPermissionFetch.json());
 
     // Easier to cast type to any here since we don't need strict typing for copying
     const document: any = await (await fetch(`/api/documents/${params.id}`)).json();
@@ -30,6 +31,7 @@ export async function POST({ fetch, params, locals }) {
             delete document.created;
             delete document.updated;
             delete document.owner;
+            delete document.rating;
 
             const createResponse = await fetch(`/api/documents/create/${type}`, {
                 method: "POST",
@@ -37,7 +39,7 @@ export async function POST({ fetch, params, locals }) {
             });
 
             if (createResponse.status !== ResponseCodes.Success)
-                error(createResponse.status, createResponse.statusText);
+                error(createResponse.status, await createResponse.json());
 
             return json(await createResponse.json());
         }

@@ -10,8 +10,9 @@ import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
 import determineDocumentType from "$lib/utils/document/determineType";
 import isPermissionEqual from "$lib/utils/document/isPermissionEqual";
 import { error, json } from "@sveltejs/kit";
+import type { RequestEvent } from "./$types";
 
-export async function GET({ params, locals }) {
+export async function GET({ params, locals }: RequestEvent) {
     if (!locals.session) json(DocumentPermission.none);
 
     const documentType = determineDocumentType(params.id);
@@ -30,7 +31,7 @@ export async function GET({ params, locals }) {
     );
 }
 
-export async function POST({ params, locals, request }) {
+export async function POST({ params, locals, request }: RequestEvent) {
     const documentType = determineDocumentType(params.id);
 
     if (documentType !== DocumentType.folder && documentType !== DocumentType.set)

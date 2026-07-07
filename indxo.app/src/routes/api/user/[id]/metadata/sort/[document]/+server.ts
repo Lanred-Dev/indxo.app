@@ -4,10 +4,11 @@ import { findDocumentByID } from "$lib/server/utils/document/findByID";
 import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
 import { error, json } from "@sveltejs/kit";
 import type { Collection } from "mongodb";
+import type { RequestEvent } from "./$types";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 
-export async function GET({ params }) {
+export async function GET({ params }: RequestEvent) {
     const user: User | null = await findDocumentByID(params.id);
 
     if (!user) error(ResponseCodes.NotFound, ResponseMessages.NotFound);
@@ -21,7 +22,7 @@ export async function GET({ params }) {
     );
 }
 
-export async function PUT({ params, request }) {
+export async function PUT({ params, request }: RequestEvent) {
     const user: User | null = await findDocumentByID(params.id);
 
     if (!user) error(ResponseCodes.NotFound, ResponseMessages.NotFound);

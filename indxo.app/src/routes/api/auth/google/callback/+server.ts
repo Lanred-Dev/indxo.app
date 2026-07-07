@@ -8,10 +8,11 @@ import generateDocumentID from "$lib/utils/document/generateID";
 import { error, redirect } from "@sveltejs/kit";
 import { decodeIdToken, type OAuth2Tokens } from "arctic";
 import { type Collection } from "mongodb";
+import type { RequestEvent } from "./$types";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 
-export async function GET({ cookies, url }) {
+export async function GET({ cookies, url }: RequestEvent) {
     const oauthState = cookies.get("state");
     const oauthVerifier = cookies.get("verifier");
     const code = url.searchParams.get("code");

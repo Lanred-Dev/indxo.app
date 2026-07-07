@@ -14,12 +14,13 @@ import { ResponseCodes, ResponseMessages } from "$lib/utils/apiResponses";
 import generateDocumentID from "$lib/utils/document/generateID";
 import { error, json } from "@sveltejs/kit";
 import type { Collection } from "mongodb";
+import type { RequestEvent } from "./$types";
 
 const users: Collection<User> = loadCollection("accounts", "users");
 const sets: Collection<Set> = loadCollection("documents", "sets");
 const folders: Collection<Folder> = loadCollection("documents", "folders");
 
-export async function POST({ params, locals, request }) {
+export async function POST({ params, locals, request }: RequestEvent) {
     if (!locals.session) error(ResponseCodes.Unauthorized, ResponseMessages.Unauthorized);
 
     if (params.type !== DocumentType.folder && params.type !== DocumentType.set)
