@@ -14,5 +14,7 @@ export async function GET({ params }: RequestEvent) {
         name: user.name,
         picture: user.picture,
         created: user.created,
+        bio: user.bio,
+        rating: user.rating,
     } satisfies BaseUser);
 }

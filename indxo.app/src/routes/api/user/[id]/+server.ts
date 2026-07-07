@@ -29,6 +29,8 @@ export async function GET({ params, fetch }: RequestEvent) {
         sets: sets,
         folders: folders,
         created: user.created,
+        bio: user.bio,
+        rating: user.rating,
     } satisfies PublicUser);
 }
 
