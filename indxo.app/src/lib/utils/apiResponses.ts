@@ -13,8 +13,8 @@ export enum ResponseCodes {
 
 // NOTE: These are generic responses and dont always have to be used.
 export enum ResponseMessages {
-    Unauthorized = "Unauthorized.",
-    UserUnauthorized = "You do not have authorization for this document.",
-    NotFound = "Could not find document.",
-    InvalidDocumentType = "Invalid document type.",
+    Unauthorized = "You are not authorized to perform this action.",
+    UserUnauthorized = "Your user does not have permission to perform this action.",
+    NotFound = "This document does not exist.",
+    InvalidDocumentType = "Invalid document type for this request.",
 }
