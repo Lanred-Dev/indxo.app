@@ -73,6 +73,11 @@ export async function GET({ cookies, url }: RequestEvent) {
                 documentsOpenedAt: {},
                 sets: {},
             },
+            rating: {
+                average: 0,
+                reviews: [],
+            },
+            bio: "",
         };
 
         await users.insertOne(user);
