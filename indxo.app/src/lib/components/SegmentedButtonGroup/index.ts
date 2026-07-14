@@ -7,4 +7,4 @@ export interface SegmentedButtonGroupContext {
     forceUpdateSelector: () => void;
 }
 
-export let segmentedButtonGroupContextKey: Symbol = Symbol("segmentedButtonGroupContextKey");
+export const segmentedButtonGroupContextKey: symbol = Symbol("segmentedButtonGroupContextKey");

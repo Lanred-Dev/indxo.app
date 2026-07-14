@@ -38,4 +38,4 @@ export interface EditableListContext {
     moveItem: (from: number, to: number) => void;
 }
 
-export let editableListContextKey: Symbol = Symbol("editableListContextKey");
+export const editableListContextKey: symbol = Symbol("editableListContextKey");

@@ -14,4 +14,4 @@ export interface DropdownContext {
     registerItem: (item: ComponentProps<typeof Item>) => void;
 }
 
-export let dropdownContextKey: Symbol = Symbol("dropdownContextKey");
+export const dropdownContextKey: symbol = Symbol("dropdownContextKey");

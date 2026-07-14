@@ -20,4 +20,4 @@ export interface SearchableListContext {
     setFilter: (newFilter: SearchableListFilter) => void;
 }
 
-export let searchableListContextKey: Symbol = Symbol("searchableListContextKey");
+export const searchableListContextKey: symbol = Symbol("searchableListContextKey");

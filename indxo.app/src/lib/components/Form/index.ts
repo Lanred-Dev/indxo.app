@@ -18,4 +18,4 @@ export interface FormContext {
     removeField: (id: string) => void;
 }
 
-export let formContextKey: Symbol = Symbol("formContextKey");
+export const formContextKey: symbol = Symbol("formContextKey");

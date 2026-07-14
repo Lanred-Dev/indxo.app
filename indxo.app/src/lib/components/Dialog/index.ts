@@ -7,4 +7,4 @@ export interface DialogContext {
     isVisible: boolean;
 }
 
-export let dialogContextKey: symbol = Symbol("dialogContextKey");
+export const dialogContextKey: symbol = Symbol("dialogContextKey");

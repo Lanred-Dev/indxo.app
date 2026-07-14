@@ -32,7 +32,7 @@ export interface PopupContext {
     setVisible: (newValue: boolean, trigger?: HTMLElement) => void;
 }
 
-export let popupContextKey: Symbol = Symbol("popupContextKey");
+export const popupContextKey: symbol = Symbol("popupContextKey");
 
 // Used for light dissmissal of popups
 export let dismissCurrentPopup: (() => void) | undefined = undefined;
