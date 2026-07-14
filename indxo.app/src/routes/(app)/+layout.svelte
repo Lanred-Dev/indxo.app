@@ -118,8 +118,8 @@
         isMobile.current && isSidebarVisible && "pointer-events-none blur-xs",
     ]}
     bind:this={Viewport}
-    onscroll={() => {
-        viewportScrollY = Viewport?.scrollTop ?? 0;
+    onscroll={(event) => {
+        viewportScrollY = event.currentTarget.scrollTop;
     }}
     style:--header-height="{headerHeight}px"
     style:--sidebar-width="{!isMobile.current && isSidebarVisible ? sidebarWidth : 0}px"
