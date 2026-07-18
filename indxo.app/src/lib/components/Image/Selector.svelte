@@ -21,7 +21,7 @@
         buttons?: ComponentProps<typeof ActionButton>[];
         value?: string | null;
         placeholder?: string;
-        imageProperties?: Record<string, any>;
+        imageProperties?: { [key: string]: unknown };
         onUpload?: (file: File) => Promise<void>;
         onDelete?: (name: string) => Promise<void>;
         class: ClassValue;
