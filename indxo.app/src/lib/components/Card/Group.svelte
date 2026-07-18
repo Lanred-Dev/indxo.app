@@ -94,7 +94,7 @@
 
     {#if visible}
         <ul class="content" transition:slide>
-            {#each documents as document}
+            {#each documents as document (document._id)}
                 {@const { type, breadcrumbs } = getDocumentInfo(document)}
 
                 {#if type}
