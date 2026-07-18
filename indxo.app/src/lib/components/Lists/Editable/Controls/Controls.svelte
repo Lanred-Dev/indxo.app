@@ -17,8 +17,8 @@
     });
 
     $effect(() => {
-        viewport.scrollY;
-        width;
+        void viewport.scrollY;
+        void width;
 
         if (!Controls || !Controls.parentElement) return;
 
