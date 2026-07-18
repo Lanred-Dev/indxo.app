@@ -6,5 +6,6 @@
     "editor.quickSuggestions": {
         "strings": "on"
     },
-    "tailwindCSS.experimental.configFile": "src/app.css"
+    "tailwindCSS.experimental.configFile": "src/app.css",
+    "js/ts.experimental.useTsgo": false
 }
