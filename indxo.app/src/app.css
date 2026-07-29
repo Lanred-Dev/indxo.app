@@ -173,7 +173,7 @@
         }
     }
 
-    & .description {
+    & .subtitle {
         @apply text-light break-word text-lg leading-none font-semibold md:text-xl;
     }
 }
