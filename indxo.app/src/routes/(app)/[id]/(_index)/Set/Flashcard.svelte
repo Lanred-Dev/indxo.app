@@ -62,8 +62,8 @@
     /**
      * Flips the card.
      *
-     * @param flipped Whether to flip the card or not. If null, it will flip the card to the opposite side.
-     * @param animateFlip Whether to animate the flip or not. Defaults to true.
+     * @param flipped If null, it will flip the card to the opposite side.
+     * @param animateFlip
      * @returns never
      */
     export async function flipCard(flipped?: boolean, animateFlip?: boolean) {
@@ -114,10 +114,10 @@
     /**
      * Cycle through the terms in the set.
      *
-     * @param direction The direction to cycle in. -1 for previous and 1 for next or during sort mode, 1 for knows term and -1 for still learning term
+     * @param direction
      * @returns never
      */
-    async function defaultCycle(direction: -1 | 1) {
+    async function defaultCycle(direction: CycleDirection) {
         if (currentTermIndex + direction < 0 || currentTermIndex + direction > termCount - 1)
             return;
 
