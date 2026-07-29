@@ -23,7 +23,7 @@
     <div class="row w-fit text-xl">
         <form method="POST" use:enhance>
             <button class="button-primary">
-                <Icon icon="Google" />
+                <Icon icon="brands/Google" />
                 Continue with Google
             </button>
         </form>
