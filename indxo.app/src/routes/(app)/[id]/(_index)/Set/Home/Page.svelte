@@ -14,7 +14,7 @@
     let canCycle: boolean = $state.raw(true);
     let canFlip: boolean = $state.raw(true);
     let currentTermIndex: number = $state.raw(0);
-    let termStateInvalidator: number = $state.raw(0); // This is used to trigger a term state update
+    let termStateInvalidator: number = $state.raw(0); // This is used to force trigger a term state update
     let term: Term = $derived.by(() => {
         termStateInvalidator;
         // In most cases current term index should be in range, but due to hot reloading while the user is editing the set, it might go out of bounds
