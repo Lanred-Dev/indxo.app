@@ -52,8 +52,10 @@
                         Component: Textbox,
                         value: term?.term,
                         properties: {
+                            class: "w-full",
                             placeholder: placeholders.term,
                             maxlength: termFields.term.properties.maxlength,
+                            multiline: true,
                         },
                         position: { group: 0, index: 0 },
                     },
