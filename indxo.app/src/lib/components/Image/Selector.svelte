@@ -97,21 +97,23 @@
             <div
                 class="absolute top-2 right-2 flex translate-y-2 gap-2 opacity-0 transition-[translate,opacity] group-hover:translate-y-0 group-hover:opacity-100"
             >
-                <DialogTrigger>
-                    <Icon class="size-8" icon="general/Expand" />
+                <DialogTrigger class="button-primary p-1.5">
+                    <Icon icon="general/Expand" />
                 </DialogTrigger>
 
-                <button onclick={() => onDelete(imageServerFilename!)} type="button">
-                    <Icon class="size-8" icon="general/Trash" />
+                <button
+                    class="button-primary p-1.5"
+                    onclick={() => onDelete(imageServerFilename!)}
+                    type="button"
+                >
+                    <Icon icon="general/Trash" />
                 </button>
             </div>
         {/if}
 
-        <DialogContent class="min-h-30! rounded-none! p-0">
-            <DialogTrigger
-                class="button-primary absolute top-3 right-3 rounded-full p-1.5! shadow-md"
-            >
-                <Icon class="size-8" icon="general/X" />
+        <DialogContent class="min-h-30! rounded-none! p-0!">
+            <DialogTrigger class="button-primary absolute top-3 right-3 size-10 rounded-full p-1.5">
+                <Icon icon="general/X" />
             </DialogTrigger>
 
             <img class="h-[200%] max-h-[80vh] w-auto max-w-[80vw]" src={value} alt="Expanded" />
