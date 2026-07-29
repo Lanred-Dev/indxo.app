@@ -147,9 +147,9 @@
 <div class="page-title">
     {#if description}
         {#if typeof description === "string"}
-            <p class="description">{description}</p>
+            <p class="subtitle">{description}</p>
         {:else}
-            <a class="description" href={description.url}>{description.text}</a>
+            <a class="subtitle" href={description.url}>{description.text}</a>
         {/if}
     {/if}
 

@@ -1,7 +1,7 @@
 <script lang="ts">
     import { DocumentType } from "$lib/documents";
     import determineDocumentType from "$lib/utils/document/determineType";
-    import { Wording } from "$lib/utils/wording";
+    import { Wording } from "$lib/data/ui/wording";
     import { getContext } from "svelte";
     import { FormSubmit } from "$lib/components/Form";
     import type { DocumentEditContext } from "./+page.svelte";

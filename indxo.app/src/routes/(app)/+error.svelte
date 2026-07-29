@@ -51,7 +51,7 @@
         {title}
     </h1>
 
-    <p class="description">{message}</p>
+    <p class="subtitle">{message}</p>
 </div>
 
 <Dialog>

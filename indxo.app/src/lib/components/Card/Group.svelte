@@ -9,7 +9,7 @@
         type PublicUser,
     } from "$lib/documents";
     import Card from "./Card.svelte";
-    import { Wording } from "$lib/utils/wording";
+    import { Wording } from "$lib/data/ui/wording";
     import { formatDate } from "date-fns";
     import determineDocumentType from "$lib/utils/document/determineType";
     import type { CardBreadcrumb, CardDocumentType } from ".";

@@ -3,7 +3,7 @@
     import { fade } from "svelte/transition";
     import type { DocumentContext } from "../../+page.svelte";
     import type { SvelteSet } from "svelte/reactivity";
-    import { Wording } from "$lib/utils/wording";
+    import { Wording } from "$lib/data/ui/wording";
     import type { Term } from "$lib/documents";
     import Icon from "$lib/components/Icon.svelte";
 

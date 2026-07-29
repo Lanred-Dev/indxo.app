@@ -3,7 +3,7 @@
     import Account from "./Account.svelte";
     import SetPreferences from "./SetPreferences.svelte";
     import { SegmentedButton, SegmentedButtonGroup } from "$lib/components/SegmentedButtonGroup";
-    import { Wording } from "$lib/utils/wording";
+    import { Wording } from "$lib/data/ui/wording";
     import { Tooltip, TooltipContent } from "$lib/components/Tooltip";
     import type { SessionContext } from "$lib/utils/global";
     import Appearance from "./Appearance.svelte";
@@ -129,7 +129,7 @@
 
         <div>
             <h1 class="title">{session.user.name}</h1>
-            <p class="description">{session.user._id}</p>
+            <p class="subtitle">{session.user._id}</p>
         </div>
     </div>
 

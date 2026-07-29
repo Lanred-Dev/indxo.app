@@ -1,7 +1,7 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
     import Loader from "$lib/components/Icons/Loader.svelte";
-    import { Wording } from "$lib/utils/wording";
+    import { Wording } from "$lib/data/ui/wording";
 
     let isSubmitting: boolean = $state.raw(false);
 </script>
@@ -13,7 +13,7 @@
 <div class="cover-screen flex-center page-title mb-0 flex-col gap-6">
     <div class="text-center md:max-w-1/2">
         <h1 class="title">You're about to delete your account</h1>
-        <p class="description">
+        <p class="subtitle">
             This action is irreversible. All data including your {Wording.sets}, {Wording.folders},
             and {Wording.favorites}, and preferences will be permanently removed.
         </p>

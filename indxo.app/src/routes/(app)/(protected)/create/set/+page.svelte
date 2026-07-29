@@ -9,7 +9,7 @@
     } from "$lib/components/Form";
     import { goto } from "$app/navigation";
     import { ResponseCodes } from "$lib/utils/apiResponses";
-    import { Wording } from "$lib/utils/wording";
+    import { Wording } from "$lib/data/ui/wording";
     import Textbox from "$lib/components/Textbox.svelte";
     import { DocumentType, DocumentVisibility, setFields } from "$lib/documents";
     import {

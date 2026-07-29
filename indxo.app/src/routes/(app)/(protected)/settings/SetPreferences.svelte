@@ -2,7 +2,7 @@
     import type { SessionContext } from "$lib/utils/global";
     import { getContext } from "svelte";
     import { Section, SectionContent, SectionEntry, SectionInput, SectionTitle } from "./Section";
-    import { Wording } from "$lib/utils/wording";
+    import { Wording } from "$lib/data/ui/wording";
     import { SettingInputType } from "./Section/Input.svelte";
 
     const session: SessionContext = getContext("session");

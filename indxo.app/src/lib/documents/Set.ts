@@ -1,4 +1,4 @@
-import { Wording } from "$lib/utils/wording";
+import { Wording } from "$lib/data/ui/wording";
 import {
     DocumentFieldType,
     ownedDocumentFields,

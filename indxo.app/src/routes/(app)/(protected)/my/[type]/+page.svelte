@@ -9,7 +9,7 @@
     import type { SearchableListFilter } from "$lib/components/Lists/Searchable/filters";
     import SearchableList from "$lib/components/Lists/Searchable/SearchableList.svelte";
     import { MyPageType } from "$lib/utils/routing";
-    import { Wording } from "$lib/utils/wording";
+    import { Wording } from "$lib/data/ui/wording";
 
     let { data } = $props();
 
@@ -54,12 +54,12 @@
 {#if data.documents.length === 0}
     <div class="page-title">
         <h1 class="title">Echoes... Just Echoes</h1>
-        <p class="description">Nothing’s here yet. Maybe it’s time to start something awesome?</p>
+        <p class="subtitle">Nothing’s here yet. Maybe it’s time to start something awesome?</p>
     </div>
 {:else}
     <div class="page-title">
         <h1 class="title">{title}</h1>
-        <p class="description">{description}</p>
+        <p class="subtitle">{description}</p>
     </div>
 
     <SearchableList documents={data.documents}>

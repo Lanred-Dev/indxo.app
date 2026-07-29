@@ -7,7 +7,7 @@
         type Term,
     } from "$lib/documents";
     import TermCard from "../TermCard.svelte";
-    import { Wording } from "$lib/utils/wording";
+    import { Wording } from "$lib/data/ui/wording";
     import type { DocumentContext } from "../../+page.svelte";
     import isPermissionEqual from "$lib/utils/document/isPermissionEqual";
     import { FormContent, FormSubmit, FormSubmitMethods } from "$lib/components/Form";
