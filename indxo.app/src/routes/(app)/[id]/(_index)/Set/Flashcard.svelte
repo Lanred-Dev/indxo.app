@@ -221,7 +221,7 @@
                     {/if}
 
                     <div
-                        class="flex w-full flex-col items-center overflow-y-auto py-6"
+                        class="flex w-full flex-col items-center gap-y-3 overflow-y-auto py-6"
                         onscroll={(event) => {
                             flashcardScrollY = event.currentTarget.scrollTop;
                         }}
@@ -230,7 +230,7 @@
                             <ExpandableImage
                                 src={currentTerm.image}
                                 alt="Term Image"
-                                class="mb-3 h-30 w-auto"
+                                class="h-30 w-auto"
                             />
                         {/if}
 
