@@ -60,6 +60,18 @@
                         position: { group: 0, index: 0 },
                     },
                     {
+                        _id: "frontImage",
+                        Component: ImageSelector,
+                        value: term?.frontImage,
+                        properties: {
+                            class: "min-w-fit size-40",
+                            imageProperties: {
+                                class: "size-40 rounded-input object-contain",
+                            },
+                        },
+                        position: { group: 0, index: 1 },
+                    },
+                    {
                         _id: "definition",
                         Component: Textbox,
                         value: term?.definition,
@@ -72,9 +84,9 @@
                         position: { group: 1, index: 0 },
                     },
                     {
-                        _id: "image",
+                        _id: "backImage",
                         Component: ImageSelector,
-                        value: term?.image,
+                        value: term?.backImage,
                         properties: {
                             class: "min-w-fit size-40",
                             imageProperties: {
