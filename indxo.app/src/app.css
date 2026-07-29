@@ -154,7 +154,7 @@
         @apply flex items-center gap-4;
 
         & .title {
-            @apply mt-1 leading-tight;
+            @apply mt-1;
         }
     }
 
@@ -163,7 +163,7 @@
     }
 
     & .title {
-        @apply break-word text-3xl leading-snug font-bold;
+        @apply break-word text-3xl font-bold;
 
         & img,
         & svg,
@@ -173,7 +173,7 @@
     }
 
     & .description {
-        @apply text-light break-word text-lg leading-none font-semibold md:text-xl;
+        @apply text-light break-word text-lg font-semibold md:text-xl;
     }
 }
 
@@ -181,7 +181,7 @@
     @apply w-full;
 
     & .title {
-        @apply break-word flex flex-wrap items-center justify-center gap-x-1 gap-y-2 text-3xl leading-snug font-bold;
+        @apply break-word flex flex-wrap items-center justify-center gap-x-1 gap-y-2 text-3xl font-bold;
 
         & img,
         & svg,
@@ -191,7 +191,7 @@
     }
 
     & .message {
-        @apply text-light break-word text-lg leading-snug font-semibold;
+        @apply text-light break-word text-lg font-semibold;
     }
 }
 

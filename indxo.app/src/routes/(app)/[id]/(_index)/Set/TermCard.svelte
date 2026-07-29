@@ -31,7 +31,7 @@
             {/if}
         </div>
 
-        <MarkdownText class="leading-none" text={definition} />
+        <MarkdownText text={definition} />
 
         {#if image}
             <ExpandableImage src={image} alt="Term Image" class="h-30 w-auto" />

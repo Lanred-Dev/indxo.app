@@ -28,9 +28,7 @@
                         <Icon class="size-5 rounded-full" {icon} />
                     {/if}
 
-                    <p
-                        class="max-w-28 overflow-hidden leading-tight font-medium text-nowrap text-ellipsis"
-                    >
+                    <p class="max-w-28 overflow-hidden font-medium text-nowrap text-ellipsis">
                         {text}
                     </p>
                 </li>
@@ -49,8 +47,6 @@
     </div>
 
     {#if description && description.length > 0}
-        <p class="text-light w-full text-lg leading-none text-ellipsis">
-            {description}
-        </p>
+        <p class="text-light w-full text-lg text-ellipsis">{description}</p>
     {/if}
 </a>
