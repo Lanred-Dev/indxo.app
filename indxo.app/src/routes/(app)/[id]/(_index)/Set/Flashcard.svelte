@@ -55,7 +55,7 @@
 
     const session: SessionContext = getContext("session");
     let flashcardScrollY: number = $state.raw(0);
-    let isFlipped: boolean = $state.raw(false);
+    let isCardFlipped: boolean = $state.raw(false);
     let FrontCardFace: HTMLDivElement;
     let BackCardFace: HTMLDivElement;
 
@@ -66,48 +66,50 @@
      * @param animateFlip
      * @returns never
      */
-    export async function flipCard(flipped?: boolean, animateFlip?: boolean) {
+    export async function flipCard(flipped?: boolean, animateFlip: boolean = true) {
+        console.log("flipCard called with flipped:", flipped, "animateFlip:", animateFlip);
         if (!canFlip) return;
 
-        const lastFlippedState: boolean = isFlipped;
+        const lastFlippedState: boolean = isCardFlipped;
+        isCardFlipped = typeof flipped === "boolean" ? flipped : !isCardFlipped;
+        if (lastFlippedState === isCardFlipped) return;
 
-        if (typeof flipped === "boolean") {
-            isFlipped = flipped;
-        } else {
-            isFlipped = !isFlipped;
-        }
-
-        if (lastFlippedState === isFlipped) return;
-
-        if (
-            (typeof animateFlip !== "boolean" || animateFlip) &&
-            session.user.preferences.animatedTermCards
-        ) {
+        if (animateFlip && session.user.preferences.animatedTermCards) {
             canFlip = false;
             canCycle = false;
 
             setTimeout(() => {
-                FrontCardFace.style.display = isFlipped ? "none" : "flex";
-                BackCardFace.style.display = isFlipped ? "flex" : "none";
+                FrontCardFace.style.display = isCardFlipped ? "none" : "flex";
+                BackCardFace.style.display = isCardFlipped ? "flex" : "none";
             }, 125);
 
+            try {
+                await animate(
+                    Card!,
+                    {
+                        rotateX: [isCardFlipped ? 0 : 180, isCardFlipped ? 180 : 0],
+                    },
+                    {
+                        duration: 0.25,
+                        ease: "easeInOut",
+                    }
+                );
+            } finally {
+                canFlip = true;
+                canCycle = true;
+            }
+        } else {
             await animate(
                 Card!,
                 {
-                    rotateX: [isFlipped ? 0 : 180, isFlipped ? 180 : 0],
+                    rotateX: isCardFlipped ? 180 : 0,
                 },
                 {
-                    duration: 0.25,
-                    ease: "easeInOut",
+                    duration: 0,
                 }
             );
-
-            canFlip = true;
-            canCycle = true;
-        } else {
-            Card!.style.transform = `rotateX(${isFlipped ? 180 : 0}deg)`;
-            FrontCardFace.style.display = isFlipped ? "none" : "flex";
-            BackCardFace.style.display = isFlipped ? "flex" : "none";
+            FrontCardFace.style.display = isCardFlipped ? "none" : "flex";
+            BackCardFace.style.display = isCardFlipped ? "flex" : "none";
         }
     }
 
@@ -125,7 +127,7 @@
         flipCard(false, false);
         canFlip = false;
 
-        if (session.user.preferences.animatedTermCards) {
+        try {
             await animate(
                 Card!,
                 {
@@ -138,9 +140,9 @@
                     ease: "easeInOut",
                 }
             );
+        } finally {
+            canFlip = true;
         }
-
-        canFlip = true;
     }
 
     afterNavigate(() => {
