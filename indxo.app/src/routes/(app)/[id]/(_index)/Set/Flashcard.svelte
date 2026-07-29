@@ -56,8 +56,8 @@
     const session: SessionContext = getContext("session");
     let flashcardScrollY: number = $state.raw(0);
     let isFlipped: boolean = $state.raw(false);
-    let CardFront: HTMLDivElement;
-    let CardBack: HTMLDivElement;
+    let FrontCardFace: HTMLDivElement;
+    let BackCardFace: HTMLDivElement;
 
     /**
      * Flips the card.
@@ -87,8 +87,8 @@
             canCycle = false;
 
             setTimeout(() => {
-                CardFront.style.display = isFlipped ? "none" : "flex";
-                CardBack.style.display = isFlipped ? "flex" : "none";
+                FrontCardFace.style.display = isFlipped ? "none" : "flex";
+                BackCardFace.style.display = isFlipped ? "flex" : "none";
             }, 125);
 
             await animate(
@@ -106,8 +106,8 @@
             canCycle = true;
         } else {
             Card!.style.transform = `rotateX(${isFlipped ? 180 : 0}deg)`;
-            CardFront.style.display = isFlipped ? "none" : "flex";
-            CardBack.style.display = isFlipped ? "flex" : "none";
+            FrontCardFace.style.display = isFlipped ? "none" : "flex";
+            BackCardFace.style.display = isFlipped ? "flex" : "none";
         }
     }
 
@@ -197,15 +197,25 @@
             {@render Overlay?.()}
 
             <div>
-                <div class="CardFace" bind:this={CardFront}>
-                    <MarkdownText text={currentTerm.term} aria-label="Term" />
+                <div class="card-face" bind:this={FrontCardFace}>
+                    <div class="content">
+                        {#if currentTerm.frontImage}
+                            <ExpandableImage
+                                src={currentTerm.frontImage}
+                                alt="Front Image"
+                                class="h-30 w-auto"
+                            />
+                        {/if}
+
+                        <MarkdownText text={currentTerm.term} aria-label="Term" />
+                    </div>
                 </div>
 
                 <div
-                    class="CardFace"
+                    class="card-face"
                     style:display="none"
                     style:transform="rotateX(180deg)"
-                    bind:this={CardBack}
+                    bind:this={BackCardFace}
                 >
                     {#if session.user.preferences.showTermOnDefinitionSide}
                         <div
@@ -221,15 +231,15 @@
                     {/if}
 
                     <div
-                        class="flex w-full flex-col items-center gap-y-3 overflow-y-auto py-6"
+                        class="content"
                         onscroll={(event) => {
                             flashcardScrollY = event.currentTarget.scrollTop;
                         }}
                     >
-                        {#if currentTerm.image}
+                        {#if currentTerm.backImage}
                             <ExpandableImage
-                                src={currentTerm.image}
-                                alt="Term Image"
+                                src={currentTerm.backImage}
+                                alt="Back Image"
                                 class="h-30 w-auto"
                             />
                         {/if}
@@ -241,8 +251,12 @@
                 <style lang="postcss">
                     @reference "../../../../../app.css";
 
-                    .CardFace {
-                        @apply rounded-container border-primary flex-center bg-input absolute top-0 left-0 h-full w-full flex-col overflow-x-hidden overflow-y-auto border p-6 shadow-xl inset-shadow-sm;
+                    .card-face {
+                        @apply rounded-container border-primary bg-input absolute top-0 left-0 h-full w-full overflow-x-hidden border p-6 shadow-xl inset-shadow-sm;
+                    }
+
+                    .card-face > .content {
+                        @apply flex h-full w-full flex-col items-center justify-center gap-y-3 overflow-y-auto py-6;
                     }
                 </style>
             </div>
