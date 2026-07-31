@@ -23,6 +23,6 @@ export async function GET({ cookies }: RequestEvent) {
     });
 
     return new Response(null, {
-        status: ResponseCodes.SuccessNoResponse,
+        status: ResponseCodes.Success,
     });
 }
