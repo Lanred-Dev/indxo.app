@@ -36,7 +36,7 @@
 </script>
 
 <svelte:head>
-    <title>Editing {data.document.name}</title>
+    <title>Edit {data.document.name}</title>
 </svelte:head>
 
 <Tooltip bind:isVisible={isSubmitMessageVisible} duration={5}>
