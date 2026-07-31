@@ -134,10 +134,8 @@ export async function DELETE({ params, locals, fetch }: RequestEvent) {
         await sets.updateMany(
             { folders: { $in: [params.id] } },
             {
-                // For some reason a type error is thrown here, but it works fine
-                // @ts-ignore
                 $pull: {
-                    folder: params.id,
+                    folders: params.id,
                 },
             }
         );
@@ -145,8 +143,6 @@ export async function DELETE({ params, locals, fetch }: RequestEvent) {
     await users.updateOne(
         { _id: locals.user._id },
         {
-            // For some reason a type error is thrown here, but it works fine
-            // @ts-ignore
             $pull: {
                 [documentType === DocumentType.folder ? "folders" : "sets"]: params.id,
             },
