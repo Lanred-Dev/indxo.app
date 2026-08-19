@@ -1,3 +1,4 @@
+import type { DocumentRating } from "./DocumentRating";
 import type { BaseUser } from "./User";
 
 export enum DocumentType {
@@ -73,6 +74,7 @@ export interface PublicOwnedDocument extends BaseDocument {
     owner: BaseUser;
     updated?: number;
     visibility: DocumentVisibility;
+    rating: { average: number; reviews: DocumentRating[] };
     copiedFrom?: PublicOwnedDocument;
 }
 
