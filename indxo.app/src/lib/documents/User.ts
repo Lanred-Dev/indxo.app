@@ -18,6 +18,7 @@ type UserPreferences = {
 export interface BaseUser extends BaseDocument {
     name: string;
     picture: string;
+    bio: string;
 }
 
 export interface SortedSetMetadata {
@@ -153,6 +154,14 @@ export const userFields: DocumentFields = {
                 documentsOpenedAt: {},
                 sets: {},
             },
+        },
+    },
+    bio: {
+        type: DocumentFieldType.string,
+        properties: {
+            isUserUpdateable: true,
+            isRequired: false,
+            maxlength: 400,
         },
     },
 };
