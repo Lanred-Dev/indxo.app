@@ -5,6 +5,7 @@ import {
     setFields,
     termFields,
     type BaseUser,
+    type DocumentRating,
     type Folder,
     type PublicFolder,
     type PublicOwnedDocument,
@@ -52,9 +53,18 @@ export async function GET({ params, fetch, locals }: RequestEvent) {
             actualCopiedFromDocument = await documentResponse.json();
     }
 
+    const documentRatingResponse = await fetch(`/api/documents/${params.id}/rating`);
+    let documentRating: { average: number; reviews: DocumentRating[] } = {
+        average: 0,
+        reviews: [],
+    };
+
+    if (documentRatingResponse.status === ResponseCodes.Success)
+        documentRating = await documentRatingResponse.json();
+
     switch (documentType) {
         case DocumentType.folder: {
-            const { name, icon, description, created, _id, sets, visibility, updated, rating } =
+            const { name, icon, description, created, _id, sets, visibility, updated } =
                 document as Folder;
             const actualSets: PublicSet[] = [];
 
@@ -76,8 +86,8 @@ export async function GET({ params, fetch, locals }: RequestEvent) {
                 owner,
                 visibility,
                 updated,
-                rating,
                 copiedFrom: actualCopiedFromDocument,
+                rating: documentRating,
             } satisfies PublicFolder);
         }
         case DocumentType.set: {
@@ -91,7 +101,6 @@ export async function GET({ params, fetch, locals }: RequestEvent) {
                 folders,
                 visibility,
                 updated,
-                rating,
             } = document as Set;
             return json({
                 name,
@@ -104,8 +113,8 @@ export async function GET({ params, fetch, locals }: RequestEvent) {
                 owner,
                 visibility,
                 updated,
-                rating,
                 copiedFrom: actualCopiedFromDocument,
+                rating: documentRating,
             } satisfies PublicSet);
         }
         default:
