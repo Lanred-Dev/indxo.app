@@ -28,10 +28,11 @@
     let { data } = $props();
 
     let showActions: boolean = $state.raw(true);
-    let permission: DocumentPermission = $derived.by(
-        () => data.permission ?? DocumentPermission.none
-    );
+    let permission: DocumentPermission = $derived(data.permission ?? DocumentPermission.none);
     let isFavorite: boolean = $derived.by(() => data.isFavorite ?? false);
+    const documentType: DocumentType = $derived(
+        determineDocumentType(data.document._id) ?? DocumentType.set
+    );
     setContext("document", {
         get permission() {
             return permission;
@@ -70,6 +71,9 @@
 {#if data.isEmpty}
     <EmptyError />
 {:else}
-    <Header />
+    {#if documentType !== DocumentType.user}
+        <Header />
+    {/if}
+
     <DocumentComponent {...data.document} />
 {/if}
