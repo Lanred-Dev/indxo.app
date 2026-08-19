@@ -12,6 +12,8 @@
     import { SegmentedButton, SegmentedButtonGroup } from "$lib/components/SegmentedButtonGroup";
     import type { SearchableListFilter } from "$lib/components/Lists/Searchable/filters";
     import { Wording } from "$lib/utils/wording";
+    import Hero from "./Hero.svelte";
+    import Info from "./Info.svelte";
 
     const document: DocumentContext = getContext("document");
 
@@ -58,6 +60,10 @@
         document.header.showActions = false;
     });
 </script>
+
+<Hero />
+
+<Info />
 
 <SegmentedButtonGroup bind:value={currentFilterID} class="mb-6">
     {#each Object.values(documentPageFilters) as { id, text }}
