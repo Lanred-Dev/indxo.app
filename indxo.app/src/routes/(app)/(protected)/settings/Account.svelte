@@ -19,11 +19,6 @@
                 value={session.user.name}
                 type={SettingInputType.string}
                 placeholder="abc so cool"
-                updateEndpoint={{
-                    url: `/api/user/${session.user._id}`,
-                    method: "PUT",
-                    id: "name",
-                }}
             />
         </SectionEntry>
     </SectionContent>

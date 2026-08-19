@@ -11,7 +11,7 @@
     import SearchableList from "$lib/components/Lists/Searchable/SearchableList.svelte";
     import { SegmentedButton, SegmentedButtonGroup } from "$lib/components/SegmentedButtonGroup";
     import type { SearchableListFilter } from "$lib/components/Lists/Searchable/filters";
-    import { Wording } from "$lib/utils/wording";
+    import { Wording } from "$lib/data/ui/wording";
     import Hero from "./Hero.svelte";
     import Info from "./Info.svelte";
 

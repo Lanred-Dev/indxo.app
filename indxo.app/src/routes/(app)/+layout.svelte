@@ -12,12 +12,25 @@
         SidebarContext,
         ViewportContext,
     } from "$lib/utils/global";
+    import type { UserPreferences } from "$lib/documents";
 
     let { data, children } = $props();
 
+    let preferences: UserPreferences = $state(data.user.preferences);
     setContext("session", {
         get user() {
-            return data.user;
+            return {
+                ...data.user,
+                get preferences() {
+                    return preferences;
+                },
+                set preferences(newValue) {
+                    preferences = {
+                        ...preferences,
+                        ...newValue,
+                    };
+                },
+            };
         },
         get session() {
             return data.session;

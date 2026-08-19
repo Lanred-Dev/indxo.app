@@ -2,7 +2,7 @@
     import { getContext } from "svelte";
     import type { DocumentContext } from "../../+page.svelte";
     import { format } from "date-fns";
-    import { Wording } from "$lib/utils/wording";
+    import { Wording } from "$lib/data/ui/wording";
     import MarkdownText from "$lib/components/MarkdownText.svelte";
     import Icon from "$lib/components/Icon.svelte";
 

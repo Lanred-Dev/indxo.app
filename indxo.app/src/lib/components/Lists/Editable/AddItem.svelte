@@ -1,6 +1,6 @@
 <script lang="ts">
     import { getContext, type Snippet } from "svelte";
-    import { editableListContextKey, type EditableListContext } from "..";
+    import { editableListContextKey, type EditableListContext } from ".";
     import type { ClassValue } from "svelte/elements";
 
     let {
@@ -14,7 +14,7 @@
 
 <button
     class={["button-attention w-full", className]}
-    onclick={() => editableList.addItem()}
+    onclick={editableList.addItem}
     type="button"
     {...properties}
 >

@@ -35,9 +35,7 @@
     {/if}
 
     <DialogContent class="min-h-30! rounded-none! p-0!">
-        <DialogTrigger
-            class="button-primary absolute top-3 right-3 size-10 rounded-full p-1.5 shadow-md"
-        >
+        <DialogTrigger class="button-primary absolute top-3 right-3 size-10 rounded-full p-1.5">
             <Icon icon="general/X" />
         </DialogTrigger>
 

@@ -11,8 +11,7 @@
 
 <div class="page-title">
     <h1 class="title">{document.data.name} looks ready, but it’s empty right now</h1>
-
-    <p class="description">No {contentWording} have arrived yet. Perhaps check back later?</p>
+    <p class="subtitle">No {contentWording} have arrived yet. Perhaps check back later?</p>
 </div>
 
 <div class="row">

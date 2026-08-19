@@ -2,7 +2,7 @@
     import { getContext } from "svelte";
     import { fly } from "svelte/transition";
     import { innerHeight } from "svelte/reactivity/window";
-    import { Wording } from "$lib/utils/wording";
+    import { Wording } from "$lib/data/ui/wording";
     import { browser } from "$app/environment";
     import type {
         HeaderContext,

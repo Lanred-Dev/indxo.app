@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Wording } from "$lib/utils/wording";
+    import { Wording } from "$lib/data/ui/wording";
     import { getContext } from "svelte";
     import type { DocumentContext } from "../../+page.svelte";
     import { StudyModes } from "$lib/documents";

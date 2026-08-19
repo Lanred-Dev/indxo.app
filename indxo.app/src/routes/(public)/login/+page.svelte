@@ -17,13 +17,13 @@
 <div class="cover-screen flex-center page-title mb-0 flex-col gap-6">
     <div class="text-center *:justify-center">
         <h1 class="title">Welcome back 👋</h1>
-        <p class="description">Log in to your indxo account</p>
+        <p class="subtitle">Log in to your indxo account</p>
     </div>
 
     <div class="row w-fit text-xl">
         <form method="POST" use:enhance>
             <button class="button-primary">
-                <Icon icon="Google" />
+                <Icon icon="brands/Google" />
                 Continue with Google
             </button>
         </form>

@@ -52,10 +52,24 @@
                         Component: Textbox,
                         value: term?.term,
                         properties: {
+                            class: "w-full",
                             placeholder: placeholders.term,
                             maxlength: termFields.term.properties.maxlength,
+                            multiline: true,
                         },
                         position: { group: 0, index: 0 },
+                    },
+                    {
+                        _id: "frontImage",
+                        Component: ImageSelector,
+                        value: term?.frontImage,
+                        properties: {
+                            class: "min-w-fit size-40",
+                            imageProperties: {
+                                class: "size-40 rounded-input object-contain",
+                            },
+                        },
+                        position: { group: 0, index: 1 },
                     },
                     {
                         _id: "definition",
@@ -70,9 +84,9 @@
                         position: { group: 1, index: 0 },
                     },
                     {
-                        _id: "image",
+                        _id: "backImage",
                         Component: ImageSelector,
-                        value: term?.image,
+                        value: term?.backImage,
                         properties: {
                             class: "min-w-fit size-40",
                             imageProperties: {

@@ -1,22 +1,10 @@
 {
     "name": "images.indxo.app",
-    "version": "1.0.0",
-    "description": "Handles images for https://indxo.app.",
     "main": "build/index.js",
     "scripts": {
         "build": "tsc",
         "dev": "npm run build && echo Starting app... && node --env-file .env build/index.js"
     },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/Lanred-Dev/images.indxo.app.git"
-    },
-    "author": "Landon Redmond",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/Lanred-Dev/images.indxo.app/issues"
-    },
-    "homepage": "https://github.com/Lanred-Dev/images.indxo.app#readme",
     "files": [
         "build/**/*"
     ],

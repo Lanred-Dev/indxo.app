@@ -55,67 +55,78 @@
 
     const session: SessionContext = getContext("session");
     let flashcardScrollY: number = $state.raw(0);
-    let isFlipped: boolean = $state.raw(false);
-    let CardFront: HTMLDivElement;
-    let CardBack: HTMLDivElement;
+    let isCardFlipped: boolean = $state.raw(false);
+    let FrontCardFace: HTMLDivElement;
+    let BackCardFace: HTMLDivElement;
 
     /**
      * Flips the card.
      *
-     * @param isBack Whether the card should be facing the back.
-     * @param isAnimated Whether to animate the flip or not. Defaults to true.
+     * @param flipped If null, it will flip the card to the opposite side.
+     * @param animateFlip
      * @returns never
      */
-    export async function setCardFace(isBack: boolean, isAnimated: boolean = true) {
-        if (!canFlip || isFlipped === isBack) return;
+    export async function flipCard(flipped?: boolean, animateFlip: boolean = true) {
+        console.log("flipCard called with flipped:", flipped, "animateFlip:", animateFlip);
+        if (!canFlip) return;
 
-        isFlipped = isBack;
+        const lastFlippedState: boolean = isCardFlipped;
+        isCardFlipped = typeof flipped === "boolean" ? flipped : !isCardFlipped;
+        if (lastFlippedState === isCardFlipped) return;
 
-        if (isAnimated && session.user.preferences.animatedTermCards) {
+        if (animateFlip && session.user.preferences.animatedTermCards) {
             canFlip = false;
             canCycle = false;
 
             setTimeout(() => {
-                CardFront.style.display = isFlipped ? "none" : "flex";
-                CardBack.style.display = isFlipped ? "flex" : "none";
+                FrontCardFace.style.display = isCardFlipped ? "none" : "flex";
+                BackCardFace.style.display = isCardFlipped ? "flex" : "none";
             }, 125);
 
+            try {
+                await animate(
+                    Card!,
+                    {
+                        rotateX: [isCardFlipped ? 0 : 180, isCardFlipped ? 180 : 0],
+                    },
+                    {
+                        duration: 0.25,
+                        ease: "easeInOut",
+                    }
+                );
+            } finally {
+                canFlip = true;
+                canCycle = true;
+            }
+        } else {
             await animate(
                 Card!,
                 {
-                    rotateX: [isFlipped ? 0 : 180, isFlipped ? 180 : 0],
+                    rotateX: isCardFlipped ? 180 : 0,
                 },
                 {
-                    duration: 0.25,
-                    ease: "easeInOut",
+                    duration: 0,
                 }
             );
-
-            canFlip = true;
-            canCycle = true;
-        } else {
-            Card!.style.transform = `rotateX(${isFlipped ? 180 : 0}deg)`;
-            CardFront.style.display = isFlipped ? "none" : "flex";
-            CardBack.style.display = isFlipped ? "flex" : "none";
+            FrontCardFace.style.display = isCardFlipped ? "none" : "flex";
+            BackCardFace.style.display = isCardFlipped ? "flex" : "none";
         }
     }
 
     /**
      * Cycle through the terms in the set.
      *
-     * @param direction The direction to cycle in. -1 for previous and 1 for next or during sort mode, 1 for knows term and -1 for still learning term
+     * @param direction
      * @returns never
      */
-    async function defaultCycle(direction: -1 | 1) {
+    async function defaultCycle(direction: CycleDirection) {
         if (currentTermIndex + direction < 0 || currentTermIndex + direction > termCount - 1)
             return;
 
         currentTermIndex += direction;
         setCardFace(false, false);
 
-        if (session.user.preferences.animatedTermCards) {
-            canFlip = false;
-
+        try {
             await animate(
                 Card!,
                 {
@@ -128,7 +139,7 @@
                     ease: "easeInOut",
                 }
             );
-
+        } finally {
             canFlip = true;
         }
     }
@@ -187,15 +198,25 @@
             {@render Overlay?.()}
 
             <div>
-                <div class="CardFace" bind:this={CardFront}>
-                    <MarkdownText text={currentTerm.term} aria-label="Term" />
+                <div class="card-face" bind:this={FrontCardFace}>
+                    <div class="content">
+                        {#if currentTerm.frontImage}
+                            <ExpandableImage
+                                src={currentTerm.frontImage}
+                                alt="Front Image"
+                                class="h-30 w-auto"
+                            />
+                        {/if}
+
+                        <MarkdownText text={currentTerm.term} aria-label="Term" />
+                    </div>
                 </div>
 
                 <div
-                    class="CardFace"
+                    class="card-face"
                     style:display="none"
                     style:transform="rotateX(180deg)"
-                    bind:this={CardBack}
+                    bind:this={BackCardFace}
                 >
                     {#if session.user.preferences.showTermOnDefinitionSide}
                         <div
@@ -211,16 +232,16 @@
                     {/if}
 
                     <div
-                        class="flex w-full flex-col items-center overflow-y-auto py-6"
+                        class="content"
                         onscroll={(event) => {
                             flashcardScrollY = event.currentTarget.scrollTop;
                         }}
                     >
-                        {#if currentTerm.image}
+                        {#if currentTerm.backImage}
                             <ExpandableImage
-                                src={currentTerm.image}
-                                alt="Term Image"
-                                class="mb-3 h-30 w-auto"
+                                src={currentTerm.backImage}
+                                alt="Back Image"
+                                class="h-30 w-auto"
                             />
                         {/if}
 
@@ -231,8 +252,12 @@
                 <style lang="postcss">
                     @reference "../../../../../app.css";
 
-                    .CardFace {
-                        @apply rounded-container border-primary flex-center bg-input absolute top-0 left-0 h-full w-full flex-col overflow-x-hidden overflow-y-auto border p-6 shadow-xl inset-shadow-sm;
+                    .card-face {
+                        @apply rounded-container border-primary bg-input absolute top-0 left-0 h-full w-full overflow-x-hidden border p-6 shadow-xl inset-shadow-sm;
+                    }
+
+                    .card-face > .content {
+                        @apply flex h-full w-full flex-col items-center justify-center gap-y-3 overflow-y-auto py-6;
                     }
                 </style>
             </div>

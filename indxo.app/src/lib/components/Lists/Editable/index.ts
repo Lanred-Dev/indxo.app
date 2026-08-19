@@ -2,9 +2,9 @@ import type ActionButton from "$lib/components/ActionButton.svelte";
 import type { Component, ComponentProps } from "svelte";
 import type Item from "./Item.svelte";
 
+export { default as EditableListControls } from "../../FloatingControls.svelte";
+export { default as EditableListAddItemButton } from "./AddItem.svelte";
 export { default as EditableListContent } from "./Content.svelte";
-export { default as EditableListAddItemButton } from "./Controls/AddItem.svelte";
-export { default as EditableListControls } from "./Controls/Controls.svelte";
 export { default as EditableList } from "./EditableList.svelte";
 export { default as EditableListItem } from "./Item.svelte";
 

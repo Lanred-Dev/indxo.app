@@ -26,12 +26,7 @@
     let timesMissed: SvelteMap<string, number> = new SvelteMap();
     let strugglingTerms: SvelteSet<string> = new SvelteSet();
     let isLoaded: boolean = $state.raw(false);
-    let termStateInvalidator: number = $state.raw(0); // This is used to trigger a term state update
-    // In most cases current term index should be in range, but due to hot reloading while the user is editing the set, it might go out of bounds
-    let term: Term = $derived.by(() => {
-        termStateInvalidator;
-        return document.data.terms[currentTermIndex];
-    });
+    let term: Term = $derived(terms[currentTermIndex]);
 
     /**
      * Restarts the study session by resetting all the state variables.
@@ -79,17 +74,14 @@
         const { _id } = terms[currentTermIndex];
         let overlayColor: string;
 
-        switch (direction) {
-            case CycleDirection.previous:
-                stillLearningTerms.add(_id);
-                timesMissed.set(_id, (timesMissed.get(_id) ?? 0) + 1);
-                overlayColor = "var(--color-warning)";
-                break;
-            case CycleDirection.next:
-                knowTerms.add(_id);
-                timesMissed.set(_id, 0);
-                overlayColor = "var(--color-success)";
-                break;
+        if (direction === CycleDirection.previous) {
+            stillLearningTerms.add(_id);
+            timesMissed.set(_id, (timesMissed.get(_id) ?? 0) + 1);
+            overlayColor = "var(--color-warning)";
+        } else {
+            knowTerms.add(_id);
+            timesMissed.set(_id, 0);
+            overlayColor = "var(--color-success)";
         }
 
         if (timesMissed.get(_id)! >= session.user.preferences.strugglingTermThreshold) {

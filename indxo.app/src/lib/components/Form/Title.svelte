@@ -29,5 +29,5 @@
 
 <div class="page-title mb-7">
     <h1 class="title">{currentTitle}</h1>
-    <p class="description">{currentDescription}</p>
+    <p class="subtitle">{currentDescription}</p>
 </div>

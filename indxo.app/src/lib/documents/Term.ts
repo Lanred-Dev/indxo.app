@@ -8,7 +8,8 @@ import {
 export interface Term extends BaseDocument {
     term: string;
     definition: string;
-    image?: string;
+    frontImage?: string;
+    backImage?: string;
 }
 
 export interface SortedTerm {
@@ -35,7 +36,14 @@ export const termFields: DocumentFields = {
             maxlength: 200,
         },
     },
-    image: {
+    frontImage: {
+        type: DocumentFieldType.string,
+        properties: {
+            isRequired: false,
+            isUserUpdateable: true,
+        },
+    },
+    backImage: {
         type: DocumentFieldType.string,
         properties: {
             isRequired: false,
