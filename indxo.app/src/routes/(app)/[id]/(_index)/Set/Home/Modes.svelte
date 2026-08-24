@@ -8,14 +8,17 @@
     const document: DocumentContext = getContext("document");
 </script>
 
-<div class="list-primary mt-16">
+<div class="grid-primary mt-16">
     <p class="title">{Wording.modes}</p>
 
-    <ul class="content">
+    <ul class="content grid-cols-2 md:grid-cols-3">
         {#each Object.values(StudyModes) as { icon, text, url }}
-            <li class="grow">
-                <a class="button-primary" href={url.replace("[id]", document.data._id)}>
-                    <Icon {icon} />
+            <li class="aspect-16/9 w-full">
+                <a
+                    class="container-primary flex-center h-full w-full flex-col"
+                    href={url.replace("[id]", document.data._id)}
+                >
+                    <Icon class="size-8" {icon} />
                     <p>{text}</p>
                 </a>
             </li>
