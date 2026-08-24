@@ -147,6 +147,18 @@
     }
 }
 
+@utility grid-primary {
+    @apply w-full;
+
+    & .title {
+        @apply mb-3 text-2xl font-semibold;
+    }
+
+    & .content {
+        @apply grid gap-4;
+    }
+}
+
 @utility page-title {
     @apply mb-12 w-full;
 
