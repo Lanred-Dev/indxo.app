@@ -137,6 +137,7 @@
     style:--header-height="{headerHeight}px"
     style:--sidebar-width="{!isMobile.current && isSidebarVisible ? sidebarWidth : 0}px"
     style:opacity="{isNavigating ? 0 : 100}%"
+    style:pointer-events={isNavigating ? "none" : ""}
 >
     {@render children?.()}
 </main>
