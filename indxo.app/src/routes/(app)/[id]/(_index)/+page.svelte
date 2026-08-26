@@ -13,9 +13,7 @@
     import {
         DocumentPermission,
         DocumentType,
-        type BaseDocument,
-        type PublicSet,
-        type Term,
+        type BaseDocument
     } from "$lib/documents";
     import { setContext, type Component } from "svelte";
     import Header from "./Header.svelte";
