@@ -9,10 +9,10 @@
     import Textbox from "$lib/components/Textbox.svelte";
     import { DocumentVisibility, setFields } from "$lib/documents";
     import { getContext } from "svelte";
-    import type { DocumentEditContext } from "../+page.svelte";
+    import type { DocumentContext } from "../+page.svelte";
     import Icon from "$lib/components/Icon.svelte";
 
-    const document: DocumentEditContext = getContext("documentEdit");
+    const document: DocumentContext = getContext("document");
 </script>
 
 <div class="row">
@@ -21,7 +21,7 @@
         label="Visibility"
         Component={Dropdown}
         isRequired={setFields.visibility.properties.isRequired}
-        value={document.visibility}
+        value={document.data.visibility}
     >
         <DropdownTrigger />
 
@@ -48,7 +48,7 @@
         label="Name"
         class="grow"
         Component={Textbox}
-        value={document.name}
+        value={document.data.name}
         isRequired={setFields.name.properties.isRequired}
         properties={{
             placeholder: "Things My Brain Keeps Forgetting",
@@ -61,7 +61,7 @@
         label="Subject"
         class="grow"
         Component={Textbox}
-        value={document.subject || ""}
+        value={document.data.subject || ""}
         isRequired={setFields.subject.properties.isRequired}
         properties={{
             placeholder: "Magical Math",
@@ -81,5 +81,5 @@
         maxlength: setFields.description.properties.maxlength,
         multiline: true,
     }}
-    value={document.description || ""}
+    value={document.data.description || ""}
 />

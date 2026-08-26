@@ -1,12 +1,12 @@
 <script lang="ts">
     import EditableTermsList from "$lib/components/Lists/EditableTerms.svelte";
     import { getContext } from "svelte";
-    import type { DocumentEditContext } from "../+page.svelte";
+    import type { DocumentContext } from "../+page.svelte";
     import Details from "./Details.svelte";
 
-    const document: DocumentEditContext = getContext("documentEdit");
+    const document: DocumentContext = getContext("document");
 </script>
 
 <Details />
 
-<EditableTermsList bind:value={document.terms} />
+<EditableTermsList bind:value={document.data.terms} />

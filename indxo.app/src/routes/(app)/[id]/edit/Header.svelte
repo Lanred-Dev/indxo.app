@@ -4,17 +4,17 @@
     import { Wording } from "$lib/data/ui/wording";
     import { getContext } from "svelte";
     import { FormSubmit } from "$lib/components/Form";
-    import type { DocumentEditContext } from "./+page.svelte";
+    import type { DocumentContext } from "./+page.svelte";
     import Icon from "$lib/components/Icon.svelte";
 
-    const document: DocumentEditContext = getContext("documentEdit");
+    const document: DocumentContext = getContext("document");
 </script>
 
 <div class="mb-5 flex justify-between">
-    <a class="button-basic" href="/{document._id}">
+    <a class="button-basic" href="/{document.data._id}">
         <Icon icon="general/Chevrons/Left" />
         Back to {Wording[
-            determineDocumentType(document._id) === DocumentType.folder ? "folder" : "set"
+            determineDocumentType(document.data._id) === DocumentType.folder ? "folder" : "set"
         ]}
     </a>
 

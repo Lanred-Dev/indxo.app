@@ -1,6 +1,6 @@
 <script lang="ts" module>
-    export interface DocumentEditContext {
-        [key: string]: any;
+    export interface DocumentContext {
+        data: BaseDocument & { [key: string]: any };
         permission: DocumentPermission;
     }
 </script>
@@ -8,7 +8,7 @@
 <script lang="ts">
     import { setContext, type Component } from "svelte";
     import Header from "./Header.svelte";
-    import { DocumentPermission, DocumentType } from "$lib/documents";
+    import { DocumentPermission, DocumentType, type BaseDocument } from "$lib/documents";
     import { FormContent, FormSubmitMethods } from "$lib/components/Form";
     import Form from "$lib/components/Form/Form.svelte";
     import determineDocumentType from "$lib/utils/document/determineType";
@@ -17,29 +17,14 @@
 
     let { data } = $props();
 
-    let document: DocumentEditContext = $state({ permission: DocumentPermission.none });
-
-    $effect(() => {
-        document = {
-            ...data.document,
-            permission: data.permission,
-        };
-    });
-
-    setContext(
-        "documentEdit",
-        new Proxy({} as DocumentEditContext, {
-            get(_, property: string | symbol) {
-                if (typeof property === "symbol") return undefined;
-                return document[property];
-            },
-            set(_, property: string | symbol, value: unknown) {
-                if (typeof property === "symbol") return true;
-                document[property] = value;
-                return true;
-            },
-        })
-    );
+    setContext("document", {
+        get permission() {
+            return data.permission;
+        },
+        get data() {
+            return data.document;
+        },
+    } satisfies DocumentContext);
 
     const FormComponent: Component<any> = $derived.by(() => {
         switch (determineDocumentType(data.document._id)) {
